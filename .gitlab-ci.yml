@@ -1,0 +1,82 @@
+image: git.cattatech.de:5050/company/esp32:v5.2_1
+
+
+stages:
+  - build
+
+.host: &host_base
+  stage: build
+  script:
+    - ./build.sh
+    - cp -r build/bin/test_binary tests
+    - echo ${CI_COMMIT_SHA} >> githash
+  artifacts:
+    when: always
+    paths:
+    - tests
+    - githash
+
+.test: &test_base
+  stage: build
+  script:
+    - ./build.sh --coverage
+    - cp build/coverage/* . -r
+  coverage: /^\s*lines:\s*\d+.\d+\%/
+  artifacts:
+    when: always
+    paths:
+    - coverage*
+
+.docu: &docu_base
+  stage: build
+  script:
+    - doxygen --version
+    - cd docu && doxygen -u && cd ..
+    - ./build.sh --docu
+    - mv build/doxy/html/ html
+  artifacts:
+    when: always
+    paths:
+    - html/*
+
+host:tag:
+  only:
+    - tags
+  artifacts:
+    expire_in: never
+  <<: *host_base
+
+host:commit:
+  except:
+    - tags
+  artifacts:
+    expire_in: 2 weeks
+  <<: *host_base
+
+test:tag:
+  only:
+    - tags
+  artifacts:
+    expire_in: never
+  <<: *test_base
+
+test:commit:
+  except:
+    - tags
+  artifacts:
+    expire_in: 2 weeks
+  <<: *test_base
+
+docu:tag:
+  only:
+    - tags
+  artifacts:
+    expire_in: never
+  <<: *docu_base
+
+docu:commit:
+  except:
+    - tags
+  artifacts:
+    expire_in: 2 weeks
+  <<: *docu_base
