@@ -118,17 +118,14 @@ create_link()
 
 format()
 {
-    clang-format-14 -i "${ROOT}"/include/catta/*.hpp \
-                       "${ROOT}"/include/catta/*/*.hpp \
-                       "${ROOT}"/include/catta/*/*/*.hpp \
-                       "${ROOT}"/string/include/catta/*/*.hpp \
-                       "${ROOT}"/string/include/catta/*/*/*.hpp \
-                       "${ROOT}"/string/include/catta/*/*/*/*.hpp \
-                       "${ROOT}"/random/include/catta/random/*.hpp \
-                       "${ROOT}"/random/include/catta/random/*/*.hpp \
-                       "${ROOT}"/random/include/catta/random/*/*/*.hpp \
-                       "${ROOT}"/test/include/catta/test/*.hpp \
-                       "${ROOT}"/test/unit/*.cpp
+    FORMAT_COMAND="clang-format-14"
+    if [[ "${TASK_FORMAT}" == "true" ]]; then
+        echo "Format code."
+        find "${ROOT}/include" -type f -regex ".*\.\(c\|cpp\|h\|hpp\)" -exec "${FORMAT_COMAND}" -i {} +
+        find "${ROOT}/random"  -type f -regex ".*\.\(c\|cpp\|h\|hpp\)" -exec "${FORMAT_COMAND}" -i {} +
+        find "${ROOT}/string"  -type f -regex ".*\.\(c\|cpp\|h\|hpp\)" -exec "${FORMAT_COMAND}" -i {} +
+        find "${ROOT}/test"    -type f -regex ".*\.\(c\|cpp\|h\|hpp\)" -exec "${FORMAT_COMAND}" -i {} +
+    fi
 }
 
 get_git_version()
@@ -225,8 +222,10 @@ create_coverage()
     fi
 }
 
+
 add_hook_if_possible
 parse_arguments "${@}"
+format
 compile_project
 execute_tests
 create_coverage
