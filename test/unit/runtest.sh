@@ -28,6 +28,7 @@ check automatic_test_json_Parser
 check automatic_test_json_ParsingError
 check automatic_test_json_Token
 check automatic_test_json_TokenType
+check automatic_test_modbus_sunspec_ScaledSValue
 check automatic_test_modbus_sunspec_ScaleFactor
 check automatic_test_modbus_sunspec_String
 check automatic_test_parser_DefaultToken

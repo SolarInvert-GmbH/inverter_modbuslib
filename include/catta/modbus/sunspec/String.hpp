@@ -39,6 +39,7 @@ class String
     constexpr bool isEmpty() const noexcept { return _data[0] == '\0'; }
     /**
      * @param[in] string Represening the string. Has not longer than 20 character, otherwise empty is returned.
+     * @return Returns string if input is valid, otherwise empty.
      */
     static constexpr String create(const char* string)
     {

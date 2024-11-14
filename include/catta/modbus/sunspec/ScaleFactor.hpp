@@ -33,6 +33,7 @@ class ScaleFactor
     constexpr bool isEmpty() const noexcept { return _factorExponent < MIN || _factorExponent > MAX; }
     /**
      * @param[in] factorExponent Represening the exponent of the scaling factor. Has to be beetween -10 and 10, otherwise empty is returned.
+     * @return Returns scaling factor if input is valid, otherwise empty.
      */
     static constexpr ScaleFactor create(const std::int8_t factorExponent)
     {
@@ -49,7 +50,7 @@ class ScaleFactor
     constexpr bool operator==(const ScaleFactor& other) const noexcept = default;
 
   private:
-    constexpr ScaleFactor(std::int8_t factorExponent) : _factorExponent(factorExponent) {}
+    constexpr ScaleFactor(const std::int8_t factorExponent) : _factorExponent(factorExponent) {}
     std::int8_t _factorExponent;
     static constexpr std::int8_t MIN = -10;
     static constexpr std::int8_t MAX = +10;
