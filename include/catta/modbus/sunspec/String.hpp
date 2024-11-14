@@ -38,7 +38,7 @@ class String
      */
     constexpr bool isEmpty() const noexcept { return _data[0] == '\0'; }
     /**
-     * @param[in] factorExponent Represening the exponent of the scaling factor. Has to be beetween -10 and 10, otherwise empty is returned.
+     * @param[in] string Represening the string. Has not longer than 20 character, otherwise empty is returned.
      */
     static constexpr String create(const char* string)
     {
