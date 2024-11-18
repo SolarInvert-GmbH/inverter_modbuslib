@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(cattalib)
+project(modbuslib)
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
@@ -40,6 +40,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-O0 ${CMAKE_COVERAGE_FLAG} -ggdb -fsanitize=address -
 message(STATUS "Build Type: " ${CMAKE_BUILD_TYPE})
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(${CMAKE_SOURCE_DIR}/json/include/)
 include_directories(${CMAKE_SOURCE_DIR}/random/include/)
 include_directories(${CMAKE_SOURCE_DIR}/string/include/)
 

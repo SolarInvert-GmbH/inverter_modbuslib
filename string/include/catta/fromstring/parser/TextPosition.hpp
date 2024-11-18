@@ -18,7 +18,7 @@ class Parser<catta::parser::TextPosition>
     using Error = catta::state::DefaultError;
     using Input = char;
     using Output = catta::parser::TextPosition;
-    [[nodiscard]] constexpr std::tuple<Error, catta::parser::InputHandled> read(const Input& input) noexcept
+    [[nodiscard]] /*constexpr*/ std::tuple<Error, catta::parser::InputHandled> read(const Input& input) noexcept
     {
         typedef std::tuple<Error, catta::parser::InputHandled> Tuple;
         const auto error = [this]()
@@ -54,14 +54,14 @@ class Parser<catta::parser::TextPosition>
             if (isSpace()) return stay();
             return std::get<0>(_parser.read(input)).isError() ? error() : next();
         };
-        const auto handleParser1 = [this, input, error, handleCharacter, next, stay, jumpTwo](const char expectedNext, const auto callback)
+        const auto handleParser1 = [this, input, error, handleCharacter, stay, jumpTwo](const char expectedNext, const auto callback)
         {
             const auto [readError, handled] = _parser.read(input);
             if (readError.isError()) return error();
             if (_parser.state().isDone())
             {
                 callback();
-                return handled ? next() : handleCharacter(expectedNext, jumpTwo);
+                return handleCharacter(expectedNext, jumpTwo);
             }
             else
                 return stay();

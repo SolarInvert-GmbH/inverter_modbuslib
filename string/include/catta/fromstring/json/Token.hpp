@@ -18,7 +18,7 @@ class Parser<catta::json::Token>
     using Error = catta::state::DefaultError;
     using Input = char;
     using Output = catta::json::Token;
-    [[nodiscard]] constexpr std::tuple<Error, catta::parser::InputHandled> read(const Input& input) noexcept
+    [[nodiscard]] /*constexpr*/ std::tuple<Error, catta::parser::InputHandled> read(const Input& input) noexcept
     {
         typedef std::tuple<Error, catta::parser::InputHandled> Tuple;
         const auto error = [this]()
@@ -37,17 +37,12 @@ class Parser<catta::json::Token>
             _state = state;
             return stay();
         };
-        const auto handle0 = [input, error, stay](auto& parser, const char c, const auto function)
+        const auto handle0 = [input, error](auto& parser, const char c, const auto function)
         {
-            if (parser.state().isDone()) return input == c ? function() : error();
             if (parser.state().isActive())
             {
                 const auto [readError, handled] = parser.read(input);
-                if (parser.state().isDone())
-                {
-                    if (!handled) return input == c ? function() : error();
-                    return stay();
-                }
+                if (parser.state().isDone()) return input == c ? function() : error();
                 if (readError.isError()) return error();
                 return Tuple{Error{}, handled};
             }

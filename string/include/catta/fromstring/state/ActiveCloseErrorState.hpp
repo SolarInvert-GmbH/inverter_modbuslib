@@ -37,7 +37,7 @@ class catta::fromstring::Parser<catta::state::ActiveCloseErrorState<ERROR_TYPE>>
         };
         static_assert(T::error(ERROR_TYPE{}) == 0);
         for (uint8_t i = 1; i < T{} + 1; i++)
-            if (handle(enumNames[i], _possible[i], T{i, ERROR_TYPE{}})) return Tuple{Error{}, catta::parser::InputHandled::no()};
+            if (handle(enumNames[i], _possible[i], T{i, ERROR_TYPE{}})) return Tuple{Error{}, catta::parser::InputHandled::yes()};
 
         if (_possible[0])
         {

@@ -46,12 +46,17 @@ template <Parsable T>
 [[nodiscard]] constexpr T fromString(const char* input) noexcept
 {
     Parser<T> parser;
+    const char* last = input;
     while (true)
     {
         const auto [error, inputHandled] = parser.read(*input);
         if (!error.isEmpty()) return T{};
-        if (parser.state().isDone()) return *input == '\0' ? parser.data() : T{};
-        if (inputHandled) input++;
+        if (inputHandled)
+        {
+            last = input;
+            input++;
+        }
+        if (parser.state().isDone()) return *last == '\0' ? parser.data() : T{};
     }
 }
 
@@ -84,8 +89,8 @@ class Parser<T>
             return false;
         };
         for (uint8_t i = 0; i < T{}; i++)
-            if (handle(T::enumNames[i], _possible[i], T{i})) return Tuple{Error{}, catta::parser::InputHandled::no()};
-        if (handle(empty, _possible[T{}], T{})) return Tuple{Error{}, catta::parser::InputHandled::no()};
+            if (handle(T::enumNames[i], _possible[i], T{i})) return Tuple{Error{}, catta::parser::InputHandled::yes()};
+        if (handle(empty, _possible[T{}], T{})) return Tuple{Error{}, catta::parser::InputHandled::yes()};
         _index++;
         _state = failed ? catta::parser::State::failed() : catta::parser::State::running();
         return Tuple{failed ? Error::error() : Error{}, catta::parser::InputHandled::yes()};

@@ -41,9 +41,9 @@ class Parser<catta::parser::InputHandled>
             return false;
         };
         if (handle(catta::parser::InputHandled::enumNames[0], _possible[0], catta::parser::InputHandled::yes()))
-            return Tuple{Error{}, catta::parser::InputHandled::no()};
+            return Tuple{Error{}, catta::parser::InputHandled::yes()};
         if (handle(catta::parser::InputHandled::enumNames[1], _possible[1], catta::parser::InputHandled::no()))
-            return Tuple{Error{}, catta::parser::InputHandled::no()};
+            return Tuple{Error{}, catta::parser::InputHandled::yes()};
         _index++;
         _state = failed ? catta::parser::State::State::failed() : catta::parser::State::State::running();
         return Tuple{failed ? Error::error() : Error{}, catta::parser::InputHandled::yes()};

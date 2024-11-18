@@ -29,7 +29,7 @@ class Parser<Decimal<I>>
         {
             if (_state == 2) _data = Decimal(static_cast<I>(-static_cast<I>(_data)));
             _state = 4;
-            return Tuple{Error{}, catta::parser::InputHandled::no()};
+            return Tuple{Error{}, catta::parser::InputHandled::yes()};
         };
         const auto next = [this](const std::uint8_t state)
         {
@@ -97,7 +97,7 @@ class Parser<Decimal<I>>
         const auto done = [this]()
         {
             _state = 2;
-            return Tuple{Error{}, catta::parser::InputHandled::no()};
+            return Tuple{Error{}, catta::parser::InputHandled::yes()};
         };
         const auto diget = [this, &input](const std::uint8_t state)
         {
