@@ -1,16 +1,16 @@
 // catta
-#include <catta/modbus/sunspec/ScaledValue4U16.hpp>
+#include <catta/modbus/sunspec/ConnectedPhase.hpp>
 
 // random
-#include <catta/random/modbus/sunspec/ScaledValue4U16.hpp>
+#include <catta/random/modbus/sunspec/ConnectedPhase.hpp>
 
 // fromtostring
-#include <catta/fromstring/modbus/sunspec/ScaledValue4U16.hpp>
-#include <catta/tostring/modbus/sunspec/ScaledValue4U16.hpp>
+#include <catta/fromstring/modbus/sunspec/ConnectedPhase.hpp>
+#include <catta/tostring/modbus/sunspec/ConnectedPhase.hpp>
 
 // json
-#include <catta/fromjson/modbus/sunspec/ScaledValue4U16.hpp>
-#include <catta/tojson/modbus/sunspec/ScaledValue4U16.hpp>
+#include <catta/fromjson/modbus/sunspec/ConnectedPhase.hpp>
+#include <catta/tojson/modbus/sunspec/ConnectedPhase.hpp>
 
 // test
 #include <catta/test/ConsoleOutput.hpp>
@@ -23,7 +23,7 @@ static constexpr bool debug = false;
 
 int main()
 {
-    using Type = catta::modbus::sunspec::ScaledValue4U16;
+    using Type = catta::modbus::sunspec::ConnectedPhase;
     using Output = catta::test::ConsoleOutput;
     Output output(catta::tostring::GetName<Type>::name.data());
     const auto test_tofromstring = catta::test::checkToFromString<Output, Type, debug>;
