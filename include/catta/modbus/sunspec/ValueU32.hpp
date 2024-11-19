@@ -10,7 +10,7 @@ namespace modbus
 namespace sunspec
 {
 /**
- * @brief Class for represening unsigned 32 bit numbers.
+ * @brief Class for representing unsigned 32 bit numbers.
  *
  * @author CattaTech - Maik Urbannek
  */
@@ -30,7 +30,7 @@ class ValueU32
      */
     constexpr bool isEmpty() const noexcept { return _empty == true; }
     /**
-     * @param[in] value Represening the unsigned value.
+     * @param[in] value Representing the unsigned value.
      * @return Returns unsigned 32 bit number.
      */
     static constexpr ValueU32 create(const std::uint32_t value) { return ValueU32(value, false); }

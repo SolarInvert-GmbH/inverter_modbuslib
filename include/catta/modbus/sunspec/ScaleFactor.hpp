@@ -10,7 +10,7 @@ namespace modbus
 namespace sunspec
 {
 /**
- * @brief Class for represening power of 10 to scale unit.
+ * @brief Class for representing power of 10 to scale unit.
  *
  * Is represented by the exponent. Valid exponents reach from -10…10. Represening 10^-10 … 10^10.
  *
@@ -32,7 +32,7 @@ class ScaleFactor
      */
     constexpr bool isEmpty() const noexcept { return _factorExponent < MIN || _factorExponent > MAX; }
     /**
-     * @param[in] factorExponent Represening the exponent of the scaling factor. Has to be beetween -10 and 10, otherwise empty is returned.
+     * @param[in] factorExponent Representing the exponent of the scaling factor. Has to be beetween -10 and 10, otherwise empty is returned.
      * @return Returns scaling factor if input is valid, otherwise empty.
      */
     static constexpr ScaleFactor create(const std::int8_t factorExponent)

@@ -121,7 +121,7 @@ class Serializer
             }
         };
 
-        const auto handleToken = [input, character, handleNumber, error, done, handleCharacter]()
+        const auto handleToken = [input, character, handleNumber, error, done, handleCharacter, this]()
         {
             using Type = catta::json::TokenType;
             switch (input.type())
@@ -145,6 +145,7 @@ class Serializer
                 case Type::boolFalse():
                     return character('f', STATE_FALSE + 0);
                 case Type::integerNumber():
+                    _serializer = {};
                     return handleNumber();
                 case Type::floatNumber():
                     return error();  // TODO
@@ -159,7 +160,6 @@ class Serializer
                     return error();
             }
         };
-
         switch (_state)
         {
             case STATE_START + 0:

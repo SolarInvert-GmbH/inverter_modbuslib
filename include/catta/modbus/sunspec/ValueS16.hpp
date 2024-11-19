@@ -10,7 +10,7 @@ namespace modbus
 namespace sunspec
 {
 /**
- * @brief Class for represening signed 16 bit numbers.
+ * @brief Class for representing signed 16 bit numbers.
  *
  * @author CattaTech - Maik Urbannek
  */
@@ -30,7 +30,7 @@ class ValueS16
      */
     constexpr bool isEmpty() const noexcept { return _empty == true; }
     /**
-     * @param[in] value Represening the signed value.
+     * @param[in] value Representing the signed value.
      * @return Returns signed 16 bit number.
      */
     static constexpr ValueS16 create(const std::int16_t value) { return ValueS16(value, false); }

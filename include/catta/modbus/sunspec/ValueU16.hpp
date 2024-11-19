@@ -10,7 +10,7 @@ namespace modbus
 namespace sunspec
 {
 /**
- * @brief Class for represening unsigned 16 bit numbers.
+ * @brief Class for representing unsigned 16 bit numbers.
  *
  * @author CattaTech - Maik Urbannek
  */
@@ -30,7 +30,7 @@ class ValueU16
      */
     constexpr bool isEmpty() const noexcept { return _empty == true; }
     /**
-     * @param[in] value Represening the unsigned value.
+     * @param[in] value Representing the unsigned value.
      * @return Returns unsigned 16 bit number.
      */
     static constexpr ValueU16 create(const std::uint16_t value) { return ValueU16(value, false); }
