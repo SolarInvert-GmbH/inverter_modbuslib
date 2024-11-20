@@ -1,16 +1,16 @@
 // catta
-#include <catta/modbus/sunspec/model/BasicSettingsWrite.hpp>
+#include <catta/modbus/si/State.hpp>
 
 // random
-#include <catta/random/modbus/sunspec/model/BasicSettingsWrite.hpp>
+#include <catta/random/modbus/si/State.hpp>
 
 // fromtostring
-#include <catta/fromstring/modbus/sunspec/model/BasicSettingsWrite.hpp>
-#include <catta/tostring/modbus/sunspec/model/BasicSettingsWrite.hpp>
+#include <catta/fromstring/modbus/si/State.hpp>
+#include <catta/tostring/modbus/si/State.hpp>
 
 // json
-#include <catta/fromjson/modbus/sunspec/model/BasicSettingsWrite.hpp>
-#include <catta/tojson/modbus/sunspec/model/BasicSettingsWrite.hpp>
+#include <catta/fromjson/modbus/si/State.hpp>
+#include <catta/tojson/modbus/si/State.hpp>
 
 // test
 #include <catta/test/ConsoleOutput.hpp>
@@ -23,7 +23,10 @@ static constexpr bool debug = false;
 
 int main()
 {
-    using Type = catta::modbus::sunspec::model::BasicSettingsWrite;
+    const auto e = catta::modbus::si::State::initLevel2();
+    std::cout << catta::tostring::toString(e) << '\n';
+
+    using Type = catta::modbus::si::State;
     using Output = catta::test::ConsoleOutput;
     Output output(catta::tostring::GetName<Type>::name.data());
     const auto test_tofromstring = catta::test::checkToFromString<Output, Type, debug>;

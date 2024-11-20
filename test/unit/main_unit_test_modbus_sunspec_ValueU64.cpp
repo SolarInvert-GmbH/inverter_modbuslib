@@ -19,7 +19,7 @@
 #include <catta/test/ToFromJson.hpp>
 #include <catta/test/ToFromString.hpp>
 
-static constexpr bool debug = true;
+static constexpr bool debug = false;
 
 int main()
 {
