@@ -28,6 +28,7 @@ check automatic_test_json_Parser
 check automatic_test_json_ParsingError
 check automatic_test_json_Token
 check automatic_test_json_TokenType
+check automatic_test_modbus_si_Date
 check automatic_test_modbus_si_State
 check automatic_test_modbus_si_Type
 check automatic_test_modbus_sunspec_ConnectedPhase
