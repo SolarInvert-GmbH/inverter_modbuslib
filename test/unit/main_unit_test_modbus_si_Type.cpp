@@ -1,16 +1,16 @@
 // catta
-#include <catta/modbus/si/State.hpp>
+#include <catta/modbus/si/Type.hpp>
 
 // random
-#include <catta/random/modbus/si/State.hpp>
+#include <catta/random/modbus/si/Type.hpp>
 
 // fromtostring
-#include <catta/fromstring/modbus/si/State.hpp>
-#include <catta/tostring/modbus/si/State.hpp>
+#include <catta/fromstring/modbus/si/Type.hpp>
+#include <catta/tostring/modbus/si/Type.hpp>
 
 // json
-#include <catta/fromjson/modbus/si/State.hpp>
-#include <catta/tojson/modbus/si/State.hpp>
+#include <catta/fromjson/modbus/si/Type.hpp>
+#include <catta/tojson/modbus/si/Type.hpp>
 
 // test
 #include <catta/test/ConsoleOutput.hpp>
@@ -23,7 +23,7 @@ static constexpr bool debug = false;
 
 int main()
 {
-    using Type = catta::modbus::si::State;
+    using Type = catta::modbus::si::Type;
     using Output = catta::test::ConsoleOutput;
     Output output(catta::tostring::GetName<Type>::name.data());
     const auto test_tofromstring = catta::test::checkToFromString<Output, Type, debug>;
