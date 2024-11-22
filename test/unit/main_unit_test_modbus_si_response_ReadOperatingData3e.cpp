@@ -1,16 +1,16 @@
 // catta
-#include <catta/modbus/si/response/ReadOperatingData33.hpp>
+#include <catta/modbus/si/response/ReadOperatingData3e.hpp>
 
 // random
-#include <catta/random/modbus/si/response/ReadOperatingData33.hpp>
+#include <catta/random/modbus/si/response/ReadOperatingData3e.hpp>
 
 // fromtostring
-#include <catta/fromstring/modbus/si/response/ReadOperatingData33.hpp>
-#include <catta/tostring/modbus/si/response/ReadOperatingData33.hpp>
+#include <catta/fromstring/modbus/si/response/ReadOperatingData3e.hpp>
+#include <catta/tostring/modbus/si/response/ReadOperatingData3e.hpp>
 
 // json
-#include <catta/fromjson/modbus/si/response/ReadOperatingData33.hpp>
-#include <catta/tojson/modbus/si/response/ReadOperatingData33.hpp>
+#include <catta/fromjson/modbus/si/response/ReadOperatingData3e.hpp>
+#include <catta/tojson/modbus/si/response/ReadOperatingData3e.hpp>
 
 // test
 #include <catta/test/ConsoleOutput.hpp>
@@ -23,7 +23,7 @@ static constexpr bool debug = false;
 
 int main()
 {
-    using Type = catta::modbus::si::response::ReadOperatingData33;
+    using Type = catta::modbus::si::response::ReadOperatingData3e;
     using Output = catta::test::ConsoleOutput;
     Output output(catta::tostring::GetName<Type>::name.data());
     const auto test_tofromstring = catta::test::checkToFromString<Output, Type, debug>;
