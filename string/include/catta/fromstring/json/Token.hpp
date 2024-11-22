@@ -18,7 +18,7 @@ class Parser<catta::json::Token>
     using Error = catta::state::DefaultError;
     using Input = char;
     using Output = catta::json::Token;
-    [[nodiscard]] /*constexpr*/ std::tuple<Error, catta::parser::InputHandled> read(const Input& input) noexcept
+    [[nodiscard]] constexpr std::tuple<Error, catta::parser::InputHandled> read(const Input& input) noexcept
     {
         typedef std::tuple<Error, catta::parser::InputHandled> Tuple;
         const auto error = [this]()
