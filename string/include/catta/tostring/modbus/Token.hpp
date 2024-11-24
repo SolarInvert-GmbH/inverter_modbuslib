@@ -72,6 +72,7 @@ class Serializer<catta::modbus::Token>
             {
                 case Type::address():
                 case Type::function():
+                case Type::length():
                 case Type::data():
                     return jump(HEXADECIMAL + 0);
                 default:

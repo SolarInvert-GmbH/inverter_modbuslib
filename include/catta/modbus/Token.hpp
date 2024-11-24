@@ -30,6 +30,11 @@ class Token
      */
     [[nodiscard]] constexpr static Token function(const std::uint8_t value) noexcept { return {catta::modbus::TokenType::function(), value}; }
     /**
+     * @param[in] value The length value.
+     * @return Returns a length token.
+     */
+    [[nodiscard]] constexpr static Token length(const std::uint8_t value) noexcept { return {catta::modbus::TokenType::length(), value}; }
+    /**
      * @param[in] value The function value.
      * @return Returns a data token.
      */
@@ -43,7 +48,7 @@ class Token
      */
     [[nodiscard]] constexpr static Token empty() noexcept { return {}; }
     /**
-     * @return Returns the value, only valid for address, function or data.
+     * @return Returns the value, only valid for address, function, length or data.
      */
     [[nodiscard]] constexpr std::uint8_t value() const noexcept { return _value; }
     /**

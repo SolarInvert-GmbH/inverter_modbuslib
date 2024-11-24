@@ -18,15 +18,16 @@ class TokenType
   private:
     constexpr static std::uint8_t ADDRESS = 0;
     constexpr static std::uint8_t FUNCTION = 1;
-    constexpr static std::uint8_t DATA = 2;
-    constexpr static std::uint8_t END = 3;
-    constexpr static std::uint8_t EMPTY = 4;
+    constexpr static std::uint8_t LENGTH = 2;
+    constexpr static std::uint8_t DATA = 3;
+    constexpr static std::uint8_t END = 4;
+    constexpr static std::uint8_t EMPTY = 5;
 
   public:
     /**
      * @param[in] value The enum value of the token.
-     * @warning This constructor should not be used. Use address(), function(), data(), end() or empty(). Explicit constructor. Converts uint8 to
-     * token.
+     * @warning This constructor should not be used. Use address(), function(), length(), data(), end() or empty(). Explicit constructor. Converts
+     * uint8 to token.
      */
     [[nodiscard]] constexpr explicit TokenType(const std::uint8_t value) noexcept : _value(value) {}
     /**
@@ -41,6 +42,10 @@ class TokenType
      * @return Returns the function token.
      */
     [[nodiscard]] constexpr static TokenType function() noexcept { return TokenType{FUNCTION}; }
+    /**
+     * @return Returns the length token.
+     */
+    [[nodiscard]] constexpr static TokenType length() noexcept { return TokenType{LENGTH}; }
     /**
      * @return Returns the data token.
      */
@@ -71,6 +76,10 @@ class TokenType
      */
     [[nodiscard]] constexpr bool isFunction() const noexcept { return _value == FUNCTION; }
     /**
+     * @return Returns @b true if length token is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isLength() const noexcept { return _value == LENGTH; }
+    /**
      * @return Returns @b true if data token is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isData() const noexcept { return _value == DATA; }
@@ -85,7 +94,7 @@ class TokenType
     /**
      * Token in text form.
      */
-    constexpr static std::array<std::string_view, EMPTY> enumNames = {"ADDRESS", "FUNCTION", "DATA", "END"};
+    constexpr static std::array<std::string_view, EMPTY> enumNames = {"ADDRESS", "FUNCTION", "LENGTH", "DATA", "END"};
 
   private:
     std::uint8_t _value;
