@@ -43,5 +43,6 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_SOURCE_DIR}/json/include/)
 include_directories(${CMAKE_SOURCE_DIR}/random/include/)
 include_directories(${CMAKE_SOURCE_DIR}/string/include/)
+include_directories(${CMAKE_SOURCE_DIR}/modbus/include/)
 
 add_subdirectory(test/unit)
