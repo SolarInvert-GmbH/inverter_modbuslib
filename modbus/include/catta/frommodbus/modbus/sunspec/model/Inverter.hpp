@@ -3,7 +3,7 @@
 // model
 #include <catta/modbus/sunspec/model/Inverter.hpp>
 
-// fromjson
+// frommodbus
 #include <catta/frommodbus/fromModbus.hpp>
 
 namespace catta

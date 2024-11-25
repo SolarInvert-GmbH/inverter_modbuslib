@@ -41,17 +41,6 @@ class Serializer<catta::modbus::sunspec::model::Inverter>
             _state++;
             return stay(token);
         };
-        /* const auto character = [this, next, stay](const catta::modbus::sunspec::String& string)
-         {
-             const auto result = Output::data(static_cast<std::uint8_t>(string.data()[_index]));
-             _index++;
-             if (_index >= catta::modbus::sunspec::String::size)
-             {
-                 _index = 0;
-                 return next(result);
-             }
-             return stay(result);
-         };*/
         const auto u32 = [next](const auto v, const auto i) { return next(Output::data(static_cast<std::uint8_t>(v >> (8 * i)))); };
         const auto high = [next](const auto v) { return next(Output::data(static_cast<std::uint8_t>(v >> 8))); };
         const auto low = [next](const auto v) { return next(Output::data(static_cast<std::uint8_t>(v >> 0))); };
