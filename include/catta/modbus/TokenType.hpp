@@ -16,18 +16,19 @@ namespace modbus
 class TokenType
 {
   private:
-    constexpr static std::uint8_t ADDRESS = 0;
+    constexpr static std::uint8_t START = 0;
     constexpr static std::uint8_t FUNCTION = 1;
-    constexpr static std::uint8_t LENGTH = 2;
-    constexpr static std::uint8_t DATA = 3;
-    constexpr static std::uint8_t END = 4;
-    constexpr static std::uint8_t EMPTY = 5;
+    constexpr static std::uint8_t DATA = 2;
+    constexpr static std::uint8_t EXECEPTION = 3;
+    constexpr static std::uint8_t CODE = 4;
+    constexpr static std::uint8_t END = 5;
+    constexpr static std::uint8_t EMPTY = 6;
 
   public:
     /**
      * @param[in] value The enum value of the token.
-     * @warning This constructor should not be used. Use address(), function(), length(), data(), end() or empty(). Explicit constructor. Converts
-     * uint8 to token.
+     * @warning This constructor should not be used. Use start(), function(), data(), exeception(), code(), end() or empty(). Explicit constructor.
+     * Converts uint8 to token.
      */
     [[nodiscard]] constexpr explicit TokenType(const std::uint8_t value) noexcept : _value(value) {}
     /**
@@ -35,21 +36,25 @@ class TokenType
      */
     [[nodiscard]] constexpr TokenType() noexcept : TokenType(EMPTY) {}
     /**
-     * @return Returns the address token.
+     * @return Returns the start token.
      */
-    [[nodiscard]] constexpr static TokenType address() noexcept { return TokenType{ADDRESS}; }
+    [[nodiscard]] constexpr static TokenType start() noexcept { return TokenType{START}; }
     /**
      * @return Returns the function token.
      */
     [[nodiscard]] constexpr static TokenType function() noexcept { return TokenType{FUNCTION}; }
     /**
-     * @return Returns the length token.
-     */
-    [[nodiscard]] constexpr static TokenType length() noexcept { return TokenType{LENGTH}; }
-    /**
      * @return Returns the data token.
      */
     [[nodiscard]] constexpr static TokenType data() noexcept { return TokenType{DATA}; }
+    /**
+     * @return Returns the exeception token.
+     */
+    [[nodiscard]] constexpr static TokenType exeception() noexcept { return TokenType{EXECEPTION}; }
+    /**
+     * @return Returns the exeption code token.
+     */
+    [[nodiscard]] constexpr static TokenType code() noexcept { return TokenType{CODE}; }
     /**
      * @return Returns the end token.
      */
@@ -68,21 +73,25 @@ class TokenType
      */
     [[nodiscard]] constexpr operator std::uint8_t() const noexcept { return _value; }
     /**
-     * @return Returns @b true if address token is represented, otherwise @b false.
+     * @return Returns @b true if start token is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isAddress() const noexcept { return _value == ADDRESS; }
+    [[nodiscard]] constexpr bool isStart() const noexcept { return _value == START; }
     /**
      * @return Returns @b true if function token is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isFunction() const noexcept { return _value == FUNCTION; }
     /**
-     * @return Returns @b true if length token is represented, otherwise @b false.
-     */
-    [[nodiscard]] constexpr bool isLength() const noexcept { return _value == LENGTH; }
-    /**
      * @return Returns @b true if data token is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isData() const noexcept { return _value == DATA; }
+    /**
+     * @return Returns @b true if exeception token is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isExeception() const noexcept { return _value == EXECEPTION; }
+    /**
+     * @return Returns @b true if exeption code token is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isCode() const noexcept { return _value == CODE; }
     /**
      * @return Returns @b true if end token is represented, otherwise @b false.
      */
@@ -94,7 +103,7 @@ class TokenType
     /**
      * Token in text form.
      */
-    constexpr static std::array<std::string_view, EMPTY> enumNames = {"ADDRESS", "FUNCTION", "LENGTH", "DATA", "END"};
+    constexpr static std::array<std::string_view, EMPTY> enumNames = {"START", "FUNCTION", "DATA", "EXECEPTION", "CODE", "END"};
 
   private:
     std::uint8_t _value;

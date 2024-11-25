@@ -20,25 +20,31 @@ class Token
      */
     [[nodiscard]] constexpr Token() noexcept : Token(catta::modbus::TokenType::empty(), NO_DATA) {}
     /**
-     * @param[in] value The address value.
-     * @return Returns an address token.
+     * @return Returns a start token.
      */
-    [[nodiscard]] constexpr static Token address(const std::uint8_t value) noexcept { return {catta::modbus::TokenType::address(), value}; }
+    [[nodiscard]] constexpr static Token start() noexcept { return {catta::modbus::TokenType::start(), NO_DATA}; }
     /**
      * @param[in] value The function value.
      * @return Returns a function token.
      */
     [[nodiscard]] constexpr static Token function(const std::uint8_t value) noexcept { return {catta::modbus::TokenType::function(), value}; }
     /**
-     * @param[in] value The length value.
-     * @return Returns a length token.
-     */
-    [[nodiscard]] constexpr static Token length(const std::uint8_t value) noexcept { return {catta::modbus::TokenType::length(), value}; }
-    /**
-     * @param[in] value The function value. Has to be smaller than 253, otherwise empty is returned.
+     * @param[in] value The function value.
      * @return Returns a data token if input is valid, otherwise empty.
      */
     [[nodiscard]] constexpr static Token data(const std::uint8_t value) noexcept { return {catta::modbus::TokenType::data(), value}; }
+    /**
+     * @return Returns a exeception token.
+     */
+    [[nodiscard]] constexpr static Token exeception() noexcept { return {catta::modbus::TokenType::exeception(), NO_DATA}; }
+    /**
+     * @param[in] value The exeception code value. Has to be 1, 2, 3 or 4, otherwise empty is returned.
+     * @return Returns a exeception code token if input is valid, otherwise empty.
+     */
+    [[nodiscard]] constexpr static Token code(const std::uint8_t value) noexcept
+    {
+        return value > 0 && value < 5 ? Token{catta::modbus::TokenType::code(), value} : empty();
+    }
     /**
      * @return Returns an end token.
      */

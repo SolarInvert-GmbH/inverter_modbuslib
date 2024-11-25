@@ -60,10 +60,9 @@ class Parser<catta::modbus::Token>
             using Type = catta::modbus::TokenType;
             switch (_parserType.data())
             {
-                case Type::address():
                 case Type::function():
-                case Type::length():
                 case Type::data():
+                case Type::code():
                     return jump(HEXADECIMAL + 0);
                 default:
                     return jump(CLOSE + 0);
@@ -75,17 +74,20 @@ class Parser<catta::modbus::Token>
             using Token = catta::modbus::Token;
             switch (_parserType.data())
             {
-                case Type::address():
-                    _data = Token::address(std::uint8_t(_parserHexadecimal.data()));
+                case Type::start():
+                    _data = Token::start();
                     break;
                 case Type::function():
                     _data = Token::function(std::uint8_t(_parserHexadecimal.data()));
                     break;
-                case Type::length():
-                    _data = Token::length(std::uint8_t(_parserHexadecimal.data()));
-                    break;
                 case Type::data():
                     _data = Token::data(std::uint8_t(_parserHexadecimal.data()));
+                    break;
+                case Type::exeception():
+                    _data = Token::exeception();
+                    break;
+                case Type::code():
+                    _data = Token::code(std::uint8_t(_parserHexadecimal.data()));
                     break;
                 case Type::end():
                     _data = Token::end();

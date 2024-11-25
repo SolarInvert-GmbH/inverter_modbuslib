@@ -21,14 +21,16 @@ class catta::random::Create<catta::modbus::Token>
         using Token = catta::modbus::Token;
         switch (random.create<Type>())
         {
-            case Type::address():
-                return Token::address(random.create<std::uint8_t>());
+            case Type::start():
+                return Token::start();
             case Type::function():
                 return Token::function(random.create<std::uint8_t>());
-            case Type::length():
-                return Token::length(random.interval(std::uint8_t(0), std::uint8_t(252)));
             case Type::data():
                 return Token::data(random.create<std::uint8_t>());
+            case Type::exeception():
+                return Token::exeception();
+            case Type::code():
+                return Token::code(random.interval(std::uint8_t(1), std::uint8_t(4)));
             default:
                 return Token::end();
         }

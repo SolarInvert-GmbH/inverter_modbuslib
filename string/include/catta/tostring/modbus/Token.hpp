@@ -70,10 +70,9 @@ class Serializer<catta::modbus::Token>
             using Type = catta::modbus::TokenType;
             switch (input.type())
             {
-                case Type::address():
                 case Type::function():
-                case Type::length():
                 case Type::data():
+                case Type::code():
                     return jump(HEXADECIMAL + 0);
                 default:
                     return jump(CLOSE + 0);
