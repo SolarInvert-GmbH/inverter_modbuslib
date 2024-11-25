@@ -35,8 +35,8 @@ class Token
      */
     [[nodiscard]] constexpr static Token length(const std::uint8_t value) noexcept { return {catta::modbus::TokenType::length(), value}; }
     /**
-     * @param[in] value The function value.
-     * @return Returns a data token.
+     * @param[in] value The function value. Has to be smaller than 253, otherwise empty is returned.
+     * @return Returns a data token if input is valid, otherwise empty.
      */
     [[nodiscard]] constexpr static Token data(const std::uint8_t value) noexcept { return {catta::modbus::TokenType::data(), value}; }
     /**
