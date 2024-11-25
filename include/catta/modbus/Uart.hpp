@@ -32,6 +32,7 @@ class Uart
      * @param[in] now Current time.
      * @param[in] received The bytes received from modbus.
      * @param[in] send The token to send. The input handled will be set, if send token was handled. Send token can only be handled in idle state.
+     * @param[in] address The address of the slave.
      * @return Returns tuple of :
      *    - the current state of the modbus uart
      *    - the receive token, that represents the input @b received bytes
