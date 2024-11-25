@@ -9,6 +9,8 @@
 #include <catta/tojson/modbus/sunspec/ScaledValueS16.hpp>
 #include <catta/tojson/modbus/sunspec/ScaledValueU16.hpp>
 #include <catta/tojson/modbus/sunspec/ScaledValueU32.hpp>
+#include <catta/tojson/modbus/sunspec/ValueU16.hpp>
+#include <catta/tojson/modbus/sunspec/ValueU32.hpp>
 #include <catta/tojson/toJson.hpp>
 
 namespace catta
@@ -258,7 +260,137 @@ class Serializer<catta::modbus::sunspec::model::Inverter>
             case CABINET_TEMPERATURE + 20:
                 return next(catta::json::Token::colon());
             case CABINET_TEMPERATURE + 21:
-                return handle(_cabinetTemperatureSerializer, input.cabinetTemperature(), catta::json::Token::closeCurlyBracket());
+                return handle(_cabinetTemperatureSerializer, input.cabinetTemperature(), catta::json::Token::comma());
+            case OPERATING_STATE + 0:
+                return next(catta::json::Token::openString());
+            case OPERATING_STATE + 1:
+                return next(catta::json::Token::character('o'));
+            case OPERATING_STATE + 2:
+                return next(catta::json::Token::character('p'));
+            case OPERATING_STATE + 3:
+                return next(catta::json::Token::character('e'));
+            case OPERATING_STATE + 4:
+                return next(catta::json::Token::character('r'));
+            case OPERATING_STATE + 5:
+                return next(catta::json::Token::character('a'));
+            case OPERATING_STATE + 6:
+                return next(catta::json::Token::character('t'));
+            case OPERATING_STATE + 7:
+                return next(catta::json::Token::character('i'));
+            case OPERATING_STATE + 8:
+                return next(catta::json::Token::character('n'));
+            case OPERATING_STATE + 9:
+                return next(catta::json::Token::character('g'));
+            case OPERATING_STATE + 10:
+                return next(catta::json::Token::character('S'));
+            case OPERATING_STATE + 11:
+                return next(catta::json::Token::character('t'));
+            case OPERATING_STATE + 12:
+                return next(catta::json::Token::character('a'));
+            case OPERATING_STATE + 13:
+                return next(catta::json::Token::character('t'));
+            case OPERATING_STATE + 14:
+                return next(catta::json::Token::character('e'));
+            case OPERATING_STATE + 15:
+                return next(catta::json::Token::closeString());
+            case OPERATING_STATE + 16:
+                return next(catta::json::Token::colon());
+            case OPERATING_STATE + 17:
+                return handle(_operatingStateSerializer, input.operatingState(), catta::json::Token::comma());
+            case VENDOR_OPERATING_STATE + 0:
+                return next(catta::json::Token::openString());
+            case VENDOR_OPERATING_STATE + 1:
+                return next(catta::json::Token::character('v'));
+            case VENDOR_OPERATING_STATE + 2:
+                return next(catta::json::Token::character('e'));
+            case VENDOR_OPERATING_STATE + 3:
+                return next(catta::json::Token::character('n'));
+            case VENDOR_OPERATING_STATE + 4:
+                return next(catta::json::Token::character('d'));
+            case VENDOR_OPERATING_STATE + 5:
+                return next(catta::json::Token::character('o'));
+            case VENDOR_OPERATING_STATE + 6:
+                return next(catta::json::Token::character('r'));
+            case VENDOR_OPERATING_STATE + 7:
+                return next(catta::json::Token::character('O'));
+            case VENDOR_OPERATING_STATE + 8:
+                return next(catta::json::Token::character('p'));
+            case VENDOR_OPERATING_STATE + 9:
+                return next(catta::json::Token::character('e'));
+            case VENDOR_OPERATING_STATE + 10:
+                return next(catta::json::Token::character('r'));
+            case VENDOR_OPERATING_STATE + 11:
+                return next(catta::json::Token::character('a'));
+            case VENDOR_OPERATING_STATE + 12:
+                return next(catta::json::Token::character('t'));
+            case VENDOR_OPERATING_STATE + 13:
+                return next(catta::json::Token::character('i'));
+            case VENDOR_OPERATING_STATE + 14:
+                return next(catta::json::Token::character('n'));
+            case VENDOR_OPERATING_STATE + 15:
+                return next(catta::json::Token::character('g'));
+            case VENDOR_OPERATING_STATE + 16:
+                return next(catta::json::Token::character('S'));
+            case VENDOR_OPERATING_STATE + 17:
+                return next(catta::json::Token::character('t'));
+            case VENDOR_OPERATING_STATE + 18:
+                return next(catta::json::Token::character('a'));
+            case VENDOR_OPERATING_STATE + 19:
+                return next(catta::json::Token::character('t'));
+            case VENDOR_OPERATING_STATE + 20:
+                return next(catta::json::Token::character('e'));
+            case VENDOR_OPERATING_STATE + 21:
+                return next(catta::json::Token::closeString());
+            case VENDOR_OPERATING_STATE + 22:
+                return next(catta::json::Token::colon());
+            case VENDOR_OPERATING_STATE + 23:
+                return handle(_vendorOperatingStateSerializer, input.vendorOperatingState(), catta::json::Token::comma());
+            case VENDOR_EVENT_BITFIELD + 0:
+                return next(catta::json::Token::openString());
+            case VENDOR_EVENT_BITFIELD + 1:
+                return next(catta::json::Token::character('v'));
+            case VENDOR_EVENT_BITFIELD + 2:
+                return next(catta::json::Token::character('e'));
+            case VENDOR_EVENT_BITFIELD + 3:
+                return next(catta::json::Token::character('n'));
+            case VENDOR_EVENT_BITFIELD + 4:
+                return next(catta::json::Token::character('d'));
+            case VENDOR_EVENT_BITFIELD + 5:
+                return next(catta::json::Token::character('o'));
+            case VENDOR_EVENT_BITFIELD + 6:
+                return next(catta::json::Token::character('r'));
+            case VENDOR_EVENT_BITFIELD + 7:
+                return next(catta::json::Token::character('E'));
+            case VENDOR_EVENT_BITFIELD + 8:
+                return next(catta::json::Token::character('v'));
+            case VENDOR_EVENT_BITFIELD + 9:
+                return next(catta::json::Token::character('e'));
+            case VENDOR_EVENT_BITFIELD + 10:
+                return next(catta::json::Token::character('n'));
+            case VENDOR_EVENT_BITFIELD + 11:
+                return next(catta::json::Token::character('t'));
+            case VENDOR_EVENT_BITFIELD + 12:
+                return next(catta::json::Token::character('B'));
+            case VENDOR_EVENT_BITFIELD + 13:
+                return next(catta::json::Token::character('i'));
+            case VENDOR_EVENT_BITFIELD + 14:
+                return next(catta::json::Token::character('t'));
+            case VENDOR_EVENT_BITFIELD + 15:
+                return next(catta::json::Token::character('f'));
+            case VENDOR_EVENT_BITFIELD + 16:
+                return next(catta::json::Token::character('i'));
+            case VENDOR_EVENT_BITFIELD + 17:
+                return next(catta::json::Token::character('e'));
+            case VENDOR_EVENT_BITFIELD + 18:
+                return next(catta::json::Token::character('l'));
+            case VENDOR_EVENT_BITFIELD + 19:
+                return next(catta::json::Token::character('d'));
+            case VENDOR_EVENT_BITFIELD + 20:
+                return next(catta::json::Token::closeString());
+            case VENDOR_EVENT_BITFIELD + 21:
+                return next(catta::json::Token::colon());
+            case VENDOR_EVENT_BITFIELD + 22:
+                return handle(_vendorEventBitfieldSerializer, input.vendorEventBitfield(), catta::json::Token::closeCurlyBracket());
             case TAIL + 0:
                 return done();
             default:
@@ -286,6 +418,9 @@ class Serializer<catta::modbus::sunspec::model::Inverter>
     Serializer<catta::modbus::sunspec::ScaledValueU32> _wattHoursSerializer;
     Serializer<catta::modbus::sunspec::ScaledValueU16> _dcVoltageSerializer;
     Serializer<catta::modbus::sunspec::ScaledValueS16> _cabinetTemperatureSerializer;
+    Serializer<catta::modbus::sunspec::ValueU16> _operatingStateSerializer;
+    Serializer<catta::modbus::sunspec::ValueU16> _vendorOperatingStateSerializer;
+    Serializer<catta::modbus::sunspec::ValueU32> _vendorEventBitfieldSerializer;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t AMPERE = START + 1;
     static constexpr std::uint8_t VOLTAGE = AMPERE + 10;
@@ -295,7 +430,10 @@ class Serializer<catta::modbus::sunspec::model::Inverter>
     static constexpr std::uint8_t WATT_HOURS = POWER_FACTOR + 15;
     static constexpr std::uint8_t DC_VOLTAGE = WATT_HOURS + 13;
     static constexpr std::uint8_t CABINET_TEMPERATURE = DC_VOLTAGE + 13;
-    static constexpr std::uint8_t TAIL = CABINET_TEMPERATURE + 22;
+    static constexpr std::uint8_t OPERATING_STATE = CABINET_TEMPERATURE + 22;
+    static constexpr std::uint8_t VENDOR_OPERATING_STATE = OPERATING_STATE + 18;
+    static constexpr std::uint8_t VENDOR_EVENT_BITFIELD = VENDOR_OPERATING_STATE + 24;
+    static constexpr std::uint8_t TAIL = VENDOR_EVENT_BITFIELD + 23;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR = DONE + 1;
 };

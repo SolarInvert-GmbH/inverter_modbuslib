@@ -10,6 +10,8 @@
 #include <catta/fromjson/modbus/sunspec/ScaledValueS16.hpp>
 #include <catta/fromjson/modbus/sunspec/ScaledValueU16.hpp>
 #include <catta/fromjson/modbus/sunspec/ScaledValueU32.hpp>
+#include <catta/fromjson/modbus/sunspec/ValueU16.hpp>
+#include <catta/fromjson/modbus/sunspec/ValueU32.hpp>
 
 namespace catta
 {
@@ -63,9 +65,10 @@ class Parser<catta::modbus::sunspec::model::Inverter>
             case HUB + 0:
                 return input == catta::json::Token::openString() ? next() : error();
             case HUB + 1:
-                return input == catta::json::Token::character('w')   ? jump(HUB + 70)
-                       : input == catta::json::Token::character('v') ? jump(HUB + 61)
-                       : input == catta::json::Token::character('p') ? jump(HUB + 48)
+                return input == catta::json::Token::character('w')   ? jump(HUB + 122)
+                       : input == catta::json::Token::character('v') ? jump(HUB + 77)
+                       : input == catta::json::Token::character('p') ? jump(HUB + 64)
+                       : input == catta::json::Token::character('o') ? jump(HUB + 48)
                        : input == catta::json::Token::character('h') ? jump(HUB + 41)
                        : input == catta::json::Token::character('d') ? jump(HUB + 30)
                        : input == catta::json::Token::character('c') ? jump(HUB + 10)
@@ -164,76 +167,184 @@ class Parser<catta::modbus::sunspec::model::Inverter>
             case HUB + 47:
                 return handle(_hertzParser);
             case HUB + 48:
-                return input == catta::json::Token::character('o') ? jump(HUB + 49) : error();
+                return input == catta::json::Token::character('p') ? jump(HUB + 49) : error();
             case HUB + 49:
-                return input == catta::json::Token::character('w') ? jump(HUB + 50) : error();
+                return input == catta::json::Token::character('e') ? jump(HUB + 50) : error();
             case HUB + 50:
-                return input == catta::json::Token::character('e') ? jump(HUB + 51) : error();
+                return input == catta::json::Token::character('r') ? jump(HUB + 51) : error();
             case HUB + 51:
-                return input == catta::json::Token::character('r') ? jump(HUB + 52) : error();
+                return input == catta::json::Token::character('a') ? jump(HUB + 52) : error();
             case HUB + 52:
-                return input == catta::json::Token::character('F') ? jump(HUB + 53) : error();
+                return input == catta::json::Token::character('t') ? jump(HUB + 53) : error();
             case HUB + 53:
-                return input == catta::json::Token::character('a') ? jump(HUB + 54) : error();
+                return input == catta::json::Token::character('i') ? jump(HUB + 54) : error();
             case HUB + 54:
-                return input == catta::json::Token::character('c') ? jump(HUB + 55) : error();
+                return input == catta::json::Token::character('n') ? jump(HUB + 55) : error();
             case HUB + 55:
-                return input == catta::json::Token::character('t') ? jump(HUB + 56) : error();
+                return input == catta::json::Token::character('g') ? jump(HUB + 56) : error();
             case HUB + 56:
-                return input == catta::json::Token::character('o') ? jump(HUB + 57) : error();
+                return input == catta::json::Token::character('S') ? jump(HUB + 57) : error();
             case HUB + 57:
-                return input == catta::json::Token::character('r') ? jump(HUB + 58) : error();
+                return input == catta::json::Token::character('t') ? jump(HUB + 58) : error();
             case HUB + 58:
-                return input == catta::json::Token::closeString() ? jump(HUB + 59) : error();
+                return input == catta::json::Token::character('a') ? jump(HUB + 59) : error();
             case HUB + 59:
-                return !_powerFactorParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
+                return input == catta::json::Token::character('t') ? jump(HUB + 60) : error();
             case HUB + 60:
-                return handle(_powerFactorParser);
+                return input == catta::json::Token::character('e') ? jump(HUB + 61) : error();
             case HUB + 61:
-                return input == catta::json::Token::character('o') ? jump(HUB + 62) : error();
+                return input == catta::json::Token::closeString() ? jump(HUB + 62) : error();
             case HUB + 62:
-                return input == catta::json::Token::character('l') ? jump(HUB + 63) : error();
+                return !_operatingStateParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
             case HUB + 63:
-                return input == catta::json::Token::character('t') ? jump(HUB + 64) : error();
+                return handle(_operatingStateParser);
             case HUB + 64:
-                return input == catta::json::Token::character('a') ? jump(HUB + 65) : error();
+                return input == catta::json::Token::character('o') ? jump(HUB + 65) : error();
             case HUB + 65:
-                return input == catta::json::Token::character('g') ? jump(HUB + 66) : error();
+                return input == catta::json::Token::character('w') ? jump(HUB + 66) : error();
             case HUB + 66:
                 return input == catta::json::Token::character('e') ? jump(HUB + 67) : error();
             case HUB + 67:
-                return input == catta::json::Token::closeString() ? jump(HUB + 68) : error();
+                return input == catta::json::Token::character('r') ? jump(HUB + 68) : error();
             case HUB + 68:
-                return !_voltageParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
+                return input == catta::json::Token::character('F') ? jump(HUB + 69) : error();
             case HUB + 69:
-                return handle(_voltageParser);
+                return input == catta::json::Token::character('a') ? jump(HUB + 70) : error();
             case HUB + 70:
-                return input == catta::json::Token::character('a') ? jump(HUB + 71) : error();
+                return input == catta::json::Token::character('c') ? jump(HUB + 71) : error();
             case HUB + 71:
                 return input == catta::json::Token::character('t') ? jump(HUB + 72) : error();
             case HUB + 72:
-                return input == catta::json::Token::character('t') ? jump(HUB + 73) : error();
+                return input == catta::json::Token::character('o') ? jump(HUB + 73) : error();
             case HUB + 73:
-                return input == catta::json::Token::character('H')  ? jump(HUB + 76)
-                       : input == catta::json::Token::closeString() ? jump(HUB + 74)
-                                                                    : error();
+                return input == catta::json::Token::character('r') ? jump(HUB + 74) : error();
             case HUB + 74:
-                return !_wattParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
+                return input == catta::json::Token::closeString() ? jump(HUB + 75) : error();
             case HUB + 75:
-                return handle(_wattParser);
+                return !_powerFactorParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
             case HUB + 76:
-                return input == catta::json::Token::character('o') ? jump(HUB + 77) : error();
+                return handle(_powerFactorParser);
             case HUB + 77:
-                return input == catta::json::Token::character('u') ? jump(HUB + 78) : error();
+                return input == catta::json::Token::character('o')   ? jump(HUB + 114)
+                       : input == catta::json::Token::character('e') ? jump(HUB + 78)
+                                                                     : error();
             case HUB + 78:
-                return input == catta::json::Token::character('r') ? jump(HUB + 79) : error();
+                return input == catta::json::Token::character('n') ? jump(HUB + 79) : error();
             case HUB + 79:
-                return input == catta::json::Token::character('s') ? jump(HUB + 80) : error();
+                return input == catta::json::Token::character('d') ? jump(HUB + 80) : error();
             case HUB + 80:
-                return input == catta::json::Token::closeString() ? jump(HUB + 81) : error();
+                return input == catta::json::Token::character('o') ? jump(HUB + 81) : error();
             case HUB + 81:
-                return !_wattHoursParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
+                return input == catta::json::Token::character('r') ? jump(HUB + 82) : error();
             case HUB + 82:
+                return input == catta::json::Token::character('O')   ? jump(HUB + 98)
+                       : input == catta::json::Token::character('E') ? jump(HUB + 83)
+                                                                     : error();
+            case HUB + 83:
+                return input == catta::json::Token::character('v') ? jump(HUB + 84) : error();
+            case HUB + 84:
+                return input == catta::json::Token::character('e') ? jump(HUB + 85) : error();
+            case HUB + 85:
+                return input == catta::json::Token::character('n') ? jump(HUB + 86) : error();
+            case HUB + 86:
+                return input == catta::json::Token::character('t') ? jump(HUB + 87) : error();
+            case HUB + 87:
+                return input == catta::json::Token::character('B') ? jump(HUB + 88) : error();
+            case HUB + 88:
+                return input == catta::json::Token::character('i') ? jump(HUB + 89) : error();
+            case HUB + 89:
+                return input == catta::json::Token::character('t') ? jump(HUB + 90) : error();
+            case HUB + 90:
+                return input == catta::json::Token::character('f') ? jump(HUB + 91) : error();
+            case HUB + 91:
+                return input == catta::json::Token::character('i') ? jump(HUB + 92) : error();
+            case HUB + 92:
+                return input == catta::json::Token::character('e') ? jump(HUB + 93) : error();
+            case HUB + 93:
+                return input == catta::json::Token::character('l') ? jump(HUB + 94) : error();
+            case HUB + 94:
+                return input == catta::json::Token::character('d') ? jump(HUB + 95) : error();
+            case HUB + 95:
+                return input == catta::json::Token::closeString() ? jump(HUB + 96) : error();
+            case HUB + 96:
+                return !_vendorEventBitfieldParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
+            case HUB + 97:
+                return handle(_vendorEventBitfieldParser);
+            case HUB + 98:
+                return input == catta::json::Token::character('p') ? jump(HUB + 99) : error();
+            case HUB + 99:
+                return input == catta::json::Token::character('e') ? jump(HUB + 100) : error();
+            case HUB + 100:
+                return input == catta::json::Token::character('r') ? jump(HUB + 101) : error();
+            case HUB + 101:
+                return input == catta::json::Token::character('a') ? jump(HUB + 102) : error();
+            case HUB + 102:
+                return input == catta::json::Token::character('t') ? jump(HUB + 103) : error();
+            case HUB + 103:
+                return input == catta::json::Token::character('i') ? jump(HUB + 104) : error();
+            case HUB + 104:
+                return input == catta::json::Token::character('n') ? jump(HUB + 105) : error();
+            case HUB + 105:
+                return input == catta::json::Token::character('g') ? jump(HUB + 106) : error();
+            case HUB + 106:
+                return input == catta::json::Token::character('S') ? jump(HUB + 107) : error();
+            case HUB + 107:
+                return input == catta::json::Token::character('t') ? jump(HUB + 108) : error();
+            case HUB + 108:
+                return input == catta::json::Token::character('a') ? jump(HUB + 109) : error();
+            case HUB + 109:
+                return input == catta::json::Token::character('t') ? jump(HUB + 110) : error();
+            case HUB + 110:
+                return input == catta::json::Token::character('e') ? jump(HUB + 111) : error();
+            case HUB + 111:
+                return input == catta::json::Token::closeString() ? jump(HUB + 112) : error();
+            case HUB + 112:
+                return !_vendorOperatingStateParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
+            case HUB + 113:
+                return handle(_vendorOperatingStateParser);
+            case HUB + 114:
+                return input == catta::json::Token::character('l') ? jump(HUB + 115) : error();
+            case HUB + 115:
+                return input == catta::json::Token::character('t') ? jump(HUB + 116) : error();
+            case HUB + 116:
+                return input == catta::json::Token::character('a') ? jump(HUB + 117) : error();
+            case HUB + 117:
+                return input == catta::json::Token::character('g') ? jump(HUB + 118) : error();
+            case HUB + 118:
+                return input == catta::json::Token::character('e') ? jump(HUB + 119) : error();
+            case HUB + 119:
+                return input == catta::json::Token::closeString() ? jump(HUB + 120) : error();
+            case HUB + 120:
+                return !_voltageParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
+            case HUB + 121:
+                return handle(_voltageParser);
+            case HUB + 122:
+                return input == catta::json::Token::character('a') ? jump(HUB + 123) : error();
+            case HUB + 123:
+                return input == catta::json::Token::character('t') ? jump(HUB + 124) : error();
+            case HUB + 124:
+                return input == catta::json::Token::character('t') ? jump(HUB + 125) : error();
+            case HUB + 125:
+                return input == catta::json::Token::character('H')  ? jump(HUB + 128)
+                       : input == catta::json::Token::closeString() ? jump(HUB + 126)
+                                                                    : error();
+            case HUB + 126:
+                return !_wattParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
+            case HUB + 127:
+                return handle(_wattParser);
+            case HUB + 128:
+                return input == catta::json::Token::character('o') ? jump(HUB + 129) : error();
+            case HUB + 129:
+                return input == catta::json::Token::character('u') ? jump(HUB + 130) : error();
+            case HUB + 130:
+                return input == catta::json::Token::character('r') ? jump(HUB + 131) : error();
+            case HUB + 131:
+                return input == catta::json::Token::character('s') ? jump(HUB + 132) : error();
+            case HUB + 132:
+                return input == catta::json::Token::closeString() ? jump(HUB + 133) : error();
+            case HUB + 133:
+                return !_wattHoursParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
+            case HUB + 134:
                 return handle(_wattHoursParser);
             case TAIL + 0:
                 return input == catta::json::Token::end() ? jump(DONE + 0) : error();
@@ -246,7 +357,8 @@ class Parser<catta::modbus::sunspec::model::Inverter>
     {
         return _state == DONE
                    ? Output::create(_ampereParser.data(), _voltageParser.data(), _wattParser.data(), _hertzParser.data(), _powerFactorParser.data(),
-                                    _wattHoursParser.data(), _dcVoltageParser.data(), _cabinetTemperatureParser.data())
+                                    _wattHoursParser.data(), _dcVoltageParser.data(), _cabinetTemperatureParser.data(), _operatingStateParser.data(),
+                                    _vendorOperatingStateParser.data(), _vendorEventBitfieldParser.data())
                    : Output::empty();
     }
     [[nodiscard]] constexpr catta::parser::State state() const noexcept
@@ -263,13 +375,16 @@ class Parser<catta::modbus::sunspec::model::Inverter>
     Parser<catta::modbus::sunspec::ScaledValueS16> _cabinetTemperatureParser;
     Parser<catta::modbus::sunspec::ScaledValueU16> _dcVoltageParser;
     Parser<catta::modbus::sunspec::ScaledValueU16> _hertzParser;
+    Parser<catta::modbus::sunspec::ValueU16> _operatingStateParser;
     Parser<catta::modbus::sunspec::ScaledValueS16> _powerFactorParser;
+    Parser<catta::modbus::sunspec::ValueU32> _vendorEventBitfieldParser;
+    Parser<catta::modbus::sunspec::ValueU16> _vendorOperatingStateParser;
     Parser<catta::modbus::sunspec::ScaledValue3U16> _voltageParser;
     Parser<catta::modbus::sunspec::ScaledValueS16> _wattParser;
     Parser<catta::modbus::sunspec::ScaledValueU32> _wattHoursParser;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t HUB = START + 1;
-    static constexpr std::uint8_t TAIL = HUB + 83;
+    static constexpr std::uint8_t TAIL = HUB + 135;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR = DONE + 1;
 };

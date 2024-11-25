@@ -25,6 +25,8 @@ class catta::random::Create<catta::modbus::sunspec::model::Inverter>
             random.create<catta::modbus::sunspec::ScaledValue4U16>(), random.create<catta::modbus::sunspec::ScaledValue3U16>(),
             random.create<catta::modbus::sunspec::ScaledValueS16>(), random.create<catta::modbus::sunspec::ScaledValueU16>(),
             random.create<catta::modbus::sunspec::ScaledValueS16>(), random.create<catta::modbus::sunspec::ScaledValueU32>(),
-            random.create<catta::modbus::sunspec::ScaledValueU16>(), random.create<catta::modbus::sunspec::ScaledValueS16>());
+            random.create<catta::modbus::sunspec::ScaledValueU16>(), random.create<catta::modbus::sunspec::ScaledValueS16>(),
+            random.create<catta::modbus::sunspec::ValueU16>(), random.create<catta::modbus::sunspec::ValueU16>(),
+            random.create<catta::modbus::sunspec::ValueU32>());
     }
 };
