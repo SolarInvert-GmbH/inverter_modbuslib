@@ -14,11 +14,12 @@
 #include <catta/test/ToFromJson.hpp>
 #include <catta/test/ToFromString.hpp>
 
-static constexpr bool debug = true;
+static constexpr bool debug = false;
 
 template <catta::test::Output OUTPUT>
 static bool checkCases(catta::test::Test<OUTPUT>& test)
 {
+    using Byte = std::optional<std::uint8_t>;
     using State = catta::modbus::UartState;
     using Token = catta::modbus::Token;
     using TokenVec = std::vector<Token>;
@@ -37,8 +38,7 @@ static bool checkCases(catta::test::Test<OUTPUT>& test)
         return std::to_string(us.count() / 1000) + "." + std::to_string((us.count() / 100) % 10) + std::to_string((us.count() / 10) % 10) +
                std::to_string((us.count() / 1) % 10) + "ms";
     };
-    static const auto printByte = [](const std::optional<std::uint8_t> b)
-    { return b ? catta::tostring::toString(catta::Hexadecimal(b.value())) : std::string("{}"); };
+    static const auto printByte = [](const Byte b) { return b ? catta::tostring::toString(catta::Hexadecimal(b.value())) : std::string("{}"); };
     static const auto printTokenVec = [](const TokenVec& v)
     {
         std::string s = "[";
@@ -54,15 +54,57 @@ static bool checkCases(catta::test::Test<OUTPUT>& test)
     };
     catta::modbus::Uart uart;
     const auto check = [&now, &uart, &test](const TokenVec& sendInput, const ByteVec& sendOutputExpected, const ByteVec& receiveInput,
-                                            const TokenVec& receiveOutputExpected)
+                                            const TokenVec& receiveOutputExpected,
+                                            const catta::modbus::UartState error = catta::modbus::UartState::empty())
     {
         ByteVec sendOutput;
-        if (debug) test.status("send[token]: " + printTokenVec(sendInput));
+        if (debug)
+        {
+            test.status(error.isEmpty() ? "Success case:" : catta::tostring::toString(error) + " case:");
+            test.status("  send[token]: " + printTokenVec(sendInput));
+        }
+        const auto errorCase = [&test, &uart, &now, error](const Token inToken, const Byte inByte)
+        {
+            {
+                const auto [state, token, send, handled] = uart.work(now, inByte, inToken);
+                if (debug)
+                    test.status("        [" + catta::tostring::toString(state) + "," + catta::tostring::toString(token) + "," + printByte(send) +
+                                "," + catta::tostring::toString(handled) + "] = uart.work(" + printTime(now) + ", " + printByte(inByte) + ", " +
+                                catta::tostring::toString(inToken) + ")");
+                if (state != error) return test.failedExpected(error, state, catta::tostring::toString(error) + " state");
+                if (!token.isEmpty()) return test.failedExpected(Token::empty(), token, catta::tostring::toString(error) + " token");
+                if (send)
+                {
+                    test.failed("Expected " + printByte(Byte()) + " as " + catta::tostring::toString(error) + " output,");
+                    test.failed("but got  " + printByte(send) + ".");
+                    return false;
+                }
+                if (handled != catta::parser::InputHandled::yes())
+                    return test.failedExpected(catta::parser::InputHandled::yes(), handled, catta::tostring::toString(error) + " handled");
+            }
+            now = std::chrono::microseconds((now.count() / 1000000 + 6) * 1000000);
+            const auto [state, token, send, handled] = uart.work(now, Byte(), Token::empty());
+            if (debug)
+                test.status("        [" + catta::tostring::toString(state) + "," + catta::tostring::toString(token) + "," + printByte(send) + "," +
+                            catta::tostring::toString(handled) + "] = uart.work(" + printTime(now) + ", {}, " +
+                            catta::tostring::toString(Token::empty()) + ")");
+            if (!state.isIdle()) return test.failedExpected(State::idle(), state, "idle state");
+            if (!token.isEmpty()) return test.failedExpected(Token::empty(), token, "idle token");
+            if (send)
+            {
+                test.failed("Expected " + printByte(Byte()) + " as receive output,");
+                test.failed("but got  " + printByte(send) + ".");
+                return false;
+            }
+            return true;
+        };
+        if (error.isErrorSendInvalid()) return errorCase(Token::function(0x00), {});
+        if (error.isErrorReceiveWithoutReuquest()) return errorCase(Token::empty(), Byte{0x00});
         for (const auto& s : sendInput)
         {
             const auto handle = [&now, &uart, &test, &s, &sendOutput](const catta::parser::InputHandled handledExpected)
             {
-                const auto [state, token, send, handled] = uart.work(now, std::optional<std::uint8_t>{}, s);
+                const auto [state, token, send, handled] = uart.work(now, Byte{}, s);
                 if (debug)
                     test.status("        [" + catta::tostring::toString(state) + "," + catta::tostring::toString(token) + "," + printByte(send) +
                                 "," + catta::tostring::toString(handled) + "] = uart.work(" + printTime(now) + ", {}, " +
@@ -77,34 +119,46 @@ static bool checkCases(catta::test::Test<OUTPUT>& test)
             if (s.type().isEnd() && !handle(catta::parser::InputHandled::no())) return false;
             if (!handle(catta::parser::InputHandled::yes())) return false;
         }
-        if (debug) test.status("send[bytes]: " + printByteVec(sendOutput));
+        if (debug) test.status("  send[bytes]: " + printByteVec(sendOutput));
         if (sendOutput != sendOutputExpected)
         {
             test.failed("Expected " + printByteVec(sendOutputExpected) + " as send output,");
             test.failed("but got  " + printByteVec(sendOutput) + ".");
             return false;
         }
-        if (debug) test.status("receive[bytes]: " + printByteVec(receiveInput));
+        if (debug) test.status("  receive[bytes]: " + printByteVec(receiveInput));
         TokenVec receiveOutput;
-        for (const auto& r : receiveInput)
+        if (error.isErrorReceiveTimeoutNoResponse())
         {
-            const auto [state, token, send, handled] = uart.work(now, r, Token::empty());
+            now += std::chrono::milliseconds{600};
+            return errorCase(Token::empty(), {});
+        }
+        for (std::size_t i = 0; i < receiveInput.size(); i++)
+        {
+            if (error.isErrorReceiveLengthNotValid() && i == 2) return errorCase(Token::empty(), Byte{0xff});
+            if (error.isErrorReceiveWrongCrc() && i + 2 == receiveInput.size()) return errorCase(Token::empty(), Byte{~receiveInput[i]});
+            if (error.isErrorReceiveTimeoutPartialResponse() && i == 2)
+            {
+                now += std::chrono::microseconds{600};
+                return errorCase(Token::empty(), {});
+            }
+            const auto [state, token, send, handled] = uart.work(now, receiveInput[i], Token::empty());
             if (debug)
                 test.status("        [" + catta::tostring::toString(state) + "," + catta::tostring::toString(token) + "," + printByte(send) + "," +
-                            catta::tostring::toString(handled) + "] = uart.work(" + printTime(now) + ", " + printByte(r) + ", " +
+                            catta::tostring::toString(handled) + "] = uart.work(" + printTime(now) + ", " + printByte(receiveInput[i]) + ", " +
                             catta::tostring::toString(Token::empty()) + ")");
             if (!state.isReceive()) return test.failedExpected(State::receive(), state, "receive state");
             if (!token.isEmpty()) receiveOutput.push_back(token);
             if (send)
             {
-                test.failed("Expected " + printByte(std::optional<std::uint8_t>()) + " as receive output,");
+                test.failed("Expected " + printByte(Byte()) + " as receive output,");
                 test.failed("but got  " + printByte(send) + ".");
                 return false;
             }
             if (handled) return test.failedExpected(catta::parser::InputHandled::no(), handled, "receive handled");
             now += std::chrono::microseconds{200};
         }
-        if (debug) test.status("receive[token]: " + printTokenVec(receiveOutput));
+        if (debug) test.status("  receive[token]: " + printTokenVec(receiveOutput));
         if (receiveOutput != receiveOutputExpected)
         {
             test.failed("Expected " + printTokenVec(receiveOutputExpected) + " as receive output,");
@@ -113,7 +167,7 @@ static bool checkCases(catta::test::Test<OUTPUT>& test)
         }
 
         now = std::chrono::microseconds((now.count() / 1000 + 2) * 1000);
-        const auto [state, token, send, handled] = uart.work(now, std::optional<std::uint8_t>(), Token::empty());
+        const auto [state, token, send, handled] = uart.work(now, Byte(), Token::empty());
         if (debug)
             test.status("        [" + catta::tostring::toString(state) + "," + catta::tostring::toString(token) + "," + printByte(send) + "," +
                         catta::tostring::toString(handled) + "] = uart.work(" + printTime(now) + ", {}, " +
@@ -122,13 +176,19 @@ static bool checkCases(catta::test::Test<OUTPUT>& test)
         if (!token.isEmpty()) return test.failedExpected(Token::empty(), token, "idle token");
         if (send)
         {
-            test.failed("Expected " + printByte(std::optional<std::uint8_t>()) + " as receive output,");
+            test.failed("Expected " + printByte(Byte()) + " as receive output,");
             test.failed("but got  " + printByte(send) + ".");
             return false;
         }
         return true;
     };
     if (!check(sendInput, sendOutput, receiveInput, receiveOutput)) return false;
+    if (!check(sendInput, sendOutput, receiveInput, receiveOutput, State::errorSendInvalid())) return false;
+    if (!check(sendInput, sendOutput, receiveInput, receiveOutput, State::errorReceiveWithoutReuquest())) return false;
+    if (!check(sendInput, sendOutput, receiveInput, receiveOutput, State::errorReceiveLengthNotValid())) return false;
+    if (!check(sendInput, sendOutput, receiveInput, receiveOutput, State::errorReceiveWrongCrc())) return false;
+    if (!check(sendInput, sendOutput, receiveInput, receiveOutput, State::errorReceiveTimeoutNoResponse())) return false;
+    if (!check(sendInput, sendOutput, receiveInput, receiveOutput, State::errorReceiveTimeoutPartialResponse())) return false;
     return true;
 }
 
