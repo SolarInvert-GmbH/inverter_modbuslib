@@ -1,7 +1,7 @@
 #pragma once
 
 // model
-#include <catta/modbus/sunspec/model/Storage.hpp>
+#include <catta/modbus/sunspec/model/SIControl.hpp>
 
 // frommodbus
 #include <catta/frommodbus/fromModbus.hpp>
@@ -11,12 +11,12 @@ namespace catta
 namespace frommodbus
 {
 template <>
-class Parser<catta::modbus::sunspec::model::Storage>
+class Parser<catta::modbus::sunspec::model::SIControl>
 {
   public:
     using Error = catta::state::DefaultError;
     using Input = catta::modbus::Token;
-    using Output = catta::modbus::sunspec::model::Storage;
+    using Output = catta::modbus::sunspec::model::SIControl;
     [[nodiscard]] constexpr std::tuple<Error, catta::parser::InputHandled> read(const Input& input) noexcept
     {
         using Tuple = std::tuple<Error, catta::parser::InputHandled>;
@@ -53,26 +53,41 @@ class Parser<catta::modbus::sunspec::model::Storage>
             case START + 1:
                 return input == Input::function(0x03) ? next() : error();
             case START + 2:
-                return input == Input::data(0x04) ? next() : error();
+                return input == Input::data(0x0a) ? next() : error();
             case DATA + 0:
-                return high(_wChaMax);
+                return high(_pcdDiv);
             case DATA + 1:
-                return low(_wChaMax);
+                return low(_pcdDiv);
             case DATA + 2:
-                return high(_wChaRate);
+                return high(_udcExt);
             case DATA + 3:
-                return low(_wChaRate);
+                return low(_udcExt);
+            case DATA + 4:
+                return high(_psetpoint);
+            case DATA + 5:
+                return low(_psetpoint);
+            case DATA + 6:
+                return high(_uminExt);
+            case DATA + 7:
+                return low(_uminExt);
+            case DATA + 8:
+                return high(_umaxExt);
+            case DATA + 9:
+                return low(_umaxExt);
             case TAIL + 0:
                 return input == catta::modbus::Token::end() ? jump(DONE + 0) : error();
             default:
                 return error();
         }
     }
-    [[nodiscard]] constexpr Parser() noexcept : _state(START), _wChaMax(0), _wChaRate(0) {}
+    [[nodiscard]] constexpr Parser() noexcept : _state(START), _pcdDiv(0), _udcExt(0), _psetpoint(0), _uminExt(0), _umaxExt(0) {}
     [[nodiscard]] constexpr Output data() const noexcept
     {
-        using V = catta::modbus::sunspec::ValueU16;
-        return _state != DONE ? Output::empty() : Output::create(V::create(_wChaMax), V::create(_wChaRate));
+        using VU = catta::modbus::sunspec::ValueU16;
+        using VS = catta::modbus::sunspec::ValueS16;
+        return _state != DONE ? Output::empty()
+                              : Output::create(VU::create(_pcdDiv), VU::create(_udcExt), VS::create(static_cast<std::int16_t>(_psetpoint)),
+                                               VU::create(_uminExt), VU::create(_umaxExt));
     }
     [[nodiscard]] constexpr catta::parser::State state() const noexcept
     {
@@ -84,11 +99,14 @@ class Parser<catta::modbus::sunspec::model::Storage>
 
   private:
     std::uint8_t _state;
-    std::uint16_t _wChaMax;
-    std::uint16_t _wChaRate;
+    std::uint16_t _pcdDiv;
+    std::uint16_t _udcExt;
+    std::uint16_t _psetpoint;
+    std::uint16_t _uminExt;
+    std::uint16_t _umaxExt;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t DATA = START + 3;
-    static constexpr std::uint8_t TAIL = DATA + 4;
+    static constexpr std::uint8_t TAIL = DATA + 10;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR = DONE + 1;
 };
