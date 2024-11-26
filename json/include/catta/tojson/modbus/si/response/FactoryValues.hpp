@@ -199,48 +199,48 @@ class Serializer<catta::modbus::si::response::FactoryValues>
                 return next(catta::json::Token::colon());
             case FIRMWARE_VERSION + 18:
                 return handle(_firmwareVersionSerializer, input.firmwareVersion(), catta::json::Token::comma());
-            case BOTTSTRAPP_VERSION + 0:
+            case BOOTSTRAPP_VERSION + 0:
                 return next(catta::json::Token::openString());
-            case BOTTSTRAPP_VERSION + 1:
+            case BOOTSTRAPP_VERSION + 1:
                 return next(catta::json::Token::character('b'));
-            case BOTTSTRAPP_VERSION + 2:
+            case BOOTSTRAPP_VERSION + 2:
                 return next(catta::json::Token::character('o'));
-            case BOTTSTRAPP_VERSION + 3:
+            case BOOTSTRAPP_VERSION + 3:
+                return next(catta::json::Token::character('o'));
+            case BOOTSTRAPP_VERSION + 4:
                 return next(catta::json::Token::character('t'));
-            case BOTTSTRAPP_VERSION + 4:
-                return next(catta::json::Token::character('t'));
-            case BOTTSTRAPP_VERSION + 5:
+            case BOOTSTRAPP_VERSION + 5:
                 return next(catta::json::Token::character('s'));
-            case BOTTSTRAPP_VERSION + 6:
+            case BOOTSTRAPP_VERSION + 6:
                 return next(catta::json::Token::character('t'));
-            case BOTTSTRAPP_VERSION + 7:
+            case BOOTSTRAPP_VERSION + 7:
                 return next(catta::json::Token::character('r'));
-            case BOTTSTRAPP_VERSION + 8:
+            case BOOTSTRAPP_VERSION + 8:
                 return next(catta::json::Token::character('a'));
-            case BOTTSTRAPP_VERSION + 9:
+            case BOOTSTRAPP_VERSION + 9:
                 return next(catta::json::Token::character('p'));
-            case BOTTSTRAPP_VERSION + 10:
+            case BOOTSTRAPP_VERSION + 10:
                 return next(catta::json::Token::character('p'));
-            case BOTTSTRAPP_VERSION + 11:
+            case BOOTSTRAPP_VERSION + 11:
                 return next(catta::json::Token::character('V'));
-            case BOTTSTRAPP_VERSION + 12:
+            case BOOTSTRAPP_VERSION + 12:
                 return next(catta::json::Token::character('e'));
-            case BOTTSTRAPP_VERSION + 13:
+            case BOOTSTRAPP_VERSION + 13:
                 return next(catta::json::Token::character('r'));
-            case BOTTSTRAPP_VERSION + 14:
+            case BOOTSTRAPP_VERSION + 14:
                 return next(catta::json::Token::character('s'));
-            case BOTTSTRAPP_VERSION + 15:
+            case BOOTSTRAPP_VERSION + 15:
                 return next(catta::json::Token::character('i'));
-            case BOTTSTRAPP_VERSION + 16:
+            case BOOTSTRAPP_VERSION + 16:
                 return next(catta::json::Token::character('o'));
-            case BOTTSTRAPP_VERSION + 17:
+            case BOOTSTRAPP_VERSION + 17:
                 return next(catta::json::Token::character('n'));
-            case BOTTSTRAPP_VERSION + 18:
+            case BOOTSTRAPP_VERSION + 18:
                 return next(catta::json::Token::closeString());
-            case BOTTSTRAPP_VERSION + 19:
+            case BOOTSTRAPP_VERSION + 19:
                 return next(catta::json::Token::colon());
-            case BOTTSTRAPP_VERSION + 20:
-                return handle(_bottstrappVersionSerializer, input.bottstrappVersion(), catta::json::Token::closeCurlyBracket());
+            case BOOTSTRAPP_VERSION + 20:
+                return handle(_bootstrappVersionSerializer, input.bootstrappVersion(), catta::json::Token::closeCurlyBracket());
             case TAIL + 0:
                 return done();
             default:
@@ -264,14 +264,14 @@ class Serializer<catta::modbus::si::response::FactoryValues>
     Serializer<catta::modbus::si::Date> _productionDateSerializer;
     Serializer<catta::modbus::sunspec::ValueU8<0, 255>> _hardwareVersionSerializer;
     Serializer<catta::modbus::sunspec::ValueU8<0, 255>> _firmwareVersionSerializer;
-    Serializer<catta::modbus::sunspec::ValueU8<0, 255>> _bottstrappVersionSerializer;
+    Serializer<catta::modbus::sunspec::ValueU8<0, 255>> _bootstrappVersionSerializer;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t SERIALNUMBER = START + 1;
     static constexpr std::uint8_t PRODUCTION_DATE = SERIALNUMBER + 16;
     static constexpr std::uint8_t HARDWARE_VERSION = PRODUCTION_DATE + 18;
     static constexpr std::uint8_t FIRMWARE_VERSION = HARDWARE_VERSION + 19;
-    static constexpr std::uint8_t BOTTSTRAPP_VERSION = FIRMWARE_VERSION + 19;
-    static constexpr std::uint8_t TAIL = BOTTSTRAPP_VERSION + 21;
+    static constexpr std::uint8_t BOOTSTRAPP_VERSION = FIRMWARE_VERSION + 19;
+    static constexpr std::uint8_t TAIL = BOOTSTRAPP_VERSION + 21;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR = DONE + 1;
 };

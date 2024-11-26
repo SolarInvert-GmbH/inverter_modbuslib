@@ -70,7 +70,7 @@ class Parser<catta::modbus::si::response::FactoryValues>
             case HUB + 2:
                 return input == catta::json::Token::character('o') ? jump(HUB + 3) : error();
             case HUB + 3:
-                return input == catta::json::Token::character('t') ? jump(HUB + 4) : error();
+                return input == catta::json::Token::character('o') ? jump(HUB + 4) : error();
             case HUB + 4:
                 return input == catta::json::Token::character('t') ? jump(HUB + 5) : error();
             case HUB + 5:
@@ -102,9 +102,9 @@ class Parser<catta::modbus::si::response::FactoryValues>
             case HUB + 18:
                 return input == catta::json::Token::closeString() ? jump(HUB + 19) : error();
             case HUB + 19:
-                return !_bottstrappVersionParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
+                return !_bootstrappVersionParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
             case HUB + 20:
-                return handle(_bottstrappVersionParser);
+                return handle(_bootstrappVersionParser);
             case HUB + 21:
                 return input == catta::json::Token::character('i') ? jump(HUB + 22) : error();
             case HUB + 22:
@@ -243,7 +243,7 @@ class Parser<catta::modbus::si::response::FactoryValues>
     [[nodiscard]] constexpr Output data() const noexcept
     {
         return _state == DONE ? Output::create(_serialnumberParser.data(), _productionDateParser.data(), _hardwareVersionParser.data(),
-                                               _firmwareVersionParser.data(), _bottstrappVersionParser.data())
+                                               _firmwareVersionParser.data(), _bootstrappVersionParser.data())
                               : Output::empty();
     }
     [[nodiscard]] constexpr catta::parser::State state() const noexcept
@@ -256,7 +256,7 @@ class Parser<catta::modbus::si::response::FactoryValues>
 
   private:
     std::uint8_t _state;
-    Parser<catta::modbus::sunspec::ValueU8<0, 255>> _bottstrappVersionParser;
+    Parser<catta::modbus::sunspec::ValueU8<0, 255>> _bootstrappVersionParser;
     Parser<catta::modbus::sunspec::ValueU8<0, 255>> _firmwareVersionParser;
     Parser<catta::modbus::sunspec::ValueU8<0, 255>> _hardwareVersionParser;
     Parser<catta::modbus::si::Date> _productionDateParser;
