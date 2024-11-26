@@ -1,7 +1,7 @@
 #pragma once
 
 // model
-#include <catta/modbus/sunspec/model/ImmediateControls.hpp>
+#include <catta/modbus/sunspec/model/Storage.hpp>
 
 // tomodbus
 #include <catta/tomodbus/toModbus.hpp>
@@ -11,11 +11,11 @@ namespace catta
 namespace tomodbus
 {
 template <>
-class Serializer<catta::modbus::sunspec::model::ImmediateControls>
+class Serializer<catta::modbus::sunspec::model::Storage>
 {
   public:
     using Error = catta::state::DefaultError;
-    using Input = catta::modbus::sunspec::model::ImmediateControls;
+    using Input = catta::modbus::sunspec::model::Storage;
     using Output = catta::modbus::Token;
     [[nodiscard]] constexpr std::tuple<Error, catta::parser::InputHandled> read(const Input& input) noexcept
     {
@@ -50,19 +50,15 @@ class Serializer<catta::modbus::sunspec::model::ImmediateControls>
             case START + 1:
                 return next(Output::function(0x03));
             case START + 2:
-                return next(Output::data(0x06));
+                return next(Output::data(0x04));
             case DATA + 0:
-                return high(input.timeoutConnection().value());
+                return high(input.wChaMax().value());
             case DATA + 1:
-                return low(input.timeoutConnection().value());
+                return low(input.wChaMax().value());
             case DATA + 2:
-                return high(input.connectionControl().value());
+                return high(input.wChaRate().value());
             case DATA + 3:
-                return low(input.connectionControl().value());
-            case DATA + 4:
-                return high(input.powerLimit().value());
-            case DATA + 5:
-                return low(input.powerLimit().value());
+                return low(input.wChaRate().value());
             case TAIL + 0:
                 return done();
             default:
@@ -84,7 +80,7 @@ class Serializer<catta::modbus::sunspec::model::ImmediateControls>
     Output _data;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t DATA = START + 3;
-    static constexpr std::uint8_t TAIL = DATA + 6;
+    static constexpr std::uint8_t TAIL = DATA + 4;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR = DONE + 1;
 };
