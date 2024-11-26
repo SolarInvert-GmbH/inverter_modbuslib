@@ -72,7 +72,7 @@ class Parser<catta::modbus::sunspec::model::ImmediateControls>
                 return error();
         }
     }
-    [[nodiscard]] constexpr Parser() noexcept : _state(START) {}
+    [[nodiscard]] constexpr Parser() noexcept : _state(START), _timeoutConnection(0), _connectionControl(0), _powerLimit(0) {}
     [[nodiscard]] constexpr Output data() const noexcept
     {
         using V = catta::modbus::sunspec::ValueU16;
