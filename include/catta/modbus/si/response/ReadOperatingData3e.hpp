@@ -28,7 +28,7 @@ class ReadOperatingData3e
     constexpr ReadOperatingData3e() noexcept
         : ReadOperatingData3e(catta::modbus::sunspec::ValueU16::empty(), catta::modbus::si::Type::empty(),
                               catta::modbus::sunspec::ValueU8<1, 10>::empty(), catta::modbus::sunspec::ValueU8<1, 32>::empty(),
-                              catta::modbus::sunspec::ValueU16::empty(), catta::modbus::sunspec::ValueU32::empty(),
+                              catta::modbus::sunspec::ValueU8<0, 255>::empty(), catta::modbus::sunspec::ValueU32::empty(),
                               catta::modbus::sunspec::ValueU16::empty(), catta::modbus::sunspec::ValueU32::empty(),
                               catta::modbus::sunspec::ValueU8<0, 3>::empty(), catta::modbus::sunspec::ValueU8<0, 15>::empty())
     {
@@ -57,7 +57,7 @@ class ReadOperatingData3e
     static constexpr ReadOperatingData3e create(
         const catta::modbus::sunspec::ValueU16 serialNumber, const catta::modbus::si::Type type,
         const catta::modbus::sunspec::ValueU8<1, 10> voltageType, const catta::modbus::sunspec::ValueU8<1, 32> nominalPower,
-        const catta::modbus::sunspec::ValueU16 cosphi, const catta::modbus::sunspec::ValueU32 gridSupplyDailySum,
+        const catta::modbus::sunspec::ValueU8<0, 255> cosphi, const catta::modbus::sunspec::ValueU32 gridSupplyDailySum,
         const catta::modbus::sunspec::ValueU16 powerLimitation, const catta::modbus::sunspec::ValueU32 operatingHours,
         const catta::modbus::sunspec::ValueU8<0, 3> phase, const catta::modbus::sunspec::ValueU8<0, 15> modbusId)
     {
@@ -86,7 +86,7 @@ class ReadOperatingData3e
     /**
      * @return Returns the power factor. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 cosphi() const noexcept { return _cosphi; }
+    catta::modbus::sunspec::ValueU8<0, 255> cosphi() const noexcept { return _cosphi; }
     /**
      * @return Returns the to grid daily supplied energy of the device. Is only valid if not empty.
      */
@@ -116,7 +116,7 @@ class ReadOperatingData3e
   private:
     constexpr ReadOperatingData3e(const catta::modbus::sunspec::ValueU16 serialNumber, const catta::modbus::si::Type type,
                                   const catta::modbus::sunspec::ValueU8<1, 10> voltageType, const catta::modbus::sunspec::ValueU8<1, 32> nominalPower,
-                                  catta::modbus::sunspec::ValueU16 cosphi, const catta::modbus::sunspec::ValueU32 gridSupplyDailySum,
+                                  catta::modbus::sunspec::ValueU8<0, 255> cosphi, const catta::modbus::sunspec::ValueU32 gridSupplyDailySum,
                                   const catta::modbus::sunspec::ValueU16 powerLimitation, const catta::modbus::sunspec::ValueU32 operatingHours,
                                   const catta::modbus::sunspec::ValueU8<0, 3> phase, const catta::modbus::sunspec::ValueU8<0, 15> modbusId)
         : _serialNumber(serialNumber),
@@ -135,7 +135,7 @@ class ReadOperatingData3e
     catta::modbus::si::Type _type;
     catta::modbus::sunspec::ValueU8<1, 10> _voltageType;
     catta::modbus::sunspec::ValueU8<1, 32> _nominalPower;
-    catta::modbus::sunspec::ValueU16 _cosphi;
+    catta::modbus::sunspec::ValueU8<0, 255> _cosphi;
     catta::modbus::sunspec::ValueU32 _gridSupplyDailySum;
     catta::modbus::sunspec::ValueU16 _powerLimitation;
     catta::modbus::sunspec::ValueU32 _operatingHours;

@@ -23,7 +23,7 @@ class catta::random::Create<catta::modbus::si::response::ReadOperatingData3e>
         return catta::modbus::si::response::ReadOperatingData3e::create(
             random.create<catta::modbus::sunspec::ValueU16>(), random.create<catta::modbus::si::Type>(),
             random.create<catta::modbus::sunspec::ValueU8<1, 10>>(), random.create<catta::modbus::sunspec::ValueU8<1, 32>>(),
-            random.create<catta::modbus::sunspec::ValueU16>(), random.create<catta::modbus::sunspec::ValueU32>(),
+            random.create<catta::modbus::sunspec::ValueU8<0, 255>>(), random.create<catta::modbus::sunspec::ValueU32>(),
             random.create<catta::modbus::sunspec::ValueU16>(), random.create<catta::modbus::sunspec::ValueU32>(),
             random.create<catta::modbus::sunspec::ValueU8<0, 3>>(), random.create<catta::modbus::sunspec::ValueU8<0, 15>>());
     }

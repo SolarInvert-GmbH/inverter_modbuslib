@@ -369,7 +369,7 @@ class Serializer<catta::modbus::si::response::ReadOperatingData3e>
     Serializer<catta::modbus::si::Type> _typeSerializer;
     Serializer<catta::modbus::sunspec::ValueU8<1, 10>> _voltageTypeSerializer;
     Serializer<catta::modbus::sunspec::ValueU8<1, 32>> _nominalPowerSerializer;
-    Serializer<catta::modbus::sunspec::ValueU16> _cosphiSerializer;
+    Serializer<catta::modbus::sunspec::ValueU8<0, 255>> _cosphiSerializer;
     Serializer<catta::modbus::sunspec::ValueU32> _gridSupplyDailySumSerializer;
     Serializer<catta::modbus::sunspec::ValueU16> _powerLimitationSerializer;
     Serializer<catta::modbus::sunspec::ValueU32> _operatingHoursSerializer;

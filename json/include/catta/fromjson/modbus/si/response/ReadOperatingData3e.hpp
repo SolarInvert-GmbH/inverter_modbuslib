@@ -346,7 +346,7 @@ class Parser<catta::modbus::si::response::ReadOperatingData3e>
 
   private:
     std::uint8_t _state;
-    Parser<catta::modbus::sunspec::ValueU16> _cosphiParser;
+    Parser<catta::modbus::sunspec::ValueU8<0, 255>> _cosphiParser;
     Parser<catta::modbus::sunspec::ValueU32> _gridSupplyDailySumParser;
     Parser<catta::modbus::sunspec::ValueU8<0, 15>> _modbusIdParser;
     Parser<catta::modbus::sunspec::ValueU8<1, 32>> _nominalPowerParser;
