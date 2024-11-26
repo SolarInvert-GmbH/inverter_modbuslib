@@ -1,7 +1,7 @@
 #pragma once
 
 // model
-#include <catta/modbus/sunspec/model/ExtendedMeasurements.hpp>
+#include <catta/modbus/sunspec/model/ImmediateControls.hpp>
 
 // frommodbus
 #include <catta/frommodbus/fromModbus.hpp>
@@ -11,12 +11,12 @@ namespace catta
 namespace frommodbus
 {
 template <>
-class Parser<catta::modbus::sunspec::model::ExtendedMeasurements>
+class Parser<catta::modbus::sunspec::model::ImmediateControls>
 {
   public:
     using Error = catta::state::DefaultError;
     using Input = catta::modbus::Token;
-    using Output = catta::modbus::sunspec::model::ExtendedMeasurements;
+    using Output = catta::modbus::sunspec::model::ImmediateControls;
     [[nodiscard]] constexpr std::tuple<Error, catta::parser::InputHandled> read(const Input& input) noexcept
     {
         using Tuple = std::tuple<Error, catta::parser::InputHandled>;
@@ -36,10 +36,14 @@ class Parser<catta::modbus::sunspec::model::ExtendedMeasurements>
             _state++;
             return stay();
         };
-        const auto u64 = [next, input](std::uint64_t& v, const std::uint32_t i)
+        const auto high = [next, input](std::uint16_t& v)
         {
-            v = i == 7 ? static_cast<std::uint64_t>(static_cast<std::uint64_t>(input.value()) << (8 * i))
-                       : static_cast<std::uint64_t>(v | static_cast<std::uint64_t>(static_cast<std::uint64_t>(input.value()) << (8 * i)));
+            v = static_cast<std::uint16_t>(input.value() << 8);
+            return next();
+        };
+        const auto low = [next, input](std::uint16_t& v)
+        {
+            v = static_cast<std::uint16_t>(v | input.value());
             return next();
         };
         switch (_state)
@@ -49,33 +53,31 @@ class Parser<catta::modbus::sunspec::model::ExtendedMeasurements>
             case START + 1:
                 return input == Input::function(0x03) ? next() : error();
             case START + 2:
-                return input == Input::data(0x08) ? next() : error();
+                return input == Input::data(0x02) ? next() : error();
             case DATA + 0:
-                return u64(_acWatthours, 7);
+                return high(_timeoutConnection);
             case DATA + 1:
-                return u64(_acWatthours, 6);
+                return low(_timeoutConnection);
             case DATA + 2:
-                return u64(_acWatthours, 5);
+                return high(_connectionControl);
             case DATA + 3:
-                return u64(_acWatthours, 4);
+                return low(_connectionControl);
             case DATA + 4:
-                return u64(_acWatthours, 3);
+                return high(_powerLimit);
             case DATA + 5:
-                return u64(_acWatthours, 2);
-            case DATA + 6:
-                return u64(_acWatthours, 1);
-            case DATA + 7:
-                return u64(_acWatthours, 0);
+                return low(_powerLimit);
             case TAIL + 0:
                 return input == catta::modbus::Token::end() ? jump(DONE + 0) : error();
             default:
                 return error();
         }
     }
-    [[nodiscard]] constexpr Parser() noexcept : _state(START), _acWatthours(0) {}
+    [[nodiscard]] constexpr Parser() noexcept : _state(START) {}
     [[nodiscard]] constexpr Output data() const noexcept
     {
-        return _state != DONE ? Output::empty() : Output::create(catta::modbus::sunspec::ValueU64::create(_acWatthours));
+        using V = catta::modbus::sunspec::ValueU16;
+        return _state != DONE ? Output::empty()
+                              : Output::create(V::create(_timeoutConnection), V::create(_connectionControl), V::create(_powerLimit));
     }
     [[nodiscard]] constexpr catta::parser::State state() const noexcept
     {
@@ -87,10 +89,12 @@ class Parser<catta::modbus::sunspec::model::ExtendedMeasurements>
 
   private:
     std::uint8_t _state;
-    std::uint64_t _acWatthours;
+    std::uint16_t _timeoutConnection;
+    std::uint16_t _connectionControl;
+    std::uint16_t _powerLimit;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t DATA = START + 3;
-    static constexpr std::uint8_t TAIL = DATA + 8;
+    static constexpr std::uint8_t TAIL = DATA + 6;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR = DONE + 1;
 };
