@@ -6,6 +6,8 @@
 // fromjson
 #include <catta/fromjson/fromJson.hpp>
 #include <catta/fromjson/modbus/sunspec/ConnectedPhase.hpp>
+#include <catta/fromjson/modbus/sunspec/ScaleFactor.hpp>
+#include <catta/fromjson/modbus/sunspec/ScaledValue2U16.hpp>
 #include <catta/fromjson/modbus/sunspec/ScaledValueU16.hpp>
 
 namespace catta
@@ -60,7 +62,7 @@ class Parser<catta::modbus::sunspec::model::BasicSettingsRead>
             case HUB + 0:
                 return input == catta::json::Token::openString() ? next() : error();
             case HUB + 1:
-                return input == catta::json::Token::character('w')   ? jump(HUB + 33)
+                return input == catta::json::Token::character('w')   ? jump(HUB + 32)
                        : input == catta::json::Token::character('v') ? jump(HUB + 23)
                        : input == catta::json::Token::character('e') ? jump(HUB + 13)
                        : input == catta::json::Token::character('c') ? jump(HUB + 2)
@@ -110,37 +112,74 @@ class Parser<catta::modbus::sunspec::model::BasicSettingsRead>
             case HUB + 23:
                 return input == catta::json::Token::character('M') ? jump(HUB + 24) : error();
             case HUB + 24:
-                return input == catta::json::Token::character('i')   ? jump(HUB + 29)
-                       : input == catta::json::Token::character('a') ? jump(HUB + 25)
-                                                                     : error();
+                return input == catta::json::Token::character('i') ? jump(HUB + 25) : error();
             case HUB + 25:
-                return input == catta::json::Token::character('x') ? jump(HUB + 26) : error();
+                return input == catta::json::Token::character('n') ? jump(HUB + 26) : error();
             case HUB + 26:
-                return input == catta::json::Token::closeString() ? jump(HUB + 27) : error();
+                return input == catta::json::Token::character('M') ? jump(HUB + 27) : error();
             case HUB + 27:
-                return !_vMaxParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
+                return input == catta::json::Token::character('a') ? jump(HUB + 28) : error();
             case HUB + 28:
-                return handle(_vMaxParser);
+                return input == catta::json::Token::character('x') ? jump(HUB + 29) : error();
             case HUB + 29:
-                return input == catta::json::Token::character('n') ? jump(HUB + 30) : error();
+                return input == catta::json::Token::closeString() ? jump(HUB + 30) : error();
             case HUB + 30:
-                return input == catta::json::Token::closeString() ? jump(HUB + 31) : error();
+                return !_vMinMaxParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
             case HUB + 31:
-                return !_vMinParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
+                return handle(_vMinMaxParser);
             case HUB + 32:
-                return handle(_vMinParser);
+                return input == catta::json::Token::character('R')   ? jump(HUB + 48)
+                       : input == catta::json::Token::character('M') ? jump(HUB + 43)
+                       : input == catta::json::Token::character('A') ? jump(HUB + 33)
+                                                                     : error();
             case HUB + 33:
-                return input == catta::json::Token::character('M') ? jump(HUB + 34) : error();
+                return input == catta::json::Token::character('p') ? jump(HUB + 34) : error();
             case HUB + 34:
-                return input == catta::json::Token::character('a') ? jump(HUB + 35) : error();
+                return input == catta::json::Token::character('p') ? jump(HUB + 35) : error();
             case HUB + 35:
-                return input == catta::json::Token::character('x') ? jump(HUB + 36) : error();
+                return input == catta::json::Token::character('a') ? jump(HUB + 36) : error();
             case HUB + 36:
-                return input == catta::json::Token::closeString() ? jump(HUB + 37) : error();
+                return input == catta::json::Token::character('r') ? jump(HUB + 37) : error();
             case HUB + 37:
-                return !_wMaxParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
+                return input == catta::json::Token::character('e') ? jump(HUB + 38) : error();
             case HUB + 38:
+                return input == catta::json::Token::character('n') ? jump(HUB + 39) : error();
+            case HUB + 39:
+                return input == catta::json::Token::character('t') ? jump(HUB + 40) : error();
+            case HUB + 40:
+                return input == catta::json::Token::closeString() ? jump(HUB + 41) : error();
+            case HUB + 41:
+                return !_wApparentParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
+            case HUB + 42:
+                return handle(_wApparentParser);
+            case HUB + 43:
+                return input == catta::json::Token::character('a') ? jump(HUB + 44) : error();
+            case HUB + 44:
+                return input == catta::json::Token::character('x') ? jump(HUB + 45) : error();
+            case HUB + 45:
+                return input == catta::json::Token::closeString() ? jump(HUB + 46) : error();
+            case HUB + 46:
+                return !_wMaxParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
+            case HUB + 47:
                 return handle(_wMaxParser);
+            case HUB + 48:
+                return input == catta::json::Token::character('e') ? jump(HUB + 49) : error();
+            case HUB + 49:
+                return input == catta::json::Token::character('a') ? jump(HUB + 50) : error();
+            case HUB + 50:
+                return input == catta::json::Token::character('c') ? jump(HUB + 51) : error();
+            case HUB + 51:
+                return input == catta::json::Token::character('t') ? jump(HUB + 52) : error();
+            case HUB + 52:
+                return input == catta::json::Token::character('i') ? jump(HUB + 53) : error();
+            case HUB + 53:
+                return input == catta::json::Token::character('v') ? jump(HUB + 54) : error();
+            case HUB + 54:
+                return input == catta::json::Token::closeString() ? jump(HUB + 55) : error();
+            case HUB + 55:
+                return !_wReactivParser.state().isStart() ? error() : input == catta::json::Token::colon() ? next() : error();
+            case HUB + 56:
+                return handle(_wReactivParser);
             case TAIL + 0:
                 return input == catta::json::Token::end() ? jump(DONE + 0) : error();
             default:
@@ -150,9 +189,9 @@ class Parser<catta::modbus::sunspec::model::BasicSettingsRead>
     [[nodiscard]] constexpr Parser() noexcept : _state(START) {}
     [[nodiscard]] constexpr Output data() const noexcept
     {
-        return _state == DONE
-                   ? Output::create(_wMaxParser.data(), _vMaxParser.data(), _vMinParser.data(), _ecpNomHzParser.data(), _connPhaseParser.data())
-                   : Output::empty();
+        return _state == DONE ? Output::create(_wMaxParser.data(), _vMinMaxParser.data(), _wApparentParser.data(), _wReactivParser.data(),
+                                               _ecpNomHzParser.data(), _connPhaseParser.data())
+                              : Output::empty();
     }
     [[nodiscard]] constexpr catta::parser::State state() const noexcept
     {
@@ -166,12 +205,13 @@ class Parser<catta::modbus::sunspec::model::BasicSettingsRead>
     std::uint8_t _state;
     Parser<catta::modbus::sunspec::ConnectedPhase> _connPhaseParser;
     Parser<catta::modbus::sunspec::ScaledValueU16> _ecpNomHzParser;
-    Parser<catta::modbus::sunspec::ScaledValueU16> _vMaxParser;
-    Parser<catta::modbus::sunspec::ScaledValueU16> _vMinParser;
+    Parser<catta::modbus::sunspec::ScaledValue2U16> _vMinMaxParser;
+    Parser<catta::modbus::sunspec::ScaleFactor> _wApparentParser;
     Parser<catta::modbus::sunspec::ScaledValueU16> _wMaxParser;
+    Parser<catta::modbus::sunspec::ScaleFactor> _wReactivParser;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t HUB = START + 1;
-    static constexpr std::uint8_t TAIL = HUB + 39;
+    static constexpr std::uint8_t TAIL = HUB + 57;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR = DONE + 1;
 };

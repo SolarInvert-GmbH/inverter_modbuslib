@@ -5,6 +5,8 @@
 
 // random
 #include <catta/random/modbus/sunspec/ConnectedPhase.hpp>
+#include <catta/random/modbus/sunspec/ScaleFactor.hpp>
+#include <catta/random/modbus/sunspec/ScaledValue2U16.hpp>
 #include <catta/random/modbus/sunspec/ScaledValueU16.hpp>
 
 template <>
@@ -19,8 +21,8 @@ class catta::random::Create<catta::modbus::sunspec::model::BasicSettingsRead>
     static catta::modbus::sunspec::model::BasicSettingsRead create(Random& random)
     {
         return catta::modbus::sunspec::model::BasicSettingsRead::create(
-            random.create<catta::modbus::sunspec::ScaledValueU16>(), random.create<catta::modbus::sunspec::ScaledValueU16>(),
-            random.create<catta::modbus::sunspec::ScaledValueU16>(), random.create<catta::modbus::sunspec::ScaledValueU16>(),
-            random.create<catta::modbus::sunspec::ConnectedPhase>());
+            random.create<catta::modbus::sunspec::ScaledValueU16>(), random.create<catta::modbus::sunspec::ScaledValue2U16>(),
+            random.create<catta::modbus::sunspec::ScaleFactor>(), random.create<catta::modbus::sunspec::ScaleFactor>(),
+            random.create<catta::modbus::sunspec::ScaledValueU16>(), random.create<catta::modbus::sunspec::ConnectedPhase>());
     }
 };

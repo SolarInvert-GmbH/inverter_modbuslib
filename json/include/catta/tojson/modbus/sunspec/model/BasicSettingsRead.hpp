@@ -5,6 +5,8 @@
 
 // tojson
 #include <catta/tojson/modbus/sunspec/ConnectedPhase.hpp>
+#include <catta/tojson/modbus/sunspec/ScaleFactor.hpp>
+#include <catta/tojson/modbus/sunspec/ScaledValue2U16.hpp>
 #include <catta/tojson/modbus/sunspec/ScaledValueU16.hpp>
 #include <catta/tojson/toJson.hpp>
 
@@ -70,38 +72,78 @@ class Serializer<catta::modbus::sunspec::model::BasicSettingsRead>
                 return next(catta::json::Token::colon());
             case W_MAX + 7:
                 return handle(_wMaxSerializer, input.wMax(), catta::json::Token::comma());
-            case V_MAX + 0:
+            case V_MIN_MAX + 0:
                 return next(catta::json::Token::openString());
-            case V_MAX + 1:
+            case V_MIN_MAX + 1:
                 return next(catta::json::Token::character('v'));
-            case V_MAX + 2:
+            case V_MIN_MAX + 2:
                 return next(catta::json::Token::character('M'));
-            case V_MAX + 3:
-                return next(catta::json::Token::character('a'));
-            case V_MAX + 4:
-                return next(catta::json::Token::character('x'));
-            case V_MAX + 5:
-                return next(catta::json::Token::closeString());
-            case V_MAX + 6:
-                return next(catta::json::Token::colon());
-            case V_MAX + 7:
-                return handle(_vMaxSerializer, input.vMax(), catta::json::Token::comma());
-            case V_MIN + 0:
-                return next(catta::json::Token::openString());
-            case V_MIN + 1:
-                return next(catta::json::Token::character('v'));
-            case V_MIN + 2:
-                return next(catta::json::Token::character('M'));
-            case V_MIN + 3:
+            case V_MIN_MAX + 3:
                 return next(catta::json::Token::character('i'));
-            case V_MIN + 4:
+            case V_MIN_MAX + 4:
                 return next(catta::json::Token::character('n'));
-            case V_MIN + 5:
+            case V_MIN_MAX + 5:
+                return next(catta::json::Token::character('M'));
+            case V_MIN_MAX + 6:
+                return next(catta::json::Token::character('a'));
+            case V_MIN_MAX + 7:
+                return next(catta::json::Token::character('x'));
+            case V_MIN_MAX + 8:
                 return next(catta::json::Token::closeString());
-            case V_MIN + 6:
+            case V_MIN_MAX + 9:
                 return next(catta::json::Token::colon());
-            case V_MIN + 7:
-                return handle(_vMinSerializer, input.vMin(), catta::json::Token::comma());
+            case V_MIN_MAX + 10:
+                return handle(_vMinMaxSerializer, input.vMinMax(), catta::json::Token::comma());
+            case W_APPARENT + 0:
+                return next(catta::json::Token::openString());
+            case W_APPARENT + 1:
+                return next(catta::json::Token::character('w'));
+            case W_APPARENT + 2:
+                return next(catta::json::Token::character('A'));
+            case W_APPARENT + 3:
+                return next(catta::json::Token::character('p'));
+            case W_APPARENT + 4:
+                return next(catta::json::Token::character('p'));
+            case W_APPARENT + 5:
+                return next(catta::json::Token::character('a'));
+            case W_APPARENT + 6:
+                return next(catta::json::Token::character('r'));
+            case W_APPARENT + 7:
+                return next(catta::json::Token::character('e'));
+            case W_APPARENT + 8:
+                return next(catta::json::Token::character('n'));
+            case W_APPARENT + 9:
+                return next(catta::json::Token::character('t'));
+            case W_APPARENT + 10:
+                return next(catta::json::Token::closeString());
+            case W_APPARENT + 11:
+                return next(catta::json::Token::colon());
+            case W_APPARENT + 12:
+                return handle(_wApparentSerializer, input.wApparent(), catta::json::Token::comma());
+            case W_REACTIV + 0:
+                return next(catta::json::Token::openString());
+            case W_REACTIV + 1:
+                return next(catta::json::Token::character('w'));
+            case W_REACTIV + 2:
+                return next(catta::json::Token::character('R'));
+            case W_REACTIV + 3:
+                return next(catta::json::Token::character('e'));
+            case W_REACTIV + 4:
+                return next(catta::json::Token::character('a'));
+            case W_REACTIV + 5:
+                return next(catta::json::Token::character('c'));
+            case W_REACTIV + 6:
+                return next(catta::json::Token::character('t'));
+            case W_REACTIV + 7:
+                return next(catta::json::Token::character('i'));
+            case W_REACTIV + 8:
+                return next(catta::json::Token::character('v'));
+            case W_REACTIV + 9:
+                return next(catta::json::Token::closeString());
+            case W_REACTIV + 10:
+                return next(catta::json::Token::colon());
+            case W_REACTIV + 11:
+                return handle(_wReactivSerializer, input.wReactiv(), catta::json::Token::comma());
             case ECP_NOM_HZ + 0:
                 return next(catta::json::Token::openString());
             case ECP_NOM_HZ + 1:
@@ -172,15 +214,17 @@ class Serializer<catta::modbus::sunspec::model::BasicSettingsRead>
     std::uint8_t _state;
     catta::json::Token _data;
     Serializer<catta::modbus::sunspec::ScaledValueU16> _wMaxSerializer;
-    Serializer<catta::modbus::sunspec::ScaledValueU16> _vMaxSerializer;
-    Serializer<catta::modbus::sunspec::ScaledValueU16> _vMinSerializer;
+    Serializer<catta::modbus::sunspec::ScaledValue2U16> _vMinMaxSerializer;
+    Serializer<catta::modbus::sunspec::ScaleFactor> _wApparentSerializer;
+    Serializer<catta::modbus::sunspec::ScaleFactor> _wReactivSerializer;
     Serializer<catta::modbus::sunspec::ScaledValueU16> _ecpNomHzSerializer;
     Serializer<catta::modbus::sunspec::ConnectedPhase> _connPhaseSerializer;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t W_MAX = START + 1;
-    static constexpr std::uint8_t V_MAX = W_MAX + 8;
-    static constexpr std::uint8_t V_MIN = V_MAX + 8;
-    static constexpr std::uint8_t ECP_NOM_HZ = V_MIN + 8;
+    static constexpr std::uint8_t V_MIN_MAX = W_MAX + 8;
+    static constexpr std::uint8_t W_APPARENT = V_MIN_MAX + 11;
+    static constexpr std::uint8_t W_REACTIV = W_APPARENT + 13;
+    static constexpr std::uint8_t ECP_NOM_HZ = W_REACTIV + 12;
     static constexpr std::uint8_t CONN_PHASE = ECP_NOM_HZ + 12;
     static constexpr std::uint8_t TAIL = CONN_PHASE + 13;
     static constexpr std::uint8_t DONE = TAIL + 1;
