@@ -10,7 +10,7 @@
 #include <catta/tostring/modbus/Token.hpp>
 #include <catta/tostring/parser/State.hpp>
 
-// tofromjson
+// tofrommodbus
 #include <catta/frommodbus/fromModbus.hpp>
 #include <catta/tomodbus/toModbus.hpp>
 

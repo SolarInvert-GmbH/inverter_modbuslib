@@ -4,7 +4,7 @@
 #include <catta/parser/ObjectParserConcept.hpp>
 #include <catta/state/DefaultError.hpp>
 
-// json
+// modbus
 #include <catta/modbus/Token.hpp>
 
 namespace catta
@@ -30,8 +30,8 @@ class Serializer;
  */
 template <typename T>
 concept Serializable =
-    catta::parser::ObjectParserConcept<catta::tojson::Serializer<T>> && std::same_as<typename catta::tojson::Serializer<T>::Input, T> &&
-    std::same_as<typename catta::tojson::Serializer<T>::Output, catta::modbus::Token>;
+    catta::parser::ObjectParserConcept<catta::tomodbus::Serializer<T>> && std::same_as<typename catta::tomodbus::Serializer<T>::Input, T> &&
+    std::same_as<typename catta::tomodbus::Serializer<T>::Output, catta::modbus::Token>;
 
 }  // namespace tomodbus
 }  // namespace catta
