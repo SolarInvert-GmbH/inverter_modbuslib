@@ -8,7 +8,6 @@
 #include <catta/random/modbus/sunspec/ConnectedPhase.hpp>
 #include <catta/random/modbus/sunspec/ValueS16.hpp>
 #include <catta/random/modbus/sunspec/ValueU16.hpp>
-#include <iostream>
 
 template <>
 class catta::random::Create<catta::modbus::si::WriteRegister>
@@ -49,7 +48,6 @@ class catta::random::Create<catta::modbus::si::WriteRegister>
             case T::connectedPhase():
                 return catta::modbus::si::WriteRegister::create(address, random.create<catta::modbus::sunspec::ConnectedPhase>());
             default:
-                std::cout << "Blub\n";
                 return catta::modbus::si::WriteRegister::empty();
         }
     }

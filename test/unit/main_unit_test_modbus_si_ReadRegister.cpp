@@ -1,20 +1,20 @@
 // catta
-#include <catta/modbus/si/WriteRegister.hpp>
+#include <catta/modbus/si/ReadRegister.hpp>
 
 // random
-#include <catta/random/modbus/si/WriteRegister.hpp>
+#include <catta/random/modbus/si/ReadRegister.hpp>
 
 // fromtostring
-#include <catta/fromstring/modbus/si/WriteRegister.hpp>
-#include <catta/tostring/modbus/si/WriteRegister.hpp>
+#include <catta/fromstring/modbus/si/ReadRegister.hpp>
+#include <catta/tostring/modbus/si/ReadRegister.hpp>
 
 // json
-#include <catta/fromjson/modbus/si/WriteRegister.hpp>
-#include <catta/tojson/modbus/si/WriteRegister.hpp>
+#include <catta/fromjson/modbus/si/ReadRegister.hpp>
+#include <catta/tojson/modbus/si/ReadRegister.hpp>
 
 // modbus
-#include <catta/frommodbus/modbus/si/WriteRegister.hpp>
-#include <catta/tomodbus/modbus/si/WriteRegister.hpp>
+#include <catta/frommodbus/modbus/si/ReadRegister.hpp>
+#include <catta/tomodbus/modbus/si/ReadRegister.hpp>
 
 // test
 #include <catta/test/ConsoleOutput.hpp>
@@ -28,7 +28,7 @@ static constexpr bool debug = false;
 
 int main()
 {
-    using Type = catta::modbus::si::WriteRegister;
+    using Type = catta::modbus::si::ReadRegister;
     using Output = catta::test::ConsoleOutput;
     Output output(catta::tostring::GetName<Type>::name.data());
     const auto test_tofromstring = catta::test::checkToFromString<Output, Type, debug>;
