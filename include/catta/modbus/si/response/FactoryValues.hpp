@@ -58,23 +58,23 @@ class FactoryValues
     /**
      * @return Returns the serial number of the device. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 serialnumber() const noexcept { return _serialnumber; }
+    constexpr catta::modbus::sunspec::ValueU16 serialnumber() const noexcept { return _serialnumber; }
     /**
      * @return Returns the production date of the device. Is only valid if not empty.
      */
-    catta::modbus::si::Date productionDate() const noexcept { return _productionDate; }
+    constexpr catta::modbus::si::Date productionDate() const noexcept { return _productionDate; }
     /**
      * @return Returns the hardware version of the device. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU8<0, 255> hardwareVersion() const noexcept { return _hardwareVersion; }
+    constexpr catta::modbus::sunspec::ValueU8<0, 255> hardwareVersion() const noexcept { return _hardwareVersion; }
     /**
      * @return Returns the firmware version of the device. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU8<0, 255> firmwareVersion() const noexcept { return _firmwareVersion; }
+    constexpr catta::modbus::sunspec::ValueU8<0, 255> firmwareVersion() const noexcept { return _firmwareVersion; }
     /**
      * @return Returns the bootstrapper version of the device. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU8<0, 255> bootstrappVersion() const noexcept { return _bootstrappVersion; }
+    constexpr catta::modbus::sunspec::ValueU8<0, 255> bootstrappVersion() const noexcept { return _bootstrappVersion; }
     /**
      * @param[in] other The other FactoryValues.
      * @return Returns @b true if the two FactoryValues objects are the same, otherwise @b false.

@@ -37,7 +37,7 @@ class ValueU64
     /**
      * @return Returns the value. Is only valid if not empty.
      */
-    std::uint64_t value() const noexcept { return _value; }
+    constexpr std::uint64_t value() const noexcept { return _value; }
     /**
      * @param[in] other The other ValueU64.
      * @return Returns @b true if the two ValueU64 objects are the same, otherwise @b false.

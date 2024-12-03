@@ -43,7 +43,7 @@ class CommonWrite
     /**
      * @return Returns the modbus device address. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 deviceAddress() const noexcept { return _deviceAddress; }
+    constexpr catta::modbus::sunspec::ValueU16 deviceAddress() const noexcept { return _deviceAddress; }
     /**
      * @param[in] other The other CommonWrite.
      * @return Returns @b true if the two CommonWrite objects are the same, otherwise @b false.

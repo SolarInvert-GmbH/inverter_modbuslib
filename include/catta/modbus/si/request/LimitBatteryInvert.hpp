@@ -42,7 +42,7 @@ class LimitBatteryInvert
     /**
      * @return Returns the limit power feed in grid for batteryinvert device in mode 0 and 3 config. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU8<0, 100> pMaxfeed() const noexcept { return _pMaxfeed; }
+    constexpr catta::modbus::sunspec::ValueU8<0, 100> pMaxfeed() const noexcept { return _pMaxfeed; }
     /**
      * @param[in] other The other LimitBatteryInvert.
      * @return Returns @b true if the two LimitBatteryInvert objects are the same, otherwise @b false.

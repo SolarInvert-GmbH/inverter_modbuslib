@@ -36,13 +36,18 @@ class PowerConfig
      */
     static constexpr PowerConfig create(const std::uint16_t power, bool loading) { return power >= EMPTY ? empty() : PowerConfig(power, loading); }
     /**
+     * @param[in] raw The raw value. Has to be valid, otherwise empty is returned.
+     * @return Returns power config if input is valid, otherwise empty.
+     */
+    static constexpr PowerConfig fromRaw(const std::uint16_t raw) { return PowerConfig::create(raw & 0x7fff, (raw & 0x8000) != 0); }
+    /**
      * @return Returns th power. Is only valid if not empty.
      */
-    std::uint16_t power() const noexcept { return _power; }
+    constexpr std::uint16_t power() const noexcept { return _power; }
     /**
      * @return Returns the loading. Is only valid if not empty.
      */
-    bool loading() const noexcept { return _loading; }
+    constexpr bool loading() const noexcept { return _loading; }
     /**
      * @param[in] other The other PowerConfig.
      * @return Returns @b true if the two PowerConfig objects are the same, otherwise @b false.

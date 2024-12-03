@@ -51,19 +51,19 @@ class ControlBatteryInvert
     /**
      * @return Returns the power output config. Is only valid if not empty.
      */
-    catta::modbus::si::PowerConfig pMax() const noexcept { return _pMax; }
+    constexpr catta::modbus::si::PowerConfig pMax() const noexcept { return _pMax; }
     /**
      * @return Returns the minimal dc voltage config. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 uMin() const noexcept { return _uMin; }
+    constexpr catta::modbus::sunspec::ValueU16 uMin() const noexcept { return _uMin; }
     /**
      * @return Returns the maximal dc voltage config. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 uMax() const noexcept { return _uMax; }
+    constexpr catta::modbus::sunspec::ValueU16 uMax() const noexcept { return _uMax; }
     /**
      * @return Returns the timeoutconfig in seconds. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 timeout() const noexcept { return _timeout; }
+    constexpr catta::modbus::sunspec::ValueU16 timeout() const noexcept { return _timeout; }
     /**
      * @param[in] other The other ControlBatteryInvert.
      * @return Returns @b true if the two ControlBatteryInvert objects are the same, otherwise @b false.

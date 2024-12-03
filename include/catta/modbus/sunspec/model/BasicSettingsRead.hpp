@@ -61,27 +61,27 @@ class BasicSettingsRead
     /**
      * @return Returns the Setting for maximum power output. Default to WRtg. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ScaledValueU16 wMax() const noexcept { return _wMax; }
+    constexpr catta::modbus::sunspec::ScaledValueU16 wMax() const noexcept { return _wMax; }
     /**
      * @return Returns the Setpoint for minimum/maximum voltage. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ScaledValue2U16 vMinMax() const noexcept { return _vMinMax; }
+    constexpr catta::modbus::sunspec::ScaledValue2U16 vMinMax() const noexcept { return _vMinMax; }
     /**
      * @return Returns the Scale factor for apparent power. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ScaleFactor wApparent() const noexcept { return _wApparent; }
+    constexpr catta::modbus::sunspec::ScaleFactor wApparent() const noexcept { return _wApparent; }
     /**
      * @return Returns the Scale factor for reactive power. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ScaleFactor wReactiv() const noexcept { return _wReactiv; }
+    constexpr catta::modbus::sunspec::ScaleFactor wReactiv() const noexcept { return _wReactiv; }
     /**
      * @return Returns the Setpoint for nominal frequency at the ECP. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ScaledValueU16 ecpNomHz() const noexcept { return _ecpNomHz; }
+    constexpr catta::modbus::sunspec::ScaledValueU16 ecpNomHz() const noexcept { return _ecpNomHz; }
     /**
      * @return Returns the Identity of connected phase for single phase inverters. A=1 B=2 C=3. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ConnectedPhase connPhase() const noexcept { return _connPhase; }
+    constexpr catta::modbus::sunspec::ConnectedPhase connPhase() const noexcept { return _connPhase; }
     /**
      * @param[in] other The other BasicSettingsRead.
      * @return Returns @b true if the two BasicSettingsRead objects are the same, otherwise @b false.

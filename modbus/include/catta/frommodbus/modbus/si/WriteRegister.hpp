@@ -73,21 +73,7 @@ class Parser<catta::modbus::si::WriteRegister>
     [[nodiscard]] constexpr Parser() noexcept : _state(START), _address(0), _data(0) {}
     [[nodiscard]] constexpr Output data() const noexcept
     {
-        if (_state != DONE) return Output::empty();
-        using Type = catta::modbus::si::RegisterType;
-        const auto address = catta::modbus::si::RegisterAddress::fromRaw(_address);
-        const Type type = address.type();
-        switch (type)
-        {
-            case Type::uint16():
-                return Output::create(address, catta::modbus::sunspec::ValueU16::create(static_cast<std::uint16_t>(_data)));
-            case Type::sint16():
-                return Output::create(address, catta::modbus::sunspec::ValueS16::create(static_cast<std::int16_t>(_data)));
-            case Type::connectedPhase():
-                return Output::create(address, catta::modbus::sunspec::ConnectedPhase(static_cast<std::uint8_t>(_data)));
-            default:
-                return Output::empty();
-        }
+        return _state == DONE ? Output::fromRaw(catta::modbus::si::RegisterAddress::fromRaw(_address), _data) : Output::empty();
     }
     [[nodiscard]] constexpr catta::parser::State state() const noexcept
     {

@@ -39,7 +39,7 @@ class ConstantVoltage
     /**
      * @return Returns the constant voltage config. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 uSet() const noexcept { return _uSet; }
+    constexpr catta::modbus::sunspec::ValueU16 uSet() const noexcept { return _uSet; }
     /**
      * @param[in] other The other ConstantVoltage.
      * @return Returns @b true if the two ConstantVoltage objects are the same, otherwise @b false.

@@ -42,7 +42,7 @@ class ValueU8
     /**
      * @return Returns the value. Is only valid if not empty.
      */
-    std::uint8_t value() const noexcept { return _value; }
+    constexpr std::uint8_t value() const noexcept { return _value; }
     /**
      * @param[in] other The other ValueU8.
      * @return Returns @b true if the two ValueU8 objects are the same, otherwise @b false.

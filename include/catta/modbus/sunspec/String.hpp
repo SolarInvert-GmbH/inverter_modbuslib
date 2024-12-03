@@ -54,7 +54,7 @@ class String
     /**
      * @return Returns the data. Is only valid if not empty.
      */
-    const Raw& data() const noexcept { return _data; }
+    constexpr const Raw& data() const noexcept { return _data; }
     /**
      * @param[in] other The other String.
      * @return Returns @b true if the two String objects are the same, otherwise @b false.

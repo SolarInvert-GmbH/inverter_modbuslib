@@ -69,14 +69,35 @@ class WriteRegister
                    ? empty()
                    : WriteRegister(registerAddress, static_cast<std::uint16_t>(value));
     }
+
+    /**
+     * @param[in] registerAddress The register address. Can not be empty, otherwise empty is returned.
+     * @param[in] raw The raw data of the value. Has to be valid accourding to register address.
+     * @return Returns write command if input is valid, otherwise empty.
+     */
+    static constexpr WriteRegister fromRaw(catta::modbus::si::RegisterAddress registerAddress, const std::uint16_t raw) noexcept
+    {
+        switch (registerAddress.type())
+        {
+            case catta::modbus::si::RegisterType::uint16():
+                return WriteRegister::create(registerAddress, catta::modbus::sunspec::ValueU16::create(static_cast<std::uint16_t>(raw)));
+            case catta::modbus::si::RegisterType::sint16():
+                return WriteRegister::create(registerAddress, catta::modbus::sunspec::ValueS16::create(static_cast<std::int16_t>(raw)));
+            case catta::modbus::si::RegisterType::connectedPhase():
+                return WriteRegister::create(registerAddress, catta::modbus::sunspec::ConnectedPhase(static_cast<std::uint8_t>(raw)));
+            default:
+                return WriteRegister::empty();
+        }
+    }
+
     /**
      * @return Returns the register address. Is only valid if not empty.
      */
-    catta::modbus::si::RegisterAddress registerAddress() const noexcept { return _registerAddress; }
+    constexpr catta::modbus::si::RegisterAddress registerAddress() const noexcept { return _registerAddress; }
     /**
      * @return Returns the raw value. Is only valid if not empty.
      */
-    std::uint16_t raw() const noexcept { return _value; }
+    constexpr std::uint16_t raw() const noexcept { return _value; }
     /**
      * @param[in] other The other WriteRegister.
      * @return Returns @b true if the two WriteRegister objects are the same, otherwise @b false.

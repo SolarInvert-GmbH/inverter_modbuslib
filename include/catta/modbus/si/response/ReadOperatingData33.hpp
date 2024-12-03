@@ -59,24 +59,24 @@ class ReadOperatingData33
     /**
      * @return Returns the voltage on dc side of the device. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 dcVoltage() const noexcept { return _dcVoltage; }
+    constexpr catta::modbus::sunspec::ValueU16 dcVoltage() const noexcept { return _dcVoltage; }
     /**
      * @return Returns the grid voltage. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU8<0, 255> acVoltage() const noexcept { return _acVoltage; }
+    constexpr catta::modbus::sunspec::ValueU8<0, 255> acVoltage() const noexcept { return _acVoltage; }
     /**
      * @return Returns the grid frequency. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 gridFrequency() const noexcept { return _gridFrequency; }
+    constexpr catta::modbus::sunspec::ValueU16 gridFrequency() const noexcept { return _gridFrequency; }
     /**
      * @return Returns the power output of the device. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueS16 acPower() const noexcept { return _acPower; }
+    constexpr catta::modbus::sunspec::ValueS16 acPower() const noexcept { return _acPower; }
     /**
      * @return Returns the state of the device (00: Init level 1, 01: Init level 2 ,02: Init level 3 ,03: MPPT ,04: Reset ,05: Konstantspng. ,06: Low
      * Power ,Mode ,07: Wind ,08: Factory Mode ,09: Battery ,10: Battery Safety). Is only valid if not empty.
      */
-    catta::modbus::si::State state() const noexcept { return _state; }
+    constexpr catta::modbus::si::State state() const noexcept { return _state; }
     /**
      * @param[in] other The other ReadOperatingData33.
      * @return Returns @b true if the two ReadOperatingData33 objects are the same, otherwise @b false.

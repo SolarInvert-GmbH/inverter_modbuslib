@@ -39,7 +39,7 @@ class Nameplate
     /**
      * @return Returns the Type of DER device. Default value is 4 to indicate PV device. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 dERTyp() const noexcept { return _dERTyp; }
+    constexpr catta::modbus::sunspec::ValueU16 dERTyp() const noexcept { return _dERTyp; }
     /**
      * @param[in] other The other Nameplate.
      * @return Returns @b true if the two Nameplate objects are the same, otherwise @b false.

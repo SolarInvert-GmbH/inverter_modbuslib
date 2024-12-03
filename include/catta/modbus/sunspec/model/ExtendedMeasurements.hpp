@@ -42,7 +42,7 @@ class ExtendedMeasurements
     /**
      * @return Returns AC lifetime active (real) energy output. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU64 acWatthours() const noexcept { return _acWatthours; }
+    constexpr catta::modbus::sunspec::ValueU64 acWatthours() const noexcept { return _acWatthours; }
     /**
      * @param[in] other The AC lifetime active (real) energy output.
      * @return Returns @b true if the two ExtendedMeasurements objects are the same, otherwise @b false.

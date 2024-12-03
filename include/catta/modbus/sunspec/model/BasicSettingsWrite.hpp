@@ -56,23 +56,23 @@ class BasicSettingsWrite
     /**
      * @return Returns the Setting for maximum power output. Default to WRtg. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 wMax() const noexcept { return _wMax; }
+    constexpr catta::modbus::sunspec::ValueU16 wMax() const noexcept { return _wMax; }
     /**
      * @return Returns the Setpoint for maximum voltage. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 vMax() const noexcept { return _vMax; }
+    constexpr catta::modbus::sunspec::ValueU16 vMax() const noexcept { return _vMax; }
     /**
      * @return Returns the Setpoint for minimum voltage. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 vMin() const noexcept { return _vMin; }
+    constexpr catta::modbus::sunspec::ValueU16 vMin() const noexcept { return _vMin; }
     /**
      * @return Returns the Setpoint for nominal frequency at the ECP. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 ecpNomHz() const noexcept { return _ecpNomHz; }
+    constexpr catta::modbus::sunspec::ValueU16 ecpNomHz() const noexcept { return _ecpNomHz; }
     /**
      * @return Returns the Identity of connected phase for single phase inverters. A=1 B=2 C=3. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ConnectedPhase connPhase() const noexcept { return _connPhase; }
+    constexpr catta::modbus::sunspec::ConnectedPhase connPhase() const noexcept { return _connPhase; }
     /**
      * @param[in] other The other BasicSettingsWrite.
      * @return Returns @b true if the two BasicSettingsWrite objects are the same, otherwise @b false.

@@ -93,84 +93,84 @@ class ReadError
     /**
      * @return Returns the error: overVoltageAC Too high voltage AC. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 overVoltageAC() const noexcept { return _overVoltageAC; }
+    constexpr catta::modbus::sunspec::ValueU16 overVoltageAC() const noexcept { return _overVoltageAC; }
     /**
      * @return Returns the error: underVoltageAC Too low voltage AC. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 underVoltageAC() const noexcept { return _underVoltageAC; }
+    constexpr catta::modbus::sunspec::ValueU16 underVoltageAC() const noexcept { return _underVoltageAC; }
     /**
      * @return Returns the error: overVoltageDC Too high voltage DC. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 overVoltageDC() const noexcept { return _overVoltageDC; }
+    constexpr catta::modbus::sunspec::ValueU16 overVoltageDC() const noexcept { return _overVoltageDC; }
     /**
      * @return Returns the error: underVoltageDC Too low voltage DC. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 underVoltageDC() const noexcept { return _underVoltageDC; }
+    constexpr catta::modbus::sunspec::ValueU16 underVoltageDC() const noexcept { return _underVoltageDC; }
     /**
      * @return Returns the error: overFrequency Too high frequency. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 overFrequency() const noexcept { return _overFrequency; }
+    constexpr catta::modbus::sunspec::ValueU16 overFrequency() const noexcept { return _overFrequency; }
     /**
      * @return Returns the error: underFrequency Too low frequency. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 underFrequency() const noexcept { return _underFrequency; }
+    constexpr catta::modbus::sunspec::ValueU16 underFrequency() const noexcept { return _underFrequency; }
     /**
      * @return Returns the error: limitedPowerT1 Temperature depended reduction of power output to 87.5%. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 limitedPowerT1() const noexcept { return _limitedPowerT1; }
+    constexpr catta::modbus::sunspec::ValueU16 limitedPowerT1() const noexcept { return _limitedPowerT1; }
     /**
      * @return Returns the error: limitedPowerT2 Temperature depended reduction of power output to 75%. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 limitedPowerT2() const noexcept { return _limitedPowerT2; }
+    constexpr catta::modbus::sunspec::ValueU16 limitedPowerT2() const noexcept { return _limitedPowerT2; }
     /**
      * @return Returns the error: limitedPowerT3 Temperature depended reduction of power output to 62.5%. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 limitedPowerT3() const noexcept { return _limitedPowerT3; }
+    constexpr catta::modbus::sunspec::ValueU16 limitedPowerT3() const noexcept { return _limitedPowerT3; }
     /**
      * @return Returns the error: limitedPowerT4 Temperature depended reduction of power output to 50%. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 limitedPowerT4() const noexcept { return _limitedPowerT4; }
+    constexpr catta::modbus::sunspec::ValueU16 limitedPowerT4() const noexcept { return _limitedPowerT4; }
     /**
      * @return Returns the error: Temperature depended reduction of power output to 37.5%. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 limitedPowerT5() const noexcept { return _limitedPowerT5; }
+    constexpr catta::modbus::sunspec::ValueU16 limitedPowerT5() const noexcept { return _limitedPowerT5; }
     /**
      * @return Returns the error: Not implemented until v60. Failure in communication between grid inspector and control board. Is only valid if not
      * empty.
      */
-    catta::modbus::sunspec::ValueU16 com() const noexcept { return _com; }
+    constexpr catta::modbus::sunspec::ValueU16 com() const noexcept { return _com; }
     /**
      * @return Returns the error: Device is disconnected from grid. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 islandGrid() const noexcept { return _islandGrid; }
+    constexpr catta::modbus::sunspec::ValueU16 islandGrid() const noexcept { return _islandGrid; }
     /**
      * @return Returns the error: Interrupt of too high current. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 overCurrentInterrupt() const noexcept { return _overCurrentInterrupt; }
+    constexpr catta::modbus::sunspec::ValueU16 overCurrentInterrupt() const noexcept { return _overCurrentInterrupt; }
     /**
      * @return Returns the error: Interrupt of too high voltage. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 overVoltageInterrupt() const noexcept { return _overVoltageInterrupt; }
+    constexpr catta::modbus::sunspec::ValueU16 overVoltageInterrupt() const noexcept { return _overVoltageInterrupt; }
     /**
      * @return Returns the error: 10 minute average of grid voltage too high. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 averageGridOverVoltage() const noexcept { return _averageGridOverVoltage; }
+    constexpr catta::modbus::sunspec::ValueU16 averageGridOverVoltage() const noexcept { return _averageGridOverVoltage; }
     /**
      * @return Returns the error: Shutdown because of too high temperature. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 overTempratureShutdown() const noexcept { return _overTempratureShutdown; }
+    constexpr catta::modbus::sunspec::ValueU16 overTempratureShutdown() const noexcept { return _overTempratureShutdown; }
     /**
      * @return Returns the error: Difference in measuring grid voltage. Only since v60. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 differenceGridVoltage() const noexcept { return _differenceGridVoltage; }
+    constexpr catta::modbus::sunspec::ValueU16 differenceGridVoltage() const noexcept { return _differenceGridVoltage; }
     /**
      * @return Returns the error: Failure in grid relais. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 errorGridRelais() const noexcept { return _errorGridRelais; }
+    constexpr catta::modbus::sunspec::ValueU16 errorGridRelais() const noexcept { return _errorGridRelais; }
     /**
      * @return Returns the error: Failure in reading current sensor. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 errorCurrentSensor() const noexcept { return _errorCurrentSensor; }
+    constexpr catta::modbus::sunspec::ValueU16 errorCurrentSensor() const noexcept { return _errorCurrentSensor; }
     /**
      * @param[in] other The other ReadError.
      * @return Returns @b true if the two ReadError objects are the same, otherwise @b false.

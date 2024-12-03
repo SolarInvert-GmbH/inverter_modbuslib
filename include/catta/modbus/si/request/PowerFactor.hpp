@@ -42,7 +42,7 @@ class PowerFactor
     /**
      * @return Returns the power factor config. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU8<0, 255> cosPhi() const noexcept { return _cosPhi; }
+    constexpr catta::modbus::sunspec::ValueU8<0, 255> cosPhi() const noexcept { return _cosPhi; }
     /**
      * @param[in] other The other PowerFactor.
      * @return Returns @b true if the two PowerFactor objects are the same, otherwise @b false.

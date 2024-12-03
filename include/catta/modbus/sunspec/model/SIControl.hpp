@@ -55,23 +55,23 @@ class SIControl
     /**
      * @return Returns the DC Power Diverted from Inverter. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 pcdDiv() const noexcept { return _pcdDiv; }
+    constexpr catta::modbus::sunspec::ValueU16 pcdDiv() const noexcept { return _pcdDiv; }
     /**
      * @return Returns the Setpoint for DC voltage. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 udcExt() const noexcept { return _udcExt; }
+    constexpr catta::modbus::sunspec::ValueU16 udcExt() const noexcept { return _udcExt; }
     /**
      * @return Returns the Setpoint for AC active power. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueS16 psetpoint() const noexcept { return _psetpoint; }
+    constexpr catta::modbus::sunspec::ValueS16 psetpoint() const noexcept { return _psetpoint; }
     /**
      * @return Returns the minimum DC voltage. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 uminExt() const noexcept { return _uminExt; }
+    constexpr catta::modbus::sunspec::ValueU16 uminExt() const noexcept { return _uminExt; }
     /**
      * @return Returns the maximum DC voltage. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 umaxExt() const noexcept { return _umaxExt; }
+    constexpr catta::modbus::sunspec::ValueU16 umaxExt() const noexcept { return _umaxExt; }
     /**
      * @param[in] other The other SIControl.
      * @return Returns @b true if the two SIControl objects are the same, otherwise @b false.

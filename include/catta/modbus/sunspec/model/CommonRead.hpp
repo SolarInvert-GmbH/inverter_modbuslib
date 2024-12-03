@@ -53,19 +53,19 @@ class CommonRead
     /**
      * @return Returns the name of the manufacturer. Is only valid if not empty.
      */
-    catta::modbus::sunspec::String manufacturer() const noexcept { return _manufacturer; }
+    constexpr catta::modbus::sunspec::String manufacturer() const noexcept { return _manufacturer; }
     /**
      * @return Returns the model name. Is only valid if not empty.
      */
-    catta::modbus::sunspec::String model() const noexcept { return _model; }
+    constexpr catta::modbus::sunspec::String model() const noexcept { return _model; }
     /**
      * @return Returns the serial number. Is only valid if not empty.
      */
-    catta::modbus::sunspec::String serialNumber() const noexcept { return _serialNumber; }
+    constexpr catta::modbus::sunspec::String serialNumber() const noexcept { return _serialNumber; }
     /**
      * @return Returns the modbus device address. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 deviceAddress() const noexcept { return _deviceAddress; }
+    constexpr catta::modbus::sunspec::ValueU16 deviceAddress() const noexcept { return _deviceAddress; }
     /**
      * @param[in] other The other CommonRead.
      * @return Returns @b true if the two CommonRead objects are the same, otherwise @b false.

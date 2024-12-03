@@ -52,15 +52,15 @@ class ImmediateControls
     /**
      * @return Returns the Value of the Timeout period for connect/disconnect. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 timeoutConnection() const noexcept { return _timeoutConnection; }
+    constexpr catta::modbus::sunspec::ValueU16 timeoutConnection() const noexcept { return _timeoutConnection; }
     /**
      * @return Returns the Enumerated valued.  Connection control. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 connectionControl() const noexcept { return _connectionControl; }
+    constexpr catta::modbus::sunspec::ValueU16 connectionControl() const noexcept { return _connectionControl; }
     /**
      * @return Returns the Set power output to specified level. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 powerLimit() const noexcept { return _powerLimit; }
+    constexpr catta::modbus::sunspec::ValueU16 powerLimit() const noexcept { return _powerLimit; }
     /**
      * @param[in] other The other ImmediateControls.
      * @return Returns @b true if the two ImmediateControls objects are the same, otherwise @b false.

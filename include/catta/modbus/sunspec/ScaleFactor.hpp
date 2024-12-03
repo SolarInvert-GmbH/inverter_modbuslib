@@ -42,7 +42,7 @@ class ScaleFactor
     /**
      * @return Returns the factor exponent. Is only valid if not empty.
      */
-    std::int8_t factorExponent() const noexcept { return _factorExponent; }
+    constexpr std::int8_t factorExponent() const noexcept { return _factorExponent; }
     /**
      * @param[in] other The other ScaleFactor.
      * @return Returns @b true if the two ScaleFactor objects are the same, otherwise @b false.

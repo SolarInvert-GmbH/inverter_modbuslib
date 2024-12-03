@@ -37,7 +37,7 @@ class ValueS16
     /**
      * @return Returns the value. Is only valid if not empty.
      */
-    std::int16_t value() const noexcept { return _value; }
+    constexpr std::int16_t value() const noexcept { return _value; }
     /**
      * @param[in] other The other ValueS16.
      * @return Returns @b true if the two ValueS16 objects are the same, otherwise @b false.

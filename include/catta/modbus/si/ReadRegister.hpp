@@ -46,7 +46,7 @@ class ReadRegister
     /**
      * @return Returns the register address. Is only valid if not empty.
      */
-    catta::modbus::si::RegisterAddress registerAddress() const noexcept { return _registerAddress; }
+    constexpr catta::modbus::si::RegisterAddress registerAddress() const noexcept { return _registerAddress; }
     /**
      * @param[in] other The other ReadRegister.
      * @return Returns @b true if the two ReadRegister objects are the same, otherwise @b false.

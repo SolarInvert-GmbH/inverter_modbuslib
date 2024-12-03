@@ -47,15 +47,15 @@ class Date
     /**
      * @return Returns the day. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU8<1, 31> day() const noexcept { return _day; }
+    constexpr catta::modbus::sunspec::ValueU8<1, 31> day() const noexcept { return _day; }
     /**
      * @return Returns the month. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU8<1, 12> month() const noexcept { return _month; }
+    constexpr catta::modbus::sunspec::ValueU8<1, 12> month() const noexcept { return _month; }
     /**
      * @return Returns the year. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU8<0, 99> year() const noexcept { return _year; }
+    constexpr catta::modbus::sunspec::ValueU8<0, 99> year() const noexcept { return _year; }
     /**
      * @param[in] other The other Date.
      * @return Returns @b true if the two Date objects are the same, otherwise @b false.

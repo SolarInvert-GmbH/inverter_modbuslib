@@ -70,43 +70,43 @@ class ReadOperatingData3e
     /**
      * @return Returns the serial Number. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 serialNumber() const noexcept { return _serialNumber; }
+    constexpr catta::modbus::sunspec::ValueU16 serialNumber() const noexcept { return _serialNumber; }
     /**
      * @return Returns the type of inverter (eg. solar). Is only valid if not empty.
      */
-    catta::modbus::si::Type type() const noexcept { return _type; }
+    constexpr catta::modbus::si::Type type() const noexcept { return _type; }
     /**
      * @return Returns the type of voltage. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU8<1, 10> voltageType() const noexcept { return _voltageType; }
+    constexpr catta::modbus::sunspec::ValueU8<1, 10> voltageType() const noexcept { return _voltageType; }
     /**
      * @return Returns the powerclass of the device. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU8<1, 32> nominalPower() const noexcept { return _nominalPower; }
+    constexpr catta::modbus::sunspec::ValueU8<1, 32> nominalPower() const noexcept { return _nominalPower; }
     /**
      * @return Returns the power factor. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU8<0, 255> cosphi() const noexcept { return _cosphi; }
+    constexpr catta::modbus::sunspec::ValueU8<0, 255> cosphi() const noexcept { return _cosphi; }
     /**
      * @return Returns the to grid daily supplied energy of the device. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU32 gridSupplyDailySum() const noexcept { return _gridSupplyDailySum; }
+    constexpr catta::modbus::sunspec::ValueU32 gridSupplyDailySum() const noexcept { return _gridSupplyDailySum; }
     /**
      * @return Returns the power limitation of the device. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 powerLimitation() const noexcept { return _powerLimitation; }
+    constexpr catta::modbus::sunspec::ValueU16 powerLimitation() const noexcept { return _powerLimitation; }
     /**
      * @return Returns the sum of operating hours of the device. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU32 operatingHours() const noexcept { return _operatingHours; }
+    constexpr catta::modbus::sunspec::ValueU32 operatingHours() const noexcept { return _operatingHours; }
     /**
      * @return Returns the operating phase. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU8<0, 3> phase() const noexcept { return _phase; }
+    constexpr catta::modbus::sunspec::ValueU8<0, 3> phase() const noexcept { return _phase; }
     /**
      * @return Returns the modbus Id set by jumpers. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU8<0, 15> modbusId() const noexcept { return _modbusId; }
+    constexpr catta::modbus::sunspec::ValueU8<0, 15> modbusId() const noexcept { return _modbusId; }
     /**
      * @param[in] other The other ReadOperatingData3e.
      * @return Returns @b true if the two ReadOperatingData3e objects are the same, otherwise @b false.

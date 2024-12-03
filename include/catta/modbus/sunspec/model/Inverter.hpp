@@ -75,47 +75,47 @@ class Inverter
     /**
      * @return Returns the AC Current. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ScaledValue4U16 ampere() const noexcept { return _ampere; }
+    constexpr catta::modbus::sunspec::ScaledValue4U16 ampere() const noexcept { return _ampere; }
     /**
      * @return Returns the Voltage. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ScaledValue3U16 voltage() const noexcept { return _voltage; }
+    constexpr catta::modbus::sunspec::ScaledValue3U16 voltage() const noexcept { return _voltage; }
     /**
      * @return Returns the AC Power. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ScaledValueS16 watt() const noexcept { return _watt; }
+    constexpr catta::modbus::sunspec::ScaledValueS16 watt() const noexcept { return _watt; }
     /**
      * @return Returns the Line Frequency. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ScaledValueU16 hertz() const noexcept { return _hertz; }
+    constexpr catta::modbus::sunspec::ScaledValueU16 hertz() const noexcept { return _hertz; }
     /**
      * @return Returns the AC Power Factor. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ScaledValueS16 powerFactor() const noexcept { return _powerFactor; }
+    constexpr catta::modbus::sunspec::ScaledValueS16 powerFactor() const noexcept { return _powerFactor; }
     /**
      * @return Returns the AC Energy. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ScaledValueU32 wattHours() const noexcept { return _wattHours; }
+    constexpr catta::modbus::sunspec::ScaledValueU32 wattHours() const noexcept { return _wattHours; }
     /**
      * @return Returns the DC Voltage. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ScaledValueU16 dcVoltage() const noexcept { return _dcVoltage; }
+    constexpr catta::modbus::sunspec::ScaledValueU16 dcVoltage() const noexcept { return _dcVoltage; }
     /**
      * @return Returns the Cabinet Temperature. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ScaledValueS16 cabinetTemperature() const noexcept { return _cabinetTemperature; }
+    constexpr catta::modbus::sunspec::ScaledValueS16 cabinetTemperature() const noexcept { return _cabinetTemperature; }
     /**
      * @return Returns the operating state. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 operatingState() const noexcept { return _operatingState; }
+    constexpr catta::modbus::sunspec::ValueU16 operatingState() const noexcept { return _operatingState; }
     /**
      * @return Returns the vendor operating state. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 vendorOperatingState() const noexcept { return _vendorOperatingState; }
+    constexpr catta::modbus::sunspec::ValueU16 vendorOperatingState() const noexcept { return _vendorOperatingState; }
     /**
      * @return Returns the vendor event bitfield. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU32 vendorEventBitfield() const noexcept { return _vendorEventBitfield; }
+    constexpr catta::modbus::sunspec::ValueU32 vendorEventBitfield() const noexcept { return _vendorEventBitfield; }
     /**
      * @param[in] other The other Inverter.
      * @return Returns @b true if the two Inverter objects are the same, otherwise @b false.

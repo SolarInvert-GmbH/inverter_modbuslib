@@ -43,11 +43,11 @@ class Storage
     /**
      * @return Returns the Setpoint for maximum charge. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 wChaMax() const noexcept { return _wChaMax; }
+    constexpr catta::modbus::sunspec::ValueU16 wChaMax() const noexcept { return _wChaMax; }
     /**
      * @return Returns the Setpoint for maximum charging rate. Default is MaxChaRte. Is only valid if not empty.
      */
-    catta::modbus::sunspec::ValueU16 wChaRate() const noexcept { return _wChaRate; }
+    constexpr catta::modbus::sunspec::ValueU16 wChaRate() const noexcept { return _wChaRate; }
     /**
      * @param[in] other The other Storage.
      * @return Returns @b true if the two Storage objects are the same, otherwise @b false.
