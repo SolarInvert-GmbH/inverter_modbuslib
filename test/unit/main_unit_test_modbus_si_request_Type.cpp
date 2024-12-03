@@ -9,8 +9,8 @@
 #include <catta/tostring/modbus/si/request/Type.hpp>
 
 // json
-#include <catta/fromjson/modbus/si/request/Request.hpp>
-#include <catta/tojson/modbus/si/request/Request.hpp>
+#include <catta/fromjson/modbus/si/request/Type.hpp>
+#include <catta/tojson/modbus/si/request/Type.hpp>
 
 // test
 #include <catta/test/ConsoleOutput.hpp>
