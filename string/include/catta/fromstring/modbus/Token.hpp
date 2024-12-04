@@ -83,8 +83,8 @@ class Parser<catta::modbus::Token>
                 case Type::data():
                     _data = Token::data(std::uint8_t(_parserHexadecimal.data()));
                     break;
-                case Type::exeception():
-                    _data = Token::exeception();
+                case Type::exception():
+                    _data = Token::exception();
                     break;
                 case Type::code():
                     _data = Token::code(std::uint8_t(_parserHexadecimal.data()));

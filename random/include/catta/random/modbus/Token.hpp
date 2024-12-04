@@ -27,8 +27,8 @@ class catta::random::Create<catta::modbus::Token>
                 return Token::function(random.create<std::uint8_t>());
             case Type::data():
                 return Token::data(random.create<std::uint8_t>());
-            case Type::exeception():
-                return Token::exeception();
+            case Type::exception():
+                return Token::exception();
             case Type::code():
                 return Token::code(random.interval(std::uint8_t(1), std::uint8_t(4)));
             default:

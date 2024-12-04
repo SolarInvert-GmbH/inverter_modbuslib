@@ -67,7 +67,7 @@ class UartState
      */
     [[nodiscard]] constexpr static UartState errorReceiveLengthNotValid() noexcept { return UartState{ERROR_RECEIVE_LENGTH_NOT_VALID}; }
     /**
-     * @return Returns the error state (exeception code field have to be 1, 2, 3 or 4).
+     * @return Returns the error state (exception code field have to be 1, 2, 3 or 4).
      */
     [[nodiscard]] constexpr static UartState errorReceiveCodeNotValid() noexcept { return UartState{ERROR_RECEIVE_CODE_NOT_VALID}; }
     /**
@@ -131,7 +131,7 @@ class UartState
      */
     [[nodiscard]] constexpr bool isErrorReceiveLengthNotValid() const noexcept { return _value == ERROR_RECEIVE_LENGTH_NOT_VALID; }
     /**
-     * @return Returns @b true if error state (exeception code field have to be 1, 2, 3 or 4) is represented, otherwise @b false.
+     * @return Returns @b true if error state (exception code field have to be 1, 2, 3 or 4) is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isErrorReceiveCodeNotValid() const noexcept { return _value == ERROR_RECEIVE_CODE_NOT_VALID; }
     /**

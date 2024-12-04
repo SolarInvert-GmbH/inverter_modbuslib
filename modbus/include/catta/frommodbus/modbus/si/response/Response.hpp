@@ -45,7 +45,7 @@ class Parser<catta::modbus::si::response::Response>
 
         const auto function = [input, error, this, jump]()
         {
-            if (input.type().isExeception()) return jump(EXCEPTION + 0);
+            if (input.type().isException()) return jump(EXCEPTION + 0);
             if (!input.type().isFunction()) return error();
             const auto startParserAndJump = [input, jump](auto& parser, const std::uint8_t state)
             {

@@ -132,7 +132,7 @@ class Uart
                 return send.type().isStart() ? receiveBase(RECEVIE_WAIT_FOR_ECHO, Token::start(), Handled::yes())
                                              : receiveBase(RECEVIE_WAIT_FOR_FUNCTION, Token::start(), Handled::no());
             if (received.value() == static_cast<std::uint8_t>(address & 0x80))
-                return receiveBase(RECEVIE_WAIT_FOR_CODE, Token::exeception(), Handled::no());
+                return receiveBase(RECEVIE_WAIT_FOR_CODE, Token::exception(), Handled::no());
             return error(ERROR_RECEIVE_WRONG_ADDRESS);
         };
         const auto receiveFunction = [receiveBase, received]()
