@@ -46,6 +46,11 @@ class Parser<catta::modbus::si::ReadRegister>
             v = static_cast<std::uint16_t>(v | input.value());
             return next();
         };
+        const auto get = [next, input](std::uint8_t& v)
+        {
+            v = input.value();
+            return next();
+        };
         switch (_state)
         {
             case START + 0:
@@ -57,9 +62,7 @@ class Parser<catta::modbus::si::ReadRegister>
             case ADDRESS + 2:
                 return low(_address);
             case DATA + 0:
-                return high(_length);
-            case DATA + 1:
-                return low(_length);
+                return get(_length);
             case TAIL + 0:
                 return input == catta::modbus::Token::end() ? jump(DONE + 0) : error();
             default:
@@ -69,12 +72,10 @@ class Parser<catta::modbus::si::ReadRegister>
     [[nodiscard]] constexpr Parser() noexcept : _state(START), _address(0), _length(0) {}
     [[nodiscard]] constexpr Output data() const noexcept
     {
-        // return _state==DONE && _length==
         if (_state != DONE) return Output::empty();
-        // using Type = catta::modbus::si::RegisterType;
         const auto address = catta::modbus::si::RegisterAddress::fromRaw(_address);
         const std::uint16_t length = address.type().size();
-        if (address.isEmpty() || length != _length) return Output::empty();
+        if (address.isEmpty() || length != _length * 2) return Output::empty();
         return Output::create(address);
     }
     [[nodiscard]] constexpr catta::parser::State state() const noexcept
@@ -88,11 +89,11 @@ class Parser<catta::modbus::si::ReadRegister>
   private:
     std::uint8_t _state;
     std::uint16_t _address;
-    std::uint16_t _length;
+    std::uint8_t _length;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t ADDRESS = START + 1;
     static constexpr std::uint8_t DATA = ADDRESS + 3;
-    static constexpr std::uint8_t TAIL = DATA + 2;
+    static constexpr std::uint8_t TAIL = DATA + 1;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR = DONE + 1;
 };

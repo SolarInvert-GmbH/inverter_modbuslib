@@ -120,7 +120,7 @@ class RegisterType
     /**
      * @return Returns the needed bytes for the type.
      */
-    constexpr std::uint16_t size() const noexcept
+    constexpr std::uint8_t size() const noexcept
     {
         switch (_value)
         {
