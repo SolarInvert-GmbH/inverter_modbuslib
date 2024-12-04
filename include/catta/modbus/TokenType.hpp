@@ -19,7 +19,7 @@ class TokenType
     constexpr static std::uint8_t START = 0;
     constexpr static std::uint8_t FUNCTION = 1;
     constexpr static std::uint8_t DATA = 2;
-    constexpr static std::uint8_t EXECEPTION = 3;
+    constexpr static std::uint8_t EXCEPTION = 3;
     constexpr static std::uint8_t CODE = 4;
     constexpr static std::uint8_t END = 5;
     constexpr static std::uint8_t EMPTY = 6;
@@ -27,7 +27,7 @@ class TokenType
   public:
     /**
      * @param[in] value The enum value of the token.
-     * @warning This constructor should not be used. Use start(), function(), data(), exeception(), code(), end() or empty(). Explicit constructor.
+     * @warning This constructor should not be used. Use start(), function(), data(), exception(), code(), end() or empty(). Explicit constructor.
      * Converts uint8 to token.
      */
     [[nodiscard]] constexpr explicit TokenType(const std::uint8_t value) noexcept : _value(value) {}
@@ -48,9 +48,9 @@ class TokenType
      */
     [[nodiscard]] constexpr static TokenType data() noexcept { return TokenType{DATA}; }
     /**
-     * @return Returns the exeception token.
+     * @return Returns the exception token.
      */
-    [[nodiscard]] constexpr static TokenType exeception() noexcept { return TokenType{EXECEPTION}; }
+    [[nodiscard]] constexpr static TokenType exception() noexcept { return TokenType{EXCEPTION}; }
     /**
      * @return Returns the exeption code token.
      */
@@ -85,9 +85,9 @@ class TokenType
      */
     [[nodiscard]] constexpr bool isData() const noexcept { return _value == DATA; }
     /**
-     * @return Returns @b true if exeception token is represented, otherwise @b false.
+     * @return Returns @b true if exception token is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isExeception() const noexcept { return _value == EXECEPTION; }
+    [[nodiscard]] constexpr bool isException() const noexcept { return _value == EXCEPTION; }
     /**
      * @return Returns @b true if exeption code token is represented, otherwise @b false.
      */
@@ -103,7 +103,7 @@ class TokenType
     /**
      * Token in text form.
      */
-    constexpr static std::array<std::string_view, EMPTY> enumNames = {"START", "FUNCTION", "DATA", "EXECEPTION", "CODE", "END"};
+    constexpr static std::array<std::string_view, EMPTY> enumNames = {"START", "FUNCTION", "DATA", "EXCEPTION", "CODE", "END"};
 
   private:
     std::uint8_t _value;
