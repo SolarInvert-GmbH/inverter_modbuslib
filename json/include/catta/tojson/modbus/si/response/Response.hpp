@@ -1,16 +1,20 @@
 #pragma once
 
 // request
-#include <catta/modbus/si/request/Request.hpp>
+#include <catta/modbus/si/response/Response.hpp>
 
 // tojson
-#include <catta/tojson/modbus/si/ReadRegister.hpp>
 #include <catta/tojson/modbus/si/WriteRegister.hpp>
-#include <catta/tojson/modbus/si/request/ConstantVoltage.hpp>
-#include <catta/tojson/modbus/si/request/ControlBatteryInvert.hpp>
-#include <catta/tojson/modbus/si/request/LimitBatteryInvert.hpp>
-#include <catta/tojson/modbus/si/request/PowerFactor.hpp>
-#include <catta/tojson/modbus/si/request/Type.hpp>
+#include <catta/tojson/modbus/si/response/Exception.hpp>
+#include <catta/tojson/modbus/si/response/FactoryValues.hpp>
+#include <catta/tojson/modbus/si/response/ReadError.hpp>
+#include <catta/tojson/modbus/si/response/ReadOperatingData33.hpp>
+#include <catta/tojson/modbus/si/response/ReadOperatingData3e.hpp>
+#include <catta/tojson/modbus/si/response/Type.hpp>
+#include <catta/tojson/modbus/sunspec/String.hpp>
+#include <catta/tojson/modbus/sunspec/ValueU16.hpp>
+#include <catta/tojson/modbus/sunspec/ValueU32.hpp>
+#include <catta/tojson/modbus/sunspec/ValueU64.hpp>
 #include <catta/tojson/toJson.hpp>
 
 namespace catta
@@ -18,11 +22,11 @@ namespace catta
 namespace tojson
 {
 template <>
-class Serializer<catta::modbus::si::request::Request>
+class Serializer<catta::modbus::si::response::Response>
 {
   public:
     using Error = catta::state::DefaultError;
-    using Input = catta::modbus::si::request::Request;
+    using Input = catta::modbus::si::response::Response;
     using Output = catta::json::Token;
     [[nodiscard]] constexpr std::tuple<Error, catta::parser::InputHandled> read(const Input& input) noexcept
     {
@@ -62,21 +66,29 @@ class Serializer<catta::modbus::si::request::Request>
         };
         const auto handleSplitt = [&input, handle, this, jump](const catta::json::Token token)
         {
-            using Type = catta::modbus::si::request::Type;
+            using Type = catta::modbus::si::response::Type;
             switch (input.type())
             {
-                case Type::readRegister():
-                    return handle(_readRegisterSerializer, input.readRegisterValue(), token);
+                case Type::exception():
+                    return handle(_exceptionSerializer, input.exceptionValue(), token);
+                case Type::factoryValues():
+                    return handle(_factoryValuesSerializer, input.factoryValuesValue(), token);
+                case Type::readError():
+                    return handle(_readErrorSerializer, input.readErrorValue(), token);
+                case Type::readOperatingData33():
+                    return handle(_readOperatingData33Serializer, input.readOperatingData33Value(), token);
+                case Type::readOperatingData3e():
+                    return handle(_readOperatingData3eSerializer, input.readOperatingData3eValue(), token);
                 case Type::writeRegister():
                     return handle(_writeRegisterSerializer, input.writeRegisterValue(), token);
-                case Type::startConstantVoltage():
-                    return handle(_constantVoltageSerializer, input.startConstantVoltageValue(), token);
-                case Type::setPowerFactor():
-                    return handle(_powerFactorSerializer, input.setPowerFactorValue(), token);
-                case Type::controlBatteryInvert():
-                    return handle(_controlBatteryInvertSerializer, input.controlBatteryInvertValue(), token);
-                case Type::limitBatteryInvert():
-                    return handle(_limitBatteryInvertSerializer, input.limitBatteryInvertValue(), token);
+                case Type::value16():
+                    return handle(_valueU16Serializer, catta::modbus::sunspec::ValueU16::create(input.value16Value()), token);
+                case Type::value32():
+                    return handle(_valueU32Serializer, catta::modbus::sunspec::ValueU32::create(input.value32Value()), token);
+                case Type::value64():
+                    return handle(_valueU64Serializer, catta::modbus::sunspec::ValueU64::create(input.value64Value()), token);
+                case Type::string():
+                    return handle(_stringSerializer, input.stringValue(), token);
                 default:
                     return jump(catta::json::Token::nullObject(), VALUE + 8);
             }
@@ -141,13 +153,17 @@ class Serializer<catta::modbus::si::request::Request>
   private:
     std::uint8_t _state;
     catta::json::Token _data;
-    Serializer<catta::modbus::si::request::Type> _typeSerializer;
-    Serializer<catta::modbus::si::request::PowerFactor> _powerFactorSerializer;
-    Serializer<catta::modbus::si::request::LimitBatteryInvert> _limitBatteryInvertSerializer;
-    Serializer<catta::modbus::si::request::ConstantVoltage> _constantVoltageSerializer;
-    Serializer<catta::modbus::si::request::ControlBatteryInvert> _controlBatteryInvertSerializer;
+    Serializer<catta::modbus::si::response::Type> _typeSerializer;
+    Serializer<catta::modbus::si::response::Exception> _exceptionSerializer;
+    Serializer<catta::modbus::si::response::FactoryValues> _factoryValuesSerializer;
+    Serializer<catta::modbus::si::response::ReadError> _readErrorSerializer;
+    Serializer<catta::modbus::si::response::ReadOperatingData33> _readOperatingData33Serializer;
+    Serializer<catta::modbus::si::response::ReadOperatingData3e> _readOperatingData3eSerializer;
+    Serializer<catta::modbus::sunspec::ValueU16> _valueU16Serializer;
+    Serializer<catta::modbus::sunspec::ValueU32> _valueU32Serializer;
+    Serializer<catta::modbus::sunspec::ValueU64> _valueU64Serializer;
+    Serializer<catta::modbus::sunspec::String> _stringSerializer;
     Serializer<catta::modbus::si::WriteRegister> _writeRegisterSerializer;
-    Serializer<catta::modbus::si::ReadRegister> _readRegisterSerializer;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t TYPE = START + 1;
     static constexpr std::uint8_t VALUE = TYPE + 8;

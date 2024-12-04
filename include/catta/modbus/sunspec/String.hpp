@@ -10,7 +10,7 @@ namespace modbus
 namespace sunspec
 {
 /**
- * @brief Class for representing strings with lenght 20.
+ * @brief Class for representing strings with lenght 32.
  *
  * @author CattaTech - Maik Urbannek
  */
@@ -20,7 +20,7 @@ class String
     /**
      * Max lenght of string
      */
-    static constexpr std::size_t size = 20;
+    static constexpr std::size_t size = 32;
     /**
      * The base type to hold character data.
      */

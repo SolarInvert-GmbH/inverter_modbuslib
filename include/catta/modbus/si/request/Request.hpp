@@ -48,7 +48,8 @@ class Request
      */
     static constexpr Request readRegister(const catta::modbus::si::ReadRegister value)
     {
-        return Request(std::array<std::uint16_t, 4>{value.registerAddress()}, catta::modbus::si::request::Type::readRegister());
+        return value.isEmpty() ? Request::empty()
+                               : Request(std::array<std::uint16_t, 4>{value.registerAddress()}, catta::modbus::si::request::Type::readRegister());
     }
     /**
      * @param[in] value The write register command. Has to be not empty, otherwise empty is returned.
@@ -56,7 +57,9 @@ class Request
      */
     static constexpr Request writeRegister(const catta::modbus::si::WriteRegister value)
     {
-        return Request(std::array<std::uint16_t, 4>{value.registerAddress(), value.raw()}, catta::modbus::si::request::Type::writeRegister());
+        return value.isEmpty()
+                   ? Request::empty()
+                   : Request(std::array<std::uint16_t, 4>{value.registerAddress(), value.raw()}, catta::modbus::si::request::Type::writeRegister());
     }
     /**
      * @return Returns factory values request.
@@ -104,7 +107,9 @@ class Request
      */
     static constexpr Request startConstantVoltage(const catta::modbus::si::request::ConstantVoltage value)
     {
-        return Request(std::array<std::uint16_t, 4>{value.uSet().value()}, catta::modbus::si::request::Type::startConstantVoltage());
+        return value.isEmpty()
+                   ? Request::empty()
+                   : Request(std::array<std::uint16_t, 4>{value.uSet().value()}, catta::modbus::si::request::Type::startConstantVoltage());
     }
     /**
      * @return Returns end constant voltage request if input is valid, otherwise empty.
@@ -119,7 +124,8 @@ class Request
      */
     static constexpr Request setPowerFactor(const catta::modbus::si::request::PowerFactor value)
     {
-        return Request(std::array<std::uint16_t, 4>{value.cosPhi().value()}, catta::modbus::si::request::Type::setPowerFactor());
+        return value.isEmpty() ? Request::empty()
+                               : Request(std::array<std::uint16_t, 4>{value.cosPhi().value()}, catta::modbus::si::request::Type::setPowerFactor());
     }
     /**
      * @param[in] value The control battery invert command. Has to be not empty, otherwise empty is returned.
@@ -127,9 +133,12 @@ class Request
      */
     static constexpr Request controlBatteryInvert(const catta::modbus::si::request::ControlBatteryInvert value)
     {
-        return Request(std::array<std::uint16_t, 4>{static_cast<std::uint16_t>(value.pMax().power() | (value.pMax().loading() ? 0x8000 : 0x0000)),
-                                                    value.uMin().value(), value.uMax().value(), value.timeout().value()},
-                       catta::modbus::si::request::Type::controlBatteryInvert());
+        return value.isEmpty()
+                   ? Request::empty()
+                   : Request(
+                         std::array<std::uint16_t, 4>{static_cast<std::uint16_t>(value.pMax().power() | (value.pMax().loading() ? 0x8000 : 0x0000)),
+                                                      value.uMin().value(), value.uMax().value(), value.timeout().value()},
+                         catta::modbus::si::request::Type::controlBatteryInvert());
     }
     /**
      * @param[in] value The limit battery invert command. Has to be not empty, otherwise empty is returned.
@@ -137,7 +146,9 @@ class Request
      */
     static constexpr Request limitBatteryInvert(const catta::modbus::si::request::LimitBatteryInvert value)
     {
-        return Request(std::array<std::uint16_t, 4>{value.pMaxfeed().value()}, catta::modbus::si::request::Type::limitBatteryInvert());
+        return value.isEmpty()
+                   ? Request::empty()
+                   : Request(std::array<std::uint16_t, 4>{value.pMaxfeed().value()}, catta::modbus::si::request::Type::limitBatteryInvert());
     }
     /**
      * @return Returns read error request if input is valid, otherwise empty.

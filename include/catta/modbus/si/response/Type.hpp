@@ -20,26 +20,33 @@ namespace response
 class Type
 {
   private:
-    constexpr static std::uint8_t SUCCESS = 0;
-    constexpr static std::uint8_t EXCEPTION = 1;
-    constexpr static std::uint8_t FACTORY_VALUES = 2;
-    constexpr static std::uint8_t READ_ERROR = 3;
-    constexpr static std::uint8_t READ_OPERATING_DATA_33 = 4;
-    constexpr static std::uint8_t READ_OPERATING_DATA_3E = 5;
-    constexpr static std::uint8_t UINT16 = 6;
-    constexpr static std::uint8_t SINT16 = 7;
-    constexpr static std::uint8_t SCALE_FACTOR = 8;
-    constexpr static std::uint8_t CONNECTED_PHASE = 9;
-    constexpr static std::uint8_t UINT32 = 10;
-    constexpr static std::uint8_t UINT64 = 11;
-    constexpr static std::uint8_t STRING32 = 12;
-    constexpr static std::uint8_t EMPTY = 13;
+    constexpr static std::uint8_t EXCEPTION = 0;
+    constexpr static std::uint8_t FACTORY_VALUES = 1;
+    constexpr static std::uint8_t READ_ERROR = 2;
+    constexpr static std::uint8_t READ_OPERATING_DATA_33 = 3;
+    constexpr static std::uint8_t READ_OPERATING_DATA_3E = 4;
+    constexpr static std::uint8_t SWITCH_OFF_INVERTER = 5;
+    constexpr static std::uint8_t SWITCH_ON_INVERTER = 6;
+    constexpr static std::uint8_t FORCE_IDLE = 7;
+    constexpr static std::uint8_t DEACTIVATE_IDLE = 8;
+    constexpr static std::uint8_t START_CONSTANT_VOLTAGE = 9;
+    constexpr static std::uint8_t END_CONSTANT_VOLTAGE = 10;
+    constexpr static std::uint8_t SET_POWER_FACTOR = 11;
+    constexpr static std::uint8_t CONTROL_BATTERY_INVERT = 12;
+    constexpr static std::uint8_t LIMIT_BATTERY_INVERT = 13;
+    constexpr static std::uint8_t WRITE_REGISTER = 14;
+    constexpr static std::uint8_t VALUE_16 = 15;
+    constexpr static std::uint8_t VALUE_32 = 16;
+    constexpr static std::uint8_t VALUE_64 = 17;
+    constexpr static std::uint8_t STRING = 18;
+    constexpr static std::uint8_t EMPTY = 19;
 
   public:
     /**
      * @param[in] value The enum value of the type.
-     * @warning This constructor should not be used. Use success(), exception(), factoryValues(), readError(), readOperatingData33(),
-     * readOperatingData3e(), uint16(), sint16(), scaleFactor(), connectedPhase(), uint32(), uint64(), string32() or empty(). Explicit constructor.
+     * @warning This constructor should not be used. Use exception(), factoryValues(), readError(), readOperatingData33(), readOperatingData3e(),
+     * switchOffInverter(), switchOnInverter(), forceIdle(), deactivateIdle(), startConstantVoltage(), endConstantVoltage(), setPowerFactor(),
+     * controlBatteryInvert(), limitBatteryInvert(), writeRegister(), value16(), value32(), value64(), string() or empty(). Explicit constructor.
      * Converts uint8 to type.
      */
     [[nodiscard]] constexpr explicit Type(const std::uint8_t value) noexcept : _value(value) {}
@@ -48,19 +55,15 @@ class Type
      */
     [[nodiscard]] constexpr Type() noexcept : Type(EMPTY) {}
     /**
-     * @return Returns the success response.
-     */
-    [[nodiscard]] constexpr static Type success() noexcept { return Type{SUCCESS}; }
-    /**
      * @return Returns the exception response.
      */
     [[nodiscard]] constexpr static Type exception() noexcept { return Type{EXCEPTION}; }
     /**
-     * @return Returns the factory values response.
+     * @return Returns the factory values 0x31 response.
      */
     [[nodiscard]] constexpr static Type factoryValues() noexcept { return Type{FACTORY_VALUES}; }
     /**
-     * @return Returns the read error response.
+     * @return Returns the read error 0x40 response.
      */
     [[nodiscard]] constexpr static Type readError() noexcept { return Type{READ_ERROR}; }
     /**
@@ -72,33 +75,61 @@ class Type
      */
     [[nodiscard]] constexpr static Type readOperatingData3e() noexcept { return Type{READ_OPERATING_DATA_3E}; }
     /**
-     * @return Returns the uint16 response.
+     * @return Returns the switch off inverter 0x34.
      */
-    [[nodiscard]] constexpr static Type uint16() noexcept { return Type{UINT16}; }
+    [[nodiscard]] constexpr static Type switchOffInverter() noexcept { return Type{SWITCH_OFF_INVERTER}; }
     /**
-     * @return Returns the sint16 type.
+     * @return Returns the switch on inverter 0x35.
      */
-    [[nodiscard]] constexpr static Type sint16() noexcept { return Type{SINT16}; }
+    [[nodiscard]] constexpr static Type switchOnInverter() noexcept { return Type{SWITCH_ON_INVERTER}; }
     /**
-     * @return Returns the scaled response response.
+     * @return Returns the force idle 0x36.
      */
-    [[nodiscard]] constexpr static Type scaleFactor() noexcept { return Type{SCALE_FACTOR}; }
+    [[nodiscard]] constexpr static Type forceIdle() noexcept { return Type{FORCE_IDLE}; }
     /**
-     * @return Returns the connected phase enum response.
+     * @return Returns the deactivate idle 0x37.
      */
-    [[nodiscard]] constexpr static Type connectedPhase() noexcept { return Type{CONNECTED_PHASE}; }
+    [[nodiscard]] constexpr static Type deactivateIdle() noexcept { return Type{DEACTIVATE_IDLE}; }
     /**
-     * @return Returns the uint32 response.
+     * @return Returns the start constant voltage 0x38.
      */
-    [[nodiscard]] constexpr static Type uint32() noexcept { return Type{UINT32}; }
+    [[nodiscard]] constexpr static Type startConstantVoltage() noexcept { return Type{START_CONSTANT_VOLTAGE}; }
     /**
-     * @return Returns the uint64 response.
+     * @return Returns the end constant voltage 0x39.
      */
-    [[nodiscard]] constexpr static Type uint64() noexcept { return Type{UINT64}; }
+    [[nodiscard]] constexpr static Type endConstantVoltage() noexcept { return Type{END_CONSTANT_VOLTAGE}; }
     /**
-     * @return Returns the string32 response.
+     * @return Returns the set power factor 0x3b.
      */
-    [[nodiscard]] constexpr static Type string32() noexcept { return Type{STRING32}; }
+    [[nodiscard]] constexpr static Type setPowerFactor() noexcept { return Type{SET_POWER_FACTOR}; }
+    /**
+     * @return Returns the constrol battery invert 0x3f.
+     */
+    [[nodiscard]] constexpr static Type controlBatteryInvert() noexcept { return Type{CONTROL_BATTERY_INVERT}; }
+    /**
+     * @return Returns the constrol battery invert 0x44.
+     */
+    [[nodiscard]] constexpr static Type limitBatteryInvert() noexcept { return Type{LIMIT_BATTERY_INVERT}; }
+    /**
+     * @return Returns the write register.
+     */
+    [[nodiscard]] constexpr static Type writeRegister() noexcept { return Type{WRITE_REGISTER}; }
+    /**
+     * @return Returns the 2 byte response.
+     */
+    [[nodiscard]] constexpr static Type value16() noexcept { return Type{VALUE_16}; }
+    /**
+     * @return Returns the 4 byte response.
+     */
+    [[nodiscard]] constexpr static Type value32() noexcept { return Type{VALUE_32}; }
+    /**
+     * @return Returns the 8 byte response.
+     */
+    [[nodiscard]] constexpr static Type value64() noexcept { return Type{VALUE_64}; }
+    /**
+     * @return Returns the string response.
+     */
+    [[nodiscard]] constexpr static Type string() noexcept { return Type{STRING}; }
     /**
      * @return Returns the invalid type.
      */
@@ -113,19 +144,15 @@ class Type
      */
     [[nodiscard]] constexpr operator std::uint8_t() const noexcept { return _value; }
     /**
-     * @return Returns @b true if success response is represented, otherwise @b false.
-     */
-    [[nodiscard]] constexpr bool isSuccess() const noexcept { return _value == SUCCESS; }
-    /**
      * @return Returns @b true if exception response is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isException() const noexcept { return _value == EXCEPTION; }
     /**
-     * @return Returns @b true if factory values response is represented, otherwise @b false.
+     * @return Returns @b true if factory values 0x31 response is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isFactoryValues() const noexcept { return _value == FACTORY_VALUES; }
     /**
-     * @return Returns @b true if read error response is represented, otherwise @b false.
+     * @return Returns @b true if read error 0x40 response is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isReadError() const noexcept { return _value == READ_ERROR; }
     /**
@@ -137,33 +164,61 @@ class Type
      */
     [[nodiscard]] constexpr bool isReadOperatingData3e() const noexcept { return _value == READ_OPERATING_DATA_3E; }
     /**
-     * @return Returns @b true if uint16 response is represented, otherwise @b false.
+     * @return Returns @b true if switch off inverter 0x34 is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isUint16() const noexcept { return _value == UINT16; }
+    [[nodiscard]] constexpr bool isSwitchOffInverter() const noexcept { return _value == SWITCH_OFF_INVERTER; }
     /**
-     * @return Returns @b true if sint16 type is represented, otherwise @b false.
+     * @return Returns @b true if switch on inverter 0x35 is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSint16() const noexcept { return _value == SINT16; }
+    [[nodiscard]] constexpr bool isSwitchOnInverter() const noexcept { return _value == SWITCH_ON_INVERTER; }
     /**
-     * @return Returns @b true if scaled response response is represented, otherwise @b false.
+     * @return Returns @b true if force idle 0x36 is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isScaleFactor() const noexcept { return _value == SCALE_FACTOR; }
+    [[nodiscard]] constexpr bool isForceIdle() const noexcept { return _value == FORCE_IDLE; }
     /**
-     * @return Returns @b true if connected phase enum response is represented, otherwise @b false.
+     * @return Returns @b true if deactivate idle 0x37 is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isConnectedPhase() const noexcept { return _value == CONNECTED_PHASE; }
+    [[nodiscard]] constexpr bool isDeactivateIdle() const noexcept { return _value == DEACTIVATE_IDLE; }
     /**
-     * @return Returns @b true if uint32 response is represented, otherwise @b false.
+     * @return Returns @b true if start constant voltage 0x38 is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isUint32() const noexcept { return _value == UINT32; }
+    [[nodiscard]] constexpr bool isStartConstantVoltage() const noexcept { return _value == START_CONSTANT_VOLTAGE; }
     /**
-     * @return Returns @b true if uint64 response is represented, otherwise @b false.
+     * @return Returns @b true if end constant voltage 0x39 is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isUint64() const noexcept { return _value == UINT64; }
+    [[nodiscard]] constexpr bool isEndConstantVoltage() const noexcept { return _value == END_CONSTANT_VOLTAGE; }
     /**
-     * @return Returns @b true if string32 response is represented, otherwise @b false.
+     * @return Returns @b true if set power factor 0x3b is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isString32() const noexcept { return _value == STRING32; }
+    [[nodiscard]] constexpr bool isSetPowerFactor() const noexcept { return _value == SET_POWER_FACTOR; }
+    /**
+     * @return Returns @b true if constrol battery invert 0x3f is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isControlBatteryInvert() const noexcept { return _value == CONTROL_BATTERY_INVERT; }
+    /**
+     * @return Returns @b true if constrol battery invert 0x44 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isLimitBatteryInvert() const noexcept { return _value == LIMIT_BATTERY_INVERT; }
+    /**
+     * @return Returns @b true if write register is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isWriteRegister() const noexcept { return _value == WRITE_REGISTER; }
+    /**
+     * @return Returns @b true if 2 byte response is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isValue16() const noexcept { return _value == VALUE_16; }
+    /**
+     * @return Returns @b true if 4 byte response is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isValue32() const noexcept { return _value == VALUE_32; }
+    /**
+     * @return Returns @b true if 8 byte response is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isValue64() const noexcept { return _value == VALUE_64; }
+    /**
+     * @return Returns @b true if string response is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isString() const noexcept { return _value == STRING; }
     /**
      * @return Returns @b true if invalid type is represented, otherwise @b false.
      */
@@ -171,19 +226,25 @@ class Type
     /**
      * Type in text form.
      */
-    constexpr static std::array<std::string_view, EMPTY> enumNames = {"SUCCESS",
-                                                                      "EXCEPTION",
+    constexpr static std::array<std::string_view, EMPTY> enumNames = {"EXCEPTION",
                                                                       "FACTORY_VALUES",
                                                                       "READ_ERROR",
                                                                       "READ_OPERATING_DATA_33",
                                                                       "READ_OPERATING_DATA_3E",
-                                                                      "UINT16",
-                                                                      "SINT16",
-                                                                      "SCALE_FACTOR",
-                                                                      "CONNECTED_PHASE",
-                                                                      "UINT32",
-                                                                      "UINT64",
-                                                                      "STRING32"};
+                                                                      "SWITCH_OFF_INVERTER",
+                                                                      "SWITCH_ON_INVERTER",
+                                                                      "FORCE_IDLE",
+                                                                      "DEACTIVATE_IDLE",
+                                                                      "START_CONSTANT_VOLTAGE",
+                                                                      "END_CONSTANT_VOLTAGE",
+                                                                      "SET_POWER_FACTOR",
+                                                                      "CONTROL_BATTERY_INVERT",
+                                                                      "LIMIT_BATTERY_INVERT",
+                                                                      "WRITE_REGISTER",
+                                                                      "VALUE_16",
+                                                                      "VALUE_32",
+                                                                      "VALUE_64",
+                                                                      "STRING"};
 
   private:
     std::uint8_t _value;
