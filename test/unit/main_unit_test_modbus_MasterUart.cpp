@@ -1,10 +1,10 @@
 // catta
-#include <catta/modbus/Uart.hpp>
+#include <catta/modbus/MasterUart.hpp>
 
 // tostring
 #include <catta/tostring/Hexadecimal.hpp>
+#include <catta/tostring/modbus/MasterUartState.hpp>
 #include <catta/tostring/modbus/Token.hpp>
-#include <catta/tostring/modbus/UartState.hpp>
 #include <catta/tostring/parser/InputHandled.hpp>
 
 // test
@@ -19,7 +19,7 @@ template <catta::test::Output OUTPUT>
 static bool checkCases(catta::test::Test<OUTPUT>& test)
 {
     using Byte = std::optional<std::uint8_t>;
-    using State = catta::modbus::UartState;
+    using State = catta::modbus::MasterUartState;
     using Token = catta::modbus::Token;
     using TokenVec = std::vector<Token>;
     using ByteVec = std::vector<std::uint8_t>;
@@ -56,10 +56,10 @@ static bool checkCases(catta::test::Test<OUTPUT>& test)
             s += catta::tostring::toString(catta::Hexadecimal(v[i])) + (i + 1 < v.size() ? std::string(",") : std::string());
         return s + "]";
     };
-    catta::modbus::Uart uart;
+    catta::modbus::MasterUart uart;
     const auto checkNormal = [&now, &uart, &test](const std::uint8_t address, const TokenVec& sendInput, const ByteVec& sendOutputExpected,
                                                   const ByteVec& receiveInput, const TokenVec& receiveOutputExpected,
-                                                  const catta::modbus::UartState error = catta::modbus::UartState::empty())
+                                                  const catta::modbus::MasterUartState error = catta::modbus::MasterUartState::empty())
     {
         ByteVec sendOutput;
         if (debug)

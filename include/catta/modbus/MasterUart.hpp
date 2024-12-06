@@ -1,8 +1,8 @@
 #pragma once
 
 // modbus
+#include <catta/modbus/MasterUartState.hpp>
 #include <catta/modbus/Token.hpp>
-#include <catta/modbus/UartState.hpp>
 #include <catta/parser/InputHandled.hpp>
 
 // std
@@ -21,13 +21,13 @@ namespace modbus
  *
  * @author CattaTech - Maik Urbannek
  */
-class Uart
+class MasterUart
 {
   public:
     /**
      * Default constructor.
      */
-    constexpr Uart() noexcept : _state(IDLE), _length(0), _index(0), _crc(0xffff), _waitUntil{} {}
+    constexpr MasterUart() noexcept : _state(IDLE), _length(0), _index(0), _crc(0xffff), _waitUntil{} {}
     /**
      * @param[in] now Current time.
      * @param[in] received The bytes received from modbus.
@@ -40,10 +40,10 @@ class Uart
      *    - the input handled, that is @b handledYes if the @b send token was handled, otherwiese @b HandeledNo. On @b HandeledNo the work methode has
      * to be called next time with the same send token.
      */
-    constexpr std::tuple<catta::modbus::UartState, catta::modbus::Token, std::optional<std::uint8_t>, catta::parser::InputHandled> work(
+    constexpr std::tuple<catta::modbus::MasterUartState, catta::modbus::Token, std::optional<std::uint8_t>, catta::parser::InputHandled> work(
         const std::chrono::microseconds now, const std::optional<std::uint8_t> received, const catta::modbus::Token send, const std::uint8_t address)
     {
-        using State = catta::modbus::UartState;
+        using State = catta::modbus::MasterUartState;
         using Token = catta::modbus::Token;
         using Byte = std::optional<std::uint8_t>;
         using Handled = catta::parser::InputHandled;
@@ -89,7 +89,7 @@ class Uart
                 if (leastSignifcantByteSet) _crc = _crc ^ 0xA001;
             }
         };
-        const auto stay = [](const catta::modbus::UartState state) { return Tuple{state, Token::empty(), Byte{}, Handled::no()}; };
+        const auto stay = [](const catta::modbus::MasterUartState state) { return Tuple{state, Token::empty(), Byte{}, Handled::no()}; };
         const auto sendCrc0 = [this]()
         {
             _state = SEND_CRC1;

@@ -1,12 +1,12 @@
 // catta
-#include <catta/modbus/UartState.hpp>
+#include <catta/modbus/MasterUartState.hpp>
 
 // random
-#include <catta/random/modbus/UartState.hpp>
+#include <catta/random/modbus/MasterUartState.hpp>
 
 // fromtostring
-#include <catta/fromstring/modbus/UartState.hpp>
-#include <catta/tostring/modbus/UartState.hpp>
+#include <catta/fromstring/modbus/MasterUartState.hpp>
+#include <catta/tostring/modbus/MasterUartState.hpp>
 
 // test
 #include <catta/test/ConsoleOutput.hpp>
@@ -18,7 +18,7 @@ static constexpr bool debug = false;
 
 int main()
 {
-    using Type = catta::modbus::UartState;
+    using Type = catta::modbus::MasterUartState;
     using Output = catta::test::ConsoleOutput;
     const auto test_tofromstring = catta::test::checkToFromString<Output, Type, debug>;
     const auto test_copymove = catta::test::checkCopyMove<Output, Type, catta::test::NO_CHECK>;

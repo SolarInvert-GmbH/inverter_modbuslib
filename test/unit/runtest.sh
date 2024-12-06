@@ -28,6 +28,8 @@ check automatic_test_json_Parser
 check automatic_test_json_ParsingError
 check automatic_test_json_Token
 check automatic_test_json_TokenType
+check automatic_test_modbus_MasterUart
+check automatic_test_modbus_MasterUartState
 check automatic_test_modbus_si_Date
 check automatic_test_modbus_si_PowerConfig
 check automatic_test_modbus_si_ReadRegister
@@ -74,8 +76,6 @@ check automatic_test_modbus_sunspec_ValueU32
 check automatic_test_modbus_sunspec_ValueU64
 check automatic_test_modbus_Token
 check automatic_test_modbus_TokenType
-check automatic_test_modbus_Uart
-check automatic_test_modbus_UartState
 check automatic_test_parser_DefaultToken
 check automatic_test_parser_DefaultTokenType
 check automatic_test_parser_InputHandled

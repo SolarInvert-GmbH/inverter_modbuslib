@@ -10,10 +10,10 @@ namespace catta
 namespace modbus
 {
 /**
- * @brief Represents the modbus uart state.
+ * @brief Represents the modbus master uart state.
  * @author CattaTech - Maik Urbannek
  */
-class UartState
+class MasterUartState
 {
   private:
     constexpr static std::uint8_t IDLE = 0;
@@ -36,67 +36,70 @@ class UartState
      * errorReceiveLengthNotValid(), errorReceiveCodeNotValid(), errorReceiveWrongAddress(), errorReceiveWrongCrc(), errorReceiveTimeoutNoResponse(),
      * errorReceiveTimeoutPartialResponse() or empty(). Explicit constructor. Converts uint8 to state.
      */
-    [[nodiscard]] constexpr explicit UartState(const std::uint8_t value) noexcept : _value(value) {}
+    [[nodiscard]] constexpr explicit MasterUartState(const std::uint8_t value) noexcept : _value(value) {}
     /**
      * Default constructor. Creates invalid state.
      */
-    [[nodiscard]] constexpr UartState() noexcept : UartState(EMPTY) {}
+    [[nodiscard]] constexpr MasterUartState() noexcept : MasterUartState(EMPTY) {}
     /**
      * @return Returns the idle state.
      */
-    [[nodiscard]] constexpr static UartState idle() noexcept { return UartState{IDLE}; }
+    [[nodiscard]] constexpr static MasterUartState idle() noexcept { return MasterUartState{IDLE}; }
     /**
      * @return Returns the send state.
      */
-    [[nodiscard]] constexpr static UartState send() noexcept { return UartState{SEND}; }
+    [[nodiscard]] constexpr static MasterUartState send() noexcept { return MasterUartState{SEND}; }
     /**
      * @return Returns the receive state.
      */
-    [[nodiscard]] constexpr static UartState receive() noexcept { return UartState{RECEIVE}; }
+    [[nodiscard]] constexpr static MasterUartState receive() noexcept { return MasterUartState{RECEIVE}; }
     /**
      * @return Returns the error state (order of sent token is wrong).
      */
-    [[nodiscard]] constexpr static UartState errorSendInvalid() noexcept { return UartState{ERROR_SEND_INVALID}; }
+    [[nodiscard]] constexpr static MasterUartState errorSendInvalid() noexcept { return MasterUartState{ERROR_SEND_INVALID}; }
     /**
      * @return Returns the error state (received unexpected data).
      */
-    [[nodiscard]] constexpr static UartState errorReceiveWithoutReuquest() noexcept { return UartState{ERROR_RECEIVE_WITHOUT_REUQUEST}; }
+    [[nodiscard]] constexpr static MasterUartState errorReceiveWithoutReuquest() noexcept { return MasterUartState{ERROR_RECEIVE_WITHOUT_REUQUEST}; }
     /**
      * @return Returns the error state (length field > 252).
      */
-    [[nodiscard]] constexpr static UartState errorReceiveLengthNotValid() noexcept { return UartState{ERROR_RECEIVE_LENGTH_NOT_VALID}; }
+    [[nodiscard]] constexpr static MasterUartState errorReceiveLengthNotValid() noexcept { return MasterUartState{ERROR_RECEIVE_LENGTH_NOT_VALID}; }
     /**
      * @return Returns the error state (exception code field have to be 1, 2, 3 or 4).
      */
-    [[nodiscard]] constexpr static UartState errorReceiveCodeNotValid() noexcept { return UartState{ERROR_RECEIVE_CODE_NOT_VALID}; }
+    [[nodiscard]] constexpr static MasterUartState errorReceiveCodeNotValid() noexcept { return MasterUartState{ERROR_RECEIVE_CODE_NOT_VALID}; }
     /**
      * @return Returns the error state (response has unexpected address).
      */
-    [[nodiscard]] constexpr static UartState errorReceiveWrongAddress() noexcept { return UartState{ERROR_RECEIVE_WRONG_ADDRESS}; }
+    [[nodiscard]] constexpr static MasterUartState errorReceiveWrongAddress() noexcept { return MasterUartState{ERROR_RECEIVE_WRONG_ADDRESS}; }
     /**
      * @return Returns the error state (the received crc is wrong).
      */
-    [[nodiscard]] constexpr static UartState errorReceiveWrongCrc() noexcept { return UartState{ERROR_RECEIVE_WRONG_CRC}; }
+    [[nodiscard]] constexpr static MasterUartState errorReceiveWrongCrc() noexcept { return MasterUartState{ERROR_RECEIVE_WRONG_CRC}; }
     /**
      * @return Returns the error state (no response bytes received).
      */
-    [[nodiscard]] constexpr static UartState errorReceiveTimeoutNoResponse() noexcept { return UartState{ERROR_RECEIVE_TIMEOUT_NO_RESPONSE}; }
+    [[nodiscard]] constexpr static MasterUartState errorReceiveTimeoutNoResponse() noexcept
+    {
+        return MasterUartState{ERROR_RECEIVE_TIMEOUT_NO_RESPONSE};
+    }
     /**
      * @return Returns the error state (not enough response bytes where received).
      */
-    [[nodiscard]] constexpr static UartState errorReceiveTimeoutPartialResponse() noexcept
+    [[nodiscard]] constexpr static MasterUartState errorReceiveTimeoutPartialResponse() noexcept
     {
-        return UartState{ERROR_RECEIVE_TIMEOUT_PARTIAL_RESPONSE};
+        return MasterUartState{ERROR_RECEIVE_TIMEOUT_PARTIAL_RESPONSE};
     }
     /**
      * @return Returns the invalid state.
      */
-    [[nodiscard]] constexpr static UartState empty() noexcept { return UartState{EMPTY}; }
+    [[nodiscard]] constexpr static MasterUartState empty() noexcept { return MasterUartState{EMPTY}; }
     /**
-     * @param[in] other The other UartState.
-     * @return Returns @b true if the two UartState objects are the same, otherwise @b false.
+     * @param[in] other The other MasterUartState.
+     * @return Returns @b true if the two MasterUartState objects are the same, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool operator==(const UartState& other) const = default;
+    [[nodiscard]] constexpr bool operator==(const MasterUartState& other) const = default;
     /**
      * @return Returns state as uint8.
      */
