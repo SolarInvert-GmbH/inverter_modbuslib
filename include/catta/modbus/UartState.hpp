@@ -24,18 +24,17 @@ class UartState
     constexpr static std::uint8_t ERROR_RECEIVE_LENGTH_NOT_VALID = 5;
     constexpr static std::uint8_t ERROR_RECEIVE_CODE_NOT_VALID = 6;
     constexpr static std::uint8_t ERROR_RECEIVE_WRONG_ADDRESS = 7;
-    constexpr static std::uint8_t ERROR_RECEIVE_WRONG_ECHO = 8;
-    constexpr static std::uint8_t ERROR_RECEIVE_WRONG_CRC = 9;
-    constexpr static std::uint8_t ERROR_RECEIVE_TIMEOUT_NO_RESPONSE = 10;
-    constexpr static std::uint8_t ERROR_RECEIVE_TIMEOUT_PARTIAL_RESPONSE = 11;
-    constexpr static std::uint8_t EMPTY = 12;
+    constexpr static std::uint8_t ERROR_RECEIVE_WRONG_CRC = 8;
+    constexpr static std::uint8_t ERROR_RECEIVE_TIMEOUT_NO_RESPONSE = 9;
+    constexpr static std::uint8_t ERROR_RECEIVE_TIMEOUT_PARTIAL_RESPONSE = 10;
+    constexpr static std::uint8_t EMPTY = 11;
 
   public:
     /**
      * @param[in] value The enum value of the state.
      * @warning This constructor should not be used. Use idle(), send(), receive(), errorSendInvalid(), errorReceiveWithoutReuquest(),
-     * errorReceiveLengthNotValid(), errorReceiveCodeNotValid(), errorReceiveWrongAddress(), errorReceiveWrongEcho(), errorReceiveWrongCrc(),
-     * errorReceiveTimeoutNoResponse(), errorReceiveTimeoutPartialResponse() or empty(). Explicit constructor. Converts uint8 to state.
+     * errorReceiveLengthNotValid(), errorReceiveCodeNotValid(), errorReceiveWrongAddress(), errorReceiveWrongCrc(), errorReceiveTimeoutNoResponse(),
+     * errorReceiveTimeoutPartialResponse() or empty(). Explicit constructor. Converts uint8 to state.
      */
     [[nodiscard]] constexpr explicit UartState(const std::uint8_t value) noexcept : _value(value) {}
     /**
@@ -74,10 +73,6 @@ class UartState
      * @return Returns the error state (response has unexpected address).
      */
     [[nodiscard]] constexpr static UartState errorReceiveWrongAddress() noexcept { return UartState{ERROR_RECEIVE_WRONG_ADDRESS}; }
-    /**
-     * @return Returns the error state (response is not like request).
-     */
-    [[nodiscard]] constexpr static UartState errorReceiveWrongEcho() noexcept { return UartState{ERROR_RECEIVE_WRONG_ECHO}; }
     /**
      * @return Returns the error state (the received crc is wrong).
      */
@@ -139,10 +134,6 @@ class UartState
      */
     [[nodiscard]] constexpr bool isErrorReceiveWrongAddress() const noexcept { return _value == ERROR_RECEIVE_WRONG_ADDRESS; }
     /**
-     * @return Returns @b true if error state (response is not like request) is represented, otherwise @b false.
-     */
-    [[nodiscard]] constexpr bool isErrorReceiveWrongEcho() const noexcept { return _value == ERROR_RECEIVE_WRONG_ECHO; }
-    /**
      * @return Returns @b true if error state (the received crc is wrong) is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isErrorReceiveWrongCrc() const noexcept { return _value == ERROR_RECEIVE_WRONG_CRC; }
@@ -169,7 +160,6 @@ class UartState
                                                                       "ERROR_RECEIVE_LENGTH_NOT_VALID",
                                                                       "ERROR_RECEIVE_CODE_NOT_VALID",
                                                                       "ERROR_RECEIVE_WRONG_ADDRESS",
-                                                                      "ERROR_RECEIVE_WRONG_ECHO",
                                                                       "ERROR_RECEIVE_WRONG_CRC",
                                                                       "ERROR_RECEIVE_TIMEOUT_NO_RESPONSE",
                                                                       "ERROR_RECEIVE_TIMEOUT_PARTIAL_RESPONSE"};

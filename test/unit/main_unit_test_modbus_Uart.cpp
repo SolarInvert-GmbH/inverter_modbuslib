@@ -23,13 +23,18 @@ static bool checkCases(catta::test::Test<OUTPUT>& test)
     using Token = catta::modbus::Token;
     using TokenVec = std::vector<Token>;
     using ByteVec = std::vector<std::uint8_t>;
-    const TokenVec sendInput = {Token::start(), Token::function(0x31), Token::data(0x01), Token::data(0x01), Token::end()};
-    const ByteVec sendOutput = {0x01, 0x31, 0x01, 0x01, 0x90, 0x47};
-    const ByteVec receiveInput = {0x01, 0x31, 0x0c, 0x00, 0x01, 0x1E, 0x04, 0x0d, 0x22, 0x32, 0x28, 0x00, 0x00, 0x00, 0x00, 0x51, 0x51};
-    const TokenVec receiveOutput = {Token::start(),    Token::function(0x31), Token::data(0x0c), Token::data(0x00),
-                                    Token::data(0x01), Token::data(0x1E),     Token::data(0x04), Token::data(0x0D),
-                                    Token::data(0x22), Token::data(0x32),     Token::data(0x28), Token::data(0x00),
-                                    Token::data(0x00), Token::data(0x00),     Token::data(0x00), Token::end()};
+    const TokenVec sendInput0 = {Token::start(), Token::function(0x31), Token::data(0x01), Token::data(0x01), Token::end()};
+    const ByteVec sendOutput0 = {0x01, 0x31, 0x01, 0x01, 0x90, 0x47};
+    const ByteVec receiveInput0 = {0x01, 0x31, 0x0c, 0x00, 0x01, 0x1E, 0x04, 0x0d, 0x22, 0x32, 0x28, 0x00, 0x00, 0x00, 0x00, 0x51, 0x51};
+    const TokenVec receiveOutput0 = {Token::start(),    Token::function(0x31), Token::data(0x0c), Token::data(0x00),
+                                     Token::data(0x01), Token::data(0x1E),     Token::data(0x04), Token::data(0x0D),
+                                     Token::data(0x22), Token::data(0x32),     Token::data(0x28), Token::data(0x00),
+                                     Token::data(0x00), Token::data(0x00),     Token::data(0x00), Token::end()};
+    const TokenVec sendInput1 = {Token::start(),    Token::function(0x16), Token::data(0x9c), Token::data(0x40), Token::data(0x00),
+                                 Token::data(0x00), Token::data(0xaf),     Token::data(0xfe), Token::end()};
+    const ByteVec sendOutput1 = {0x01, 0x16, 0x9c, 0x40, 0x00, 0x00, 0xaf, 0xfe, 0x16, 0x25};
+    const ByteVec receiveInput1 = sendOutput1;
+    const TokenVec receiveOutput1 = sendInput1;
 
     std::chrono::microseconds now = {};
     static const auto printTime = [](const std::chrono::microseconds us)
@@ -181,13 +186,19 @@ static bool checkCases(catta::test::Test<OUTPUT>& test)
         }
         return true;
     };
-    if (!checkNormal(0x01, sendInput, sendOutput, receiveInput, receiveOutput)) return false;
-    if (!checkNormal(0x01, sendInput, sendOutput, receiveInput, receiveOutput, State::errorSendInvalid())) return false;
-    if (!checkNormal(0x01, sendInput, sendOutput, receiveInput, receiveOutput, State::errorReceiveWithoutReuquest())) return false;
-    if (!checkNormal(0x01, sendInput, sendOutput, receiveInput, receiveOutput, State::errorReceiveLengthNotValid())) return false;
-    if (!checkNormal(0x01, sendInput, sendOutput, receiveInput, receiveOutput, State::errorReceiveWrongCrc())) return false;
-    if (!checkNormal(0x01, sendInput, sendOutput, receiveInput, receiveOutput, State::errorReceiveTimeoutNoResponse())) return false;
-    if (!checkNormal(0x01, sendInput, sendOutput, receiveInput, receiveOutput, State::errorReceiveTimeoutPartialResponse())) return false;
+    if (!checkNormal(0x01, sendInput0, sendOutput0, receiveInput0, receiveOutput0)) return false;
+    if (!checkNormal(0x01, sendInput0, sendOutput0, receiveInput0, receiveOutput0, State::errorSendInvalid())) return false;
+    if (!checkNormal(0x01, sendInput0, sendOutput0, receiveInput0, receiveOutput0, State::errorReceiveWithoutReuquest())) return false;
+    if (!checkNormal(0x01, sendInput0, sendOutput0, receiveInput0, receiveOutput0, State::errorReceiveLengthNotValid())) return false;
+    if (!checkNormal(0x01, sendInput0, sendOutput0, receiveInput0, receiveOutput0, State::errorReceiveWrongCrc())) return false;
+    if (!checkNormal(0x01, sendInput0, sendOutput0, receiveInput0, receiveOutput0, State::errorReceiveTimeoutNoResponse())) return false;
+    if (!checkNormal(0x01, sendInput0, sendOutput0, receiveInput0, receiveOutput0, State::errorReceiveTimeoutPartialResponse())) return false;
+    if (!checkNormal(0x01, sendInput1, sendOutput1, receiveInput1, receiveOutput1)) return false;
+    if (!checkNormal(0x01, sendInput1, sendOutput1, receiveInput1, receiveOutput1, State::errorSendInvalid())) return false;
+    if (!checkNormal(0x01, sendInput1, sendOutput1, receiveInput1, receiveOutput1, State::errorReceiveWithoutReuquest())) return false;
+    if (!checkNormal(0x01, sendInput1, sendOutput1, receiveInput1, receiveOutput1, State::errorReceiveWrongCrc())) return false;
+    if (!checkNormal(0x01, sendInput1, sendOutput1, receiveInput1, receiveOutput1, State::errorReceiveTimeoutNoResponse())) return false;
+    if (!checkNormal(0x01, sendInput1, sendOutput1, receiveInput1, receiveOutput1, State::errorReceiveTimeoutPartialResponse())) return false;
     return true;
 }
 
