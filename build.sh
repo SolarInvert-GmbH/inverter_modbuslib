@@ -127,6 +127,7 @@ format()
         find "${ROOT}/random"  -type f -regex ".*\.\(c\|cpp\|h\|hpp\)" -exec "${FORMAT_COMAND}" -i {} +
         find "${ROOT}/string"  -type f -regex ".*\.\(c\|cpp\|h\|hpp\)" -exec "${FORMAT_COMAND}" -i {} +
         find "${ROOT}/test"    -type f -regex ".*\.\(c\|cpp\|h\|hpp\)" -exec "${FORMAT_COMAND}" -i {} +
+        find "${ROOT}/example" -type f -regex ".*\.\(c\|cpp\|h\|hpp\)" -exec "${FORMAT_COMAND}" -i {} +
     fi
 }
 

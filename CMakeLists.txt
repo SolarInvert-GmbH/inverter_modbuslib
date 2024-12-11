@@ -46,3 +46,4 @@ include_directories(${CMAKE_SOURCE_DIR}/string/include/)
 include_directories(${CMAKE_SOURCE_DIR}/modbus/include/)
 
 add_subdirectory(test/unit)
+add_subdirectory(example/linux/)
