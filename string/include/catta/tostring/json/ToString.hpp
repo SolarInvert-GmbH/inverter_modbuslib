@@ -83,13 +83,6 @@ class ToString
     char _data;
     catta::json::Token _jsonToken;
     char32_t _unicode;
-
-    static constexpr std::uint8_t STATE_START = 0;
-    static constexpr std::uint8_t STATE_READY = STATE_START + 1;
-    static constexpr std::uint8_t STATE_NULL = STATE_READY + 1;
-    static constexpr std::uint8_t STATE_TRUE = STATE_NULL + 3;
-    static constexpr std::uint8_t STATE_FALSE = STATE_TRUE + 3;
-    static constexpr std::uint8_t STATE_INTEGER = STATE_TRUE + 3;
 };
 }  // namespace json
 }  // namespace tostring
