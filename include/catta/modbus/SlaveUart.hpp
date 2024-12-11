@@ -27,7 +27,22 @@ class SlaveUart
     /**
      * Default constructor.
      */
-    constexpr SlaveUart() noexcept : _state(IDLE), _length(0), _index(0), _address(0x00), _crc(0xffff), _waitUntil{} {}
+    constexpr SlaveUart(const std::chrono::microseconds requestTimeout = std::chrono::milliseconds{500},
+                        const std::chrono::microseconds dataTimeout = std::chrono::microseconds{500},
+                        const std::chrono::microseconds stayInError = std::chrono::seconds{5},
+                        const std::chrono::microseconds waitForSend = std::chrono::microseconds{700}) noexcept
+        : _state(IDLE),
+          _length(0),
+          _index(0),
+          _address(0x00),
+          _crc(0xffff),
+          _waitUntil{},
+          _requestTimeout(requestTimeout),
+          _dataTimeout(dataTimeout),
+          _stayInError(stayInError),
+          _waitForSend(waitForSend)
+    {
+    }
     /**
      * @param[in] now Current time.
      * @param[in] received The bytes received from modbus.
@@ -70,7 +85,7 @@ class SlaveUart
         const auto error = [now, this, getErrorState](const std::uint8_t state)
         {
             _state = state;
-            _waitUntil = now + stayInError;
+            _waitUntil = now + _stayInError;
             return Tuple{getErrorState(), Token::empty(), Byte{}, Handled::yes()};
         };
         const auto computeCrc = [this](const std::uint8_t data)
@@ -90,7 +105,7 @@ class SlaveUart
         const auto receiveBase = [this, now, computeCrc, received](const std::uint8_t state, const Token token)
         {
             _state = state;
-            _waitUntil = now + dataTimeout;
+            _waitUntil = now + _dataTimeout;
             computeCrc(received.value());
             return Tuple{State::receive(), token, Byte{}, Handled::no()};
         };
@@ -139,7 +154,7 @@ class SlaveUart
             const std::uint8_t low = static_cast<std::uint8_t>(_crc);
             if (low != received.value()) return error(ERROR_RECEIVE_WRONG_CRC);
             _state = RECEVIE_WAIT_FOR_CRC1;
-            _waitUntil = now + dataTimeout;
+            _waitUntil = now + _dataTimeout;
             return Tuple{State::receive(), Token::empty(), Byte{}, Handled::no()};
         };
         const auto receiveCrc1 = [this, now, received, error, send]()
@@ -147,7 +162,7 @@ class SlaveUart
             const std::uint8_t high = static_cast<std::uint8_t>(_crc >> 8);
             if (high != received.value()) return error(ERROR_RECEIVE_WRONG_CRC);
             _state = WAIT_FOR_SEND;
-            _waitUntil = now + waitForSend;
+            _waitUntil = now + _waitForSend;
             return Tuple{State::receive(), Token::end(), Byte{}, send.type().isEnd() ? Handled::yes() : Handled::no()};
         };
 
@@ -161,7 +176,7 @@ class SlaveUart
             const std::uint8_t result = static_cast<std::uint8_t>((_crc >> 8) & 0xff);
             _crc = 0xffff;
             _state = IDLE;
-            _waitUntil = now + requestTimeout;
+            _waitUntil = now + _requestTimeout;
             _length = 0;
             return Tuple{State::send(), Token::empty(), Byte{result}, Handled::yes()};
         };
@@ -259,6 +274,11 @@ class SlaveUart
     std::uint16_t _crc;
     std::chrono::microseconds _waitUntil;
 
+    std::chrono::microseconds _requestTimeout;
+    std::chrono::microseconds _dataTimeout;
+    std::chrono::microseconds _stayInError;
+    std::chrono::microseconds _waitForSend;
+
     static constexpr std::uint8_t IDLE = 0;
 
     static constexpr std::uint8_t RECEVIE_WAIT_FOR_FUNCTION = IDLE + 1;
@@ -282,11 +302,6 @@ class SlaveUart
     static constexpr std::uint8_t ERROR_RECEIVE_CODE_NOT_VALID = ERROR_RECEIVE_LENGTH_NOT_VALID + 1;
     static constexpr std::uint8_t ERROR_RECEIVE_WRONG_CRC = ERROR_RECEIVE_CODE_NOT_VALID + 1;
     static constexpr std::uint8_t ERROR_RECEIVE_TIMEOUT_PARTIAL_REQUEST = ERROR_RECEIVE_WRONG_CRC + 1;
-
-    static constexpr std::chrono::microseconds requestTimeout = std::chrono::milliseconds{500};
-    static constexpr std::chrono::microseconds dataTimeout = std::chrono::microseconds{500};
-    static constexpr std::chrono::microseconds waitForSend = std::chrono::microseconds{700};
-    static constexpr std::chrono::microseconds stayInError = std::chrono::seconds{5};
 };
 }  // namespace modbus
 }  // namespace catta

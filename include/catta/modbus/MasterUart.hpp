@@ -27,7 +27,21 @@ class MasterUart
     /**
      * Default constructor.
      */
-    constexpr MasterUart() noexcept : _state(IDLE), _length(0), _index(0), _crc(0xffff), _waitUntil{} {}
+    constexpr MasterUart(const std::chrono::microseconds requestTimeout = std::chrono::milliseconds{500},
+                         const std::chrono::microseconds dataTimeout = std::chrono::microseconds{500},
+                         const std::chrono::microseconds stayInError = std::chrono::seconds{5},
+                         const std::chrono::microseconds waitForIdle = std::chrono::microseconds{1}) noexcept
+        : _state(IDLE),
+          _length(0),
+          _index(0),
+          _crc(0xffff),
+          _waitUntil{},
+          _requestTimeout(requestTimeout),
+          _dataTimeout(dataTimeout),
+          _stayInError(stayInError),
+          _waitForIdle(waitForIdle)
+    {
+    }
     /**
      * @param[in] now Current time.
      * @param[in] received The bytes received from modbus.
@@ -75,7 +89,7 @@ class MasterUart
         const auto error = [now, this, getErrorState](const std::uint8_t state)
         {
             _state = state;
-            _waitUntil = now + stayInError;
+            _waitUntil = now + _stayInError;
             return Tuple{getErrorState(), Token::empty(), Byte{}, Handled::yes()};
         };
         const auto computeCrc = [this](const std::uint8_t data)
@@ -100,7 +114,7 @@ class MasterUart
             const std::uint8_t result = static_cast<std::uint8_t>((_crc >> 8) & 0xff);
             _crc = 0xffff;
             _state = RECEVIE_WAIT_FOR_ADDRESS;
-            _waitUntil = now + requestTimeout;
+            _waitUntil = now + _requestTimeout;
             _length = 0;
             return Tuple{State::send(), Token::empty(), Byte{result}, Handled::yes()};
         };
@@ -119,7 +133,7 @@ class MasterUart
         const auto receiveBase = [this, now, computeCrc, received](const std::uint8_t state, const Token token)
         {
             _state = state;
-            _waitUntil = now + dataTimeout;
+            _waitUntil = now + _dataTimeout;
             computeCrc(received.value());
             return Tuple{State::receive(), token, Byte{}, Handled::no()};
         };
@@ -167,7 +181,7 @@ class MasterUart
             const std::uint8_t low = static_cast<std::uint8_t>(_crc);
             if (low != received.value()) return error(ERROR_RECEIVE_WRONG_CRC);
             _state = RECEVIE_WAIT_FOR_CRC1;
-            _waitUntil = now + dataTimeout;
+            _waitUntil = now + _dataTimeout;
             return Tuple{State::receive(), Token::empty(), Byte{}, Handled::no()};
         };
         const auto receiveCrc1 = [this, now, received, error, send]()
@@ -175,7 +189,7 @@ class MasterUart
             const std::uint8_t high = static_cast<std::uint8_t>(_crc >> 8);
             if (high != received.value()) return error(ERROR_RECEIVE_WRONG_CRC);
             _state = WAIT_FOR_IDLE;
-            _waitUntil = now + dataTimeout;
+            _waitUntil = now + _dataTimeout;
             return Tuple{State::receive(), Token::end(), Byte{}, send.type().isEnd() ? Handled::yes() : Handled::no()};
         };
         const auto idle = [this, stay]()
@@ -255,6 +269,11 @@ class MasterUart
     std::uint16_t _crc;
     std::chrono::microseconds _waitUntil;
 
+    std::chrono::microseconds _requestTimeout;
+    std::chrono::microseconds _dataTimeout;
+    std::chrono::microseconds _stayInError;
+    std::chrono::microseconds _waitForIdle;
+
     static constexpr std::uint8_t IDLE = 0;
     static constexpr std::uint8_t SEND_FUNCTION = IDLE + 1;
     static constexpr std::uint8_t SEND_DATA = SEND_FUNCTION + 1;
@@ -276,11 +295,6 @@ class MasterUart
     static constexpr std::uint8_t ERROR_RECEIVE_WRONG_CRC = ERROR_RECEIVE_WRONG_ADDRESS + 1;
     static constexpr std::uint8_t ERROR_RECEIVE_TIMEOUT_NO_RESPONSE = ERROR_RECEIVE_WRONG_CRC + 1;
     static constexpr std::uint8_t ERROR_RECEIVE_TIMEOUT_PARTIAL_RESPONSE = ERROR_RECEIVE_TIMEOUT_NO_RESPONSE + 1;
-
-    static constexpr std::chrono::microseconds requestTimeout = std::chrono::milliseconds{500};
-    static constexpr std::chrono::microseconds dataTimeout = std::chrono::microseconds{500};
-    static constexpr std::chrono::microseconds stayInError = std::chrono::seconds{5};
-    static constexpr std::chrono::microseconds waitForIdle = std::chrono::microseconds{1};
 };
 }  // namespace modbus
 }  // namespace catta
