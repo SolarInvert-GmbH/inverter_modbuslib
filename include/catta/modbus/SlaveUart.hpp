@@ -100,7 +100,6 @@ class SlaveUart
             }
         };
         const auto stay = [](const catta::modbus::SlaveUartState state) { return Tuple{state, Token::empty(), Byte{}, Handled::no()}; };
-        //   const auto jump = [stay,this](const catta::modbus::SlaveUartState result,const std::uint8_t state){_state=state;return stay(result);};
 
         const auto receiveBase = [this, now, computeCrc, received](const std::uint8_t state, const Token token)
         {
