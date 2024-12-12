@@ -6,3 +6,12 @@ add_library(main_sendrequest                                                    
 
 add_executable(Responder                                                                         $<TARGET_OBJECTS:main_responder>                                                          )
 add_executable(SendRequest                                                                       $<TARGET_OBJECTS:main_sendrequest>                                                        )
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 13.0)
+        target_compile_options(main_responder   PUBLIC "-Wno-maybe-uninitialized")
+        target_compile_options(main_sendrequest PUBLIC "-Wno-maybe-uninitialized")
+    endif()
+endif()
+
+# -Wno-maybe-uninitialized
