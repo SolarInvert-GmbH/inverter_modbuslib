@@ -31,7 +31,7 @@ class TokenType
     constexpr static std::uint8_t CHARACTER = 12;
     constexpr static std::uint8_t CLOSE_STRING = 13;
     constexpr static std::uint8_t END = 14;
-    constexpr static std::uint8_t ERROR = 15;
+    constexpr static std::uint8_t ERROR_STATE = 15;
     constexpr static std::uint8_t EMPTY = 16;
 
   public:
@@ -109,7 +109,7 @@ class TokenType
     /**
      * @return Returns the error.
      */
-    [[nodiscard]] constexpr static TokenType error() noexcept { return TokenType{ERROR}; }
+    [[nodiscard]] constexpr static TokenType error() noexcept { return TokenType{ERROR_STATE}; }
     /**
      * @return Returns the empty token types.
      */
@@ -186,7 +186,7 @@ class TokenType
     /**
      * @return Returns @b true if error is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isError() const noexcept { return _value == ERROR; }
+    [[nodiscard]] constexpr bool isError() const noexcept { return _value == ERROR_STATE; }
     /**
      * @return Returns @b true if empty token types is represented, otherwise @b false.
      */

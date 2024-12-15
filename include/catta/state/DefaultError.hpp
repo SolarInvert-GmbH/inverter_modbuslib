@@ -16,7 +16,7 @@ namespace state
 class DefaultError
 {
   private:
-    constexpr static std::uint8_t ERROR = 0;
+    constexpr static std::uint8_t ERROR_TYPE = 0;
     constexpr static std::uint8_t EMPTY = 1;
 
   public:
@@ -32,7 +32,7 @@ class DefaultError
     /**
      * @return Returns the running state.
      */
-    [[nodiscard]] constexpr static DefaultError error() noexcept { return DefaultError{ERROR}; }
+    [[nodiscard]] constexpr static DefaultError error() noexcept { return DefaultError{ERROR_TYPE}; }
     /**
      * @return Returns the no error representation.
      */
@@ -49,7 +49,7 @@ class DefaultError
     /**
      * @return Returns @b true if running state is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isError() const noexcept { return _value == ERROR; }
+    [[nodiscard]] constexpr bool isError() const noexcept { return _value == ERROR_TYPE; }
     /**
      * @return Returns @b true if no error representation is represented, otherwise @b false.
      */

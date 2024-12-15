@@ -24,7 +24,7 @@ class Serializer<catta::modbus::si::request::ControlBatteryInvert>
         using Tuple = std::tuple<Error, catta::parser::InputHandled>;
         const auto error = [this]()
         {
-            _state = ERROR;
+            _state = ERROR_STATE;
             return Tuple{Error::error(), catta::parser::InputHandled::yes()};
         };
         const auto done = [this]()
@@ -154,7 +154,7 @@ class Serializer<catta::modbus::si::request::ControlBatteryInvert>
     static constexpr std::uint8_t TIMEOUT = U_MAX + 8;
     static constexpr std::uint8_t TAIL = TIMEOUT + 11;
     static constexpr std::uint8_t DONE = TAIL + 1;
-    static constexpr std::uint8_t ERROR = DONE + 1;
+    static constexpr std::uint8_t ERROR_STATE = DONE + 1;
 };
 }  // namespace tojson
 }  // namespace catta

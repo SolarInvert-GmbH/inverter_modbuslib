@@ -24,7 +24,7 @@ class Serializer<Decimal<I>>
         using Tuple = std::tuple<Error, catta::parser::InputHandled>;
         const auto error = [this]()
         {
-            _state = ERROR;
+            _state = ERROR_STATE;
             return Tuple{Error::error(), catta::parser::InputHandled::yes()};
         };
         const Tuple result = Tuple{Error::empty(), catta::parser::InputHandled::no()};
@@ -99,7 +99,7 @@ class Serializer<Decimal<I>>
     static constexpr std::uint8_t RUNNING = 1;
     static constexpr std::uint8_t TAIL = 2;
     static constexpr std::uint8_t DONE = 3;
-    static constexpr std::uint8_t ERROR = 4;
+    static constexpr std::uint8_t ERROR_STATE = 4;
 };
 
 template <std::integral I>

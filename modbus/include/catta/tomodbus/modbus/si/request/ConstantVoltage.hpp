@@ -22,7 +22,7 @@ class Serializer<catta::modbus::si::request::ConstantVoltage>
         using Tuple = std::tuple<Error, catta::parser::InputHandled>;
         const auto error = [this]()
         {
-            _state = ERROR;
+            _state = ERROR_STATE;
             return Tuple{Error::error(), catta::parser::InputHandled::yes()};
         };
         const auto done = [this]()
@@ -78,7 +78,7 @@ class Serializer<catta::modbus::si::request::ConstantVoltage>
     static constexpr std::uint8_t DATA = START + 3;
     static constexpr std::uint8_t TAIL = DATA + 2;
     static constexpr std::uint8_t DONE = TAIL + 1;
-    static constexpr std::uint8_t ERROR = DONE + 1;
+    static constexpr std::uint8_t ERROR_STATE = DONE + 1;
 };
 }  // namespace tomodbus
 }  // namespace catta

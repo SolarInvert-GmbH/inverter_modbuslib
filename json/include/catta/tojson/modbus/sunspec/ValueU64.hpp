@@ -22,7 +22,7 @@ class Serializer<catta::modbus::sunspec::ValueU64>
         typedef std::tuple<Error, catta::parser::InputHandled> Tuple;
         const auto error = [this]()
         {
-            _state = ERROR;
+            _state = ERROR_STATE;
             return Tuple{Error::error(), catta::parser::InputHandled::yes()};
         };
         const auto stay = []() { return Tuple{Error(), catta::parser::InputHandled::no()}; };
@@ -64,7 +64,7 @@ class Serializer<catta::modbus::sunspec::ValueU64>
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t TAIL = START + 1;
     static constexpr std::uint8_t DONE = TAIL + 1;
-    static constexpr std::uint8_t ERROR = DONE + 1;
+    static constexpr std::uint8_t ERROR_STATE = DONE + 1;
 };
 }  // namespace tojson
 }  // namespace catta

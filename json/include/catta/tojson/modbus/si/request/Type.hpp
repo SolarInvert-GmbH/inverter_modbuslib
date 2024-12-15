@@ -22,7 +22,7 @@ class Serializer<catta::modbus::si::request::Type>
         using Tuple = std::tuple<Error, catta::parser::InputHandled>;
         const auto error = [this]()
         {
-            _state = ERROR;
+            _state = ERROR_STATE;
             return Tuple{Error::error(), catta::parser::InputHandled::yes()};
         };
         const auto done = [this]()
@@ -603,7 +603,7 @@ class Serializer<catta::modbus::si::request::Type>
     static constexpr std::uint16_t READ_ERROR = LIMIT_BATTERY_INVERT + 18;
     static constexpr std::uint16_t TAIL = READ_ERROR + 9;
     static constexpr std::uint16_t DONE = TAIL + 2;
-    static constexpr std::uint16_t ERROR = DONE + 1;
+    static constexpr std::uint16_t ERROR_STATE = DONE + 1;
 };
 }  // namespace tojson
 }  // namespace catta

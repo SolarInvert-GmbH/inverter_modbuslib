@@ -10,7 +10,7 @@ namespace catta
 namespace linux
 {
 /**
- * @brief Represents the possible error when using catta::os::Uart.
+ * @brief Represents the possible error when using catta::windows::Uart.
  * @author CattaTech - Maik Urbannek
  */
 class UartError

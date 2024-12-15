@@ -18,7 +18,7 @@ class DefaultTokenType
   private:
     constexpr static std::uint8_t VALUE = 0;
     constexpr static std::uint8_t END = 1;
-    constexpr static std::uint8_t ERROR = 2;
+    constexpr static std::uint8_t ERROR_TYPE = 2;
     constexpr static std::uint8_t EMPTY = 3;
 
   public:
@@ -42,7 +42,7 @@ class DefaultTokenType
     /**
      * @return Returns the error type.
      */
-    [[nodiscard]] constexpr static DefaultTokenType error() noexcept { return DefaultTokenType{ERROR}; }
+    [[nodiscard]] constexpr static DefaultTokenType error() noexcept { return DefaultTokenType{ERROR_TYPE}; }
     /**
      * @return Returns the empty type.
      */
@@ -67,7 +67,7 @@ class DefaultTokenType
     /**
      * @return Returns @b true if error type is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isError() const noexcept { return _value == ERROR; }
+    [[nodiscard]] constexpr bool isError() const noexcept { return _value == ERROR_TYPE; }
     /**
      * @return Returns @b true if empty type is represented, otherwise @b false.
      */

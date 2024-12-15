@@ -23,7 +23,7 @@ class Parser<catta::modbus::si::request::PowerFactor>
         using Tuple = std::tuple<Error, catta::parser::InputHandled>;
         const auto error = [this]()
         {
-            _state = ERROR;
+            _state = ERROR_STATE;
             return Tuple{Error::error(), catta::parser::InputHandled::yes()};
         };
         const auto stay = []() { return Tuple{Error(), catta::parser::InputHandled::yes()}; };
@@ -99,7 +99,7 @@ class Parser<catta::modbus::si::request::PowerFactor>
     static constexpr std::uint8_t HUB = START + 1;
     static constexpr std::uint8_t TAIL = HUB + 10;
     static constexpr std::uint8_t DONE = TAIL + 1;
-    static constexpr std::uint8_t ERROR = DONE + 1;
+    static constexpr std::uint8_t ERROR_STATE = DONE + 1;
 };
 }  // namespace fromjson
 }  // namespace catta

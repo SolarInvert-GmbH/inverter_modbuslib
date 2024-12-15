@@ -15,12 +15,12 @@ namespace parser
 {
 /**
  * @tparam CHARACTER The used output type.
- * @tparam ERROR The error type to describe the possible parsing errors.
+ * @tparam ERROR_TYPE The error type to describe the possible parsing errors.
  *
  * @brief Default token is the simplest implementation of the token concept.
  * @author CattaTech - Maik Urbannek
  */
-template <class CHARACTER, ErrorConcept ERROR>
+template <class CHARACTER, ErrorConcept ERROR_TYPE>
 class DefaultToken
 {
   public:
@@ -31,7 +31,7 @@ class DefaultToken
     /**
      * The error type.
      */
-    using Error = ERROR;
+    using Error = ERROR_TYPE;
     /**
      * Default constructor. Creates empty character token.
      */

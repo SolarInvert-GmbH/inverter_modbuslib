@@ -18,11 +18,11 @@ class Token
     /**
      * Default constructor. Creates empty token.
      */
-    [[nodiscard]] constexpr Token() noexcept : Token(catta::modbus::TokenType::empty(), NO_DATA) {}
+    [[nodiscard]] constexpr Token() noexcept : Token(catta::modbus::TokenType::empty(), EMPTY_DATA) {}
     /**
      * @return Returns a start token.
      */
-    [[nodiscard]] constexpr static Token start() noexcept { return {catta::modbus::TokenType::start(), NO_DATA}; }
+    [[nodiscard]] constexpr static Token start() noexcept { return {catta::modbus::TokenType::start(), EMPTY_DATA}; }
     /**
      * @param[in] value The function value.
      * @return Returns a function token.
@@ -36,7 +36,7 @@ class Token
     /**
      * @return Returns a exception token.
      */
-    [[nodiscard]] constexpr static Token exception() noexcept { return {catta::modbus::TokenType::exception(), NO_DATA}; }
+    [[nodiscard]] constexpr static Token exception() noexcept { return {catta::modbus::TokenType::exception(), EMPTY_DATA}; }
     /**
      * @param[in] value The exception code value. Has to be 1, 2, 3 or 4, otherwise empty is returned.
      * @return Returns a exception code token if input is valid, otherwise empty.
@@ -48,7 +48,7 @@ class Token
     /**
      * @return Returns an end token.
      */
-    [[nodiscard]] constexpr static Token end() noexcept { return {catta::modbus::TokenType::end(), NO_DATA}; }
+    [[nodiscard]] constexpr static Token end() noexcept { return {catta::modbus::TokenType::end(), EMPTY_DATA}; }
     /**
      * @return Returns an empty token.
      */
@@ -75,7 +75,7 @@ class Token
     constexpr Token(const catta::modbus::TokenType type, const std::uint8_t value) : _type(type), _value(value) {}
     catta::modbus::TokenType _type;
     std::uint8_t _value;
-    static constexpr std::uint8_t NO_DATA = 0x0;
+    static constexpr std::uint8_t EMPTY_DATA = 0x0;
 };
 }  // namespace modbus
 }  // namespace catta
