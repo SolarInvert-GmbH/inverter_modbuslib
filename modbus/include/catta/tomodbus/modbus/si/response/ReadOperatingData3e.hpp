@@ -51,7 +51,7 @@ class Serializer<catta::modbus::si::response::ReadOperatingData3e>
             case START + 1:
                 return next(Output::function(0x3e));
             case START + 2:
-                return next(Output::data(0x16));
+                return next(Output::data(0x13));
             case DATA + 0:
                 return high(input.serialNumber().value());
             case DATA + 1:
@@ -90,12 +90,6 @@ class Serializer<catta::modbus::si::response::ReadOperatingData3e>
                 return next(Output::data(input.modbusId().value()));
             case DATA + 18:
                 return next(Output::data(0x00));
-            case DATA + 19:
-                return next(Output::data(0x00));
-            case DATA + 20:
-                return next(Output::data(0x00));
-            case DATA + 21:
-                return next(Output::data(0x00));
             case TAIL + 0:
                 return done();
             default:
@@ -117,7 +111,7 @@ class Serializer<catta::modbus::si::response::ReadOperatingData3e>
     Output _data;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t DATA = START + 3;
-    static constexpr std::uint8_t TAIL = DATA + 22;
+    static constexpr std::uint8_t TAIL = DATA + 19;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR_STATE = DONE + 1;
 };

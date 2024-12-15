@@ -65,7 +65,7 @@ class Parser<catta::modbus::si::response::ReadOperatingData3e>
             case START + 1:
                 return input == Input::function(0x3E) ? next() : error();
             case START + 2:
-                return input == Input::data(0x16) ? next() : error();
+                return input == Input::data(0x13) ? next() : error();
             case DATA + 0:
                 return high(_serialNumber);
             case DATA + 1:
@@ -103,12 +103,6 @@ class Parser<catta::modbus::si::response::ReadOperatingData3e>
             case DATA + 17:
                 return set(_modbusId, catta::modbus::sunspec::ValueU8<0, 15>::create(input.value()).isEmpty());
             case DATA + 18:
-                return next();
-            case DATA + 19:
-                return next();
-            case DATA + 20:
-                return next();
-            case DATA + 21:
                 return next();
             case TAIL + 0:
                 return input == catta::modbus::Token::end() ? jump(DONE + 0) : error();
@@ -168,7 +162,7 @@ class Parser<catta::modbus::si::response::ReadOperatingData3e>
 
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t DATA = START + 3;
-    static constexpr std::uint8_t TAIL = DATA + 22;
+    static constexpr std::uint8_t TAIL = DATA + 19;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR_STATE = DONE + 1;
 };
