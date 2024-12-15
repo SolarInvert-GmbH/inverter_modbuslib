@@ -14,7 +14,7 @@ exit_and_clean_up()
 print_help_and_leave()
 {
     echo "ussage:"
-    echo "${0} [--debug|--release] [--gcc|--clang] [--all] [--docu] [--test] [--coverage] [--format]"
+    echo "${0} [--debug|--release] [--gcc|--clang] [--all] [--docu] [--test] [--coverage] [--format] [--windows]"
     echo "    '--release' and '--gcc' are defalut."
     exit_and_clean_up "${1}"
 }
@@ -48,6 +48,7 @@ parse_arguments()
     TASK_TEST="false"
     TASK_DOCU="false"
     TASK_FORMAT="false"
+    TASK_WINDOWS="false"
 
     if [[ ${#} -eq 0 ]]; then
         TASK_COMPILE="true"
@@ -95,6 +96,9 @@ parse_arguments()
           --test)
             TASK_TEST="true"
             TASK_COMPILE="true"
+            ;;
+          --windows)
+            TASK_WINDOWS="true"
             ;;
           *)
             echo "Unknown argument '${key}'"
@@ -184,6 +188,24 @@ compile_project()
     fi
 }
 
+compile_project_cross_windows()
+{
+    if [[ "${TASK_WINDOWS}" == "true" ]]; then
+        cd "${ROOT}"
+        mkdir -p "build/mingw" && cd "build/mingw"
+        cmake -DCMAKE_TOOLCHAIN_FILE=../../config/mingw.cmake \
+              -DCMAKE_BUILD_TYPE="RELEASE" \
+              -DCMAKE_GIT_VERSION="$(get_git_version)" \
+              -DCMAKE_COVERAGE="${TASK_COVERAGE}" \
+              ../..
+        make -j $(nproc)
+        if [ ${?} -ne 0 ]; then
+            echo "build failed."
+            exit_and_clean_up 1
+        fi
+    fi
+}
+
 create_docu()
 {
     if [[ "${TASK_DOCU}" == "true" ]]; then
@@ -230,6 +252,7 @@ add_hook_if_possible
 parse_arguments "${@}"
 format
 compile_project
+compile_project_cross_windows
 execute_tests
 create_coverage
 create_docu

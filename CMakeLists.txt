@@ -45,5 +45,14 @@ include_directories(${CMAKE_SOURCE_DIR}/random/include/)
 include_directories(${CMAKE_SOURCE_DIR}/string/include/)
 include_directories(${CMAKE_SOURCE_DIR}/modbus/include/)
 
+
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    add_subdirectory(example/linux/)
+endif()
+
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++ -static")
+    add_subdirectory(example/windows/)
+endif()
+
 add_subdirectory(test/unit)
-add_subdirectory(example/linux/)

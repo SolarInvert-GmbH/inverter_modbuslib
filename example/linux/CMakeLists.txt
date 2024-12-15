@@ -13,5 +13,3 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         target_compile_options(main_sendrequest PUBLIC "-Wno-maybe-uninitialized")
     endif()
 endif()
-
-# -Wno-maybe-uninitialized
