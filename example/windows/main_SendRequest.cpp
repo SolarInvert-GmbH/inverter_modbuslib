@@ -73,7 +73,7 @@ static std::string printTimestamp(const std::chrono::microseconds t)
 
 static void printHelp(const std::string_view program)
 {
-    std::cout << program << " --uart COM1 --address 01 --request '{...}' [--debug [--verbose]]\n";
+    std::cout << program << " --uart COM1 --address 01 --request {\\\"type\\\":\\\"readError\\\",\\\"value\\\":null} [--debug [--verbose]]\n";
     std::cout << " --uart     : uart device.\n";
     std::cout << " --address  : address in hex (two digets).\n";
     std::cout << " --request  : the request as json.\n";
@@ -188,11 +188,12 @@ int main(int argc, char *argv[])
     static constexpr auto stopBits = catta::hardware::uart::StopBits::one();
 
     static constexpr std::chrono::microseconds requestTimeout = std::chrono::milliseconds{500};
-    static constexpr std::chrono::microseconds dataTimeout = std::chrono::milliseconds{10};  // should b mush smaller
+    static constexpr std::chrono::microseconds dataTimeout = std::chrono::milliseconds{100};  // should be much smaller
     static constexpr std::chrono::microseconds stayInError = std::chrono::seconds{5};
     static constexpr std::chrono::microseconds waitForIdle = std::chrono::microseconds{1};
 
     auto uart = catta::windows::Uart::create(uartDevice, baudrate, parity, dataBits, stopBits);
+
     auto modbus = catta::modbus::MasterUart(requestTimeout, dataTimeout, stayInError, waitForIdle);
 
     bool uartConnection = false;

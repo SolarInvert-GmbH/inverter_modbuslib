@@ -150,14 +150,14 @@ catta::windows::Uart catta::windows::Uart::create(const std::string_view device,
     DCB portSettings = {};
     portSettings.DCBlength = sizeof(portSettings);
 
-    if (GetCommState(fd, &portSettings)) return error(Error::deviceIsBusy());
+    if (!GetCommState(fd, &portSettings)) return error(Error::deviceIsBusy());
 
     portSettings.BaudRate = windowsBaudrate;
     portSettings.ByteSize = dataBits.isFive() ? 5 : dataBits.isSix() ? 6 : dataBits.isSeven() ? 7 : 8;
     portSettings.Parity = parity.isOdd() ? ODDPARITY : parity.isEven() ? EVENPARITY : NOPARITY;
     portSettings.StopBits = (stopBits.isOne() ? ONESTOPBIT : TWOSTOPBITS);
 
-    if (SetCommState(fd, &portSettings)) return error(Error::couldNotBind());
+    if (!SetCommState(fd, &portSettings)) return error(Error::couldNotBind());
 
     COMMTIMEOUTS Cptimeouts = {.ReadIntervalTimeout = MAXDWORD,
                                .ReadTotalTimeoutMultiplier = 0,
