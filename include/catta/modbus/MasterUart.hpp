@@ -151,29 +151,21 @@ class MasterUart
         };
         const auto receiveFunction = [receiveBase, received, setLength]()
         {
-            if (received.value() & 0x80) return receiveBase(RECEVIE_WAIT_FOR_LENGTH_8, Token::exception());
+            if (received.value() & 0x80) return receiveBase(RECEVIE_WAIT_FOR_LENGTH, Token::exception());
             switch (received.value())
             {
                 case 0x16:
                     return setLength(6, Token::function(received.value()));
-                case 0x03:
-                    return receiveBase(RECEVIE_WAIT_FOR_LENGTH_16, Token::function(received.value()));
                 default:
-                    return receiveBase(RECEVIE_WAIT_FOR_LENGTH_8, Token::function(received.value()));
+                    return receiveBase(RECEVIE_WAIT_FOR_LENGTH, Token::function(received.value()));
             }
         };
 
-        const auto receiveLength8 = [setLength, received, error]()
+        const auto receiveLength = [setLength, received, error]()
         {
             if (received.value() >= 253) return error(ERROR_RECEIVE_LENGTH_NOT_VALID);
             return setLength(received.value(), Token::data(received.value()));
         };
-        const auto receiveLength16 = [setLength, received, error]()
-        {
-            if (received.value() * 2 >= 253) return error(ERROR_RECEIVE_LENGTH_NOT_VALID);
-            return setLength(received.value() * 2, Token::data(received.value()));
-        };
-
         const auto receiveData = [this, receiveBase, received]()
         {
             _index++;
@@ -237,10 +229,8 @@ class MasterUart
                 return now > _waitUntil ? error(ERROR_RECEIVE_TIMEOUT_NO_RESPONSE) : received ? receiveAddress() : stay(State::receive());
             case RECEVIE_WAIT_FOR_FUNCTION:
                 return now > _waitUntil ? error(ERROR_RECEIVE_TIMEOUT_PARTIAL_RESPONSE) : received ? receiveFunction() : stay(State::receive());
-            case RECEVIE_WAIT_FOR_LENGTH_8:
-                return now > _waitUntil ? error(ERROR_RECEIVE_TIMEOUT_PARTIAL_RESPONSE) : received ? receiveLength8() : stay(State::receive());
-            case RECEVIE_WAIT_FOR_LENGTH_16:
-                return now > _waitUntil ? error(ERROR_RECEIVE_TIMEOUT_PARTIAL_RESPONSE) : received ? receiveLength16() : stay(State::receive());
+            case RECEVIE_WAIT_FOR_LENGTH:
+                return now > _waitUntil ? error(ERROR_RECEIVE_TIMEOUT_PARTIAL_RESPONSE) : received ? receiveLength() : stay(State::receive());
             case RECEVIE_WAIT_FOR_DATA:
                 return now > _waitUntil ? error(ERROR_RECEIVE_TIMEOUT_PARTIAL_RESPONSE) : received ? receiveData() : stay(State::receive());
             case RECEVIE_WAIT_FOR_CODE:
@@ -291,9 +281,8 @@ class MasterUart
     static constexpr std::uint8_t SEND_CRC1 = SEND_CRC0 + 1;
     static constexpr std::uint8_t RECEVIE_WAIT_FOR_ADDRESS = SEND_CRC1 + 1;
     static constexpr std::uint8_t RECEVIE_WAIT_FOR_FUNCTION = RECEVIE_WAIT_FOR_ADDRESS + 1;
-    static constexpr std::uint8_t RECEVIE_WAIT_FOR_LENGTH_8 = RECEVIE_WAIT_FOR_FUNCTION + 1;
-    static constexpr std::uint8_t RECEVIE_WAIT_FOR_LENGTH_16 = RECEVIE_WAIT_FOR_LENGTH_8 + 1;
-    static constexpr std::uint8_t RECEVIE_WAIT_FOR_DATA = RECEVIE_WAIT_FOR_LENGTH_16 + 1;
+    static constexpr std::uint8_t RECEVIE_WAIT_FOR_LENGTH = RECEVIE_WAIT_FOR_FUNCTION + 1;
+    static constexpr std::uint8_t RECEVIE_WAIT_FOR_DATA = RECEVIE_WAIT_FOR_LENGTH + 1;
     static constexpr std::uint8_t RECEVIE_WAIT_FOR_CODE = RECEVIE_WAIT_FOR_DATA + 1;
     static constexpr std::uint8_t RECEVIE_WAIT_FOR_CRC0 = RECEVIE_WAIT_FOR_CODE + 1;
     static constexpr std::uint8_t RECEVIE_WAIT_FOR_CRC1 = RECEVIE_WAIT_FOR_CRC0 + 1;
