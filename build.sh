@@ -14,7 +14,7 @@ exit_and_clean_up()
 print_help_and_leave()
 {
     echo "ussage:"
-    echo "${0} [--debug|--release] [--gcc|--clang] [--all] [--docu] [--test] [--coverage] [--format] [--windows]"
+    echo "${0} [--debug|--release] [--gcc|--clang] [--all] [--docu] [--test] [--coverage] [--format] [--windows] [--rp2040]"
     echo "    '--release' and '--gcc' are defalut."
     exit_and_clean_up "${1}"
 }
@@ -49,6 +49,7 @@ parse_arguments()
     TASK_DOCU="false"
     TASK_FORMAT="false"
     TASK_WINDOWS="false"
+    TASK_RP2040="false"
 
     if [[ ${#} -eq 0 ]]; then
         TASK_COMPILE="true"
@@ -99,6 +100,9 @@ parse_arguments()
             ;;
           --windows)
             TASK_WINDOWS="true"
+            ;;
+          --rp2040)
+            TASK_RP2040="true"
             ;;
           *)
             echo "Unknown argument '${key}'"
@@ -206,6 +210,30 @@ compile_project_cross_windows()
     fi
 }
 
+compile_project_cross_rp2040()
+{
+    if [[ "${TASK_RP2040}" == "true" ]]; then
+        echo "Miwau"
+        cd "${ROOT}"
+        mkdir -p "build" && cd "build"
+        mkdir -p "rp2040" && cd "rp2040"
+        cmake -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+              -DCMAKE_GIT_VERSION="$(get_git_version)" \
+              ../../example/rp2040 && \
+        make -j $(nproc)
+        if [ ${?} -ne 0 ]; then
+            echo "build failed."
+            exit_and_clean_up 1
+        fi
+        #mkdir -p ex6221_firmware
+        #cp firmware.uf2 ex6221_firmware/ex6221_firmware.uf2
+        #printf $(get_git_version) > ex6221_firmware/VERSION
+        #tar czf ex6221_firmware.tar.gz ex6221_firmware
+        #rm -r ex6221_firmware
+        #echo "SHA256: $(sha256sum ex6221_firmware.tar.gz)"
+    fi
+}
+
 create_docu()
 {
     if [[ "${TASK_DOCU}" == "true" ]]; then
@@ -253,6 +281,7 @@ parse_arguments "${@}"
 format
 compile_project
 compile_project_cross_windows
+compile_project_cross_rp2040
 execute_tests
 create_coverage
 create_docu
