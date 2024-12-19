@@ -46,6 +46,12 @@ class Parser<catta::modbus::si::response::ReadOperatingData3e>
             v = static_cast<std::uint16_t>(v | input.value());
             return next();
         };
+        const auto setType = [next, input, error](std::uint8_t& v, const bool dead)
+        {
+            if (dead) return error();
+            v = input.value() - 1;
+            return next();
+        };
         const auto set = [next, input, error](std::uint8_t& v, const bool dead)
         {
             if (dead) return error();
@@ -71,7 +77,7 @@ class Parser<catta::modbus::si::response::ReadOperatingData3e>
             case DATA + 1:
                 return low(_serialNumber);
             case DATA + 2:
-                return set(_type, catta::modbus::si::Type(input.value()).isEmpty());
+                return setType(_type, catta::modbus::si::Type(input.value() - 1).isEmpty());
             case DATA + 3:
                 return set(_voltageType, catta::modbus::sunspec::ValueU8<1, 10>::create(input.value()).isEmpty());
             case DATA + 4:

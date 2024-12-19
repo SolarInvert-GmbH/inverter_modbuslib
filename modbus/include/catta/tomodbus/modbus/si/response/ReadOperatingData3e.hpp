@@ -57,7 +57,7 @@ class Serializer<catta::modbus::si::response::ReadOperatingData3e>
             case DATA + 1:
                 return low(input.serialNumber().value());
             case DATA + 2:
-                return next(Output::data(input.type()));
+                return next(Output::data(input.type() + 1));
             case DATA + 3:
                 return next(Output::data(input.voltageType().value()));
             case DATA + 4:
