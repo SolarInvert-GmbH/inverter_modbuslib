@@ -93,7 +93,7 @@ class Parser<catta::modbus::si::response::Response>
         const auto getCount = [this, input, error, jump](const std::uint8_t state)
         {
             const std::uint8_t v = input.value();
-            if (!input.type().isData() || (v != 1 && v != 2 && v != 4 && v != 16)) return error();
+            if (!input.type().isData() || (v != 2 && v != 4 && v != 8 && v != 32)) return error();
             _count = v;
             return jump(state);
         };
@@ -115,7 +115,7 @@ class Parser<catta::modbus::si::response::Response>
             if (!input.type().isData()) return error();
             _data[_index] = static_cast<std::uint16_t>(_data[_index] | input.value());
             _index++;
-            return _index >= _count ? jump(TAIL + 0) : jump(READ_REGISTER + 1);
+            return _index >= _count / 2 ? jump(TAIL + 0) : jump(READ_REGISTER + 1);
         };
         switch (_state)
         {
@@ -176,13 +176,13 @@ class Parser<catta::modbus::si::response::Response>
             case 0x03:
                 switch (_count)
                 {
-                    case 1:
-                        return Output::value16(_data[0]);
                     case 2:
-                        return Output::value32(v32());
+                        return Output::value16(_data[0]);
                     case 4:
+                        return Output::value32(v32());
+                    case 8:
                         return Output::value64(v64());
-                    case 16:
+                    case 32:
                         return Output::string(string());
                     default:
                         return Output::empty();

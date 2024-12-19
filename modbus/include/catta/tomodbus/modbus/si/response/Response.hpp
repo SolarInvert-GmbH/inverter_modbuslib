@@ -103,13 +103,13 @@ class Serializer<catta::modbus::si::response::Response>
             switch (input.type())
             {
                 case catta::modbus::si::response::Type::value16():
-                    return 1;
-                case catta::modbus::si::response::Type::value32():
                     return 2;
-                case catta::modbus::si::response::Type::value64():
+                case catta::modbus::si::response::Type::value32():
                     return 4;
+                case catta::modbus::si::response::Type::value64():
+                    return 8;
                 case catta::modbus::si::response::Type::string():
-                    return 16;
+                    return 32;
                 default:
                     return 0;
             }
@@ -120,7 +120,7 @@ class Serializer<catta::modbus::si::response::Response>
         {
             const std::uint8_t index = _index;
             _index++;
-            return jump(Output::data(static_cast<std::uint8_t>(input.raw()[index] >> 0)), _index >= getSize() ? TAIL + 0 : READ_REGISTER + 2);
+            return jump(Output::data(static_cast<std::uint8_t>(input.raw()[index] >> 0)), _index >= getSize() / 2 ? TAIL + 0 : READ_REGISTER + 2);
         };
         switch (_state)
         {

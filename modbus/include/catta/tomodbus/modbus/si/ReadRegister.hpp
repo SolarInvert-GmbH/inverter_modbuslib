@@ -54,6 +54,8 @@ class Serializer<catta::modbus::si::ReadRegister>
             case ADDRESS + 2:
                 return low(input.registerAddress().raw());
             case DATA + 0:
+                return next(Output::data(0x00));
+            case DATA + 1:
                 return next(Output::data(input.registerAddress().type().size() / 2));
             case TAIL + 0:
                 return done();
@@ -77,7 +79,7 @@ class Serializer<catta::modbus::si::ReadRegister>
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t ADDRESS = START + 1;
     static constexpr std::uint8_t DATA = ADDRESS + 3;
-    static constexpr std::uint8_t TAIL = DATA + 1;
+    static constexpr std::uint8_t TAIL = DATA + 2;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR_STATE = DONE + 1;
 };
