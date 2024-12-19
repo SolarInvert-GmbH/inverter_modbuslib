@@ -46,13 +46,13 @@ class Response
      */
     constexpr bool isEmpty() const noexcept { return _type.isEmpty(); }
     /**
-     * @return Returns switch off inverter response.
+     * @return Returns switch off grid relay response.
      */
-    static constexpr Response switchOffInverter() { return Response(Raw{}, catta::modbus::si::response::Type::switchOffInverter()); }
+    static constexpr Response switchOffGridRelay() { return Response(Raw{}, catta::modbus::si::response::Type::switchOffGridRelay()); }
     /**
-     * @return Returns switch on inverter response.
+     * @return Returns switch on grid relay response.
      */
-    static constexpr Response switchOnInverter() { return Response(Raw{}, catta::modbus::si::response::Type::switchOnInverter()); }
+    static constexpr Response switchOnGridRelay() { return Response(Raw{}, catta::modbus::si::response::Type::switchOnGridRelay()); }
     /**
      * @return Returns force idle response.
      */

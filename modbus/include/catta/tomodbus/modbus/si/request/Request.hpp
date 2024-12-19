@@ -70,9 +70,9 @@ class Serializer<catta::modbus::si::request::Request>
                     return handle(_smallSerializer, catta::modbus::si::request::Small::create(0x33));
                 case Type::readOperatingData3e():
                     return handle(_smallSerializer, catta::modbus::si::request::Small::create(0x3e));
-                case Type::switchOffInverter():
+                case Type::switchOffGridRelay():
                     return handle(_smallSerializer, catta::modbus::si::request::Small::create(0x34));
-                case Type::switchOnInverter():
+                case Type::switchOnGridRelay():
                     return handle(_smallSerializer, catta::modbus::si::request::Small::create(0x35));
                 case Type::forceIdle():
                     return handle(_smallSerializer, catta::modbus::si::request::Small::create(0x36));

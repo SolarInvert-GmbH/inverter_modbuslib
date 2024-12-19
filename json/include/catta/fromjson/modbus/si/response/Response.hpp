@@ -165,10 +165,10 @@ class Parser<catta::modbus::si::response::Response>
                 return catta::modbus::si::response::Response::readOperatingData33(_readOperatingData33Parser.data());
             case Type::readOperatingData3e():
                 return catta::modbus::si::response::Response::readOperatingData3e(_readOperatingData3eParser.data());
-            case Type::switchOffInverter():
-                return catta::modbus::si::response::Response::switchOffInverter();
-            case Type::switchOnInverter():
-                return catta::modbus::si::response::Response::switchOnInverter();
+            case Type::switchOffGridRelay():
+                return catta::modbus::si::response::Response::switchOffGridRelay();
+            case Type::switchOnGridRelay():
+                return catta::modbus::si::response::Response::switchOnGridRelay();
             case Type::forceIdle():
                 return catta::modbus::si::response::Response::forceIdle();
             case Type::deactivateIdle():

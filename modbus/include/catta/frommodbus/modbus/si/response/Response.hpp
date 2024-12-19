@@ -194,9 +194,9 @@ class Parser<catta::modbus::si::response::Response>
             case 0x33:
                 return Output::readOperatingData33(_readOperatingData33Parser.data());
             case 0x34:
-                return Output::switchOffInverter();
+                return Output::switchOffGridRelay();
             case 0x35:
-                return Output::switchOnInverter();
+                return Output::switchOnGridRelay();
             case 0x36:
                 return Output::forceIdle();
             case 0x37:

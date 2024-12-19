@@ -69,9 +69,9 @@ class Serializer<catta::modbus::si::response::Response>
                     return handle(_readOperatingData33Serializer, input.readOperatingData33Value());
                 case Type::readOperatingData3e():
                     return handle(_readOperatingData3eSerializer, input.readOperatingData3eValue());
-                case Type::switchOffInverter():
+                case Type::switchOffGridRelay():
                     return handle(_smallSerializer, catta::modbus::si::request::Small::create(0x34));
-                case Type::switchOnInverter():
+                case Type::switchOnGridRelay():
                     return handle(_smallSerializer, catta::modbus::si::request::Small::create(0x35));
                 case Type::forceIdle():
                     return handle(_smallSerializer, catta::modbus::si::request::Small::create(0x36));

@@ -38,10 +38,10 @@ class catta::random::Create<catta::modbus::si::request::Request>
                 return catta::modbus::si::request::Request::readOperatingData33();
             case Type::readOperatingData3e():
                 return catta::modbus::si::request::Request::readOperatingData3e();
-            case Type::switchOffInverter():
-                return catta::modbus::si::request::Request::switchOffInverter();
-            case Type::switchOnInverter():
-                return catta::modbus::si::request::Request::switchOnInverter();
+            case Type::switchOffGridRelay():
+                return catta::modbus::si::request::Request::switchOffGridRelay();
+            case Type::switchOnGridRelay():
+                return catta::modbus::si::request::Request::switchOnGridRelay();
             case Type::forceIdle():
                 return catta::modbus::si::request::Request::forceIdle();
             case Type::deactivateIdle():

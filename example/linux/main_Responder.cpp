@@ -185,11 +185,11 @@ static void handleRequest(const catta::modbus::si::request::Request &request, ca
         case Type::readOperatingData3e():
             response = Response::readOperatingData3e(random.create<catta::modbus::si::response::ReadOperatingData3e>());
             break;
-        case Type::switchOffInverter():
-            response = Response::switchOffInverter();
+        case Type::switchOffGridRelay():
+            response = Response::switchOffGridRelay();
             break;
-        case Type::switchOnInverter():
-            response = Response::switchOnInverter();
+        case Type::switchOnGridRelay():
+            response = Response::switchOnGridRelay();
             break;
         case Type::forceIdle():
             response = Response::forceIdle();

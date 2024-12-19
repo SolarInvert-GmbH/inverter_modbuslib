@@ -38,10 +38,10 @@ class catta::random::Create<catta::modbus::si::response::Response>
                 return catta::modbus::si::response::Response::readOperatingData33(random.create<catta::modbus::si::response::ReadOperatingData33>());
             case Type::readOperatingData3e():
                 return catta::modbus::si::response::Response::readOperatingData3e(random.create<catta::modbus::si::response::ReadOperatingData3e>());
-            case Type::switchOffInverter():
-                return catta::modbus::si::response::Response::switchOffInverter();
-            case Type::switchOnInverter():
-                return catta::modbus::si::response::Response::switchOnInverter();
+            case Type::switchOffGridRelay():
+                return catta::modbus::si::response::Response::switchOffGridRelay();
+            case Type::switchOnGridRelay():
+                return catta::modbus::si::response::Response::switchOnGridRelay();
             case Type::forceIdle():
                 return catta::modbus::si::response::Response::forceIdle();
             case Type::deactivateIdle():

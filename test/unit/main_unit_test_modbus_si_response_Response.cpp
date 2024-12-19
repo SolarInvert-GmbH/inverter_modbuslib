@@ -45,10 +45,10 @@ static bool checkCreate(catta::test::Test<OUTPUT>& test)
                 return catta::modbus::si::response::Response::readOperatingData33(input.readOperatingData33Value());
             case Type::readOperatingData3e():
                 return catta::modbus::si::response::Response::readOperatingData3e(input.readOperatingData3eValue());
-            case Type::switchOffInverter():
-                return catta::modbus::si::response::Response::switchOffInverter();
-            case Type::switchOnInverter():
-                return catta::modbus::si::response::Response::switchOnInverter();
+            case Type::switchOffGridRelay():
+                return catta::modbus::si::response::Response::switchOffGridRelay();
+            case Type::switchOnGridRelay():
+                return catta::modbus::si::response::Response::switchOnGridRelay();
             case Type::forceIdle():
                 return catta::modbus::si::response::Response::forceIdle();
             case Type::deactivateIdle():

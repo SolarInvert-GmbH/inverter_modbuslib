@@ -66,10 +66,10 @@ class Serializer<catta::modbus::si::request::Type>
                     _state = READ_OPERATING_DATA3E + 0;
                     break;
                 case 5:
-                    _state = SWITCH_OFF_INVERTER + 0;
+                    _state = SWITCH_OFF_GRID_RELAY + 0;
                     break;
                 case 6:
-                    _state = SWITCH_ON_INVERTER + 0;
+                    _state = SWITCH_ON_GRID_RELAY + 0;
                     break;
                 case 7:
                     _state = FORCE_IDLE + 0;
@@ -254,72 +254,76 @@ class Serializer<catta::modbus::si::request::Type>
                 return next(catta::json::Token::character('3'));
             case READ_OPERATING_DATA3E + 18:
                 return jump(catta::json::Token::character('e'), TAIL + 0);
-            case SWITCH_OFF_INVERTER + 0:
+            case SWITCH_OFF_GRID_RELAY + 0:
                 return next(catta::json::Token::character('s'));
-            case SWITCH_OFF_INVERTER + 1:
+            case SWITCH_OFF_GRID_RELAY + 1:
                 return next(catta::json::Token::character('w'));
-            case SWITCH_OFF_INVERTER + 2:
+            case SWITCH_OFF_GRID_RELAY + 2:
                 return next(catta::json::Token::character('i'));
-            case SWITCH_OFF_INVERTER + 3:
+            case SWITCH_OFF_GRID_RELAY + 3:
                 return next(catta::json::Token::character('t'));
-            case SWITCH_OFF_INVERTER + 4:
+            case SWITCH_OFF_GRID_RELAY + 4:
                 return next(catta::json::Token::character('c'));
-            case SWITCH_OFF_INVERTER + 5:
+            case SWITCH_OFF_GRID_RELAY + 5:
                 return next(catta::json::Token::character('h'));
-            case SWITCH_OFF_INVERTER + 6:
+            case SWITCH_OFF_GRID_RELAY + 6:
                 return next(catta::json::Token::character('O'));
-            case SWITCH_OFF_INVERTER + 7:
+            case SWITCH_OFF_GRID_RELAY + 7:
                 return next(catta::json::Token::character('f'));
-            case SWITCH_OFF_INVERTER + 8:
+            case SWITCH_OFF_GRID_RELAY + 8:
                 return next(catta::json::Token::character('f'));
-            case SWITCH_OFF_INVERTER + 9:
-                return next(catta::json::Token::character('I'));
-            case SWITCH_OFF_INVERTER + 10:
-                return next(catta::json::Token::character('n'));
-            case SWITCH_OFF_INVERTER + 11:
-                return next(catta::json::Token::character('v'));
-            case SWITCH_OFF_INVERTER + 12:
-                return next(catta::json::Token::character('e'));
-            case SWITCH_OFF_INVERTER + 13:
+            case SWITCH_OFF_GRID_RELAY + 9:
+                return next(catta::json::Token::character('G'));
+            case SWITCH_OFF_GRID_RELAY + 10:
                 return next(catta::json::Token::character('r'));
-            case SWITCH_OFF_INVERTER + 14:
-                return next(catta::json::Token::character('t'));
-            case SWITCH_OFF_INVERTER + 15:
+            case SWITCH_OFF_GRID_RELAY + 11:
+                return next(catta::json::Token::character('i'));
+            case SWITCH_OFF_GRID_RELAY + 12:
+                return next(catta::json::Token::character('d'));
+            case SWITCH_OFF_GRID_RELAY + 13:
+                return next(catta::json::Token::character('R'));
+            case SWITCH_OFF_GRID_RELAY + 14:
                 return next(catta::json::Token::character('e'));
-            case SWITCH_OFF_INVERTER + 16:
-                return jump(catta::json::Token::character('r'), TAIL + 0);
-            case SWITCH_ON_INVERTER + 0:
+            case SWITCH_OFF_GRID_RELAY + 15:
+                return next(catta::json::Token::character('l'));
+            case SWITCH_OFF_GRID_RELAY + 16:
+                return next(catta::json::Token::character('a'));
+            case SWITCH_OFF_GRID_RELAY + 17:
+                return jump(catta::json::Token::character('y'), TAIL + 0);
+            case SWITCH_ON_GRID_RELAY + 0:
                 return next(catta::json::Token::character('s'));
-            case SWITCH_ON_INVERTER + 1:
+            case SWITCH_ON_GRID_RELAY + 1:
                 return next(catta::json::Token::character('w'));
-            case SWITCH_ON_INVERTER + 2:
+            case SWITCH_ON_GRID_RELAY + 2:
                 return next(catta::json::Token::character('i'));
-            case SWITCH_ON_INVERTER + 3:
+            case SWITCH_ON_GRID_RELAY + 3:
                 return next(catta::json::Token::character('t'));
-            case SWITCH_ON_INVERTER + 4:
+            case SWITCH_ON_GRID_RELAY + 4:
                 return next(catta::json::Token::character('c'));
-            case SWITCH_ON_INVERTER + 5:
+            case SWITCH_ON_GRID_RELAY + 5:
                 return next(catta::json::Token::character('h'));
-            case SWITCH_ON_INVERTER + 6:
+            case SWITCH_ON_GRID_RELAY + 6:
                 return next(catta::json::Token::character('O'));
-            case SWITCH_ON_INVERTER + 7:
+            case SWITCH_ON_GRID_RELAY + 7:
                 return next(catta::json::Token::character('n'));
-            case SWITCH_ON_INVERTER + 8:
-                return next(catta::json::Token::character('I'));
-            case SWITCH_ON_INVERTER + 9:
-                return next(catta::json::Token::character('n'));
-            case SWITCH_ON_INVERTER + 10:
-                return next(catta::json::Token::character('v'));
-            case SWITCH_ON_INVERTER + 11:
-                return next(catta::json::Token::character('e'));
-            case SWITCH_ON_INVERTER + 12:
+            case SWITCH_ON_GRID_RELAY + 8:
+                return next(catta::json::Token::character('G'));
+            case SWITCH_ON_GRID_RELAY + 9:
                 return next(catta::json::Token::character('r'));
-            case SWITCH_ON_INVERTER + 13:
-                return next(catta::json::Token::character('t'));
-            case SWITCH_ON_INVERTER + 14:
+            case SWITCH_ON_GRID_RELAY + 10:
+                return next(catta::json::Token::character('i'));
+            case SWITCH_ON_GRID_RELAY + 11:
+                return next(catta::json::Token::character('d'));
+            case SWITCH_ON_GRID_RELAY + 12:
+                return next(catta::json::Token::character('R'));
+            case SWITCH_ON_GRID_RELAY + 13:
                 return next(catta::json::Token::character('e'));
-            case SWITCH_ON_INVERTER + 15:
-                return jump(catta::json::Token::character('r'), TAIL + 0);
+            case SWITCH_ON_GRID_RELAY + 14:
+                return next(catta::json::Token::character('l'));
+            case SWITCH_ON_GRID_RELAY + 15:
+                return next(catta::json::Token::character('a'));
+            case SWITCH_ON_GRID_RELAY + 16:
+                return jump(catta::json::Token::character('y'), TAIL + 0);
             case FORCE_IDLE + 0:
                 return next(catta::json::Token::character('f'));
             case FORCE_IDLE + 1:
@@ -591,9 +595,9 @@ class Serializer<catta::modbus::si::request::Type>
     static constexpr std::uint16_t FACTORY_VALUES = WRITE_REGISTER + 13;
     static constexpr std::uint16_t READ_OPERATING_DATA33 = FACTORY_VALUES + 13;
     static constexpr std::uint16_t READ_OPERATING_DATA3E = READ_OPERATING_DATA33 + 19;
-    static constexpr std::uint16_t SWITCH_OFF_INVERTER = READ_OPERATING_DATA3E + 19;
-    static constexpr std::uint16_t SWITCH_ON_INVERTER = SWITCH_OFF_INVERTER + 17;
-    static constexpr std::uint16_t FORCE_IDLE = SWITCH_ON_INVERTER + 16;
+    static constexpr std::uint16_t SWITCH_OFF_GRID_RELAY = READ_OPERATING_DATA3E + 19;
+    static constexpr std::uint16_t SWITCH_ON_GRID_RELAY = SWITCH_OFF_GRID_RELAY + 18;
+    static constexpr std::uint16_t FORCE_IDLE = SWITCH_ON_GRID_RELAY + 17;
     static constexpr std::uint16_t DEACTIVATE_IDLE = FORCE_IDLE + 9;
     static constexpr std::uint16_t START_CONSTANT_VOLTAGE = DEACTIVATE_IDLE + 14;
     static constexpr std::uint16_t END_CONSTANT_VOLTAGE = START_CONSTANT_VOLTAGE + 20;

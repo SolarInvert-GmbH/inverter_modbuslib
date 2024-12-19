@@ -25,8 +25,8 @@ class Type
     constexpr static std::uint8_t READ_ERROR = 2;
     constexpr static std::uint8_t READ_OPERATING_DATA_33 = 3;
     constexpr static std::uint8_t READ_OPERATING_DATA_3E = 4;
-    constexpr static std::uint8_t SWITCH_OFF_INVERTER = 5;
-    constexpr static std::uint8_t SWITCH_ON_INVERTER = 6;
+    constexpr static std::uint8_t SWITCH_OFF_GRID_RELAY = 5;
+    constexpr static std::uint8_t SWITCH_ON_GRID_RELAY = 6;
     constexpr static std::uint8_t FORCE_IDLE = 7;
     constexpr static std::uint8_t DEACTIVATE_IDLE = 8;
     constexpr static std::uint8_t START_CONSTANT_VOLTAGE = 9;
@@ -45,7 +45,7 @@ class Type
     /**
      * @param[in] value The enum value of the type.
      * @warning This constructor should not be used. Use exception(), factoryValues(), readError(), readOperatingData33(), readOperatingData3e(),
-     * switchOffInverter(), switchOnInverter(), forceIdle(), deactivateIdle(), startConstantVoltage(), endConstantVoltage(), setPowerFactor(),
+     * switchOffGridRelay(), switchOnGridRelay(), forceIdle(), deactivateIdle(), startConstantVoltage(), endConstantVoltage(), setPowerFactor(),
      * controlBatteryInvert(), limitBatteryInvert(), writeRegister(), value16(), value32(), value64(), string() or empty(). Explicit constructor.
      * Converts uint8 to type.
      */
@@ -75,13 +75,13 @@ class Type
      */
     [[nodiscard]] constexpr static Type readOperatingData3e() noexcept { return Type{READ_OPERATING_DATA_3E}; }
     /**
-     * @return Returns the switch off inverter 0x34.
+     * @return Returns the switch off grid relay 0x34.
      */
-    [[nodiscard]] constexpr static Type switchOffInverter() noexcept { return Type{SWITCH_OFF_INVERTER}; }
+    [[nodiscard]] constexpr static Type switchOffGridRelay() noexcept { return Type{SWITCH_OFF_GRID_RELAY}; }
     /**
-     * @return Returns the switch on inverter 0x35.
+     * @return Returns the switch on grid relay 0x35.
      */
-    [[nodiscard]] constexpr static Type switchOnInverter() noexcept { return Type{SWITCH_ON_INVERTER}; }
+    [[nodiscard]] constexpr static Type switchOnGridRelay() noexcept { return Type{SWITCH_ON_GRID_RELAY}; }
     /**
      * @return Returns the force idle 0x36.
      */
@@ -164,13 +164,13 @@ class Type
      */
     [[nodiscard]] constexpr bool isReadOperatingData3e() const noexcept { return _value == READ_OPERATING_DATA_3E; }
     /**
-     * @return Returns @b true if switch off inverter 0x34 is represented, otherwise @b false.
+     * @return Returns @b true if switch off grid relay 0x34 is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSwitchOffInverter() const noexcept { return _value == SWITCH_OFF_INVERTER; }
+    [[nodiscard]] constexpr bool isSwitchOffGridRelay() const noexcept { return _value == SWITCH_OFF_GRID_RELAY; }
     /**
-     * @return Returns @b true if switch on inverter 0x35 is represented, otherwise @b false.
+     * @return Returns @b true if switch on grid relay 0x35 is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSwitchOnInverter() const noexcept { return _value == SWITCH_ON_INVERTER; }
+    [[nodiscard]] constexpr bool isSwitchOnGridRelay() const noexcept { return _value == SWITCH_ON_GRID_RELAY; }
     /**
      * @return Returns @b true if force idle 0x36 is represented, otherwise @b false.
      */
@@ -231,8 +231,8 @@ class Type
                                                                       "READ_ERROR",
                                                                       "READ_OPERATING_DATA_33",
                                                                       "READ_OPERATING_DATA_3E",
-                                                                      "SWITCH_OFF_INVERTER",
-                                                                      "SWITCH_ON_INVERTER",
+                                                                      "SWITCH_OFF_GRID_RELAY",
+                                                                      "SWITCH_ON_GRID_RELAY",
                                                                       "FORCE_IDLE",
                                                                       "DEACTIVATE_IDLE",
                                                                       "START_CONSTANT_VOLTAGE",

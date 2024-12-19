@@ -80,18 +80,18 @@ class Request
         return Request(std::array<std::uint16_t, 4>{}, catta::modbus::si::request::Type::readOperatingData3e());
     }
     /**
-     * @return Returns switch off inverter request if input is valid, otherwise empty.
+     * @return Returns switch off grid relay request if input is valid, otherwise empty.
      */
-    static constexpr Request switchOffInverter()
+    static constexpr Request switchOffGridRelay()
     {
-        return Request(std::array<std::uint16_t, 4>{}, catta::modbus::si::request::Type::switchOffInverter());
+        return Request(std::array<std::uint16_t, 4>{}, catta::modbus::si::request::Type::switchOffGridRelay());
     }
     /**
-     * @return Returns switch on inverter request if input is valid, otherwise empty.
+     * @return Returns switch on grid relay request if input is valid, otherwise empty.
      */
-    static constexpr Request switchOnInverter()
+    static constexpr Request switchOnGridRelay()
     {
-        return Request(std::array<std::uint16_t, 4>{}, catta::modbus::si::request::Type::switchOnInverter());
+        return Request(std::array<std::uint16_t, 4>{}, catta::modbus::si::request::Type::switchOnGridRelay());
     }
     /**
      * @return Returns force idle request if input is valid, otherwise empty.
