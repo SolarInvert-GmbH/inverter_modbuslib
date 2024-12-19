@@ -31,10 +31,10 @@ class PowerConfig
     constexpr bool isEmpty() const noexcept { return _power >= EMPTY; }
     /**
      * @param[in] power The power value. Has to be 3200 or below, otherwise empty is returned.
-     * @param[in] loading True represents loading.
+     * @param[in] charging True represents charging.
      * @return Returns power config if input is valid, otherwise empty.
      */
-    static constexpr PowerConfig create(const std::uint16_t power, bool loading) { return power >= EMPTY ? empty() : PowerConfig(power, loading); }
+    static constexpr PowerConfig create(const std::uint16_t power, bool charging) { return power >= EMPTY ? empty() : PowerConfig(power, charging); }
     /**
      * @param[in] raw The raw value. Has to be valid, otherwise empty is returned.
      * @return Returns power config if input is valid, otherwise empty.
@@ -45,9 +45,9 @@ class PowerConfig
      */
     constexpr std::uint16_t power() const noexcept { return _power; }
     /**
-     * @return Returns the loading. Is only valid if not empty.
+     * @return Returns the charging. Is only valid if not empty.
      */
-    constexpr bool loading() const noexcept { return _loading; }
+    constexpr bool charging() const noexcept { return _charging; }
     /**
      * @param[in] other The other PowerConfig.
      * @return Returns @b true if the two PowerConfig objects are the same, otherwise @b false.
@@ -55,9 +55,9 @@ class PowerConfig
     constexpr bool operator==(const PowerConfig& other) const noexcept = default;
 
   private:
-    constexpr PowerConfig(const std::uint16_t power, bool loading) : _power(power), _loading(loading) {}
+    constexpr PowerConfig(const std::uint16_t power, bool charging) : _power(power), _charging(charging) {}
     std::uint16_t _power;
-    bool _loading;
+    bool _charging;
     static constexpr std::uint16_t EMPTY = 3201;
 };
 }  // namespace si

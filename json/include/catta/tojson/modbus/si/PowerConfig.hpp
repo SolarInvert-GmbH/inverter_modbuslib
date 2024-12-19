@@ -45,29 +45,31 @@ class Serializer<catta::modbus::si::PowerConfig>
         {
             case START + 0:
                 return next(catta::json::Token::openCurlyBracket());
-            case LOADING + 0:
+            case CHARGING + 0:
                 return next(catta::json::Token::openString());
-            case LOADING + 1:
-                return next(catta::json::Token::character('L'));
-            case LOADING + 2:
-                return next(catta::json::Token::character('o'));
-            case LOADING + 3:
+            case CHARGING + 1:
+                return next(catta::json::Token::character('C'));
+            case CHARGING + 2:
+                return next(catta::json::Token::character('h'));
+            case CHARGING + 3:
                 return next(catta::json::Token::character('a'));
-            case LOADING + 4:
-                return next(catta::json::Token::character('d'));
-            case LOADING + 5:
-                return next(catta::json::Token::character('i'));
-            case LOADING + 6:
-                return next(catta::json::Token::character('n'));
-            case LOADING + 7:
+            case CHARGING + 4:
+                return next(catta::json::Token::character('r'));
+            case CHARGING + 5:
                 return next(catta::json::Token::character('g'));
-            case LOADING + 8:
+            case CHARGING + 6:
+                return next(catta::json::Token::character('i'));
+            case CHARGING + 7:
+                return next(catta::json::Token::character('n'));
+            case CHARGING + 8:
+                return next(catta::json::Token::character('g'));
+            case CHARGING + 9:
                 return next(catta::json::Token::closeString());
-            case LOADING + 9:
+            case CHARGING + 10:
                 return next(catta::json::Token::colon());
-            case LOADING + 10:
-                return next(input.loading() ? catta::json::Token::boolTrue() : catta::json::Token::boolFalse());
-            case LOADING + 11:
+            case CHARGING + 11:
+                return next(input.charging() ? catta::json::Token::boolTrue() : catta::json::Token::boolFalse());
+            case CHARGING + 12:
                 return next(catta::json::Token::comma());
             case POWER + 0:
                 return next(catta::json::Token::openString());
@@ -109,8 +111,8 @@ class Serializer<catta::modbus::si::PowerConfig>
     std::uint8_t _state;
     catta::json::Token _data;
     static constexpr std::uint8_t START = 0;
-    static constexpr std::uint8_t LOADING = START + 1;
-    static constexpr std::uint8_t POWER = LOADING + 12;
+    static constexpr std::uint8_t CHARGING = START + 1;
+    static constexpr std::uint8_t POWER = CHARGING + 13;
     static constexpr std::uint8_t TAIL = POWER + 10;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR_STATE = DONE + 1;

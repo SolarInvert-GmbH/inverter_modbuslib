@@ -49,10 +49,10 @@ class Parser<catta::modbus::si::PowerConfig>
             switch (input.type())
             {
                 case catta::json::TokenType::boolTrue():
-                    _loading = 1;
+                    _charging = 1;
                     return next();
                 case catta::json::TokenType::boolFalse():
-                    _loading = 0;
+                    _charging = 0;
                     return next();
                 default:
                     return error();
@@ -65,55 +65,57 @@ class Parser<catta::modbus::si::PowerConfig>
             case HUB + 0:
                 return input == catta::json::Token::openString() ? next() : error();
             case HUB + 1:
-                return input == catta::json::Token::character('L') ? next() : input == catta::json::Token::character('P') ? jump(HUB + 12) : error();
+                return input == catta::json::Token::character('C') ? next() : input == catta::json::Token::character('P') ? jump(HUB + 13) : error();
             case HUB + 2:
-                return _loading != EMPTY_LOADING ? error() : input == catta::json::Token::character('o') ? jump(HUB + 3) : error();
+                return _charging != EMPTY_CHARGING ? error() : input == catta::json::Token::character('h') ? jump(HUB + 3) : error();
             case HUB + 3:
                 return input == catta::json::Token::character('a') ? next() : error();
             case HUB + 4:
-                return input == catta::json::Token::character('d') ? next() : error();
+                return input == catta::json::Token::character('r') ? next() : error();
             case HUB + 5:
-                return input == catta::json::Token::character('i') ? next() : error();
-            case HUB + 6:
-                return input == catta::json::Token::character('n') ? next() : error();
-            case HUB + 7:
                 return input == catta::json::Token::character('g') ? next() : error();
+            case HUB + 6:
+                return input == catta::json::Token::character('i') ? next() : error();
+            case HUB + 7:
+                return input == catta::json::Token::character('n') ? next() : error();
             case HUB + 8:
-                return input == catta::json::Token::closeString() ? next() : error();
+                return input == catta::json::Token::character('g') ? next() : error();
             case HUB + 9:
-                return input == catta::json::Token::colon() ? next() : error();
+                return input == catta::json::Token::closeString() ? next() : error();
             case HUB + 10:
-                return handleBool();
+                return input == catta::json::Token::colon() ? next() : error();
             case HUB + 11:
+                return handleBool();
+            case HUB + 12:
                 return input == catta::json::Token::comma()               ? jump(HUB + 0)
                        : input == catta::json::Token::closeCurlyBracket() ? jump(TAIL + 0)
                                                                           : error();
-            case HUB + 12:
-                return _power != EMPTY_POWER ? error() : input == catta::json::Token::character('o') ? next() : error();
             case HUB + 13:
-                return input == catta::json::Token::character('w') ? next() : error();
+                return _power != EMPTY_POWER ? error() : input == catta::json::Token::character('o') ? next() : error();
             case HUB + 14:
-                return input == catta::json::Token::character('e') ? next() : error();
+                return input == catta::json::Token::character('w') ? next() : error();
             case HUB + 15:
-                return input == catta::json::Token::character('r') ? next() : error();
+                return input == catta::json::Token::character('e') ? next() : error();
             case HUB + 16:
-                return input == catta::json::Token::closeString() ? next() : error();
+                return input == catta::json::Token::character('r') ? next() : error();
             case HUB + 17:
-                return input == catta::json::Token::colon() ? next() : error();
+                return input == catta::json::Token::closeString() ? next() : error();
             case HUB + 18:
-                return handleNumber();
+                return input == catta::json::Token::colon() ? next() : error();
             case HUB + 19:
+                return handleNumber();
+            case HUB + 20:
                 return input == catta::json::Token::comma()               ? jump(HUB + 0)
                        : input == catta::json::Token::closeCurlyBracket() ? jump(TAIL + 0)
                                                                           : error();
             case TAIL + 0:
-                return _power == EMPTY_POWER || _loading == EMPTY_LOADING ? error() : input == catta::json::Token::end() ? jump(DONE + 0) : error();
+                return _power == EMPTY_POWER || _charging == EMPTY_CHARGING ? error() : input == catta::json::Token::end() ? jump(DONE + 0) : error();
             default:
                 return error();
         }
     }
-    [[nodiscard]] constexpr Parser() noexcept : _state(START), _power(EMPTY_POWER), _loading(EMPTY_LOADING) {}
-    [[nodiscard]] constexpr Output data() const noexcept { return _state == DONE ? Output::create(_power, _loading) : Output::empty(); }
+    [[nodiscard]] constexpr Parser() noexcept : _state(START), _power(EMPTY_POWER), _charging(EMPTY_CHARGING) {}
+    [[nodiscard]] constexpr Output data() const noexcept { return _state == DONE ? Output::create(_power, _charging) : Output::empty(); }
     [[nodiscard]] constexpr catta::parser::State state() const noexcept
     {
         if (_state == START) return catta::parser::State::start();
@@ -125,14 +127,14 @@ class Parser<catta::modbus::si::PowerConfig>
   private:
     std::uint8_t _state;
     std::uint16_t _power;
-    std::uint8_t _loading;
+    std::uint8_t _charging;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t HUB = START + 1;
-    static constexpr std::uint8_t TAIL = HUB + 20;
+    static constexpr std::uint8_t TAIL = HUB + 21;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR_STATE = DONE + 1;
     static constexpr std::uint16_t EMPTY_POWER = 3201;
-    static constexpr std::uint8_t EMPTY_LOADING = 2;
+    static constexpr std::uint8_t EMPTY_CHARGING = 2;
 };
 }  // namespace fromjson
 }  // namespace catta

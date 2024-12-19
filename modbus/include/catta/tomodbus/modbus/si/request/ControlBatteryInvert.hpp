@@ -43,7 +43,7 @@ class Serializer<catta::modbus::si::request::ControlBatteryInvert>
         };
         const auto high = [next](const auto v) { return next(Output::data(static_cast<std::uint8_t>(v >> 8))); };
         const auto low = [next](const auto v) { return next(Output::data(static_cast<std::uint8_t>(v >> 0))); };
-        const auto pMax = [&input]() { return static_cast<std::uint16_t>((input.pMax().loading() ? 0x8000 : 0x0000) | input.pMax().power()); };
+        const auto pMax = [&input]() { return static_cast<std::uint16_t>((input.pMax().charging() ? 0x8000 : 0x0000) | input.pMax().power()); };
         switch (_state)
         {
             case START + 0:

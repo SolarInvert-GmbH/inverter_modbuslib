@@ -136,7 +136,7 @@ class Request
         return value.isEmpty()
                    ? Request::empty()
                    : Request(
-                         std::array<std::uint16_t, 4>{static_cast<std::uint16_t>(value.pMax().power() | (value.pMax().loading() ? 0x8000 : 0x0000)),
+                         std::array<std::uint16_t, 4>{static_cast<std::uint16_t>(value.pMax().power() | (value.pMax().charging() ? 0x8000 : 0x0000)),
                                                       value.uMin().value(), value.uMax().value(), value.timeout().value()},
                          catta::modbus::si::request::Type::controlBatteryInvert());
     }
