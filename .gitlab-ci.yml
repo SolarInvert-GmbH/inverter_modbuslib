@@ -1,5 +1,4 @@
-image: git.cattatech.de:5050/company/esp32:v5.2_1
-
+image: git.cattatech.de:5050/company/modbuslib:0.0.1
 
 stages:
   - build
@@ -9,11 +8,58 @@ stages:
   script:
     - ./build.sh
     - cp -r build/bin/test_binary tests
+    - cp -r build/bin/example/linux examples
     - echo ${CI_COMMIT_SHA} >> githash
   artifacts:
     when: always
     paths:
     - tests
+    - examples
+    - githash
+
+.host: &windows_base
+  stage: build
+  script:
+    - ./build.sh --windows
+    - cp -r build/mingw/bin/test_binary tests
+    - cp -r build/mingw/bin/example/windows examples
+    - echo ${CI_COMMIT_SHA} >> githash
+  artifacts:
+    when: always
+    paths:
+    - tests
+    - examples
+    - githash
+
+.host: &rp2040_base
+  stage: build
+  script:
+    - ./build.sh --rp2040
+    - cp build/rp2040/modbus.uf2 modbus.uf2
+    - cp build/rp2040/modbus.elf modbus.elf
+    - echo ${CI_COMMIT_SHA} >> githash
+  artifacts:
+    when: always
+    paths:
+    - modbus.uf2
+    - modbus.elf
+    - githash
+
+.host: &esp32_base
+  stage: build
+  script:
+    - . /esp-idf/export.sh
+    - ./build.sh --esp32
+    - cp build/esp32/SendRequest.bin SendRequest.bin
+    - cp build/esp32/partition_table/partition-table.bin partition-table.bin
+    - cp build/esp32/bootloader/bootloader.bin bootloader.bin
+    - echo ${CI_COMMIT_SHA} >> githash
+  artifacts:
+    when: always
+    paths:
+    - SendRequest.bin
+    - partition-table.bin
+    - bootloader.bin
     - githash
 
 .test: &test_base
@@ -80,3 +126,45 @@ docu:commit:
   artifacts:
     expire_in: 2 weeks
   <<: *docu_base
+
+windows:tag:
+  only:
+    - tags
+  artifacts:
+    expire_in: never
+  <<: *windows_base
+
+windows:commit:
+  except:
+    - tags
+  artifacts:
+    expire_in: 2 weeks
+  <<: *windows_base
+
+rp2040:tag:
+  only:
+    - tags
+  artifacts:
+    expire_in: never
+  <<: *rp2040_base
+
+rp2040:commit:
+  except:
+    - tags
+  artifacts:
+    expire_in: 2 weeks
+  <<: *rp2040_base
+
+esp32:tag:
+  only:
+    - tags
+  artifacts:
+    expire_in: never
+  <<: *esp32_base
+
+esp32:commit:
+  except:
+    - tags
+  artifacts:
+    expire_in: 2 weeks
+  <<: *esp32_base
