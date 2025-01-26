@@ -3,11 +3,7 @@
 // catta
 #include <catta/modbus/sunspec/String.hpp>
 
-// json
-#include <catta/tojson/modbus/sunspec/String.hpp>
-
 // fromstring
-#include <catta/tostring/json/ToString.hpp>
 #include <catta/tostring/toString.hpp>
 
 namespace catta
@@ -25,17 +21,55 @@ template <>
 class Serializer<catta::modbus::sunspec::String>
 {
   public:
-    using ToString = catta::tostring::json::ToString<catta::modbus::sunspec::String>;
-    using Error = ToString::Error;
-    using Input = ToString::Input;
-    using Output = ToString::Output;
-    [[nodiscard]] constexpr std::tuple<Error, catta::parser::InputHandled> read(const Input& input) noexcept { return _toString.read(input); }
-    [[nodiscard]] constexpr Serializer() noexcept {}
-    [[nodiscard]] constexpr Output data() const noexcept { return _toString.data(); }
-    [[nodiscard]] constexpr catta::parser::State state() const noexcept { return _toString.state(); }
+    using Error = catta::state::DefaultError;
+    using Input = catta::modbus::sunspec::String;
+    using Output = char;
+    [[nodiscard]] constexpr std::tuple<Error, catta::parser::InputHandled> read(const Input& input) noexcept
+    {
+        using Tuple = std::tuple<Error, catta::parser::InputHandled>;
+        const auto error = [this]()
+        {
+            _index = ERROR_STATE;
+            return Tuple{Error::error(), catta::parser::InputHandled::yes()};
+        };
+        catta::parser::InputHandled handled = catta::parser::InputHandled::no();
+        if (_index < TAIL)
+        {
+            const char c = input.data()[_index];
+            _data = c;
+            if (c == '\0')
+            {
+                _index = TAIL;
+                handled = catta::parser::InputHandled::yes();
+            }
+        }
+        else if (_index == TAIL)
+        {
+            _data = '\0';
+            handled = catta::parser::InputHandled::yes();
+        }
+        else
+            return error();
+        _index++;
+        return Tuple{Error{}, handled};
+    }
+    [[nodiscard]] constexpr Serializer() noexcept : _data('\0'), _index(0) {}
+    [[nodiscard]] constexpr Output data() const noexcept { return _data; }
+    [[nodiscard]] constexpr catta::parser::State state() const noexcept
+    {
+        if (_index == START) return catta::parser::State::start();
+        if (_index < DONE) return catta::parser::State::running();
+        if (_index == DONE) return catta::parser::State::done();
+        return catta::parser::State::failed();
+    }
 
   private:
-    ToString _toString;
+    char _data;
+    std::size_t _index;
+    static constexpr std::uint8_t START = 0;
+    static constexpr std::uint8_t TAIL = Input::size;
+    static constexpr std::uint8_t DONE = TAIL + 1;
+    static constexpr std::uint8_t ERROR_STATE = DONE + 1;
 };
 
 }  // namespace tostring
