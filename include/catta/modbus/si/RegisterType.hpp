@@ -140,6 +140,32 @@ class RegisterType
         }
     }
 
+    /**
+     * @return Returns the abbreviation for the type.
+     */
+    constexpr std::string_view abbreviation() const noexcept
+    {
+        switch (_value)
+        {
+            case UINT16:
+                return std::string_view("uI16");
+            case SINT16:
+                return std::string_view("sI16");
+            case SCALE_FACTOR:
+                return std::string_view("ScFa");
+            case CONNECTED_PHASE:
+                return std::string_view("CoPh");
+            case UINT32:
+                return std::string_view("uI32");
+            case UINT64:
+                return std::string_view("uI64");
+            case STRING32:
+                return std::string_view("uI64");
+            default:
+                return std::string_view("EMPT");
+        }
+    }
+
   private:
     std::uint8_t _value;
 };
