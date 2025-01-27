@@ -4,7 +4,7 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Choice.H>
 #include <FL/Fl_Group.H>
-#include <FL/Fl_Int_Input.H>
+#include <FL/Fl_Input.H>
 
 // sunspec
 #include <catta/modbus/sunspec/ScaleFactor.hpp>
@@ -111,7 +111,16 @@ class Input : public Fl_Group
         Input* input = static_cast<Input*>(object);
         if (input)
         {
-            input->_box.color(input->_callback() ? FL_RED : FL_DARK_GREEN);
+            if (input->_callback())
+            {
+                input->_box.color(FL_RED);
+                input->_box.label(cross);
+            }
+            else
+            {
+                input->_box.color(FL_DARK_GREEN);
+                input->_box.label(check);
+            }
             input->_box.redraw();
         }
     }
