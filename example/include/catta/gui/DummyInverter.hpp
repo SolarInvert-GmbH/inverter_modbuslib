@@ -16,6 +16,7 @@
 #include <catta/tostring/Hexadecimal.hpp>
 #include <catta/tostring/modbus/si/request/Request.hpp>
 #include <catta/tostring/modbus/si/response/Response.hpp>
+#include <catta/tostring/modbus/sunspec/ScaleFactor.hpp>
 
 // fltk
 #include <FL/Fl.H>
@@ -238,11 +239,9 @@ class DummyInverter : public Fl_Double_Window
             this->_actionChoice.menu(actionMenu);
             this->_actionChoice.callback(actioncb, this);
             this->_nameBox.box(FL_UP_BOX);
-            this->_nameBox.color(1);
             for (std::size_t i = 0; i < T::lines; i++)
             {
                 std::get<0>(this->_input[i])->box(FL_UP_BOX);
-                std::get<0>(this->_input[i])->color(2);
             }
         }
         catta::modbus::si::response::Response handleRequest(const catta::modbus::si::request::Request& request)
