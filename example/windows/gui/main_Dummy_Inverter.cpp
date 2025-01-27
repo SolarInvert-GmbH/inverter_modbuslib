@@ -8,7 +8,7 @@
 int main()
 {
     using DummyInverter = catta::gui::DummyInverter<catta::windows::Uart, catta::windows::Time>;
-    DummyInverter* dummyInverter = new DummyInverter("/dev/ttyUSB0");
+    DummyInverter* dummyInverter = new DummyInverter("COM1");
     dummyInverter->run();
     delete dummyInverter;
     return 0;
