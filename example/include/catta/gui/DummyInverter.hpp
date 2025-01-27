@@ -693,13 +693,14 @@ class DummyInverter : public Fl_Double_Window
                 if (handled) receiveToken = {};
                 if (parser.state().isDone())
                 {
+                    const std::uint8_t id = modbus.address();
                     const auto request = parser.data();
-                    handleRequest(request, response);
+                    if (_uart->id() == id) handleRequest(request, response);
                     if (isDebug)
                     {
                         debugLog("Received Bytes: " + printLine(receiveLine) + '\n');
                         receiveLine = {};
-                        debugLog("Received: ");
+                        debugLog("Received[" + catta::tostring::toString(catta::Hexadecimal(id)) + "]: ");
                     }
                     terminal(catta::tostring::toString(request) + '\n');
                     parser = {};

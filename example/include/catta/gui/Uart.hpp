@@ -3,6 +3,7 @@
 // fltk
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
+#include <FL/Fl_Choice.H>
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Input.H>
 
@@ -32,7 +33,7 @@ class Uart : public Fl_Group
     static constexpr int W_INPUT = 100;
     static constexpr int W_BUTTON = 100;
     static constexpr int W_BOX = 300;
-    static constexpr int defaultWidth = W_INPUT + W_GAP + W_BUTTON + W_GAP + W_BUTTON + W_GAP + W_BOX;
+    static constexpr int defaultWidth = W_INPUT + W_GAP + W_BUTTON + W_GAP + W_BUTTON + W_GAP + W_BOX + W_GAP + W_INPUT;
     static constexpr int defaultHeight = 50;
 
   public:
@@ -58,6 +59,24 @@ class Uart : public Fl_Group
         this->_button1->deactivate();
         this->_box = new Fl_Box(x + W_INPUT + W_GAP + W_BUTTON + W_GAP + W_BUTTON + W_GAP, y, W_BOX, defaultHeight, getErrorString());
         this->_box->box(FL_DOWN_BOX);
+        auto menu = [](const char* text)
+        {
+            return Fl_Menu_Item{.text = text,
+                                .shortcut_ = 0,
+                                .callback_ = nullptr,
+                                .user_data_ = nullptr,
+                                .flags = 0,
+                                .labeltype_ = 0,
+                                .labelfont_ = 0,
+                                .labelsize_ = 0,
+                                .labelcolor_ = 0};
+        };
+        static const Fl_Menu_Item id[] = {menu("00"), menu("01"), menu("02"), menu("03"), menu("04"),   menu("05"),
+                                          menu("06"), menu("07"), menu("08"), menu("09"), menu("0a"),   menu("0b"),
+                                          menu("0c"), menu("0d"), menu("0e"), menu("0f"), menu(nullptr)};
+        this->_choice = new Fl_Choice(x + W_INPUT + W_GAP + W_BUTTON + W_GAP + W_BUTTON + W_GAP + W_BOX + W_GAP, y, W_INPUT, defaultHeight);
+        this->_choice->menu(id);
+        this->_choice->value(0x0c);
         this->resize(X, Y, W, H);
         this->end();
     }
@@ -82,6 +101,21 @@ class Uart : public Fl_Group
         if (this->_button0 && (this->_uart.isEmpty() || !this->_uart.error().isEmpty())) this->setDisconnect();
         return result;
     }
+    /**
+     * @return Returns choosen id.
+     */
+    [[nodiscard]] std::uint8_t id() const noexcept { return static_cast<std::uint8_t>(this->_choice->value()); }
+    /**
+     * Destructor.
+     */
+    ~Uart()
+    {
+        if (_input) delete _input;
+        if (_button0) delete _button0;
+        if (_button1) delete _button1;
+        if (_box) delete _box;
+        if (_choice) delete _choice;
+    }
 
   private:
     UART _uart;
@@ -89,6 +123,7 @@ class Uart : public Fl_Group
     Fl_Button* _button0;
     Fl_Button* _button1;
     Fl_Box* _box;
+    Fl_Choice* _choice;
     using ERROR = decltype(UART::empty().error());
     ERROR _error;
     const char* getErrorString()
