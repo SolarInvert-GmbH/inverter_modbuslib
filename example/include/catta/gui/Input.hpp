@@ -1,6 +1,7 @@
 #pragma once
 
 // gui
+#include <FL/Fl_Box.H>
 #include <FL/Fl_Choice.H>
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Int_Input.H>
@@ -27,6 +28,7 @@
 
 // std
 #include <array>
+#include <functional>
 
 namespace catta
 {
@@ -50,6 +52,7 @@ class Input : public Fl_Group
     Input(const int X, const int Y, const int W, const int H, const T initial)
         : Input(X, Y, W, H, Access<T>::createName(initial), Access<T>::createMenu(initial), Access<T>::createIndex(initial))
     {
+        this->_callback = [this]() -> bool { return this->value<T>().isEmpty(); };
     }
 
     /**
@@ -76,13 +79,17 @@ class Input : public Fl_Group
 
     template <class T>
     friend class Access;
-
     Input(const int X, const int Y, const int W, const int H, const std::string& string, const Fl_Menu_Item* m, const int c)
-        : Fl_Group(X, Y, W, H), _input(X, Y, W, H, nullptr), _choice(X, Y, W, H, nullptr)
+        : Fl_Group(X, Y, W, H), _box(X, Y, H, H, check), _input(X + H, Y, W - H, H, nullptr), _choice(X + H, Y, W - H, H, nullptr)
     {
         this->end();
+        _box.box(FL_UP_BOX);
+        _box.color(FL_DARK_GREEN);
         if (string.length())
+        {
             this->_input.value(string.c_str());
+            this->_input.callback(changedcb, this);
+        }
         else
             this->_input.hide();
         if (m)
@@ -93,8 +100,21 @@ class Input : public Fl_Group
         else
             this->_choice.hide();
     }
-    Fl_Int_Input _input;
+    static constexpr const char* check = "✓";
+    static constexpr const char* cross = "✗";
+    Fl_Box _box;
+    Fl_Input _input;
     Fl_Choice _choice;
+    std::function<bool()> _callback;
+    static void changedcb(Fl_Widget*, void* object)
+    {
+        Input* input = static_cast<Input*>(object);
+        if (input)
+        {
+            input->_box.color(input->_callback() ? FL_RED : FL_DARK_GREEN);
+            input->_box.redraw();
+        }
+    }
 };
 
 template <catta::EnumConcept ENUM>
