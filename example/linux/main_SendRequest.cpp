@@ -15,6 +15,7 @@
 #include <catta/tostring/modbus/si/response/Response.hpp>
 
 // fromstring
+#include <catta/fromstring/Decimal.hpp>
 #include <catta/fromstring/Hexadecimal.hpp>
 #include <catta/fromstring/modbus/si/request/Request.hpp>
 
@@ -73,10 +74,12 @@ static std::string printTimestamp(const std::chrono::microseconds t)
 
 static void printHelp(const std::string_view program)
 {
-    std::cout << program << " --uart /dev/ttyUSB0 --address 01 --request '{…}' [--debug [--verbose]]\n";
+    std::cout << program
+              << " --uart /dev/ttyUSB0 --address 01 --request '{\"type\":\"readError\",\"value\":null}' [--timeout 5000] [--debug [--verbose]]\n";
     std::cout << " --uart     : uart device.\n";
     std::cout << " --address  : address in hex (two digets).\n";
     std::cout << " --request  : the request as json.\n";
+    std::cout << "[--timeout] : timeout in milliseconds. 1…60000 is allowed. Default is no timeout.\n";
     std::cout << "[--debug]   : print debug messages.\n";
     std::cout << "[--verbose] : vebose debug messages. Needs '--verbose'.\n";
 }
@@ -87,13 +90,14 @@ static void logAndExit(const std::string &message)
     exit(EXIT_FAILURE);
 }
 
-static std::tuple<std::string, LogLevel, std::uint8_t, catta::modbus::si::request::Request> checkFlags(int argc, char *argv[])
+static std::tuple<std::string, LogLevel, std::uint8_t, catta::modbus::si::request::Request, std::uint16_t> checkFlags(int argc, char *argv[])
 {
     std::string uart;
     bool debug = false;
     bool verbose = false;
     std::optional<std::uint8_t> address = {};
     catta::modbus::si::request::Request request;
+    std::uint16_t timeout = 0;
 
     static const auto checkArg = [](const std::string &name, const bool b)
     {
@@ -113,6 +117,15 @@ static std::tuple<std::string, LogLevel, std::uint8_t, catta::modbus::si::reques
         i++;
         const std::uint8_t v = std::uint8_t(catta::fromstring::fromString<catta::Hexadecimal<std::uint8_t>>(argv[i]));
         if (v == 0 && name != "00") logAndExit("Add valid (two hex digets) " + name + " after '--" + name + "'.");
+        arg = v;
+    };
+
+    static const auto setArgTimeout = [argc, argv](std::uint16_t &arg, const std::string &name, int &i)
+    {
+        if (i + 1 >= argc) logAndExit("Add " + name + " after '--" + name + "'.");
+        i++;
+        const std::uint16_t v = std::uint16_t(catta::fromstring::fromString<catta::Decimal<std::uint16_t>>(argv[i]));
+        if (v < 1 || v > 60'000) logAndExit("Add valid timeout 1 … 60000 " + name + " after '--" + name + "'.");
         arg = v;
     };
 
@@ -139,6 +152,8 @@ static std::tuple<std::string, LogLevel, std::uint8_t, catta::modbus::si::reques
             setArgByte(address, "address", i);
         else if (flag == "--request")
             setArgRequest(request, "request", i);
+        else if (flag == "--timeout")
+            setArgTimeout(timeout, "timeout", i);
         else if (flag == "--debug")
             setBool(debug, "debug");
         else if (flag == "--verbose")
@@ -160,7 +175,8 @@ static std::tuple<std::string, LogLevel, std::uint8_t, catta::modbus::si::reques
     checkArg("address", !address);
     checkArg("request", request.isEmpty());
 
-    return std::tuple<std::string, LogLevel, std::uint8_t, catta::modbus::si::request::Request>{uart, logLevel, address.value(), request};
+    return std::tuple<std::string, LogLevel, std::uint8_t, catta::modbus::si::request::Request, std::uint16_t>{uart, logLevel, address.value(),
+                                                                                                               request, timeout};
 }
 
 static bool end = false;
@@ -173,13 +189,19 @@ static void signalHandler(const int signal)
 int main(int argc, char *argv[])
 {
     using namespace std::chrono_literals;
-    const auto [uartDevice, logLevel, address, requestInput] = checkFlags(argc, argv);
+    const auto [uartDevice, logLevel, address, requestInput, timeout] = checkFlags(argc, argv);
 
     const bool isDebug = logLevel == DEBUG || logLevel == VERBOSE;
     const bool isVerbose = logLevel == VERBOSE;
 
     signal(SIGTERM, signalHandler);
     signal(SIGINT, signalHandler);
+
+    const auto errorExit = [](const std::string value)
+    {
+        std::cout << "{\"type\":\"error\",\"value\":\"" + value + "\"}";
+        return 1;
+    };
 
     // Baud Rate 57600, 1 Startbit, 1 Stopbit, 8 Databits, No Parity
     static constexpr auto baudrate = catta::hardware::uart::Baudrate::baudrate57600();
@@ -191,6 +213,9 @@ int main(int argc, char *argv[])
     static constexpr std::chrono::microseconds dataTimeout = std::chrono::milliseconds{10};  // should b mush smaller
     static constexpr std::chrono::microseconds stayInError = std::chrono::seconds{5};
     static constexpr std::chrono::microseconds waitForIdle = std::chrono::microseconds{1};
+
+    const std::chrono::microseconds waitUntil =
+        timeout == 0 ? std::chrono::microseconds{0} : catta::linux::Time::get() + std::chrono::milliseconds(timeout);
 
     auto uart = catta::linux::Uart::create(uartDevice, baudrate, parity, dataBits, stopBits);
     auto modbus = catta::modbus::MasterUart(requestTimeout, dataTimeout, stayInError, waitForIdle);
@@ -250,6 +275,9 @@ int main(int argc, char *argv[])
     while (!end)
     {
         const auto now = catta::linux::Time::get();
+
+        if (waitUntil.count() && now > waitUntil) return errorExit("Timeout");
+
         bool somethingHappend = false;
 
         const auto debugLog = [now, isVerbose](const std::string s)
@@ -327,7 +355,7 @@ int main(int argc, char *argv[])
                 count1++;
         }
         else
-            uart = catta::linux::Uart::create(uartDevice, baudrate, parity, dataBits, stopBits);
+            return errorExit("Uart error: " + catta::tostring::toString(uart.error()));
 
         if (!receiveToken.isEmpty())
         {
@@ -378,12 +406,11 @@ int main(int argc, char *argv[])
                     sendLine = {};
                 }
                 serializer = {};
-                return 1;
+                return errorExit("Corrupted response.");
             }
         }
         if (!somethingHappend) catta::linux::Time::sleep(1us);
     }
 
-    std::cout << "Exit abort.\n";
-    return 1;
+    return errorExit("Abort");
 }
