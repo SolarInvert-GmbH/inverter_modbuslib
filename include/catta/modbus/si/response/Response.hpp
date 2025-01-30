@@ -17,6 +17,9 @@
 #include <catta/modbus/si/response/ReadOperatingData3e.hpp>
 #include <catta/modbus/si/response/Type.hpp>
 
+// request
+#include <catta/modbus/si/request/Type.hpp>
+
 namespace catta
 {
 namespace modbus
@@ -82,12 +85,13 @@ class Response
      */
     static constexpr Response limitBatteryInvert() { return Response(Raw{}, catta::modbus::si::response::Type::limitBatteryInvert()); }
     /**
-     * @param[in] value The exception. Has to be not empty, otherwise empty is returned.
+     * @param[in] exception The exception. Has to be not empty, otherwise empty is returned.
      * @return Returns exception response if input is valid, otherwise empty.
      */
-    static constexpr Response exception(const catta::modbus::si::response::Exception value)
+    static constexpr Response exception(const catta::modbus::si::response::Exception exception)
     {
-        return value.isEmpty() ? Response::empty() : Response(Raw{value}, catta::modbus::si::response::Type::exception());
+        return exception.isEmpty() ? Response::empty()
+                                   : Response(Raw{exception.value(), exception.request()}, catta::modbus::si::response::Type::exception());
     }
     /**
      * @param[in] value The exception. Has to be not empty, otherwise empty is returned.
@@ -212,7 +216,8 @@ class Response
      */
     constexpr catta::modbus::si::response::Exception exceptionValue() const noexcept
     {
-        return catta::modbus::si::response::Exception(static_cast<std::uint8_t>(_data[0]));
+        return catta::modbus::si::response::Exception::create(catta::modbus::si::response::ExceptionValue(static_cast<std::uint8_t>(_data[0])),
+                                                              catta::modbus::si::request::Type(static_cast<std::uint8_t>(_data[1])));
     }
     /**
      * @return Returns factory values value. Is only valid if type is factory values.

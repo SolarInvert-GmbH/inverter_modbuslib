@@ -6,6 +6,7 @@
 // random
 #include <catta/random/Random.hpp>
 #include <catta/random/modbus/si/WriteRegister.hpp>
+#include <catta/random/modbus/si/request/Type.hpp>
 #include <catta/random/modbus/si/response/Exception.hpp>
 #include <catta/random/modbus/si/response/FactoryValues.hpp>
 #include <catta/random/modbus/si/response/ReadError.hpp>

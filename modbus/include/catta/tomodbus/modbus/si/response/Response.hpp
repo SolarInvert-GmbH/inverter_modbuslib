@@ -137,9 +137,9 @@ class Serializer<catta::modbus::si::response::Response>
             case READ_REGISTER + 3:
                 return low();
             case EXCEPTION + 0:
-                return jump(Output::exception(), EXCEPTION + 1);
+                return jump(Output::exception(input.exceptionValue().request().toModbus() | 0x80), EXCEPTION + 1);
             case EXCEPTION + 1:
-                return jump(Output::data(input.exceptionValue() + 1), TAIL + 0);
+                return jump(Output::data(input.exceptionValue().value() + 1), TAIL + 0);
             case TAIL + 0:
                 return done();
             default:

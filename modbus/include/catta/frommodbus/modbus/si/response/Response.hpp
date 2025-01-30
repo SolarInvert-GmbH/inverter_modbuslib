@@ -45,6 +45,7 @@ class Parser<catta::modbus::si::response::Response>
 
         const auto function = [input, error, this, jump]()
         {
+            _function = input.value();
             if (input.type().isException()) return jump(EXCEPTION + 0);
             if (!input.type().isFunction()) return error();
             const auto startParserAndJump = [input, jump](auto& parser, const std::uint8_t state)
@@ -53,7 +54,7 @@ class Parser<catta::modbus::si::response::Response>
                 [[maybe_unused]] auto ignore1 = parser.read(input);
                 return jump(state);
             };
-            _function = input.value();
+
             switch (_function)
             {
                 case 0x03:
@@ -171,8 +172,6 @@ class Parser<catta::modbus::si::response::Response>
         if (_state != DONE) return Output::empty();
         switch (_function)
         {
-            case 0x00:
-                return Output::exception(catta::modbus::si::response::Exception(_count));
             case 0x03:
                 switch (_count)
                 {
@@ -216,7 +215,10 @@ class Parser<catta::modbus::si::response::Response>
             case 0x44:
                 return Output::limitBatteryInvert();
             default:
-                return Output::empty();
+                return _function & 0x80
+                           ? Output::exception(catta::modbus::si::response::Exception::create(
+                                 catta::modbus::si::response::ExceptionValue(_count), catta::modbus::si::request::Type::fromModbus(0x7f & _function)))
+                           : Output::empty();
         }
     }
     [[nodiscard]] constexpr catta::parser::State state() const noexcept
