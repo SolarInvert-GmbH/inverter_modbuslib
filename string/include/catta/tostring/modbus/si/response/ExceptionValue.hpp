@@ -1,10 +1,10 @@
 #pragma once
 
 // response
-#include <catta/modbus/si/response/Exception.hpp>
+#include <catta/modbus/si/response/ExceptionValue.hpp>
 
 // tojson
-#include <catta/tojson/modbus/si/response/Exception.hpp>
+#include <catta/tojson/modbus/si/response/ExceptionValue.hpp>
 
 // tostring
 #include <catta/tostring/json/ToString.hpp>
@@ -15,16 +15,16 @@ namespace catta
 namespace tostring
 {
 template <>
-class GetName<catta::modbus::si::response::Exception>
+class GetName<catta::modbus::si::response::ExceptionValue>
 {
   public:
-    static constexpr std::string_view name = "catta::modbus::si::response::Exception";
+    static constexpr std::string_view name = "catta::modbus::si::response::ExceptionValue";
 };
 template <>
-class Serializer<catta::modbus::si::response::Exception>
+class Serializer<catta::modbus::si::response::ExceptionValue>
 {
   public:
-    using ToString = catta::tostring::json::ToString<catta::modbus::si::response::Exception>;
+    using ToString = catta::tostring::json::ToString<catta::modbus::si::response::ExceptionValue>;
     using Error = ToString::Error;
     using Input = ToString::Input;
     using Output = ToString::Output;

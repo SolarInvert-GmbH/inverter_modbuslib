@@ -14,10 +14,10 @@ namespace si
 namespace response
 {
 /**
- * @brief Represents the si type.
+ * @brief Represents the si exception value.
  * @author CattaTech - Maik Urbannek
  */
-class Exception
+class ExceptionValue
 {
   private:
     constexpr static std::uint8_t INVALID_FUNCTION_CODE = 0;
@@ -32,36 +32,36 @@ class Exception
      * @warning This constructor should not be used. Use invalidFunctionCode(), invalidRegisterAddress(), invalidDataValue(), deviceError() or
      * empty(). Explicit constructor. Converts uint8 to type.
      */
-    [[nodiscard]] constexpr explicit Exception(const std::uint8_t value) noexcept : _value(value) {}
+    [[nodiscard]] constexpr explicit ExceptionValue(const std::uint8_t value) noexcept : _value(value) {}
     /**
-     * Default constructor. Creates invalid type.
+     * Default constructor. Creates invalid value.
      */
-    [[nodiscard]] constexpr Exception() noexcept : Exception(EMPTY) {}
+    [[nodiscard]] constexpr ExceptionValue() noexcept : ExceptionValue(EMPTY) {}
     /**
      * @return Returns the invalid function code.
      */
-    [[nodiscard]] constexpr static Exception invalidFunctionCode() noexcept { return Exception{INVALID_FUNCTION_CODE}; }
+    [[nodiscard]] constexpr static ExceptionValue invalidFunctionCode() noexcept { return ExceptionValue{INVALID_FUNCTION_CODE}; }
     /**
      * @return Returns the invalid register address.
      */
-    [[nodiscard]] constexpr static Exception invalidRegisterAddress() noexcept { return Exception{INVALID_REGISTER_ADDRESS}; }
+    [[nodiscard]] constexpr static ExceptionValue invalidRegisterAddress() noexcept { return ExceptionValue{INVALID_REGISTER_ADDRESS}; }
     /**
      * @return Returns the invalid data value.
      */
-    [[nodiscard]] constexpr static Exception invalidDataValue() noexcept { return Exception{INVALID_DATA_VALUE}; }
+    [[nodiscard]] constexpr static ExceptionValue invalidDataValue() noexcept { return ExceptionValue{INVALID_DATA_VALUE}; }
     /**
      * @return Returns the device error.
      */
-    [[nodiscard]] constexpr static Exception deviceError() noexcept { return Exception{DEVICE_ERROR}; }
+    [[nodiscard]] constexpr static ExceptionValue deviceError() noexcept { return ExceptionValue{DEVICE_ERROR}; }
     /**
-     * @return Returns the invalid type.
+     * @return Returns the invalid value.
      */
-    [[nodiscard]] constexpr static Exception empty() noexcept { return Exception{EMPTY}; }
+    [[nodiscard]] constexpr static ExceptionValue empty() noexcept { return ExceptionValue{EMPTY}; }
     /**
-     * @param[in] other The other Exception.
-     * @return Returns @b true if the two Exception objects are the same, otherwise @b false.
+     * @param[in] other The other ExceptionValue.
+     * @return Returns @b true if the two ExceptionValue objects are the same, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool operator==(const Exception& other) const = default;
+    [[nodiscard]] constexpr bool operator==(const ExceptionValue& other) const = default;
     /**
      * @return Returns type as uint8.
      */
@@ -83,7 +83,7 @@ class Exception
      */
     [[nodiscard]] constexpr bool isDeviceError() const noexcept { return _value == DEVICE_ERROR; }
     /**
-     * @return Returns @b true if invalid type is represented, otherwise @b false.
+     * @return Returns @b true if invalid value is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isEmpty() const noexcept { return _value >= EMPTY; }
     /**

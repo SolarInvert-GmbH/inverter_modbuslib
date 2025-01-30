@@ -1,10 +1,10 @@
 #pragma once
 
 // response
-#include <catta/modbus/si/response/Exception.hpp>
+#include <catta/modbus/si/response/ExceptionValue.hpp>
 
 // fromjson
-#include <catta/fromjson/modbus/si/response/Exception.hpp>
+#include <catta/fromjson/modbus/si/response/ExceptionValue.hpp>
 
 // fromstring
 #include <catta/fromstring/fromString.hpp>
@@ -15,10 +15,10 @@ namespace catta
 namespace fromstring
 {
 template <>
-class Parser<catta::modbus::si::response::Exception>
+class Parser<catta::modbus::si::response::ExceptionValue>
 {
   public:
-    using FromString = catta::fromstring::json::FromString<catta::modbus::si::response::Exception>;
+    using FromString = catta::fromstring::json::FromString<catta::modbus::si::response::ExceptionValue>;
     using Error = FromString::Error;
     using Input = FromString::Input;
     using Output = FromString::Output;

@@ -1,7 +1,7 @@
 #pragma once
 
 // response
-#include <catta/modbus/si/response/Exception.hpp>
+#include <catta/modbus/si/response/ExceptionValue.hpp>
 
 // tojson
 #include <catta/tojson/toJson.hpp>
@@ -11,11 +11,11 @@ namespace catta
 namespace tojson
 {
 template <>
-class Serializer<catta::modbus::si::response::Exception>
+class Serializer<catta::modbus::si::response::ExceptionValue>
 {
   public:
     using Error = catta::state::DefaultError;
-    using Input = catta::modbus::si::response::Exception;
+    using Input = catta::modbus::si::response::ExceptionValue;
     using Output = catta::json::Token;
     [[nodiscard]] constexpr std::tuple<Error, catta::parser::InputHandled> read(const Input& input) noexcept
     {
