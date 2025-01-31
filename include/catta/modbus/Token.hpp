@@ -34,9 +34,10 @@ class Token
      */
     [[nodiscard]] constexpr static Token data(const std::uint8_t value) noexcept { return {catta::modbus::TokenType::data(), value}; }
     /**
+     * @param[in] value The function value.
      * @return Returns a exception token.
      */
-    [[nodiscard]] constexpr static Token exception() noexcept { return {catta::modbus::TokenType::exception(), EMPTY_DATA}; }
+    [[nodiscard]] constexpr static Token exception(const std::uint8_t value) noexcept { return {catta::modbus::TokenType::exception(), value}; }
     /**
      * @param[in] value The exception code value. Has to be 1, 2, 3 or 4, otherwise empty is returned.
      * @return Returns a exception code token if input is valid, otherwise empty.

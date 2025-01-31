@@ -205,6 +205,90 @@ class Type
                                                                       "LIMIT_BATTERY_INVERT",
                                                                       "READ_ERROR"};
 
+    /**
+     * @return Returns @b true if constrol battery invert 0x44 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr std::uint8_t toModbus() const noexcept
+    {
+        switch (_value)
+        {
+            case READ_REGISTER:
+                return 0x03;
+            case WRITE_REGISTER:
+                return 0x16;
+            case FACTORY_VALUES:
+                return 0x31;
+            case READ_OPERATING_DATA_33:
+                return 0x33;
+            case READ_OPERATING_DATA_3E:
+                return 0x3e;
+            case SWITCH_OFF_GRID_RELAY:
+                return 0x34;
+            case SWITCH_ON_GRID_RELAY:
+                return 0x35;
+            case FORCE_IDLE:
+                return 0x36;
+            case DEACTIVATE_IDLE:
+                return 0x37;
+            case START_CONSTANT_VOLTAGE:
+                return 0x38;
+            case END_CONSTANT_VOLTAGE:
+                return 0x39;
+            case SET_POWER_FACTOR:
+                return 0x3b;
+            case CONTROL_BATTERY_INVERT:
+                return 0x3f;
+            case LIMIT_BATTERY_INVERT:
+                return 0x44;
+            case READ_ERROR:
+                return 0x40;
+            default:
+                return 0x00;
+        }
+    }
+
+    /**
+     * @return Returns @b true if constrol battery invert 0x44 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr static catta::modbus::si::request::Type fromModbus(const std::uint8_t modbus) noexcept
+    {
+        switch (modbus)
+        {
+            case 0x03:
+                return Type(READ_REGISTER);
+            case 0x16:
+                return Type(WRITE_REGISTER);
+            case 0x31:
+                return Type(FACTORY_VALUES);
+            case 0x33:
+                return Type(READ_OPERATING_DATA_33);
+            case 0x3e:
+                return Type(READ_OPERATING_DATA_3E);
+            case 0x34:
+                return Type(SWITCH_OFF_GRID_RELAY);
+            case 0x35:
+                return Type(SWITCH_ON_GRID_RELAY);
+            case 0x36:
+                return Type(FORCE_IDLE);
+            case 0x37:
+                return Type(DEACTIVATE_IDLE);
+            case 0x38:
+                return Type(START_CONSTANT_VOLTAGE);
+            case 0x39:
+                return Type(END_CONSTANT_VOLTAGE);
+            case 0x3b:
+                return Type(SET_POWER_FACTOR);
+            case 0x3f:
+                return Type(CONTROL_BATTERY_INVERT);
+            case 0x44:
+                return Type(LIMIT_BATTERY_INVERT);
+            case 0x40:
+                return Type(READ_ERROR);
+            default:
+                return Type::empty();
+        }
+    }
+
   private:
     std::uint8_t _value;
 };

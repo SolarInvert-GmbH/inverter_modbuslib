@@ -151,7 +151,7 @@ class MasterUart
         };
         const auto receiveFunction = [receiveBase, received, setLength]()
         {
-            if (received.value() & 0x80) return receiveBase(RECEVIE_WAIT_FOR_LENGTH, Token::exception());
+            if (received.value() & 0x80) return receiveBase(RECEVIE_WAIT_FOR_LENGTH, Token::exception(received.value()));
             switch (received.value())
             {
                 case 0x16:

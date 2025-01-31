@@ -139,6 +139,8 @@ class Serializer<catta::modbus::si::response::Response>
             case EXCEPTION + 0:
                 return jump(Output::exception(input.exceptionValue().request().toModbus() | 0x80), EXCEPTION + 1);
             case EXCEPTION + 1:
+                return jump(Output::data(0x01), EXCEPTION + 2);
+            case EXCEPTION + 2:
                 return jump(Output::data(input.exceptionValue().value() + 1), TAIL + 0);
             case TAIL + 0:
                 return done();
@@ -171,7 +173,7 @@ class Serializer<catta::modbus::si::response::Response>
     static constexpr std::uint8_t HANDLE = START + 1;
     static constexpr std::uint8_t READ_REGISTER = HANDLE + 1;
     static constexpr std::uint8_t EXCEPTION = READ_REGISTER + 4;
-    static constexpr std::uint8_t TAIL = EXCEPTION + 2;
+    static constexpr std::uint8_t TAIL = EXCEPTION + 3;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR_STATE = DONE + 1;
 };

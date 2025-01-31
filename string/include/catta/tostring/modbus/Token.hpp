@@ -71,6 +71,7 @@ class Serializer<catta::modbus::Token>
             switch (input.type())
             {
                 case Type::function():
+                case Type::exception():
                 case Type::data():
                 case Type::code():
                     return jump(HEXADECIMAL + 0);

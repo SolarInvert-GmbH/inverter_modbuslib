@@ -143,6 +143,8 @@ class Parser<catta::modbus::si::response::Response>
             case READ_REGISTER + 2:
                 return low();
             case EXCEPTION + 0:
+                return input == catta::modbus::Token::data(0x01) ? jump(EXCEPTION + 1) : error();
+            case EXCEPTION + 1:
                 return getCode(TAIL + 0);
             case TAIL + 0:
                 return input == catta::modbus::Token::end() ? jump(DONE + 0) : error();
@@ -250,7 +252,7 @@ class Parser<catta::modbus::si::response::Response>
     static constexpr std::uint8_t WRITE_REGISTER = SMALL + 1;
     static constexpr std::uint8_t READ_REGISTER = WRITE_REGISTER + 1;
     static constexpr std::uint8_t EXCEPTION = READ_REGISTER + 3;
-    static constexpr std::uint8_t TAIL = EXCEPTION + 1;
+    static constexpr std::uint8_t TAIL = EXCEPTION + 2;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR_STATE = DONE + 1;
 };

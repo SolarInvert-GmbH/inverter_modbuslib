@@ -133,8 +133,13 @@ class SiRegister : public Fl_Group
                     case 1:  // nothing
                         return Response::empty();
                     default:  // execption1…4
-                        return Response::exception(
-                            catta::modbus::si::response::Exception(static_cast<std::uint8_t>(this->_readActionChoice.value() - 2)));
+                    {
+                        const auto value =
+                            catta::modbus::si::response::ExceptionValue(static_cast<std::uint8_t>(this->_readActionChoice.value() - 2));
+                        const auto function = request.type();
+                        const auto exception = catta::modbus::si::response::Exception::create(value, function);
+                        return Response::exception(exception);
+                    }
                 }
             case Type::writeRegister():
                 if (!this->_address.isWritable() || this->_address != request.writeRegisterValue().registerAddress()) return Response::empty();
@@ -164,8 +169,13 @@ class SiRegister : public Fl_Group
                     case 1:  // nothing
                         return Response::empty();
                     default:  // execption1…4
-                        return Response::exception(
-                            catta::modbus::si::response::Exception(static_cast<std::uint8_t>(this->_writeActionChoice.value() - 2)));
+                    {
+                        const auto value =
+                            catta::modbus::si::response::ExceptionValue(static_cast<std::uint8_t>(this->_writeActionChoice.value() - 2));
+                        const auto function = request.type();
+                        const auto exception = catta::modbus::si::response::Exception::create(value, function);
+                        return Response::exception(exception);
+                    }
                 }
 
             default:

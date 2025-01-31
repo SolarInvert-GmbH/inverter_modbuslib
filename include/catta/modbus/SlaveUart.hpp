@@ -221,7 +221,6 @@ class SlaveUart
 
             case WAIT_FOR_SEND:
                 if (now <= _waitUntil) return stay(State::receive());
-                // return now > _waitUntil ?jump(State::send(),SEND_ADDRESS) :stay(State::receive());
                 [[fallthrough]];
             case SEND_ADDRESS:
                 return received                ? error(ERROR_RECEIVE_CURRING_SEND)
