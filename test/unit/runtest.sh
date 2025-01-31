@@ -28,6 +28,7 @@ check automatic_test_json_Parser
 check automatic_test_json_ParsingError
 check automatic_test_json_Token
 check automatic_test_json_TokenType
+check automatic_test_linux_UartError
 check automatic_test_modbus_MasterUart
 check automatic_test_modbus_MasterUartState
 check automatic_test_modbus_si_Date
@@ -73,6 +74,7 @@ check automatic_test_parser_TextPosition
 check automatic_test_parser_Utf8ParserSerializer
 check automatic_test_state_ActiveCloseErrorState
 check automatic_test_state_DefaultError
+check automatic_test_windows_UartError
 
 echo ""
 if [ "${ERROR}" -eq 0 ]; then

@@ -10,27 +10,30 @@ namespace catta
 namespace linux
 {
 /**
- * @brief Represents the possible error when using catta::windows::Uart.
+ * @brief Represents the possible error when using catta::linux::Uart.
  * @author CattaTech - Maik Urbannek
  */
 class UartError
 {
   private:
     constexpr static std::uint8_t INVALID_BAUDRATE = 0;
-    constexpr static std::uint8_t COULD_NOT_SET_BAUDRATE = 1;
-    constexpr static std::uint8_t COULD_NOT_OPEN_DEVICE = 2;
-    constexpr static std::uint8_t DEVICE_IS_BUSY = 3;
-    constexpr static std::uint8_t COULD_NOT_BIND = 4;
-    constexpr static std::uint8_t WRITE_FAILED = 5;
-    constexpr static std::uint8_t READ_FAILED = 6;
-    constexpr static std::uint8_t CLOSED = 7;
-    constexpr static std::uint8_t EMPTY = 8;
+    constexpr static std::uint8_t INVALID_DATA_BITS = 1;
+    constexpr static std::uint8_t INVALID_STOP_BITS = 2;
+    constexpr static std::uint8_t COULD_NOT_SET_BAUDRATE = 3;
+    constexpr static std::uint8_t COULD_NOT_OPEN_DEVICE = 4;
+    constexpr static std::uint8_t DEVICE_IS_BUSY = 5;
+    constexpr static std::uint8_t COULD_NOT_BIND = 6;
+    constexpr static std::uint8_t WRITE_FAILED = 7;
+    constexpr static std::uint8_t READ_FAILED = 8;
+    constexpr static std::uint8_t CLOSED = 9;
+    constexpr static std::uint8_t EMPTY = 10;
 
   public:
     /**
      * @param[in] value The enum value of the uart error.
-     * @warning This constructor should not be used. Use invalidBaudrate(), couldNotSetBaudrate(), couldNotOpenDevice(), deviceIsBusy(),
-     * couldNotBind(), writeFailed(), readFailed(), closed() or empty(). Explicit constructor. Converts uint8 to uart error.
+     * @warning This constructor should not be used. Use invalidBaudrate(), invalidDataBits(), invalidStopBits(), couldNotSetBaudrate(),
+     * couldNotOpenDevice(), deviceIsBusy(), couldNotBind(), writeFailed(), readFailed(), closed() or empty(). Explicit constructor. Converts uint8 to
+     * uart error.
      */
     [[nodiscard]] constexpr explicit UartError(const std::uint8_t value) noexcept : _value(value) {}
     /**
@@ -41,6 +44,14 @@ class UartError
      * @return Returns the invalid baudrate when creating uart.
      */
     [[nodiscard]] constexpr static UartError invalidBaudrate() noexcept { return UartError{INVALID_BAUDRATE}; }
+    /**
+     * @return Returns the invalid data bits when creating uart.
+     */
+    [[nodiscard]] constexpr static UartError invalidDataBits() noexcept { return UartError{INVALID_DATA_BITS}; }
+    /**
+     * @return Returns the invalid stop bits when creating uart.
+     */
+    [[nodiscard]] constexpr static UartError invalidStopBits() noexcept { return UartError{INVALID_STOP_BITS}; }
     /**
      * @return Returns the error where setting of baudrate failed.
      */
@@ -87,6 +98,14 @@ class UartError
      */
     [[nodiscard]] constexpr bool isInvalidBaudrate() const noexcept { return _value == INVALID_BAUDRATE; }
     /**
+     * @return Returns @b true if invalid data bits when creating uart is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isInvalidDataBits() const noexcept { return _value == INVALID_DATA_BITS; }
+    /**
+     * @return Returns @b true if invalid stop bits when creating uart is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isInvalidStopBits() const noexcept { return _value == INVALID_STOP_BITS; }
+    /**
      * @return Returns @b true if error where setting of baudrate failed is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isCouldNotSetBaudrate() const noexcept { return _value == COULD_NOT_SET_BAUDRATE; }
@@ -121,9 +140,11 @@ class UartError
     /**
      * Uart error in text form.
      */
-    constexpr static std::array<std::string_view, EMPTY> enumNames = {
-        "INVALID_BAUDRATE", "COULD_NOT_SET_BAUDRATE", "COULD_NOT_OPEN_DEVICE", "DEVICE_IS_BUSY",
-        "COULD_NOT_BIND",   "WRITE_FAILED",           "READ_FAILED",           "CLOSED"};
+    constexpr static std::array<std::string_view, EMPTY> enumNames = {"INVALID_BAUDRATE",      "INVALID_DATA_BITS",
+                                                                      "INVALID_STOP_BITS",     "COULD_NOT_SET_BAUDRATE",
+                                                                      "COULD_NOT_OPEN_DEVICE", "DEVICE_IS_BUSY",
+                                                                      "COULD_NOT_BIND",        "WRITE_FAILED",
+                                                                      "READ_FAILED",           "CLOSED"};
 
   private:
     std::uint8_t _value;

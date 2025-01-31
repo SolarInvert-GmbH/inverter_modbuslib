@@ -187,9 +187,12 @@ catta::linux::Uart catta::linux::Uart::create(const std::string_view device, con
         }
     }();
     const tcflag_t p = parity.isEven() ? PARENB : parity.isOdd() ? PARODD : 0;
-    // TODO create extra errors
-    if (oldBautrate == 0 || cs == CSINVALID || stopBits.isEmpty()) [[unlikely]]
+    if (oldBautrate == 0) [[unlikely]]
         return Uart{Error::invalidBaudrate()};
+    if (cs == CSINVALID) [[unlikely]]
+        return Uart{Error::invalidDataBits()};
+    if (stopBits.isEmpty()) [[unlikely]]
+        return Uart{Error::invalidStopBits()};
 
     struct termios tio = {.c_iflag = 0, .c_oflag = 0, .c_cflag = 0, .c_lflag = 0, .c_line = 0, .c_cc = {}, .c_ispeed = 0, .c_ospeed = 0};
 

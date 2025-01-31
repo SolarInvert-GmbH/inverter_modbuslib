@@ -103,7 +103,6 @@ catta::windows::Uart catta::windows::Uart::create(const std::string_view device,
                                                   const catta::hardware::uart::Parity parity, const catta::hardware::uart::DataBits dataBits,
                                                   const catta::hardware::uart::StopBits stopBits) noexcept
 {
-    // TODO create extra errors
     static constexpr DWORD INVALID_CBR = 0xffffffff;
     const DWORD windowsBaudrate = [baudrate]() -> DWORD
     {
@@ -135,7 +134,9 @@ catta::windows::Uart catta::windows::Uart::create(const std::string_view device,
         }
     }();
 
-    if (baudrate.isEmpty() || dataBits.isEmpty() || stopBits.isEmpty() || windowsBaudrate == INVALID_CBR) return Uart{Error::invalidBaudrate()};
+    if (baudrate.isEmpty() || windowsBaudrate == INVALID_CBR) return Uart{Error::invalidBaudrate()};
+    if (dataBits.isEmpty()) return Uart{Error::invalidDataBits()};
+    if (stopBits.isEmpty()) return Uart{Error::invalidStopBits()};
 
     void *fd = CreateFileA(device.data(), GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, 0, nullptr);
 
@@ -150,14 +151,14 @@ catta::windows::Uart catta::windows::Uart::create(const std::string_view device,
     DCB portSettings = {};
     portSettings.DCBlength = sizeof(portSettings);
 
-    if (!GetCommState(fd, &portSettings)) return error(Error::deviceIsBusy());
+    if (!GetCommState(fd, &portSettings)) return error(Error::couldNotGetCommState());
 
     portSettings.BaudRate = windowsBaudrate;
     portSettings.ByteSize = dataBits.isFive() ? 5 : dataBits.isSix() ? 6 : dataBits.isSeven() ? 7 : 8;
     portSettings.Parity = parity.isOdd() ? ODDPARITY : parity.isEven() ? EVENPARITY : NOPARITY;
     portSettings.StopBits = (stopBits.isOne() ? ONESTOPBIT : TWOSTOPBITS);
 
-    if (!SetCommState(fd, &portSettings)) return error(Error::couldNotBind());
+    if (!SetCommState(fd, &portSettings)) return error(Error::couldNotSetCommState());
 
     COMMTIMEOUTS Cptimeouts = {.ReadIntervalTimeout = MAXDWORD,
                                .ReadTotalTimeoutMultiplier = 0,
@@ -165,7 +166,7 @@ catta::windows::Uart catta::windows::Uart::create(const std::string_view device,
                                .WriteTotalTimeoutMultiplier = 0,
                                .WriteTotalTimeoutConstant = 0};
 
-    if (!SetCommTimeouts(fd, &Cptimeouts)) return error(Error::deviceIsBusy());
+    if (!SetCommTimeouts(fd, &Cptimeouts)) return error(Error::couldNotSetCommTimeouts());
 
     return Uart{fd, Error::empty()};
 }

@@ -14,6 +14,7 @@ add_library(json_parser_test                                OBJECT   main_unit_t
 add_library(json_parsingerror_test                          OBJECT   main_unit_test_json_ParsingError.cpp                                             )
 add_library(json_token_test                                 OBJECT   main_unit_test_json_Token.cpp                                                    )
 add_library(json_tokentype_test                             OBJECT   main_unit_test_json_TokenType.cpp                                                )
+add_library(linux_uarterror_test                            OBJECT   main_unit_test_linux_UartError.cpp                                               )
 add_library(modbus_masteruart_test                          OBJECT   main_unit_test_modbus_MasterUart.cpp                                             )
 add_library(modbus_masteruartstate_test                     OBJECT   main_unit_test_modbus_MasterUartState.cpp                                        )
 add_library(modbus_si_date_test                             OBJECT   main_unit_test_modbus_si_Date.cpp                                                )
@@ -60,6 +61,7 @@ add_library(parser_state_test                               OBJECT   main_unit_t
 add_library(parser_utf8parserserializer_test                OBJECT   main_unit_test_parser_Utf8ParserSerializer.cpp                                   )
 add_library(state_activecloseerrorstate_test                OBJECT   main_unit_test_state_ActiveCloseErrorState.cpp                                   )
 add_library(state_defaulterror_test                         OBJECT   main_unit_test_state_DefaultError.cpp                                            )
+add_library(windows_uarterror_test                          OBJECT   main_unit_test_windows_UartError.cpp                                             )
 
 add_executable(automatic_test_ConstString                                 $<TARGET_OBJECTS:conststring_test>                                          )
 add_executable(automatic_test_Decimal                                     $<TARGET_OBJECTS:decimal_test>                                              )
@@ -72,6 +74,7 @@ add_executable(automatic_test_json_Parser                                 $<TARG
 add_executable(automatic_test_json_ParsingError                           $<TARGET_OBJECTS:json_parsingerror_test>                                    )
 add_executable(automatic_test_json_Token                                  $<TARGET_OBJECTS:json_token_test>                                           )
 add_executable(automatic_test_json_TokenType                              $<TARGET_OBJECTS:json_tokentype_test>                                       )
+add_executable(automatic_test_linux_UartError                             $<TARGET_OBJECTS:linux_uarterror_test>                                      )
 add_executable(automatic_test_modbus_MasterUart                           $<TARGET_OBJECTS:modbus_masteruart_test>                                    )
 add_executable(automatic_test_modbus_MasterUartState                      $<TARGET_OBJECTS:modbus_masteruartstate_test>                               )
 add_executable(automatic_test_modbus_si_Date                              $<TARGET_OBJECTS:modbus_si_date_test>                                       )
@@ -118,6 +121,7 @@ add_executable(automatic_test_parser_State                                $<TARG
 add_executable(automatic_test_parser_Utf8ParserSerializer                 $<TARGET_OBJECTS:parser_utf8parserserializer_test>                          )
 add_executable(automatic_test_state_ActiveCloseErrorState                 $<TARGET_OBJECTS:state_activecloseerrorstate_test>                          )
 add_executable(automatic_test_state_DefaultError                          $<TARGET_OBJECTS:state_defaulterror_test>                                   )
+add_executable(automatic_test_windows_UartError                           $<TARGET_OBJECTS:windows_uarterror_test>                                    )
 
 add_custom_command(MAIN_DEPENDENCY   ${CMAKE_CURRENT_SOURCE_DIR}/runtest.sh
                    OUTPUT            ${EXECUTABLE_OUTPUT_PATH}/runtest.sh

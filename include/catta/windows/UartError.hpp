@@ -17,20 +17,23 @@ class UartError
 {
   private:
     constexpr static std::uint8_t INVALID_BAUDRATE = 0;
-    constexpr static std::uint8_t COULD_NOT_SET_BAUDRATE = 1;
-    constexpr static std::uint8_t COULD_NOT_OPEN_DEVICE = 2;
-    constexpr static std::uint8_t DEVICE_IS_BUSY = 3;
-    constexpr static std::uint8_t COULD_NOT_BIND = 4;
-    constexpr static std::uint8_t WRITE_FAILED = 5;
-    constexpr static std::uint8_t READ_FAILED = 6;
-    constexpr static std::uint8_t CLOSED = 7;
-    constexpr static std::uint8_t EMPTY = 8;
+    constexpr static std::uint8_t INVALID_DATA_BITS = 1;
+    constexpr static std::uint8_t INVALID_STOP_BITS = 2;
+    constexpr static std::uint8_t COULD_NOT_OPEN_DEVICE = 3;
+    constexpr static std::uint8_t COULD_NOT_GET_COMM_STATE = 4;
+    constexpr static std::uint8_t COULD_NOT_SET_COMM_STATE = 5;
+    constexpr static std::uint8_t COULD_NOT_SET_COMM_TIMEOUTS = 6;
+    constexpr static std::uint8_t WRITE_FAILED = 7;
+    constexpr static std::uint8_t READ_FAILED = 8;
+    constexpr static std::uint8_t CLOSED = 9;
+    constexpr static std::uint8_t EMPTY = 10;
 
   public:
     /**
      * @param[in] value The enum value of the uart error.
-     * @warning This constructor should not be used. Use invalidBaudrate(), couldNotSetBaudrate(), couldNotOpenDevice(), deviceIsBusy(),
-     * couldNotBind(), writeFailed(), readFailed(), closed() or empty(). Explicit constructor. Converts uint8 to uart error.
+     * @warning This constructor should not be used. Use invalidBaudrate(), invalidDataBits(), invalidStopBits(), couldNotOpenDevice(),
+     * couldNotGetCommState(), couldNotSetCommState(), couldNotSetCommTimeouts(), writeFailed(), readFailed(), closed() or empty(). Explicit
+     * constructor. Converts uint8 to uart error.
      */
     [[nodiscard]] constexpr explicit UartError(const std::uint8_t value) noexcept : _value(value) {}
     /**
@@ -42,21 +45,29 @@ class UartError
      */
     [[nodiscard]] constexpr static UartError invalidBaudrate() noexcept { return UartError{INVALID_BAUDRATE}; }
     /**
-     * @return Returns the error where setting of baudrate failed.
+     * @return Returns the invalid data bits when creating uart.
      */
-    [[nodiscard]] constexpr static UartError couldNotSetBaudrate() noexcept { return UartError{COULD_NOT_SET_BAUDRATE}; }
+    [[nodiscard]] constexpr static UartError invalidDataBits() noexcept { return UartError{INVALID_DATA_BITS}; }
+    /**
+     * @return Returns the invalid stop bits when creating uart.
+     */
+    [[nodiscard]] constexpr static UartError invalidStopBits() noexcept { return UartError{INVALID_STOP_BITS}; }
     /**
      * @return Returns the error where devive could not opened.
      */
     [[nodiscard]] constexpr static UartError couldNotOpenDevice() noexcept { return UartError{COULD_NOT_OPEN_DEVICE}; }
     /**
-     * @return Returns the error where device is already used.
+     * @return Returns the error where getting of comm state failed.
      */
-    [[nodiscard]] constexpr static UartError deviceIsBusy() noexcept { return UartError{DEVICE_IS_BUSY}; }
+    [[nodiscard]] constexpr static UartError couldNotGetCommState() noexcept { return UartError{COULD_NOT_GET_COMM_STATE}; }
     /**
-     * @return Returns the error where device could bound.
+     * @return Returns the error where setting of comm state failed.
      */
-    [[nodiscard]] constexpr static UartError couldNotBind() noexcept { return UartError{COULD_NOT_BIND}; }
+    [[nodiscard]] constexpr static UartError couldNotSetCommState() noexcept { return UartError{COULD_NOT_SET_COMM_STATE}; }
+    /**
+     * @return Returns the error where setting of comm timeouts failed.
+     */
+    [[nodiscard]] constexpr static UartError couldNotSetCommTimeouts() noexcept { return UartError{COULD_NOT_SET_COMM_TIMEOUTS}; }
     /**
      * @return Returns the error where write failed.
      */
@@ -87,21 +98,29 @@ class UartError
      */
     [[nodiscard]] constexpr bool isInvalidBaudrate() const noexcept { return _value == INVALID_BAUDRATE; }
     /**
-     * @return Returns @b true if error where setting of baudrate failed is represented, otherwise @b false.
+     * @return Returns @b true if invalid data bits when creating uart is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isCouldNotSetBaudrate() const noexcept { return _value == COULD_NOT_SET_BAUDRATE; }
+    [[nodiscard]] constexpr bool isInvalidDataBits() const noexcept { return _value == INVALID_DATA_BITS; }
+    /**
+     * @return Returns @b true if invalid stop bits when creating uart is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isInvalidStopBits() const noexcept { return _value == INVALID_STOP_BITS; }
     /**
      * @return Returns @b true if error where devive could not opened is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isCouldNotOpenDevice() const noexcept { return _value == COULD_NOT_OPEN_DEVICE; }
     /**
-     * @return Returns @b true if error where device is already used is represented, otherwise @b false.
+     * @return Returns @b true if error where getting of comm state failed is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isDeviceIsBusy() const noexcept { return _value == DEVICE_IS_BUSY; }
+    [[nodiscard]] constexpr bool isCouldNotGetCommState() const noexcept { return _value == COULD_NOT_GET_COMM_STATE; }
     /**
-     * @return Returns @b true if error where device could bound is represented, otherwise @b false.
+     * @return Returns @b true if error where setting of comm state failed is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isCouldNotBind() const noexcept { return _value == COULD_NOT_BIND; }
+    [[nodiscard]] constexpr bool isCouldNotSetCommState() const noexcept { return _value == COULD_NOT_SET_COMM_STATE; }
+    /**
+     * @return Returns @b true if error where setting of comm timeouts failed is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isCouldNotSetCommTimeouts() const noexcept { return _value == COULD_NOT_SET_COMM_TIMEOUTS; }
     /**
      * @return Returns @b true if error where write failed is represented, otherwise @b false.
      */
@@ -122,8 +141,8 @@ class UartError
      * Uart error in text form.
      */
     constexpr static std::array<std::string_view, EMPTY> enumNames = {
-        "INVALID_BAUDRATE", "COULD_NOT_SET_BAUDRATE", "COULD_NOT_OPEN_DEVICE", "DEVICE_IS_BUSY",
-        "COULD_NOT_BIND",   "WRITE_FAILED",           "READ_FAILED",           "CLOSED"};
+        "INVALID_BAUDRATE",         "INVALID_DATA_BITS",           "INVALID_STOP_BITS", "COULD_NOT_OPEN_DEVICE", "COULD_NOT_GET_COMM_STATE",
+        "COULD_NOT_SET_COMM_STATE", "COULD_NOT_SET_COMM_TIMEOUTS", "WRITE_FAILED",      "READ_FAILED",           "CLOSED"};
 
   private:
     std::uint8_t _value;
