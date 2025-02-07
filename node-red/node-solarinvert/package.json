@@ -1,0 +1,30 @@
+{
+    "name": "node-red-solarinvert",
+    "version": "0.0.1",
+    "description": "Node-RED nodes to handle solarinvert inverter.",
+    "license": "TBD",
+    "repository": {
+        "type": "git",
+        "url": "https://git.cattatech.de/company/ModbusLib.git"
+    },
+    "author": {
+        "name": "Maik Urbannek",
+        "email": "maik.urbannek@cattatech.de",
+        "url": "TBD"
+    },
+    "keywords": [
+        "node-red",
+        "solarinvert",
+        "inverter"
+    ],
+    "dependencies": {},
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "node-red": {
+        "version": ">=2.0.0",
+        "nodes": {
+            "inverter": "inverter.js"
+        }
+    }
+}

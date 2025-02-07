@@ -1,0 +1,21 @@
+{
+    "inverter":
+    {
+        "label":
+        {
+            "serialport": "Serial Port",
+            "modbusaddress": "Modbus Address",
+            "timeout": "Timeout",
+            "seconds": "seconds",
+            "command": "Command",
+            "winHide": "Hide console"
+        },
+        "placeholder":
+        {
+            "serialport": "/dev/ttyUSB0",
+            "modbusaddress": "0c",
+            "timeout": "optional",
+            "command": "SendRequest"
+        }
+    }
+}
