@@ -5,7 +5,7 @@ ARG FLTK_TAG="release-1.4.1"
 ARG PICO_SDK="2.1.0"
 
 
-RUN apt-get update && apt-get install -y --no-install-recommends ssh git cmake python3 pip gcc g++ curl ca-certificates doxygen graphviz gcovr libdebuginfod-dev libusb-1.0-0 make python3.12-venv mingw-w64 gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib libgl1-mesa-dev libglu1-mesa-dev mesa-common-dev && apt-get autoremove && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends ssh git cmake python3 pip gcc g++ curl ca-certificates doxygen graphviz gcovr libdebuginfod-dev libusb-1.0-0 make python3.12-venv mingw-w64 gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib libgl1-mesa-dev libglu1-mesa-dev mesa-common-dev libpango1.0-dev libwayland-dev wayland-protocols libxkbcommon-dev libxinerama-dev libdbus-1-dev libglew-dev cmake libdecor-0-dev libgtk-3-dev && apt-get autoremove && rm -rf /var/lib/apt/lists/*
 
 
 RUN cd / && git clone https://github.com/espressif/esp-idf.git && cd /esp-idf && git checkout ${ESP_IDF_TAG} && /esp-idf/install.sh && ./tools/set-submodules-to-github.sh && git submodule update --init

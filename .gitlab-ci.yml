@@ -1,4 +1,4 @@
-image: git.cattatech.de:5050/company/modbuslib:0.0.1
+image: git.cattatech.de:5050/company/modbuslib:0.0.2
 
 stages:
   - build
