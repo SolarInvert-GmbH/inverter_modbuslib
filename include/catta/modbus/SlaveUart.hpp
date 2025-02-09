@@ -34,7 +34,7 @@ class SlaveUart
         : _state(IDLE),
           _length(0),
           _index(0),
-          _address(0x00),
+          _modbusId(0x00),
           _crc(0xffff),
           _waitUntil{},
           _requestTimeout(requestTimeout),
@@ -108,10 +108,10 @@ class SlaveUart
             computeCrc(received.value());
             return Tuple{State::receive(), token, Byte{}, Handled::no()};
         };
-        const auto receiveAddress = [this, receiveBase, received]()
+        const auto receiveModbusId = [this, receiveBase, received]()
         {
             _crc = 0xffff;
-            _address = received.value();
+            _modbusId = received.value();
             return receiveBase(RECEVIE_WAIT_FOR_FUNCTION, Token::start());
         };
         const auto setLength = [this, receiveBase](const std::uint8_t length, const Token token)
@@ -188,7 +188,7 @@ class SlaveUart
         const auto sendFirst = [this, sendMiddle]()
         {
             _crc = 0xffff;
-            return sendMiddle(SEND_FUNCTION, _address);
+            return sendMiddle(SEND_FUNCTION, _modbusId);
         };
         const auto sendData = [send, sendMiddle]() { return sendMiddle(SEND_DATA, send.value()); };
         const auto idle = [this, stay]()
@@ -204,7 +204,7 @@ class SlaveUart
         switch (_state)
         {
             case IDLE:
-                return received ? receiveAddress() : stay(State::idle());
+                return received ? receiveModbusId() : stay(State::idle());
 
             case RECEVIE_WAIT_FOR_FUNCTION:
                 return now > _waitUntil ? error(ERROR_RECEIVE_TIMEOUT_PARTIAL_REQUEST) : received ? receiveFunction() : stay(State::receive());
@@ -222,7 +222,7 @@ class SlaveUart
             case WAIT_FOR_SEND:
                 if (now <= _waitUntil) return stay(State::receive());
                 [[fallthrough]];
-            case SEND_ADDRESS:
+            case SEND_MODBUS_ID:
                 return received                ? error(ERROR_RECEIVE_CURRING_SEND)
                        : send.isEmpty()        ? stay(State::send())
                        : send.type().isStart() ? sendFirst()
@@ -260,15 +260,15 @@ class SlaveUart
         }
     }
     /**
-     * @return Returns the address from the current message exchange or 0xff if there is no current message.
+     * @return Returns the modbus id from the current message exchange or 0xff if there is no current message.
      */
-    std::uint8_t address() const noexcept { return _address; }
+    std::uint8_t modbusId() const noexcept { return _modbusId; }
 
   private:
     std::uint8_t _state;
     std::uint8_t _length;
     std::uint8_t _index;
-    std::uint8_t _address;
+    std::uint8_t _modbusId;
     std::uint16_t _crc;
     std::chrono::microseconds _waitUntil;
 
@@ -288,8 +288,8 @@ class SlaveUart
 
     static constexpr std::uint8_t WAIT_FOR_SEND = RECEVIE_WAIT_FOR_CRC1 + 1;
 
-    static constexpr std::uint8_t SEND_ADDRESS = WAIT_FOR_SEND + 1;
-    static constexpr std::uint8_t SEND_FUNCTION = SEND_ADDRESS + 1;
+    static constexpr std::uint8_t SEND_MODBUS_ID = WAIT_FOR_SEND + 1;
+    static constexpr std::uint8_t SEND_FUNCTION = SEND_MODBUS_ID + 1;
     static constexpr std::uint8_t SEND_DATA = SEND_FUNCTION + 1;
     static constexpr std::uint8_t SEND_CRC0 = SEND_DATA + 1;
     static constexpr std::uint8_t SEND_CRC1 = SEND_CRC0 + 1;

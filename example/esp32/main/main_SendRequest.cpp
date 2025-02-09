@@ -85,7 +85,7 @@ extern "C" void app_main(void)
     static constexpr std::chrono::microseconds stayInError = std::chrono::seconds{5};
     static constexpr std::chrono::microseconds waitForIdle = std::chrono::microseconds{1};
 
-    static constexpr std::uint8_t address = 0x0d;
+    static constexpr std::uint8_t modbusId = 0x0d;
 
     static catta::esp32::WatchDog watchDog(10s);
 
@@ -164,7 +164,7 @@ extern "C" void app_main(void)
 
         if (!sendByte && receiveToken.isEmpty())
         {
-            const auto [modbusState, recevieTokenLocal, sendByteLocal, sendHandled] = modbus.work(now, receivedByte, sendToken, address);
+            const auto [modbusState, recevieTokenLocal, sendByteLocal, sendHandled] = modbus.work(now, receivedByte, sendToken, modbusId);
             if (isVerbose && state != modbusState)
             {
                 print(printTimestamp(now).data());

@@ -23,7 +23,7 @@ class MasterUartState
     constexpr static std::uint8_t ERROR_RECEIVE_WITHOUT_REUQUEST = 4;
     constexpr static std::uint8_t ERROR_RECEIVE_LENGTH_NOT_VALID = 5;
     constexpr static std::uint8_t ERROR_RECEIVE_CODE_NOT_VALID = 6;
-    constexpr static std::uint8_t ERROR_RECEIVE_WRONG_ADDRESS = 7;
+    constexpr static std::uint8_t ERROR_RECEIVE_WRONG_MODBUS_ID = 7;
     constexpr static std::uint8_t ERROR_RECEIVE_WRONG_CRC = 8;
     constexpr static std::uint8_t ERROR_RECEIVE_TIMEOUT_NO_RESPONSE = 9;
     constexpr static std::uint8_t ERROR_RECEIVE_TIMEOUT_PARTIAL_RESPONSE = 10;
@@ -33,7 +33,7 @@ class MasterUartState
     /**
      * @param[in] value The enum value of the state.
      * @warning This constructor should not be used. Use idle(), send(), receive(), errorSendInvalid(), errorReceiveWithoutReuquest(),
-     * errorReceiveLengthNotValid(), errorReceiveCodeNotValid(), errorReceiveWrongAddress(), errorReceiveWrongCrc(), errorReceiveTimeoutNoResponse(),
+     * errorReceiveLengthNotValid(), errorReceiveCodeNotValid(), errorReceiveWrongModbusId(), errorReceiveWrongCrc(), errorReceiveTimeoutNoResponse(),
      * errorReceiveTimeoutPartialResponse() or empty(). Explicit constructor. Converts uint8 to state.
      */
     [[nodiscard]] constexpr explicit MasterUartState(const std::uint8_t value) noexcept : _value(value) {}
@@ -70,9 +70,9 @@ class MasterUartState
      */
     [[nodiscard]] constexpr static MasterUartState errorReceiveCodeNotValid() noexcept { return MasterUartState{ERROR_RECEIVE_CODE_NOT_VALID}; }
     /**
-     * @return Returns the error state (response has unexpected address).
+     * @return Returns the error state (response has unexpected modbus id).
      */
-    [[nodiscard]] constexpr static MasterUartState errorReceiveWrongAddress() noexcept { return MasterUartState{ERROR_RECEIVE_WRONG_ADDRESS}; }
+    [[nodiscard]] constexpr static MasterUartState errorReceiveWrongModbusId() noexcept { return MasterUartState{ERROR_RECEIVE_WRONG_MODBUS_ID}; }
     /**
      * @return Returns the error state (the received crc is wrong).
      */
@@ -133,9 +133,9 @@ class MasterUartState
      */
     [[nodiscard]] constexpr bool isErrorReceiveCodeNotValid() const noexcept { return _value == ERROR_RECEIVE_CODE_NOT_VALID; }
     /**
-     * @return Returns @b true if error state (response has unexpected address) is represented, otherwise @b false.
+     * @return Returns @b true if error state (response has unexpected modbus id) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isErrorReceiveWrongAddress() const noexcept { return _value == ERROR_RECEIVE_WRONG_ADDRESS; }
+    [[nodiscard]] constexpr bool isErrorReceiveWrongModbusId() const noexcept { return _value == ERROR_RECEIVE_WRONG_MODBUS_ID; }
     /**
      * @return Returns @b true if error state (the received crc is wrong) is represented, otherwise @b false.
      */
@@ -162,7 +162,7 @@ class MasterUartState
                                                                       "ERROR_RECEIVE_WITHOUT_REUQUEST",
                                                                       "ERROR_RECEIVE_LENGTH_NOT_VALID",
                                                                       "ERROR_RECEIVE_CODE_NOT_VALID",
-                                                                      "ERROR_RECEIVE_WRONG_ADDRESS",
+                                                                      "ERROR_RECEIVE_WRONG_MODBUS_ID",
                                                                       "ERROR_RECEIVE_WRONG_CRC",
                                                                       "ERROR_RECEIVE_TIMEOUT_NO_RESPONSE",
                                                                       "ERROR_RECEIVE_TIMEOUT_PARTIAL_RESPONSE"};

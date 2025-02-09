@@ -46,7 +46,7 @@ class MasterUart
      * @param[in] now Current time.
      * @param[in] received The bytes received from modbus.
      * @param[in] send The token to send. The input handled will be set, if send token was handled. Send token can only be handled in idle state.
-     * @param[in] address The address of the slave.
+     * @param[in] modbusId The modbus id of the slave.
      * @return Returns tuple of :
      *    - the current state of the modbus uart
      *    - the receive token, that represents the input @b received bytes
@@ -55,7 +55,7 @@ class MasterUart
      * to be called next time with the same send token.
      */
     constexpr std::tuple<catta::modbus::MasterUartState, catta::modbus::Token, std::optional<std::uint8_t>, catta::parser::InputHandled> work(
-        const std::chrono::microseconds now, const std::optional<std::uint8_t> received, const catta::modbus::Token send, const std::uint8_t address)
+        const std::chrono::microseconds now, const std::optional<std::uint8_t> received, const catta::modbus::Token send, const std::uint8_t modbusId)
     {
         using State = catta::modbus::MasterUartState;
         using Token = catta::modbus::Token;
@@ -74,8 +74,8 @@ class MasterUart
                     return State::errorReceiveLengthNotValid();
                 case ERROR_RECEIVE_CODE_NOT_VALID:
                     return State::errorReceiveCodeNotValid();
-                case ERROR_RECEIVE_WRONG_ADDRESS:
-                    return State::errorReceiveWrongAddress();
+                case ERROR_RECEIVE_WRONG_MODBUS_ID:
+                    return State::errorReceiveWrongModbusId();
                 case ERROR_RECEIVE_WRONG_CRC:
                     return State::errorReceiveWrongCrc();
                 case ERROR_RECEIVE_TIMEOUT_NO_RESPONSE:
@@ -113,7 +113,7 @@ class MasterUart
         {
             const std::uint8_t result = static_cast<std::uint8_t>((_crc >> 8) & 0xff);
             _crc = 0xffff;
-            _state = RECEVIE_WAIT_FOR_ADDRESS;
+            _state = RECEVIE_WAIT_FOR_MODBUS_ID;
             _waitUntil = now + _requestTimeout;
             _length = 0;
             return Tuple{State::send(), Token::empty(), Byte{result}, Handled::yes()};
@@ -124,10 +124,10 @@ class MasterUart
             computeCrc(value);
             return Tuple{State::send(), Token::empty(), Byte{value}, Handled::yes()};
         };
-        const auto sendFirst = [this, sendMiddle, address]()
+        const auto sendFirst = [this, sendMiddle, modbusId]()
         {
             _crc = 0xffff;
-            return sendMiddle(SEND_FUNCTION, address);
+            return sendMiddle(SEND_FUNCTION, modbusId);
         };
         const auto sendData = [send, sendMiddle]() { return sendMiddle(SEND_DATA, send.value()); };
         const auto receiveBase = [this, now, computeCrc, received](const std::uint8_t state, const Token token)
@@ -137,11 +137,11 @@ class MasterUart
             computeCrc(received.value());
             return Tuple{State::receive(), token, Byte{}, Handled::no()};
         };
-        const auto receiveAddress = [this, receiveBase, received, address, error]()
+        const auto receiveModbusId = [this, receiveBase, received, modbusId, error]()
         {
             _crc = 0xffff;
-            if (received.value() == address) return receiveBase(RECEVIE_WAIT_FOR_FUNCTION, Token::start());
-            return error(ERROR_RECEIVE_WRONG_ADDRESS);
+            if (received.value() == modbusId) return receiveBase(RECEVIE_WAIT_FOR_FUNCTION, Token::start());
+            return error(ERROR_RECEIVE_WRONG_MODBUS_ID);
         };
         const auto setLength = [this, receiveBase](const std::uint8_t length, const Token token)
         {
@@ -225,8 +225,8 @@ class MasterUart
                        : send.isEmpty()      ? stay(State::send())
                        : send.type().isEnd() ? sendCrc1()
                                              : error(ERROR_SEND_INVALID);
-            case RECEVIE_WAIT_FOR_ADDRESS:
-                return now > _waitUntil ? error(ERROR_RECEIVE_TIMEOUT_NO_RESPONSE) : received ? receiveAddress() : stay(State::receive());
+            case RECEVIE_WAIT_FOR_MODBUS_ID:
+                return now > _waitUntil ? error(ERROR_RECEIVE_TIMEOUT_NO_RESPONSE) : received ? receiveModbusId() : stay(State::receive());
             case RECEVIE_WAIT_FOR_FUNCTION:
                 return now > _waitUntil ? error(ERROR_RECEIVE_TIMEOUT_PARTIAL_RESPONSE) : received ? receiveFunction() : stay(State::receive());
             case RECEVIE_WAIT_FOR_LENGTH:
@@ -249,8 +249,8 @@ class MasterUart
                 return handleError(State::errorReceiveLengthNotValid());
             case ERROR_RECEIVE_CODE_NOT_VALID:
                 return handleError(State::errorReceiveCodeNotValid());
-            case ERROR_RECEIVE_WRONG_ADDRESS:
-                return handleError(State::errorReceiveWrongAddress());
+            case ERROR_RECEIVE_WRONG_MODBUS_ID:
+                return handleError(State::errorReceiveWrongModbusId());
             case ERROR_RECEIVE_WRONG_CRC:
                 return handleError(State::errorReceiveWrongCrc());
             case ERROR_RECEIVE_TIMEOUT_NO_RESPONSE:
@@ -279,8 +279,8 @@ class MasterUart
     static constexpr std::uint8_t SEND_DATA = SEND_FUNCTION + 1;
     static constexpr std::uint8_t SEND_CRC0 = SEND_DATA + 1;
     static constexpr std::uint8_t SEND_CRC1 = SEND_CRC0 + 1;
-    static constexpr std::uint8_t RECEVIE_WAIT_FOR_ADDRESS = SEND_CRC1 + 1;
-    static constexpr std::uint8_t RECEVIE_WAIT_FOR_FUNCTION = RECEVIE_WAIT_FOR_ADDRESS + 1;
+    static constexpr std::uint8_t RECEVIE_WAIT_FOR_MODBUS_ID = SEND_CRC1 + 1;
+    static constexpr std::uint8_t RECEVIE_WAIT_FOR_FUNCTION = RECEVIE_WAIT_FOR_MODBUS_ID + 1;
     static constexpr std::uint8_t RECEVIE_WAIT_FOR_LENGTH = RECEVIE_WAIT_FOR_FUNCTION + 1;
     static constexpr std::uint8_t RECEVIE_WAIT_FOR_DATA = RECEVIE_WAIT_FOR_LENGTH + 1;
     static constexpr std::uint8_t RECEVIE_WAIT_FOR_CODE = RECEVIE_WAIT_FOR_DATA + 1;
@@ -291,8 +291,8 @@ class MasterUart
     static constexpr std::uint8_t ERROR_RECEIVE_WITHOUT_REUQUEST = ERROR_SEND_INVALID + 1;
     static constexpr std::uint8_t ERROR_RECEIVE_LENGTH_NOT_VALID = ERROR_RECEIVE_WITHOUT_REUQUEST + 1;
     static constexpr std::uint8_t ERROR_RECEIVE_CODE_NOT_VALID = ERROR_RECEIVE_LENGTH_NOT_VALID + 1;
-    static constexpr std::uint8_t ERROR_RECEIVE_WRONG_ADDRESS = ERROR_RECEIVE_CODE_NOT_VALID + 1;
-    static constexpr std::uint8_t ERROR_RECEIVE_WRONG_CRC = ERROR_RECEIVE_WRONG_ADDRESS + 1;
+    static constexpr std::uint8_t ERROR_RECEIVE_WRONG_MODBUS_ID = ERROR_RECEIVE_CODE_NOT_VALID + 1;
+    static constexpr std::uint8_t ERROR_RECEIVE_WRONG_CRC = ERROR_RECEIVE_WRONG_MODBUS_ID + 1;
     static constexpr std::uint8_t ERROR_RECEIVE_TIMEOUT_NO_RESPONSE = ERROR_RECEIVE_WRONG_CRC + 1;
     static constexpr std::uint8_t ERROR_RECEIVE_TIMEOUT_PARTIAL_RESPONSE = ERROR_RECEIVE_TIMEOUT_NO_RESPONSE + 1;
 };

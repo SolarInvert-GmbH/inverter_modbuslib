@@ -75,9 +75,9 @@ static std::string printTimestamp(const std::chrono::microseconds t)
 static void printHelp(const std::string_view program)
 {
     std::cout << program
-              << " --uart COM1 --address 01 --request {\\\"type\\\":\\\"readError\\\",\\\"value\\\":null} [--timeout 5000]  [--debug [--verbose]]\n";
+              << " --uart COM1 --modbusid 01 --request {\\\"type\\\":\\\"readError\\\",\\\"value\\\":null} [--timeout 5000]  [--debug [--verbose]]\n";
     std::cout << " --uart     : uart device.\n";
-    std::cout << " --address  : address in hex (two digets).\n";
+    std::cout << " --modbusid  : modbusid in hex (two digets).\n";
     std::cout << " --request  : the request as json.\n";
     std::cout << "[--timeout] : timeout in milliseconds. 1…60000 is allowed. Default is no timeout.\n";
     std::cout << "[--debug]   : print debug messages.\n";
@@ -95,7 +95,7 @@ static std::tuple<std::string, LogLevel, std::uint8_t, catta::modbus::si::reques
     std::string uart;
     bool debug = false;
     bool verbose = false;
-    std::optional<std::uint8_t> address = {};
+    std::optional<std::uint8_t> modbusid = {};
     catta::modbus::si::request::Request request;
     std::uint16_t timeout = 0;
 
@@ -148,8 +148,8 @@ static std::tuple<std::string, LogLevel, std::uint8_t, catta::modbus::si::reques
         const std::string flag = argv[i];
         if (flag == "--uart")
             setArgString(uart, "uart", i);
-        else if (flag == "--address")
-            setArgByte(address, "address", i);
+        else if (flag == "--modbusid")
+            setArgByte(modbusid, "modbusid", i);
         else if (flag == "--request")
             setArgRequest(request, "request", i);
         else if (flag == "--timeout")
@@ -172,10 +172,10 @@ static std::tuple<std::string, LogLevel, std::uint8_t, catta::modbus::si::reques
         logLevel = verbose ? VERBOSE : DEBUG;
     else if (verbose)
         logAndExit("Used '--verbose' without '--debug'");
-    checkArg("address", !address);
+    checkArg("modbusid", !modbusid);
     checkArg("request", request.isEmpty());
 
-    return std::tuple<std::string, LogLevel, std::uint8_t, catta::modbus::si::request::Request, std::uint16_t>{uart, logLevel, address.value(),
+    return std::tuple<std::string, LogLevel, std::uint8_t, catta::modbus::si::request::Request, std::uint16_t>{uart, logLevel, modbusid.value(),
                                                                                                                request, timeout};
 }
 
@@ -189,7 +189,7 @@ static void signalHandler(const int signal)
 int main(int argc, char *argv[])
 {
     using namespace std::chrono_literals;
-    const auto [uartDevice, logLevel, address, requestInput, timeout] = checkFlags(argc, argv);
+    const auto [uartDevice, logLevel, modbusid, requestInput, timeout] = checkFlags(argc, argv);
 
     const bool isDebug = logLevel == DEBUG || logLevel == VERBOSE;
     const bool isVerbose = logLevel == VERBOSE;
@@ -291,7 +291,7 @@ int main(int argc, char *argv[])
 
         if (!sendByte && receiveToken.isEmpty())
         {
-            const auto [modbusState, recevieTokenLocal, sendByteLocal, sendHandled] = modbus.work(now, receivedByte, sendToken, address);
+            const auto [modbusState, recevieTokenLocal, sendByteLocal, sendHandled] = modbus.work(now, receivedByte, sendToken, modbusid);
             if (isVerbose && state != modbusState)
             {
                 std::cout << printTimestamp(now) << " [Modbus::Uart::State] " << catta::tostring::toString(modbusState) << '\n';

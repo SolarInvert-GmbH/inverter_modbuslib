@@ -698,7 +698,7 @@ class DummyInverter : public Fl_Double_Window
                 if (handled) receiveToken = {};
                 if (parser.state().isDone())
                 {
-                    const std::uint8_t id = modbus.address();
+                    const std::uint8_t id = modbus.modbusId();
                     const auto request = parser.data();
                     if (_uart->id() == id) handleRequest(request, response);
                     if (isDebug)

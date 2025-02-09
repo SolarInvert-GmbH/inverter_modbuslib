@@ -8,8 +8,8 @@
         <input type="text" id="node-input-serialport" data-i18n="[placeholder]inverter.placeholder.serialport">
     </div>
     <div class="form-row">
-        <label for="node-input-modbusaddress"><i class="fa fa-file"></i> <span data-i18n="inverter.label.modbusaddress"></span></label>
-        <input type="text" id="node-input-modbusaddress" data-i18n="[placeholder]inverter.placeholder.modbusaddress">
+        <label for="node-input-modbusid"><i class="fa fa-file"></i> <span data-i18n="inverter.label.modbusid"></span></label>
+        <input type="text" id="node-input-modbusid" data-i18n="[placeholder]inverter.placeholder.modbusid">
     </div>
     <div class="form-row">
         <label for="node-input-timer"><i class="fa fa-clock-o"></i> <span data-i18n="inverter.label.timeout"></span></label>
@@ -36,7 +36,7 @@
         color:"darksalmon",
         defaults: {
             serialport: {value:""},
-            modbusaddress: {value:"", validate:RED.validators.regex(/[0-9,a-f,A-F][0-9,a-f,A-F]/)},
+            modbusid: {value:"", validate:RED.validators.regex(/[0-9,a-f,A-F][0-9,a-f,A-F]/)},
             timer: {value:""},
             command: {value:""},
             winHide: {value:false},

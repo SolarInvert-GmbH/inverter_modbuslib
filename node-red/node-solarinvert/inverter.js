@@ -12,7 +12,7 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, n);
         this.cmd = (n.command || "").trim();
         this.port = (n.serialport || "").trim();
-        this.address = (n.modbusaddress || "00").trim();
+        this.modbusid = (n.modbusid || "00").trim();
         this.timer = Number(n.timer || 0) * 1000;
         this.activeProcesses = {};
         this.execOpt = {
@@ -59,7 +59,7 @@ module.exports = function(RED) {
             } else {
                 var child;
                 const quote = isWindows ? "": "'";
-                var arg = node.cmd + " --uart " + node.port + " --address " + node.address + " --request " + quote + JSON.stringify(msg.payload) + quote;
+                var arg = node.cmd + " --uart " + node.port + " --modbusid " + node.modbusid + " --request " + quote + JSON.stringify(msg.payload) + quote;
                 if (node.timer !== 0) {
                     arg += " --timeout " + node.timer;
                 }

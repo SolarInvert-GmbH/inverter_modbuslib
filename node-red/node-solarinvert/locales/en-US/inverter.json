@@ -4,7 +4,7 @@
         "label":
         {
             "serialport": "Serial Port",
-            "modbusaddress": "Modbus Address",
+            "modbusid": "Modbus Id",
             "timeout": "Timeout",
             "seconds": "seconds",
             "command": "Command",
@@ -13,7 +13,7 @@
         "placeholder":
         {
             "serialport": "/dev/ttyUSB0",
-            "modbusaddress": "0c",
+            "modbusid": "0c",
             "timeout": "optional",
             "command": "SendRequest"
         }
