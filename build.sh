@@ -51,8 +51,8 @@ parse_arguments()
     TASK_WINDOWS="false"
     TASK_RP2040="false"
     TASK_ESP32="false"
-    ARG_GUI_ONLY=""
-    ARG_REQUEST_ONLY=""
+    ARG_GUI_ONLY="-DCMAKE_IGNORE=ingnor"
+    ARG_REQUEST_ONLY="-DCMAKE_IGNORE=ingnor"
 
     if [[ ${#} -eq 0 ]]; then
         TASK_COMPILE="true"
