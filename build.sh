@@ -14,7 +14,7 @@ exit_and_clean_up()
 print_help_and_leave()
 {
     echo "ussage:"
-    echo "${0} [--debug|--release] [--gcc|--clang] [--all] [--docu] [--test] [--coverage] [--format] [--windows] [--rp2040] [--esp32]"
+    echo "${0} [--debug|--release] [--gcc|--clang] [--all] [--docu] [--test] [--coverage] [--format] [--windows] [--rp2040] [--esp32] [--guionly] [--requestonly]"
     echo "    '--release' and '--gcc' are defalut."
     exit_and_clean_up "${1}"
 }
@@ -51,6 +51,8 @@ parse_arguments()
     TASK_WINDOWS="false"
     TASK_RP2040="false"
     TASK_ESP32="false"
+    ARG_GUI_ONLY=""
+    ARG_REQUEST_ONLY=""
 
     if [[ ${#} -eq 0 ]]; then
         TASK_COMPILE="true"
@@ -107,6 +109,16 @@ parse_arguments()
             ;;
           --esp32)
             TASK_ESP32="true"
+            ;;
+          --guionly)
+            TASK_COMPILE="true"
+            ARG_GUI_ONLY="-DCMAKE_GUI_ONLY=true"
+            BUILD_TYPE="true"
+            ;;
+          --requestonly)
+            TASK_COMPILE="true"
+            ARG_REQUEST_ONLY="-DCMAKE_REQUEST_ONLY=true"
+            BUILD_TYPE="true"
             ;;
           *)
             echo "Unknown argument '${key}'"
@@ -184,6 +196,8 @@ compile_project()
               -DCMAKE_CXX_COMPILER="${COMPILER}" \
               -DCMAKE_GIT_VERSION="$(get_git_version)" \
               -DCMAKE_COVERAGE="${TASK_COVERAGE}" \
+              "${ARG_REQUEST_ONLY}" \
+              "${ARG_GUI_ONLY}" \
               ..
         if [[ "${TASK_COVERAGE}" == "true" ]]; then
             make clean

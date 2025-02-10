@@ -55,4 +55,8 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
     add_subdirectory(example/windows/)
 endif()
 
-add_subdirectory(test/unit)
+message("CMAKE_GUI_ONLY ${CMAKE_GUI_ONLY}")
+
+if (( NOT "${CMAKE_GUI_ONLY}" STREQUAL "true") AND ( NOT "${CMAKE_REQUEST_ONLY}" STREQUAL "true"))
+    add_subdirectory(test/unit)
+endif()
