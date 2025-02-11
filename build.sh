@@ -113,12 +113,12 @@ parse_arguments()
           --guionly)
             TASK_COMPILE="true"
             ARG_GUI_ONLY="-DCMAKE_GUI_ONLY=true"
-            BUILD_TYPE="true"
+            BUILD_TYPE="RELEASE"
             ;;
           --requestonly)
             TASK_COMPILE="true"
             ARG_REQUEST_ONLY="-DCMAKE_REQUEST_ONLY=true"
-            BUILD_TYPE="true"
+            BUILD_TYPE="RELEASE"
             ;;
           *)
             echo "Unknown argument '${key}'"
