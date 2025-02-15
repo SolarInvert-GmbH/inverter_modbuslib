@@ -8,7 +8,7 @@ module.exports = function(RED) {
     var fs = require('fs');
     const isWindows = process.platform === 'win32'
 
-    function InverterNode(n) {
+    function BatteryInvertNode(n) {
         RED.nodes.createNode(this, n);
         this.cmd = (n.command || "").trim();
         this.port = (n.serialport || "").trim();
@@ -126,5 +126,5 @@ module.exports = function(RED) {
             node.status({});
         });
     }
-    RED.nodes.registerType("inverter", InverterNode);
+    RED.nodes.registerType("batteryinvert", BatteryInvertNode);
 }

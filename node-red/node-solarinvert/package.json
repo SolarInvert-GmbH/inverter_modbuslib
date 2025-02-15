@@ -15,7 +15,9 @@
     "keywords": [
         "node-red",
         "solarinvert",
-        "inverter"
+        "inverter",
+        "battery" ,
+        "batteryinvert"
     ],
     "dependencies": {},
     "engines": {
@@ -24,7 +26,7 @@
     "node-red": {
         "version": ">=2.0.0",
         "nodes": {
-            "inverter": "inverter.js"
+            "batteryinvert": "batteryinvert.js"
         }
     }
 }
