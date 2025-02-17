@@ -13,3 +13,5 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         target_compile_options(main_dummyinverter   PUBLIC "-Wno-maybe-uninitialized")
     endif()
 endif()
+
+install(TARGETS Dummy_Inverter RUNTIME DESTINATION bin)

@@ -14,7 +14,7 @@ exit_and_clean_up()
 print_help_and_leave()
 {
     echo "ussage:"
-    echo "${0} [--debug|--release] [--gcc|--clang] [--all] [--docu] [--test] [--coverage] [--format] [--windows] [--rp2040] [--esp32] [--guionly] [--requestonly]"
+    echo "${0} [--debug|--release] [--gcc|--clang] [--all] [--docu] [--test] [--coverage] [--format] [--windows] [--rp2040] [--esp32] [--guionly] [--requestonly] [--install]"
     echo "    '--release' and '--gcc' are defalut."
     exit_and_clean_up "${1}"
 }
@@ -51,6 +51,7 @@ parse_arguments()
     TASK_WINDOWS="false"
     TASK_RP2040="false"
     TASK_ESP32="false"
+    TASK_INSTALL="false"
     ARG_GUI_ONLY="-DCMAKE_IGNORE=ingnor"
     ARG_REQUEST_ONLY="-DCMAKE_IGNORE=ingnor"
 
@@ -119,6 +120,9 @@ parse_arguments()
             TASK_COMPILE="true"
             ARG_REQUEST_ONLY="-DCMAKE_REQUEST_ONLY=true"
             BUILD_TYPE="RELEASE"
+            ;;
+          --install)
+            TASK_INSTALL="true"
             ;;
           *)
             echo "Unknown argument '${key}'"
@@ -206,6 +210,9 @@ compile_project()
         if [ ${?} -ne 0 ]; then
             echo "build failed."
             exit_and_clean_up 1
+        fi
+        if [[ "${TASK_INSTALL}" == "true" ]]; then
+            sudo make install
         fi
     fi
 }
