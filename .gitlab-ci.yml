@@ -85,6 +85,17 @@ stages:
     paths:
     - html/*
 
+.docu: &manual_base
+  image: git.cattatech.de:5050/maik.urbannek/simplex:2.0.0
+  stage: build
+  script:
+    - ./build.sh --manual
+    - cp build/manual manual
+  artifacts:
+    when: always
+    paths:
+    - manual/*
+
 host:tag:
   only:
     - tags
@@ -126,6 +137,20 @@ docu:commit:
   artifacts:
     expire_in: 2 weeks
   <<: *docu_base
+
+manual:tag:
+  only:
+    - tags
+  artifacts:
+    expire_in: never
+  <<: *manual_base
+
+manual:commit:
+  except:
+    - tags
+  artifacts:
+    expire_in: 2 weeks
+  <<: *manual_base
 
 windows:tag:
   only:

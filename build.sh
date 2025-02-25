@@ -14,7 +14,7 @@ exit_and_clean_up()
 print_help_and_leave()
 {
     echo "ussage:"
-    echo "${0} [--debug|--release] [--gcc|--clang] [--all] [--docu] [--test] [--coverage] [--format] [--windows] [--rp2040] [--esp32] [--guionly] [--requestonly] [--install]"
+    echo "${0} [--debug|--release] [--gcc|--clang] [--all] [--docu] [--manual] [--test] [--coverage] [--format] [--windows] [--rp2040] [--esp32] [--guionly] [--requestonly] [--install]"
     echo "    '--release' and '--gcc' are defalut."
     exit_and_clean_up "${1}"
 }
@@ -47,6 +47,7 @@ parse_arguments()
     TASK_COVARGE="false"
     TASK_TEST="false"
     TASK_DOCU="false"
+    TASK_MANUAL="false"
     TASK_FORMAT="false"
     TASK_WINDOWS="false"
     TASK_RP2040="false"
@@ -83,6 +84,9 @@ parse_arguments()
             ;;
           --docu)
             TASK_DOCU="true"
+            ;;
+          --manual)
+            TASK_MANUAL="true"
             ;;
           --format)
             TASK_FORMAT="true"
@@ -285,6 +289,26 @@ create_docu()
     fi
 }
 
+check_result()
+{
+    if [ ${?} -ne 0 ]; then
+        echo "${1} failed."
+        exit_and_clean_up 1
+    fi
+}
+
+create_manual()
+{
+    if [[ "${TASK_MANUAL}" == "true" ]]; then
+        cd "${ROOT}"
+        mkdir -p "build/manual"
+        cd manual
+
+        pandoc --from=markdown --to=pdf -o ../build/manual/DummyInverter.pdf ./DummyInverter.md
+        check_result "DummyInverter manual"
+    fi
+}
+
 execute_tests()
 {
     if [[ "${TASK_TEST}" == "true" ]]; then
@@ -321,5 +345,6 @@ compile_project_cross_esp32
 execute_tests
 create_coverage
 create_docu
+create_manual
 
 exit_and_clean_up 0
