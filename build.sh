@@ -304,6 +304,9 @@ create_manual()
         mkdir -p "build/manual"
         cd manual
 
+        pandoc --from=markdown --to=pdf -o ../build/manual/Pi_Anleitung.pdf ./Pi_Anleitung.md
+        check_result "Pi_Anleitung manual"
+
         pandoc --from=markdown --to=pdf -o ../build/manual/DummyInverter.pdf ./DummyInverter.md
         check_result "DummyInverter manual"
     fi
