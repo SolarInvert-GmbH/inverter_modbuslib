@@ -90,7 +90,7 @@ stages:
   stage: build
   script:
     - ./build.sh --manual
-    - cp build/manual manuals
+    - cp -r build/manual manuals
   artifacts:
     when: always
     paths:
