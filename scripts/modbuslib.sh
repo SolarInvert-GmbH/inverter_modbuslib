@@ -1,10 +1,19 @@
 #!/bin/bash
 
-MODBUS_LIB_VERSION="v0.0.1-15-g054ddfc"
+SOURCE="$(readlink -f ${BASH_SOURCE[0]})"
+ROOT="${SOURCE%/*/*}"
+unset SOURCE
 
 sudo apt update
 sudo apt install -y git build-essential cmake wget
-wget -O "ModbusLib-master-${MODBUS_LIB_VERSION}.zip"  "https://cloud.cattatech.de/index.php/s/qPpdrr7A8Ak3G4i/download?path=/&files=ModbusLib-master-${MODBUS_LIB_VERSION}.zip"
-unzip ModbusLib-master-${MODBUS_LIB_VERSION}.zip
-cd ~/Downloads/ModbusLib-master
+
+cd "${HOME}"
+mkdir -p "SI_COMM"
+cd "SI_COMM"
+
+cp -r ${ROOT} .
+echo $(pwd)
+cd ModbusLib-master
+
 ./build.sh --guionly --requestonly
+sudo ./build.sh --guionly --requestonly --install
