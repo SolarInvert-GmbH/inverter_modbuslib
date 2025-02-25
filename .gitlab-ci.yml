@@ -90,11 +90,11 @@ stages:
   stage: build
   script:
     - ./build.sh --manual
-    - cp build/manual manual
+    - cp build/manual manuals
   artifacts:
     when: always
     paths:
-    - manual/*
+    - manuals/*
 
 host:tag:
   only:
