@@ -28,12 +28,6 @@
 #include <FL/Fl_Terminal.H>
 
 // std
-#include <catta/random/Random.hpp>
-#include <catta/random/modbus/si/response/FactoryValues.hpp>
-#include <catta/random/modbus/si/response/ReadError.hpp>
-#include <catta/random/modbus/si/response/ReadOperatingData33.hpp>
-#include <catta/random/modbus/si/response/ReadOperatingData3e.hpp>
-#include <catta/random/modbus/sunspec/String.hpp>
 #include <functional>
 
 namespace catta
@@ -426,36 +420,52 @@ class DummyInverter : public Fl_Double_Window
         }
     };
     template <std::uint8_t TYPE>
-    class EmptyResponse
+    class BoolResponse
     {
+      private:
+        using T0 = Boolean;
+
       public:
         static constexpr auto type = catta::modbus::si::request::Type(TYPE);
-        static constexpr std::size_t lines = 0;
-        static std::tuple<Fl_Box*, catta::gui::Input*>* create() { return nullptr; }
-        static catta::modbus::si::response::Response getResponse(std::tuple<Fl_Box*, catta::gui::Input*>*)
+        static constexpr std::size_t lines = 1;
+        static std::tuple<Fl_Box*, catta::gui::Input*>* create()
+        {
+            std::tuple<Fl_Box*, catta::gui::Input*>* input = new std::tuple<Fl_Box*, catta::gui::Input*>[lines];
+            auto set = [input](const int i, const char* name, const auto inital)
+            {
+                input[i] = std::tuple<Fl_Box*, catta::gui::Input*>{
+                    new Fl_Box(DummyInverter::W_NAME + DummyInverter::W_ACTION, i * 25, DummyInverter::W_LINE_NAME, 25, name),
+                    new catta::gui::Input(DummyInverter::W_NAME + DummyInverter::W_ACTION + DummyInverter::W_LINE_NAME, i * 25,
+                                          DummyInverter::W_INPUT, 25, inital)};
+            };
+            set(0, "result", Boolean(true));
+            return input;
+        }
+        static catta::modbus::si::response::Response getResponse(std::tuple<Fl_Box*, catta::gui::Input*>* input)
         {
             using Type = catta::modbus::si::request::Type;
             using Response = catta::modbus::si::response::Response;
+            const auto value = [input]() { return std::get<1>(input[0])->value<T0>().value(); };
             switch (type)
             {
                 case Type::switchOffGridRelay():
-                    return Response::switchOffGridRelay();
+                    return Response::switchOffGridRelay(value());
                 case Type::switchOnGridRelay():
-                    return Response::switchOnGridRelay();
+                    return Response::switchOnGridRelay(value());
                 case Type::forceIdle():
-                    return Response::forceIdle();
+                    return Response::forceIdle(value());
                 case Type::deactivateIdle():
-                    return Response::deactivateIdle();
+                    return Response::deactivateIdle(value());
                 case Type::startConstantVoltage():
-                    return Response::startConstantVoltage();
+                    return Response::startConstantVoltage(value());
                 case Type::endConstantVoltage():
-                    return Response::endConstantVoltage();
+                    return Response::endConstantVoltage(value());
                 case Type::setPowerFactor():
-                    return Response::setPowerFactor();
+                    return Response::setPowerFactor(value());
                 case Type::controlBatteryInvert():
-                    return Response::controlBatteryInvert();
+                    return Response::controlBatteryInvert(value());
                 case Type::limitBatteryInvert():
-                    return Response::limitBatteryInvert();
+                    return Response::limitBatteryInvert(value());
                 default:
                     return Response::empty();
             }
@@ -753,15 +763,15 @@ class DummyInverter : public Fl_Double_Window
   private:
     using Operating33 = SiRequest<SiReadOperatingData33>;
     using Operating3e = SiRequest<SiReadOperatingData3e>;
-    using SwitchOffGridRelay = SiRequest<EmptyResponse<catta::modbus::si::request::Type::switchOffGridRelay()>>;
-    using SwitchOnGridRelay = SiRequest<EmptyResponse<catta::modbus::si::request::Type::switchOnGridRelay()>>;
-    using ForceIdle = SiRequest<EmptyResponse<catta::modbus::si::request::Type::forceIdle()>>;
-    using DeactivateIdle = SiRequest<EmptyResponse<catta::modbus::si::request::Type::deactivateIdle()>>;
-    using StartConstantVoltage = SiRequest<EmptyResponse<catta::modbus::si::request::Type::startConstantVoltage()>>;
-    using EndConstantVoltage = SiRequest<EmptyResponse<catta::modbus::si::request::Type::endConstantVoltage()>>;
-    using SetPowerFactor = SiRequest<EmptyResponse<catta::modbus::si::request::Type::setPowerFactor()>>;
-    using ControlBatteryInvert = SiRequest<EmptyResponse<catta::modbus::si::request::Type::controlBatteryInvert()>>;
-    using LimitBatteryInvert = SiRequest<EmptyResponse<catta::modbus::si::request::Type::limitBatteryInvert()>>;
+    using SwitchOffGridRelay = SiRequest<BoolResponse<catta::modbus::si::request::Type::switchOffGridRelay()>>;
+    using SwitchOnGridRelay = SiRequest<BoolResponse<catta::modbus::si::request::Type::switchOnGridRelay()>>;
+    using ForceIdle = SiRequest<BoolResponse<catta::modbus::si::request::Type::forceIdle()>>;
+    using DeactivateIdle = SiRequest<BoolResponse<catta::modbus::si::request::Type::deactivateIdle()>>;
+    using StartConstantVoltage = SiRequest<BoolResponse<catta::modbus::si::request::Type::startConstantVoltage()>>;
+    using EndConstantVoltage = SiRequest<BoolResponse<catta::modbus::si::request::Type::endConstantVoltage()>>;
+    using SetPowerFactor = SiRequest<BoolResponse<catta::modbus::si::request::Type::setPowerFactor()>>;
+    using ControlBatteryInvert = SiRequest<BoolResponse<catta::modbus::si::request::Type::controlBatteryInvert()>>;
+    using LimitBatteryInvert = SiRequest<BoolResponse<catta::modbus::si::request::Type::limitBatteryInvert()>>;
     using ReadError = SiRequest<SiReadError>;
     using FactoryValues = SiRequest<SiFactoryValues>;
 

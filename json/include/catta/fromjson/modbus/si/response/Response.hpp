@@ -42,6 +42,11 @@ class Parser<catta::modbus::si::response::Response>
             _state = state;
             return stay();
         };
+        const auto jumpAndSetBool = [jump, this](const bool value, const std::uint8_t state)
+        {
+            _valueSuccess = value;
+            return jump(state);
+        };
         const auto next = [stay, this]()
         {
             _state++;
@@ -137,7 +142,9 @@ class Parser<catta::modbus::si::response::Response>
             case HUB + 13:
                 return _valueSet ? error() : input == catta::json::Token::colon() ? next() : error();
             case HUB + 14:
-                return input == catta::json::Token::nullObject() ? jump(HUB + 16) : handleSplitt();
+                return input == catta::json::Token::boolTrue()    ? jumpAndSetBool(true, HUB + 16)
+                       : input == catta::json::Token::boolFalse() ? jumpAndSetBool(false, HUB + 16)
+                                                                  : handleSplitt();
             case HUB + 15:
                 return handleSplitt();
             case HUB + 16:
@@ -148,7 +155,7 @@ class Parser<catta::modbus::si::response::Response>
                 return error();
         }
     }
-    [[nodiscard]] constexpr Parser() noexcept : _state(START), _valueSet(false) {}
+    [[nodiscard]] constexpr Parser() noexcept : _state(START), _valueSet(false), _valueSuccess(false) {}
     [[nodiscard]] constexpr Output data() const noexcept
     {
         if (_state != DONE || !_valueSet) return Output::empty();
@@ -166,23 +173,23 @@ class Parser<catta::modbus::si::response::Response>
             case Type::readOperatingData3e():
                 return catta::modbus::si::response::Response::readOperatingData3e(_readOperatingData3eParser.data());
             case Type::switchOffGridRelay():
-                return catta::modbus::si::response::Response::switchOffGridRelay();
+                return catta::modbus::si::response::Response::switchOffGridRelay(_valueSuccess);
             case Type::switchOnGridRelay():
-                return catta::modbus::si::response::Response::switchOnGridRelay();
+                return catta::modbus::si::response::Response::switchOnGridRelay(_valueSuccess);
             case Type::forceIdle():
-                return catta::modbus::si::response::Response::forceIdle();
+                return catta::modbus::si::response::Response::forceIdle(_valueSuccess);
             case Type::deactivateIdle():
-                return catta::modbus::si::response::Response::deactivateIdle();
+                return catta::modbus::si::response::Response::deactivateIdle(_valueSuccess);
             case Type::startConstantVoltage():
-                return catta::modbus::si::response::Response::startConstantVoltage();
+                return catta::modbus::si::response::Response::startConstantVoltage(_valueSuccess);
             case Type::endConstantVoltage():
-                return catta::modbus::si::response::Response::endConstantVoltage();
+                return catta::modbus::si::response::Response::endConstantVoltage(_valueSuccess);
             case Type::setPowerFactor():
-                return catta::modbus::si::response::Response::setPowerFactor();
+                return catta::modbus::si::response::Response::setPowerFactor(_valueSuccess);
             case Type::controlBatteryInvert():
-                return catta::modbus::si::response::Response::controlBatteryInvert();
+                return catta::modbus::si::response::Response::controlBatteryInvert(_valueSuccess);
             case Type::limitBatteryInvert():
-                return catta::modbus::si::response::Response::limitBatteryInvert();
+                return catta::modbus::si::response::Response::limitBatteryInvert(_valueSuccess);
             case Type::writeRegister():
                 return catta::modbus::si::response::Response::writeRegister(_writeRegisterParser.data());
             case Type::value16():
@@ -208,6 +215,7 @@ class Parser<catta::modbus::si::response::Response>
   private:
     std::uint8_t _state;
     bool _valueSet;
+    bool _valueSuccess;
     Parser<catta::modbus::si::response::Type> _typeParser;
     Parser<catta::modbus::si::response::Exception> _exceptionParser;
     Parser<catta::modbus::si::response::FactoryValues> _factoryValuesParser;

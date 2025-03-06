@@ -40,23 +40,23 @@ class catta::random::Create<catta::modbus::si::response::Response>
             case Type::readOperatingData3e():
                 return catta::modbus::si::response::Response::readOperatingData3e(random.create<catta::modbus::si::response::ReadOperatingData3e>());
             case Type::switchOffGridRelay():
-                return catta::modbus::si::response::Response::switchOffGridRelay();
+                return catta::modbus::si::response::Response::switchOffGridRelay(random.create<bool>());
             case Type::switchOnGridRelay():
-                return catta::modbus::si::response::Response::switchOnGridRelay();
+                return catta::modbus::si::response::Response::switchOnGridRelay(random.create<bool>());
             case Type::forceIdle():
-                return catta::modbus::si::response::Response::forceIdle();
+                return catta::modbus::si::response::Response::forceIdle(random.create<bool>());
             case Type::deactivateIdle():
-                return catta::modbus::si::response::Response::deactivateIdle();
+                return catta::modbus::si::response::Response::deactivateIdle(random.create<bool>());
             case Type::startConstantVoltage():
-                return catta::modbus::si::response::Response::startConstantVoltage();
+                return catta::modbus::si::response::Response::startConstantVoltage(random.create<bool>());
             case Type::endConstantVoltage():
-                return catta::modbus::si::response::Response::endConstantVoltage();
+                return catta::modbus::si::response::Response::endConstantVoltage(random.create<bool>());
             case Type::setPowerFactor():
-                return catta::modbus::si::response::Response::setPowerFactor();
+                return catta::modbus::si::response::Response::setPowerFactor(random.create<bool>());
             case Type::controlBatteryInvert():
-                return catta::modbus::si::response::Response::controlBatteryInvert();
+                return catta::modbus::si::response::Response::controlBatteryInvert(random.create<bool>());
             case Type::limitBatteryInvert():
-                return catta::modbus::si::response::Response::limitBatteryInvert();
+                return catta::modbus::si::response::Response::limitBatteryInvert(random.create<bool>());
             case Type::writeRegister():
                 return catta::modbus::si::response::Response::writeRegister(random.create<catta::modbus::si::WriteRegister>());
             case Type::value16():

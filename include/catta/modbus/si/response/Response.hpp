@@ -49,41 +49,74 @@ class Response
      */
     constexpr bool isEmpty() const noexcept { return _type.isEmpty(); }
     /**
+     * @param[in] success Whether the request was successfull.
      * @return Returns switch off grid relay response.
      */
-    static constexpr Response switchOffGridRelay() { return Response(Raw{}, catta::modbus::si::response::Type::switchOffGridRelay()); }
+    static constexpr Response switchOffGridRelay(const bool success)
+    {
+        return Response(Raw{success}, catta::modbus::si::response::Type::switchOffGridRelay());
+    }
     /**
+     * @param[in] success Whether the request was successfull.
      * @return Returns switch on grid relay response.
      */
-    static constexpr Response switchOnGridRelay() { return Response(Raw{}, catta::modbus::si::response::Type::switchOnGridRelay()); }
+    static constexpr Response switchOnGridRelay(const bool success)
+    {
+        return Response(Raw{success}, catta::modbus::si::response::Type::switchOnGridRelay());
+    }
     /**
+     * @param[in] success Whether the request was successfull.
      * @return Returns force idle response.
      */
-    static constexpr Response forceIdle() { return Response(Raw{}, catta::modbus::si::response::Type::forceIdle()); }
+    static constexpr Response forceIdle(const bool success) { return Response(Raw{success}, catta::modbus::si::response::Type::forceIdle()); }
     /**
+     * @param[in] success Whether the request was successfull.
      * @return Returns deactivate idle response.
      */
-    static constexpr Response deactivateIdle() { return Response(Raw{}, catta::modbus::si::response::Type::deactivateIdle()); }
+    static constexpr Response deactivateIdle(const bool success)
+    {
+        return Response(Raw{success}, catta::modbus::si::response::Type::deactivateIdle());
+    }
     /**
+     * @param[in] success Whether the request was successfull.
      * @return Returns start constant voltage response.
      */
-    static constexpr Response startConstantVoltage() { return Response(Raw{}, catta::modbus::si::response::Type::startConstantVoltage()); }
+    static constexpr Response startConstantVoltage(const bool success)
+    {
+        return Response(Raw{success}, catta::modbus::si::response::Type::startConstantVoltage());
+    }
     /**
+     * @param[in] success Whether the request was successfull.
      * @return Returns end constant voltage response.
      */
-    static constexpr Response endConstantVoltage() { return Response(Raw{}, catta::modbus::si::response::Type::endConstantVoltage()); }
+    static constexpr Response endConstantVoltage(const bool success)
+    {
+        return Response(Raw{success}, catta::modbus::si::response::Type::endConstantVoltage());
+    }
     /**
+     * @param[in] success Whether the request was successfull.
      * @return Returns set power factor response.
      */
-    static constexpr Response setPowerFactor() { return Response(Raw{}, catta::modbus::si::response::Type::setPowerFactor()); }
+    static constexpr Response setPowerFactor(const bool success)
+    {
+        return Response(Raw{success}, catta::modbus::si::response::Type::setPowerFactor());
+    }
     /**
+     * @param[in] success Whether the request was successfull.
      * @return Returns control battery invert response.
      */
-    static constexpr Response controlBatteryInvert() { return Response(Raw{}, catta::modbus::si::response::Type::controlBatteryInvert()); }
+    static constexpr Response controlBatteryInvert(const bool success)
+    {
+        return Response(Raw{success}, catta::modbus::si::response::Type::controlBatteryInvert());
+    }
     /**
+     * @param[in] success Whether the request was successfull.
      * @return Returns limit battery invert response.
      */
-    static constexpr Response limitBatteryInvert() { return Response(Raw{}, catta::modbus::si::response::Type::limitBatteryInvert()); }
+    static constexpr Response limitBatteryInvert(const bool success)
+    {
+        return Response(Raw{success}, catta::modbus::si::response::Type::limitBatteryInvert());
+    }
     /**
      * @param[in] exception The exception. Has to be not empty, otherwise empty is returned.
      * @return Returns exception response if input is valid, otherwise empty.
@@ -273,6 +306,11 @@ class Response
         return catta::modbus::si::response::ReadOperatingData3e::create(serialNumber, type, voltageType, nominalPower, cosphi, gridSupplyDailySum,
                                                                         powerLimitation, operatingHours, phase, modbusId);
     }
+    /**
+     * @return Returns whether the request was successfull. Is only valid if type is switchOffGridRelay, switchOnGridRelay, forceIdle, deactivateIdle,
+     * startConstantVoltage, endConstantVoltage, setPowerFactor, controlBatteryInvert or limitBatteryInvert.
+     */
+    constexpr std::uint16_t successValue() const noexcept { return static_cast<bool>(_data[0]); }
     /**
      * @return Returns value16 value. Is only valid if type is value16.
      */

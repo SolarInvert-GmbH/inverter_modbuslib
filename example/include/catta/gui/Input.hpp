@@ -35,6 +35,38 @@ namespace catta
 namespace gui
 {
 /**
+ * @brief Wrapper class for boolean with isEmpty methode.
+ * @author CattaTech - Maik Urbannek
+ */
+class Boolean
+{
+  public:
+    /**
+     * Default Constructor. Returns empty Boolean.
+     */
+    constexpr Boolean() noexcept : _value(EMPTY) {}
+    /**
+     * @param[in] value The value for the boolean.
+     * Constructor.
+     */
+    constexpr Boolean(const bool value) noexcept : _value(value ? TRUE : FALSE) {}
+    /**
+     * @return Returns @b true if Boolean is invalid, otherwise @b false.
+     */
+    constexpr bool isEmpty() const noexcept { return _value >= EMPTY; }
+    /**
+     * @return Returns the value of the Boolean. Only valid if Boolean is not empty.
+     */
+    constexpr bool value() const noexcept { return _value; }
+
+  private:
+    std::uint8_t _value;
+    static constexpr std::uint8_t FALSE = 0;
+    static constexpr std::uint8_t TRUE = 1;
+    static constexpr std::uint8_t EMPTY = 2;
+};
+
+/**
  * @brief Widget the handled input.
  * @author CattaTech - Maik Urbannek
  */
@@ -236,6 +268,37 @@ class Input::Access<catta::modbus::sunspec::String>
         return catta::fromstring::fromString<catta::modbus::sunspec::String>(input._input.value());
     }
     static void value(Input& input, const catta::modbus::sunspec::String v) { input._input.value(catta::tostring::toString(v).c_str()); }
+    Access() = delete;
+};
+
+template <>
+class Input::Access<Boolean>
+{
+  public:
+    static std::string createName(const Boolean) { return std::string(); }
+
+    static const Fl_Menu_Item* createMenu(const Boolean)
+    {
+        auto menu = [](const char* text)
+        {
+            return Fl_Menu_Item{.text = text,
+                                .shortcut_ = 0,
+                                .callback_ = nullptr,
+                                .user_data_ = nullptr,
+                                .flags = 0,
+                                .labeltype_ = 0,
+                                .labelfont_ = 0,
+                                .labelsize_ = 0,
+                                .labelcolor_ = 0};
+        };
+
+        static const Fl_Menu_Item scaleFactorMenu[] = {menu("true"), menu("false"), menu(nullptr)};
+        return scaleFactorMenu;
+    }
+
+    static int createIndex(const Boolean value) { return value.value() ? 0 : 1; }
+    static Boolean value(const Input& input) { return Boolean(input._choice.value() == 0); }
+    static void value(Input& input, const Boolean v) { input._choice.value(v.value() ? 0 : 1); }
     Access() = delete;
 };
 

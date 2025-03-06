@@ -5,7 +5,6 @@
 
 // tomodbus
 #include <catta/tomodbus/modbus/si/WriteRegister.hpp>
-#include <catta/tomodbus/modbus/si/request/Small.hpp>
 #include <catta/tomodbus/modbus/si/response/FactoryValues.hpp>
 #include <catta/tomodbus/modbus/si/response/ReadError.hpp>
 #include <catta/tomodbus/modbus/si/response/ReadOperatingData33.hpp>
@@ -54,6 +53,34 @@ class Serializer<catta::modbus::si::response::Response>
             if (serializer.state().isDone()) return done();
             return jump(serializer.data(), HANDLE + 0);
         };
+        // TODO remove getFunctionCode
+        const auto getFunctionCode = [input]() -> std::uint8_t
+        {
+            using Type = catta::modbus::si::response::Type;
+            switch (input.type())
+            {
+                case Type::switchOffGridRelay():
+                    return 0x34;
+                case Type::switchOnGridRelay():
+                    return 0x35;
+                case Type::forceIdle():
+                    return 0x36;
+                case Type::deactivateIdle():
+                    return 0x37;
+                case Type::startConstantVoltage():
+                    return 0x38;
+                case Type::endConstantVoltage():
+                    return 0x39;
+                case Type::setPowerFactor():
+                    return 0x3B;
+                case Type::controlBatteryInvert():
+                    return 0x3F;
+                case Type::limitBatteryInvert():
+                    return 0x44;
+                default:
+                    return 0x00;
+            }
+        };
         const auto handleSplitt = [&input, error, handle, jump, this]()
         {
             using Type = catta::modbus::si::response::Type;
@@ -70,23 +97,15 @@ class Serializer<catta::modbus::si::response::Response>
                 case Type::readOperatingData3e():
                     return handle(_readOperatingData3eSerializer, input.readOperatingData3eValue());
                 case Type::switchOffGridRelay():
-                    return handle(_smallSerializer, catta::modbus::si::request::Small::create(0x34));
                 case Type::switchOnGridRelay():
-                    return handle(_smallSerializer, catta::modbus::si::request::Small::create(0x35));
                 case Type::forceIdle():
-                    return handle(_smallSerializer, catta::modbus::si::request::Small::create(0x36));
                 case Type::deactivateIdle():
-                    return handle(_smallSerializer, catta::modbus::si::request::Small::create(0x37));
                 case Type::startConstantVoltage():
-                    return handle(_smallSerializer, catta::modbus::si::request::Small::create(0x38));
                 case Type::endConstantVoltage():
-                    return handle(_smallSerializer, catta::modbus::si::request::Small::create(0x39));
                 case Type::setPowerFactor():
-                    return handle(_smallSerializer, catta::modbus::si::request::Small::create(0x3B));
                 case Type::controlBatteryInvert():
-                    return handle(_smallSerializer, catta::modbus::si::request::Small::create(0x3F));
                 case Type::limitBatteryInvert():
-                    return handle(_smallSerializer, catta::modbus::si::request::Small::create(0x44));
+                    return jump(Output::start(), SUCCESS + 0);
                 case Type::writeRegister():
                     return handle(_writeRegisterSerializer, input.writeRegisterValue());
                 case Type::value16():
@@ -136,6 +155,12 @@ class Serializer<catta::modbus::si::response::Response>
                 return high();
             case READ_REGISTER + 3:
                 return low();
+            case SUCCESS + 0:
+                return jump(Output::function(getFunctionCode()), SUCCESS + 1);
+            case SUCCESS + 1:
+                return jump(Output::data(0x01), SUCCESS + 2);
+            case SUCCESS + 2:
+                return jump(Output::data(input.successValue() ? 0x01 : 0x00), TAIL + 0);
             case EXCEPTION + 0:
                 return jump(Output::exception(input.exceptionValue().request().toModbus() | 0x80), EXCEPTION + 1);
             case EXCEPTION + 1:
@@ -163,7 +188,6 @@ class Serializer<catta::modbus::si::response::Response>
     std::uint8_t _count;
     std::uint8_t _index;
     Output _data;
-    Serializer<catta::modbus::si::request::Small> _smallSerializer;
     Serializer<catta::modbus::si::response::FactoryValues> _factoryValuesSerializer;
     Serializer<catta::modbus::si::response::ReadError> _readErrorSerializer;
     Serializer<catta::modbus::si::response::ReadOperatingData33> _readOperatingData33Serializer;
@@ -172,7 +196,8 @@ class Serializer<catta::modbus::si::response::Response>
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t HANDLE = START + 1;
     static constexpr std::uint8_t READ_REGISTER = HANDLE + 1;
-    static constexpr std::uint8_t EXCEPTION = READ_REGISTER + 4;
+    static constexpr std::uint8_t SUCCESS = READ_REGISTER + 4;
+    static constexpr std::uint8_t EXCEPTION = SUCCESS + 3;
     static constexpr std::uint8_t TAIL = EXCEPTION + 3;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR_STATE = DONE + 1;

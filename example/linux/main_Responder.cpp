@@ -186,31 +186,31 @@ static void handleRequest(const catta::modbus::si::request::Request &request, ca
             response = Response::readOperatingData3e(random.create<catta::modbus::si::response::ReadOperatingData3e>());
             break;
         case Type::switchOffGridRelay():
-            response = Response::switchOffGridRelay();
+            response = Response::switchOffGridRelay(random.create<bool>());
             break;
         case Type::switchOnGridRelay():
-            response = Response::switchOnGridRelay();
+            response = Response::switchOnGridRelay(random.create<bool>());
             break;
         case Type::forceIdle():
-            response = Response::forceIdle();
+            response = Response::forceIdle(random.create<bool>());
             break;
         case Type::deactivateIdle():
-            response = Response::deactivateIdle();
+            response = Response::deactivateIdle(random.create<bool>());
             break;
         case Type::startConstantVoltage():
-            response = Response::startConstantVoltage();
+            response = Response::startConstantVoltage(random.create<bool>());
             break;
         case Type::endConstantVoltage():
-            response = Response::endConstantVoltage();
+            response = Response::endConstantVoltage(random.create<bool>());
             break;
         case Type::setPowerFactor():
-            response = Response::setPowerFactor();
+            response = Response::setPowerFactor(random.create<bool>());
             break;
         case Type::controlBatteryInvert():
-            response = Response::controlBatteryInvert();
+            response = Response::controlBatteryInvert(random.create<bool>());
             break;
         case Type::limitBatteryInvert():
-            response = Response::limitBatteryInvert();
+            response = Response::limitBatteryInvert(random.create<bool>());
             break;
         case Type::readError():
             response = Response::readError(random.create<catta::modbus::si::response::ReadError>());

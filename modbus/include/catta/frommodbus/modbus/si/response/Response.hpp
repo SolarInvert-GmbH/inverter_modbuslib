@@ -6,7 +6,6 @@
 // frommodbus
 #include <catta/frommodbus/fromModbus.hpp>
 #include <catta/frommodbus/modbus/si/WriteRegister.hpp>
-#include <catta/frommodbus/modbus/si/request/Small.hpp>
 #include <catta/frommodbus/modbus/si/response/FactoryValues.hpp>
 #include <catta/frommodbus/modbus/si/response/ReadError.hpp>
 #include <catta/frommodbus/modbus/si/response/ReadOperatingData33.hpp>
@@ -42,7 +41,6 @@ class Parser<catta::modbus::si::response::Response>
             _state++;
             return stay();
         };
-
         const auto function = [input, error, this, jump]()
         {
             _function = input.value();
@@ -78,7 +76,7 @@ class Parser<catta::modbus::si::response::Response>
                 case 0x3b:
                 case 0x3f:
                 case 0x44:
-                    return startParserAndJump(_smallParser, SMALL + 0);
+                    return jump(SUCCESS + 0);
                 default:
                     return error();
             }
@@ -103,6 +101,13 @@ class Parser<catta::modbus::si::response::Response>
             const std::uint8_t v = input.value();
             if (!input.type().isData() || (v != 1 && v != 2 && v != 3 && v != 4)) return error();
             _count = v - 1;
+            return jump(state);
+        };
+        const auto getSuccess = [this, input, error, jump](const std::uint8_t state)
+        {
+            const std::uint8_t v = input.value();
+            if (!input.type().isData() || (v != 0 && v != 1)) return error();
+            _data[0] = v;
             return jump(state);
         };
         const auto high = [input, error, jump, this]()
@@ -134,14 +139,16 @@ class Parser<catta::modbus::si::response::Response>
                 return handle(_readOperatingData33Parser);
             case READ_OPERATING_DATA_3E:
                 return handle(_readOperatingData3eParser);
-            case SMALL + 0:
-                return handle(_smallParser);
             case READ_REGISTER + 0:
                 return getCount(READ_REGISTER + 1);
             case READ_REGISTER + 1:
                 return high();
             case READ_REGISTER + 2:
                 return low();
+            case SUCCESS + 0:
+                return input == Input::data(0x01) ? next() : error();
+            case SUCCESS + 1:
+                return input == Input::data(0x00) || input == Input::data(0x01) ? getSuccess(TAIL + 0) : error();
             case EXCEPTION + 0:
                 return input == catta::modbus::Token::data(0x01) ? jump(EXCEPTION + 1) : error();
             case EXCEPTION + 1:
@@ -195,27 +202,27 @@ class Parser<catta::modbus::si::response::Response>
             case 0x33:
                 return Output::readOperatingData33(_readOperatingData33Parser.data());
             case 0x34:
-                return Output::switchOffGridRelay();
+                return Output::switchOffGridRelay(_data[0]);
             case 0x35:
-                return Output::switchOnGridRelay();
+                return Output::switchOnGridRelay(_data[0]);
             case 0x36:
-                return Output::forceIdle();
+                return Output::forceIdle(_data[0]);
             case 0x37:
-                return Output::deactivateIdle();
+                return Output::deactivateIdle(_data[0]);
             case 0x38:
-                return Output::startConstantVoltage();
+                return Output::startConstantVoltage(_data[0]);
             case 0x39:
-                return Output::endConstantVoltage();
+                return Output::endConstantVoltage(_data[0]);
             case 0x3b:
-                return Output::setPowerFactor();
+                return Output::setPowerFactor(_data[0]);
             case 0x3e:
                 return Output::readOperatingData3e(_readOperatingData3eParser.data());
             case 0x3f:
-                return Output::controlBatteryInvert();
+                return Output::controlBatteryInvert(_data[0]);
             case 0x40:
                 return Output::readError(_readErrorParser.data());
             case 0x44:
-                return Output::limitBatteryInvert();
+                return Output::limitBatteryInvert(_data[0]);
             default:
                 return _function & 0x80
                            ? Output::exception(catta::modbus::si::response::Exception::create(
@@ -237,7 +244,6 @@ class Parser<catta::modbus::si::response::Response>
     std::uint8_t _count;
     std::uint8_t _index;
     std::array<std::uint16_t, 16> _data;
-    Parser<catta::modbus::si::request::Small> _smallParser;
     Parser<catta::modbus::si::response::FactoryValues> _factoryValuesParser;
     Parser<catta::modbus::si::response::ReadError> _readErrorParser;
     Parser<catta::modbus::si::response::ReadOperatingData33> _readOperatingData33Parser;
@@ -248,10 +254,10 @@ class Parser<catta::modbus::si::response::Response>
     static constexpr std::uint8_t READ_ERROR = FACTORY_VALUES + 1;
     static constexpr std::uint8_t READ_OPERATING_DATA_33 = READ_ERROR + 1;
     static constexpr std::uint8_t READ_OPERATING_DATA_3E = READ_OPERATING_DATA_33 + 1;
-    static constexpr std::uint8_t SMALL = READ_OPERATING_DATA_3E + 1;
-    static constexpr std::uint8_t WRITE_REGISTER = SMALL + 1;
+    static constexpr std::uint8_t WRITE_REGISTER = READ_OPERATING_DATA_3E + 1;
     static constexpr std::uint8_t READ_REGISTER = WRITE_REGISTER + 1;
-    static constexpr std::uint8_t EXCEPTION = READ_REGISTER + 3;
+    static constexpr std::uint8_t SUCCESS = READ_REGISTER + 3;
+    static constexpr std::uint8_t EXCEPTION = SUCCESS + 2;
     static constexpr std::uint8_t TAIL = EXCEPTION + 2;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR_STATE = DONE + 1;

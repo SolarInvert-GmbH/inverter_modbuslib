@@ -90,7 +90,7 @@ class Serializer<catta::modbus::si::response::Response>
                 case Type::string():
                     return handle(_stringSerializer, input.stringValue(), token);
                 default:
-                    return jump(catta::json::Token::nullObject(), VALUE + 8);
+                    return jump(input.successValue() ? catta::json::Token::boolTrue() : catta::json::Token::boolFalse(), VALUE + 8);
             }
         };
 
