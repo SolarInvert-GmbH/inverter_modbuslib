@@ -210,7 +210,7 @@ int main(int argc, char *argv[])
     static constexpr auto stopBits = catta::hardware::uart::StopBits::one();
 
     static constexpr std::chrono::microseconds requestTimeout = std::chrono::milliseconds{500};
-    static constexpr std::chrono::microseconds dataTimeout = std::chrono::milliseconds{10};  // should b mush smaller
+    static constexpr std::chrono::microseconds dataTimeout = std::chrono::milliseconds{500};  // should b mush smaller
     static constexpr std::chrono::microseconds stayInError = std::chrono::seconds{5};
     static constexpr std::chrono::microseconds waitForIdle = std::chrono::microseconds{1};
 
