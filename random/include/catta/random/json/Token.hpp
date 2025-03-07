@@ -44,9 +44,7 @@ class catta::random::Create<catta::json::Token>
             case Type::integerNumber():
                 return Token::integerNumber(random.create<std::int64_t>());
             case Type::floatNumber():
-                // TODO tostring for float does currently not work. I have not good way to bit cast double to uint64 gcc10 and gcc13.
-                return Token::integerNumber(random.create<std::int64_t>());
-                // return Token::floatNumber(random.interval(-1.0, 1.0));
+                return Token::floatNumber(random.interval(-1.0, 1.0));
             case Type::openString():
                 return Token::openString();
             case Type::character():
