@@ -23,43 +23,43 @@ class Token
     /**
      * Default constructor. Creates empty token.
      */
-    [[nodiscard]] constexpr Token() noexcept : Token(catta::json::TokenType::empty(), NO_DATA) {}
+    [[nodiscard]] constexpr Token() noexcept : Token(catta::json::TokenType::empty(), NO_VALUE) {}
     /**
      * @return Returns an open curly bracket token '{'.
      */
-    [[nodiscard]] constexpr static Token openCurlyBracket() noexcept { return {catta::json::TokenType::openCurlyBracket(), NO_DATA}; }
+    [[nodiscard]] constexpr static Token openCurlyBracket() noexcept { return {catta::json::TokenType::openCurlyBracket(), NO_VALUE}; }
     /**
      * @return Returns a close curly bracket token '}'.
      */
-    [[nodiscard]] constexpr static Token closeCurlyBracket() noexcept { return {catta::json::TokenType::closeCurlyBracket(), NO_DATA}; }
+    [[nodiscard]] constexpr static Token closeCurlyBracket() noexcept { return {catta::json::TokenType::closeCurlyBracket(), NO_VALUE}; }
     /**
      * @return Returns an open square bracket token '['.
      */
-    [[nodiscard]] constexpr static Token openSquareBracket() noexcept { return {catta::json::TokenType::openSquareBracket(), NO_DATA}; }
+    [[nodiscard]] constexpr static Token openSquareBracket() noexcept { return {catta::json::TokenType::openSquareBracket(), NO_VALUE}; }
     /**
      * @return Returns a close square bracket token ']'.
      */
-    [[nodiscard]] constexpr static Token closeSquareBracket() noexcept { return {catta::json::TokenType::closeSquareBracket(), NO_DATA}; }
+    [[nodiscard]] constexpr static Token closeSquareBracket() noexcept { return {catta::json::TokenType::closeSquareBracket(), NO_VALUE}; }
     /**
      * @return Returns a colon token ':'.
      */
-    [[nodiscard]] constexpr static Token colon() noexcept { return {catta::json::TokenType::colon(), NO_DATA}; }
+    [[nodiscard]] constexpr static Token colon() noexcept { return {catta::json::TokenType::colon(), NO_VALUE}; }
     /**
      * @return Returns a comma token ','.
      */
-    [[nodiscard]] constexpr static Token comma() noexcept { return {catta::json::TokenType::comma(), NO_DATA}; }
+    [[nodiscard]] constexpr static Token comma() noexcept { return {catta::json::TokenType::comma(), NO_VALUE}; }
     /**
      * @return Returns a null token 'null'.
      */
-    [[nodiscard]] constexpr static Token nullObject() noexcept { return {catta::json::TokenType::nullObject(), NO_DATA}; }
+    [[nodiscard]] constexpr static Token nullObject() noexcept { return {catta::json::TokenType::nullObject(), NO_VALUE}; }
     /**
      * @return Returns a true token 'true'.
      */
-    [[nodiscard]] constexpr static Token boolTrue() noexcept { return {catta::json::TokenType::boolTrue(), NO_DATA}; }
+    [[nodiscard]] constexpr static Token boolTrue() noexcept { return {catta::json::TokenType::boolTrue(), NO_VALUE}; }
     /**
      * @return Returns a false token 'false'.
      */
-    [[nodiscard]] constexpr static Token boolFalse() noexcept { return {catta::json::TokenType::boolFalse(), NO_DATA}; }
+    [[nodiscard]] constexpr static Token boolFalse() noexcept { return {catta::json::TokenType::boolFalse(), NO_VALUE}; }
     /**
      * @param[in] value The integer value of the token.
      * @return Returns the integer token with the given value. For example '42'.
@@ -79,7 +79,7 @@ class Token
     /**
      * @return Returns an open string token '"'.
      */
-    [[nodiscard]] constexpr static Token openString() noexcept { return {catta::json::TokenType::openString(), NO_DATA}; }
+    [[nodiscard]] constexpr static Token openString() noexcept { return {catta::json::TokenType::openString(), NO_VALUE}; }
     /**
      * @param[in] value The unicode character of the token.
      * @return Returns a unicode character token with the given value. For example 'a#, '🐒', '\\n' or '\\u000a'.
@@ -91,11 +91,11 @@ class Token
     /**
      * @return Returns a close string token '"'.
      */
-    [[nodiscard]] constexpr static Token closeString() noexcept { return {catta::json::TokenType::closeString(), NO_DATA}; }
+    [[nodiscard]] constexpr static Token closeString() noexcept { return {catta::json::TokenType::closeString(), NO_VALUE}; }
     /**
      * @return Returns an end token '\0'.
      */
-    [[nodiscard]] constexpr static Token end() noexcept { return {catta::json::TokenType::end(), NO_DATA}; }
+    [[nodiscard]] constexpr static Token end() noexcept { return {catta::json::TokenType::end(), NO_VALUE}; }
     /**
      * @param[in] value The error value of the token.
      * @return Returns an error token with the given value if the error is not empty, otherwise an empty token.
@@ -145,7 +145,7 @@ class Token
     constexpr Token(const catta::json::TokenType type, const std::uint64_t data) : _type(type), _data(data) {}
     catta::json::TokenType _type;
     std::uint64_t _data;
-    static constexpr std::uint64_t NO_DATA = 0x0;
+    static constexpr std::uint64_t NO_VALUE = 0x0;
 };
 
 }  // namespace json
