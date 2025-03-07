@@ -79,6 +79,10 @@ class Random
      */
     explicit operator std::uint64_t() { return std::uniform_int_distribution<std::uint64_t>(0x0000000000000000, 0xffffffffffffffff)(_random); }
     /**
+     * @return Returns an pseudo random char integer.
+     */
+    explicit operator char() { return interval(char{' '}, char{'~'}); }
+    /**
      * @return Returns an pseudo random char8_t integer.
      */
     explicit operator char8_t() { return interval(char8_t{' '}, char8_t{'~'}); }
@@ -198,9 +202,9 @@ class Random
      */
     float interval(const float min, const float max) { return std::uniform_real_distribution<float>(min, max)(_random); }
     /**
-     * @param[in] min The smalles possible char8_t.
-     * @param[in] max The biggest possible char8_t.
-     * @return Returns a random char8_t form the interval [min,…,max].
+     * @param[in] min The smalles possible char.
+     * @param[in] max The biggest possible char.
+     * @return Returns a random char form the interval [min,…,max].
      */
     char interval(const char min, const char max) { return std::uniform_int_distribution<char>(min, max)(_random); }
     /**
