@@ -37,6 +37,30 @@ class ToString
             return Tuple{Error(), catta::parser::InputHandled::no()};
         };
 
+        if (input.isEmpty())
+        {
+            const auto next = [this, value](const char c)
+            {
+                _unicode++;
+                return value(c);
+            };
+            switch (_unicode)
+            {
+                case 0:
+                    return next('E');
+                case 1:
+                    return next('M');
+                case 2:
+                    return next('P');
+                case 3:
+                    return next('T');
+                case 4:
+                    return next('Y');
+                default:
+                    return done();
+            }
+        }
+
         const auto handleChar32 = [this, error, value]()
         {
             const auto [token, handled] = _utf8Serializer.read(_unicode);
