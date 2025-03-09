@@ -322,7 +322,7 @@ class catta::random::Create<catta::Decimal<std::int64_t>>
     {
         const auto count = [&random]()
         {
-            switch (random.interval(0, 19))
+            switch (random.interval(0, 37))
             {
                 case 0:
                     return random.interval(std::int64_t(1'000'000'000'000'000'000), std::int64_t(9'223'372'036'854'775'807));
@@ -399,7 +399,7 @@ class catta::random::Create<catta::Decimal<std::int64_t>>
                 case 36:
                     return random.interval(std::int64_t(-999'999'999'999'999'999), std::int64_t(-100'000'000'000'000'000));
                 default:
-                    return random.interval(std::int64_t(-9'223'372'036'854'775'808ull), std::int64_t(-1'000'000'000'000'000'000));
+                    return random.interval(std::int64_t(-9'223'372'036'854'775'807ull), std::int64_t(-1'000'000'000'000'000'000));
             }
         };
         return catta::Decimal<std::int64_t>(count());
