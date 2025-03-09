@@ -19,6 +19,7 @@ check()
 
 check automatic_test_ConstString
 check automatic_test_Decimal
+check automatic_test_FixedPointNumber
 check automatic_test_Hexadecimal
 check automatic_test_hardware_uart_Baudrate
 check automatic_test_hardware_uart_DataBits
@@ -32,6 +33,7 @@ check automatic_test_linux_UartError
 check automatic_test_modbus_MasterUart
 check automatic_test_modbus_MasterUartState
 check automatic_test_modbus_si_Date
+check automatic_test_modbus_si_PhysicalQuantety
 check automatic_test_modbus_si_PowerConfig
 check automatic_test_modbus_si_ReadRegister
 check automatic_test_modbus_si_RegisterAddress

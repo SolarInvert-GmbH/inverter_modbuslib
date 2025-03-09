@@ -1,0 +1,33 @@
+// catta
+#include <catta/FixedPointNumber.hpp>
+
+// random
+#include <catta/random/FixedPointNumber.hpp>
+
+// fromtostring
+#include <catta/fromstring/FixedPointNumber.hpp>
+#include <catta/tostring/FixedPointNumber.hpp>
+
+// test
+#include <catta/test/ConsoleOutput.hpp>
+#include <catta/test/CopyMove.hpp>
+#include <catta/test/Test.hpp>
+#include <catta/test/ToFromString.hpp>
+
+static constexpr bool debug = true;
+
+template <std::uint8_t DECIMAL_PLACES>
+static int test_all()
+{
+    using Type = catta::FixedPointNumber<DECIMAL_PLACES>;
+    using Output = catta::test::ConsoleOutput;
+    Output output(catta::tostring::GetName<Type>::name.data());
+    const auto test_tofromstring = catta::test::checkToFromString<Output, Type, debug>;
+    const auto test_copymove = catta::test::checkCopyMove<Output, Type, catta::test::NO_CHECK>;
+    int error = 0;
+    if (!catta::test::execute<Output>(test_tofromstring, "tofromstring", output, 10000)) error++;
+    if (!catta::test::execute<Output>(test_copymove, "copymove", output, 10000)) error++;
+    return error;
+}
+
+int main() { return test_all<1>() + test_all<3>() + test_all<5>() + test_all<11>(); }

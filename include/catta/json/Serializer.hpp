@@ -11,6 +11,7 @@
 
 // tostring
 #include <catta/tostring/Decimal.hpp>
+#include <catta/tostring/FixedPointNumber.hpp>
 
 // catta
 #include <catta/Hexadecimal.hpp>
@@ -81,14 +82,21 @@ class Serializer
             const char32_t c32 = static_cast<char32_t>(c);
             return result(handled, state, c32);
         };
-
-        const auto handleNumber = [this, input, result, isInEndState]()
+        const auto handleInteger = [this, input, result, isInEndState]()
         {
             const auto value = catta::Decimal(input.integerValue());
-            [[maybe_unused]] auto ignore = _serializer.read(value);
-            const char32_t data = static_cast<char32_t>(_serializer.data());
-            if (isInEndState(_serializer, value)) return result(Handled::yes(), STATE_READY + 0, data);
+            [[maybe_unused]] auto ignore = _serializerInteger.read(value);
+            const char32_t data = static_cast<char32_t>(_serializerInteger.data());
+            if (isInEndState(_serializerInteger, value)) return result(Handled::yes(), STATE_READY + 0, data);
             return result(Handled::no(), STATE_INTEGER + 0, data);
+        };
+        const auto handleFloat = [this, input, result, isInEndState]()
+        {
+            const auto value = catta::FixedPointNumber<8>::create(static_cast<int64_t>(input.floatValue() * 100'000'000.0));
+            [[maybe_unused]] auto ignore = _serializerFloat.read(value);
+            const char32_t data = static_cast<char32_t>(_serializerFloat.data());
+            if (isInEndState(_serializerFloat, value)) return result(Handled::yes(), STATE_READY + 0, data);
+            return result(Handled::no(), STATE_FLOAT + 0, data);
         };
         const auto handleHex = [input, character](const std::uint8_t state, const std::uint8_t i)
         {
@@ -121,7 +129,7 @@ class Serializer
             }
         };
 
-        const auto handleToken = [input, character, handleNumber, error, done, handleCharacter, this]()
+        const auto handleToken = [input, character, handleInteger, handleFloat, error, done, handleCharacter, this]()
         {
             using Type = catta::json::TokenType;
             switch (input.type())
@@ -145,10 +153,11 @@ class Serializer
                 case Type::boolFalse():
                     return character('f', STATE_FALSE + 0);
                 case Type::integerNumber():
-                    _serializer = {};
-                    return handleNumber();
+                    _serializerInteger = {};
+                    return handleInteger();
                 case Type::floatNumber():
-                    return error();  // TODO
+                    _serializerFloat = {};
+                    return handleFloat();
                 case Type::openString():
                 case Type::closeString():
                     return character('"', STATE_READY + 0);
@@ -186,7 +195,9 @@ class Serializer
             case STATE_FALSE + 3:
                 return character('e', STATE_READY + 0);
             case STATE_INTEGER + 0:
-                return handleNumber();
+                return handleInteger();
+            case STATE_FLOAT + 0:
+                return handleFloat();
             case STATE_ESCAPE_QUOTES + 0:
                 return character('"', STATE_READY + 0);
             case STATE_ESCAPE_BACKSLASH + 0:
@@ -233,7 +244,8 @@ class Serializer
 
   private:
     std::uint8_t _state;
-    catta::tostring::Serializer<catta::Decimal<std::int64_t>> _serializer;
+    catta::tostring::Serializer<catta::Decimal<std::int64_t>> _serializerInteger;
+    catta::tostring::Serializer<catta::FixedPointNumber<8>> _serializerFloat;
 
     static constexpr std::uint8_t STATE_START = 0;
     static constexpr std::uint8_t STATE_READY = STATE_START + 1;
@@ -241,7 +253,8 @@ class Serializer
     static constexpr std::uint8_t STATE_TRUE = STATE_NULL + 3;
     static constexpr std::uint8_t STATE_FALSE = STATE_TRUE + 3;
     static constexpr std::uint8_t STATE_INTEGER = STATE_FALSE + 4;
-    static constexpr std::uint8_t STATE_ESCAPE_QUOTES = STATE_INTEGER + 1;
+    static constexpr std::uint8_t STATE_FLOAT = STATE_INTEGER + 1;
+    static constexpr std::uint8_t STATE_ESCAPE_QUOTES = STATE_FLOAT + 1;
     static constexpr std::uint8_t STATE_ESCAPE_BACKSLASH = STATE_ESCAPE_QUOTES + 1;
     static constexpr std::uint8_t STATE_ESCAPE_B = STATE_ESCAPE_BACKSLASH + 1;
     static constexpr std::uint8_t STATE_ESCAPE_F = STATE_ESCAPE_B + 1;
