@@ -11,7 +11,6 @@
 #include <catta/random/modbus/si/request/ControlBatteryInvert.hpp>
 #include <catta/random/modbus/si/request/LimitBatteryInvert.hpp>
 #include <catta/random/modbus/si/request/PowerFactor.hpp>
-#include <catta/random/modbus/si/request/Small.hpp>
 #include <catta/random/modbus/si/request/Type.hpp>
 
 template <>

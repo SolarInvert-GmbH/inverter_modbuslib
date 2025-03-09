@@ -11,7 +11,6 @@
 #include <catta/frommodbus/modbus/si/request/ControlBatteryInvert.hpp>
 #include <catta/frommodbus/modbus/si/request/LimitBatteryInvert.hpp>
 #include <catta/frommodbus/modbus/si/request/PowerFactor.hpp>
-#include <catta/frommodbus/modbus/si/request/Small.hpp>
 
 namespace catta
 {
@@ -77,7 +76,7 @@ class Parser<catta::modbus::si::request::Request>
                 case 0x39:
                 case 0x3e:
                 case 0x40:
-                    return startParserAndJump(_smallParser, SMALL + 0);
+                    return jump(SMALL + 0);
                 default:
                     return error();
             }
@@ -109,7 +108,11 @@ class Parser<catta::modbus::si::request::Request>
             case LIMIT_BATTERY_INVERT + 0:
                 return handle(_limitBatteryInvertParser);
             case SMALL + 0:
-                return handle(_smallParser);
+                return input == Input::data(0x01) ? next() : error();
+            case SMALL + 1:
+                return input == Input::data(0x01) ? next() : error();
+            case SMALL + 2:
+                return input == catta::modbus::Token::end() ? jump(DONE + 0) : error();
             default:
                 return error();
         }
@@ -117,38 +120,39 @@ class Parser<catta::modbus::si::request::Request>
     [[nodiscard]] constexpr Parser() noexcept : _state(START), _function(0) {}
     [[nodiscard]] constexpr Output data() const noexcept
     {
+        using Type = catta::modbus::si::request::Type;
         if (_state != DONE) return Output::empty();
         switch (_function)
         {
-            case 0x03:
+            case Type::readRegister().toModbus():
                 return Output::readRegister(_readRegisterParser.data());
-            case 0x16:
+            case Type::writeRegister().toModbus():
                 return Output::writeRegister(_writeRegisterParser.data());
-            case 0x31:
+            case Type::factoryValues().toModbus():
                 return Output::factoryValues();
-            case 0x33:
+            case Type::readOperatingData33().toModbus():
                 return Output::readOperatingData33();
-            case 0x34:
+            case Type::switchOffGridRelay().toModbus():
                 return Output::switchOffGridRelay();
-            case 0x35:
+            case Type::switchOnGridRelay().toModbus():
                 return Output::switchOnGridRelay();
-            case 0x36:
+            case Type::forceIdle().toModbus():
                 return Output::forceIdle();
-            case 0x37:
+            case Type::deactivateIdle().toModbus():
                 return Output::deactivateIdle();
-            case 0x38:
+            case Type::startConstantVoltage().toModbus():
                 return Output::startConstantVoltage(_constantVoltageParser.data());
-            case 0x39:
+            case Type::endConstantVoltage().toModbus():
                 return Output::endConstantVoltage();
-            case 0x3b:
+            case Type::setPowerFactor().toModbus():
                 return Output::setPowerFactor(_powerFactorParser.data());
-            case 0x3e:
+            case Type::readOperatingData3e().toModbus():
                 return Output::readOperatingData3e();
-            case 0x3f:
+            case Type::controlBatteryInvert().toModbus():
                 return Output::controlBatteryInvert(_controlBatteryInvertParser.data());
-            case 0x40:
+            case Type::readError().toModbus():
                 return Output::readError();
-            case 0x44:
+            case Type::limitBatteryInvert().toModbus():
                 return Output::limitBatteryInvert(_limitBatteryInvertParser.data());
             default:
                 return Output::empty();
@@ -165,7 +169,6 @@ class Parser<catta::modbus::si::request::Request>
   private:
     std::uint8_t _state;
     std::uint8_t _function;
-    Parser<catta::modbus::si::request::Small> _smallParser;
     Parser<catta::modbus::si::request::PowerFactor> _powerFactorParser;
     Parser<catta::modbus::si::request::LimitBatteryInvert> _limitBatteryInvertParser;
     Parser<catta::modbus::si::request::ConstantVoltage> _constantVoltageParser;
@@ -180,7 +183,7 @@ class Parser<catta::modbus::si::request::Request>
     static constexpr std::uint8_t CONTROL_BATTERY_INVERT = SET_POWER_FACTOR + 1;
     static constexpr std::uint8_t LIMIT_BATTERY_INVERT = CONTROL_BATTERY_INVERT + 1;
     static constexpr std::uint8_t SMALL = LIMIT_BATTERY_INVERT + 1;
-    static constexpr std::uint8_t DONE = SMALL + 1;
+    static constexpr std::uint8_t DONE = SMALL + 3;
     static constexpr std::uint8_t ERROR_STATE = DONE + 1;
 };
 }  // namespace frommodbus
