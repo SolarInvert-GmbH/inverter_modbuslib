@@ -17,8 +17,10 @@
 #include <catta/modbus/si/response/ReadError.hpp>
 #include <catta/modbus/si/response/ReadOperatingData33.hpp>
 #include <catta/modbus/si/response/ReadOperatingData3e.hpp>
+#include <catta/modbus/si/response/Response.hpp>
 
 // request
+#include <catta/modbus/si/request/Request.hpp>
 #include <catta/modbus/si/request/Type.hpp>
 
 namespace catta
@@ -217,6 +219,81 @@ class NiceResponse
                    ? NiceResponse::empty()
                    : NiceResponse(Raw{registerValue.registerAddress(), p(0), p(1), p(2), p(3), p(4), p(5), p(6), p(7), p(8), p(9), p(10), p(11)},
                                   catta::modbus::si::response::NiceType::readRegister());
+    }
+    /**
+     * @param[in] uglyResponse The ugly response. Has to be valid, otherwise empty is returned.
+     * @param[in] request The request. Has to be valid, otherwise empty can be returned.
+     * @return Returns read response if input is valid, otherwise empty.
+     */
+    static constexpr NiceResponse fromUgly(const catta::modbus::si::response::Response uglyResponse,
+                                           const catta::modbus::si::request::Request request)
+    {
+        using Type = catta::modbus::si::response::Type;
+        switch (uglyResponse.type())
+        {
+            case Type::exception():
+                return NiceResponse::exception(uglyResponse.exceptionValue());
+            case Type::factoryValues():
+                return NiceResponse::factoryValues(uglyResponse.factoryValuesValue());
+            case Type::readError():
+                return NiceResponse::readError(uglyResponse.readErrorValue());
+            case Type::readOperatingData33():
+                return NiceResponse::readOperatingData33(uglyResponse.readOperatingData33Value());
+            case Type::readOperatingData3e():
+                return NiceResponse::readOperatingData3e(uglyResponse.readOperatingData3eValue());
+            case Type::switchOffGridRelay():
+                return NiceResponse::switchOffGridRelay(uglyResponse.successValue());
+            case Type::switchOnGridRelay():
+                return NiceResponse::switchOnGridRelay(uglyResponse.successValue());
+            case Type::forceIdle():
+                return NiceResponse::forceIdle(uglyResponse.successValue());
+            case Type::deactivateIdle():
+                return NiceResponse::deactivateIdle(uglyResponse.successValue());
+            case Type::startConstantVoltage():
+                return NiceResponse::startConstantVoltage(uglyResponse.successValue());
+            case Type::endConstantVoltage():
+                return NiceResponse::endConstantVoltage(uglyResponse.successValue());
+            case Type::setPowerFactor():
+                return NiceResponse::setPowerFactor(uglyResponse.successValue());
+            case Type::controlBatteryInvert():
+                return NiceResponse::controlBatteryInvert(uglyResponse.successValue());
+            case Type::limitBatteryInvert():
+                return NiceResponse::limitBatteryInvert(uglyResponse.successValue());
+            case Type::writeRegister():
+                return NiceResponse::writeRegister(uglyResponse.writeRegisterValue());
+            case Type::value16():
+            case Type::value32():
+            case Type::value64():
+            case Type::string():
+            {
+                const auto getRegisterValue = [uglyResponse, request]()
+                {
+                    using Type = catta::modbus::si::RegisterType;
+                    using Result = catta::modbus::si::RegisterValue;
+                    if (!request.type().isReadRegister()) return Result::empty();
+                    const auto address = request.readRegisterValue().registerAddress();
+                    switch (address.type())
+                    {
+                        case Type::uint16():
+                        case Type::sint16():
+                        case Type::scaleFactor():
+                        case Type::connectedPhase():
+                            return Result::value16(address, catta::modbus::sunspec::ValueU16::create(uglyResponse.value16Value()));
+                        case Type::uint32():
+                            return Result::value32(address, catta::modbus::sunspec::ValueU32::create(uglyResponse.value32Value()));
+                        case Type::uint64():
+                            return Result::value64(address, catta::modbus::sunspec::ValueU64::create(uglyResponse.value64Value()));
+                        case Type::string32():
+                            return Result::string(address, uglyResponse.stringValue());
+                        default:
+                            return Result::empty();
+                    }
+                };
+                return NiceResponse::readRegister(getRegisterValue());
+            }
+            default:
+                return NiceResponse::empty();
+        }
     }
     /**
      * @return Returns write register value. Is only valid if type is write register.

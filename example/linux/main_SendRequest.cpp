@@ -12,6 +12,7 @@
 // tostring
 #include <catta/tostring/Hexadecimal.hpp>
 #include <catta/tostring/modbus/si/request/Request.hpp>
+#include <catta/tostring/modbus/si/response/NiceResponse.hpp>
 #include <catta/tostring/modbus/si/response/Response.hpp>
 
 // fromstring
@@ -369,9 +370,12 @@ int main(int argc, char *argv[])
                     debugLog("Received Bytes: " + printLine(receiveLine) + '\n');
                     receiveLine = {};
                     debugLog("Received: ");
+                    debugLog("   " + catta::tostring::toString(response));
                 }
                 parser = {};
-                std::cout << catta::tostring::toString(response) << '\n';
+                const auto niceResponse = catta::modbus::si::response::NiceResponse::fromUgly(response, requestInput);
+                if (niceResponse.isEmpty()) return errorExit("Could not build nice response");
+                std::cout << catta::tostring::toString(niceResponse) << '\n';
                 return 0;
             }
             if (parser.state().isFailed())
