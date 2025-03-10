@@ -97,7 +97,7 @@ class DummyInverter : public Fl_Double_Window
         static constexpr int defaultWidth = SiRegister::defaultWidth;
 
         SiRegisterGroup(int X, int Y, int W, int H, const char* L = nullptr)
-            : My_Scroll(0, 0, SiRegister::defaultWidth, defaultHeight / 2, L), _siRegister(createSiRegister())
+            : My_Scroll(0, 0, SiRegister::defaultWidth, SiRegister::defaultHeight * 25, L), _siRegister(createSiRegister())
         {
             this->end();
             this->resize(X, Y, W, H);
@@ -531,11 +531,11 @@ class DummyInverter : public Fl_Double_Window
      * Constructor.
      */
     DummyInverter(const char* defaultUartName)
-        : Fl_Double_Window(200, 200, SiRegisterGroup::defaultWidth + 50 + 10, SiRegisterGroup::defaultHeight / 2 + 50 + 35 + 10 + 150 + 25,
+        : Fl_Double_Window(200, 200, SiRegisterGroup::defaultWidth + 50 + 10, SiRegister::defaultHeight * 25 + 50 + 35 + 10 + 150 + 25,
                            "DummyInverter"),
           _run(true),
-          _debugChoice(0, SiRegisterGroup::defaultHeight / 2 + 50 + 35 + 10, SiRegisterGroup::defaultWidth + 50 + 10, 25),
-          _terminal(0, SiRegisterGroup::defaultHeight / 2 + 50 + 35 + 10 + 25, SiRegisterGroup::defaultWidth + 50 + 10, 150)
+          _debugChoice(0, SiRegister::defaultHeight * 25 + 50 + 35 + 10, SiRegisterGroup::defaultWidth + 50 + 10, 25),
+          _terminal(0, SiRegister::defaultHeight * 25 + 50 + 35 + 10 + 25, SiRegisterGroup::defaultWidth + 50 + 10, 150)
     {
         auto menu = [](const char* text)
         {
@@ -550,21 +550,21 @@ class DummyInverter : public Fl_Double_Window
                                 .labelcolor_ = 0};
         };
 
-        this->_tabs = new Fl_Tabs(25, 25, SiRegisterGroup::defaultWidth + 10, SiRegisterGroup::defaultHeight / 2 + 35 + 10);
+        this->_tabs = new Fl_Tabs(25, 25, SiRegisterGroup::defaultWidth + 10, SiRegister::defaultHeight * 25 + 35 + 10);
 
-        Fl_Group* g0 = new Fl_Group(25, 60, SiRegisterGroup::defaultWidth + 10, SiRegisterGroup::defaultHeight / 2 + 10, "Connection");
-        this->_uart = new Uart<UART>(25 + 5, 60 + 5, SiRegisterGroup::defaultWidth, SiRegisterGroup::defaultHeight / 2, defaultUartName);
+        Fl_Group* g0 = new Fl_Group(25, 60, SiRegisterGroup::defaultWidth + 10, SiRegister::defaultHeight * 25 + 10, "Connection");
+        this->_uart = new Uart<UART>(25 + 5, 60 + 5, SiRegisterGroup::defaultWidth, SiRegister::defaultHeight * 25, defaultUartName);
         g0->end();
 
-        Fl_Group* g1 = new Fl_Group(25, 60, SiRegisterGroup::defaultWidth + 10, SiRegisterGroup::defaultHeight / 2 + 10, "Register");
-        this->_siRegisterGroup = new SiRegisterGroup(25 + 5, 60 + 5, SiRegisterGroup::defaultWidth, SiRegisterGroup::defaultHeight / 2);
+        Fl_Group* g1 = new Fl_Group(25, 60, SiRegisterGroup::defaultWidth + 10, SiRegister::defaultHeight * 25 + 10, "Register");
+        this->_siRegisterGroup = new SiRegisterGroup(25 + 5, 60 + 5, SiRegisterGroup::defaultWidth, SiRegister::defaultHeight * 25);
         g1->end();
 
-        Fl_Group* g2 = new Fl_Group(25, 60, SiRegisterGroup::defaultWidth + 10, SiRegisterGroup::defaultHeight / 2 + 10, "FunctionCodes1");
+        Fl_Group* g2 = new Fl_Group(25, 60, SiRegisterGroup::defaultWidth + 10, SiRegister::defaultHeight * 25 + 10, "FunctionCodes1");
         this->_siFactoryValues = new FactoryValues(25 + 5, 60 + 5, FactoryValues::defaultWidth, FactoryValues::defaultHeight);
         g2->end();
 
-        Fl_Group* g3 = new Fl_Group(25, 60, SiRegisterGroup::defaultWidth + 10, SiRegisterGroup::defaultHeight / 2 + 10, "FunctionCodes2");
+        Fl_Group* g3 = new Fl_Group(25, 60, SiRegisterGroup::defaultWidth + 10, SiRegister::defaultHeight * 25 + 10, "FunctionCodes2");
 
         int height = 0;
         this->_siReadOperatingData33 = new Operating33(25 + 5, 60 + 5 + height, Operating33::defaultWidth, Operating33::defaultHeight);
@@ -597,7 +597,7 @@ class DummyInverter : public Fl_Double_Window
         height += LimitBatteryInvert::defaultHeight;
         g3->end();
 
-        Fl_Group* g4 = new Fl_Group(25, 60, SiRegisterGroup::defaultWidth + 10, SiRegisterGroup::defaultHeight / 2 + 10, "FunctionCodes3");
+        Fl_Group* g4 = new Fl_Group(25, 60, SiRegisterGroup::defaultWidth + 10, SiRegister::defaultHeight * 25 + 10, "FunctionCodes3");
         this->_siReadError = new ReadError(25 + 5, 60 + 5, ReadError::defaultWidth, ReadError::defaultHeight);
         g4->end();
 

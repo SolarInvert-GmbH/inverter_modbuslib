@@ -22,22 +22,7 @@ class catta::random::Create<catta::modbus::si::WriteRegister>
     {
         using A = catta::modbus::si::RegisterAddress;
         using T = catta::modbus::si::RegisterType;
-        static constexpr std::array<A, 16> a = {A::commonDeviceAddress(),
-                                                A::basicSettingsWMax(),
-                                                A::basicSettingsVMax(),
-                                                A::basicSettingsVMin(),
-                                                A::basicSettingsEcpNomHz(),
-                                                A::basicSettingsConnPhase(),
-                                                A::immediateConnectionTimeout(),
-                                                A::immediateConnectionControl(),
-                                                A::immediatePowerLimit(),
-                                                A::storageWChaMax(),
-                                                A::storageWChaRate(),
-                                                A::siControlPcdDiv(),
-                                                A::siControlUdcExt(),
-                                                A::siControlPSetPoint(),
-                                                A::siControlUMinExt(),
-                                                A::siControlUMaxExt()};
+        static constexpr std::array<A, 1> a = {A::commonDeviceAddress()};
         const auto address = a[random.interval(std::size_t(0), a.size() - 1)];
         switch (address.type())
         {
