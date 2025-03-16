@@ -32,6 +32,7 @@ check automatic_test_json_TokenType
 check automatic_test_linux_UartError
 check automatic_test_modbus_MasterUart
 check automatic_test_modbus_MasterUartState
+check automatic_test_modbus_si_Cache
 check automatic_test_modbus_si_Date
 check automatic_test_modbus_si_PhysicalQuantety
 check automatic_test_modbus_si_PowerConfig
