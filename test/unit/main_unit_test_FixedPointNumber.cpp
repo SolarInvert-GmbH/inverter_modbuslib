@@ -14,7 +14,7 @@
 #include <catta/test/Test.hpp>
 #include <catta/test/ToFromString.hpp>
 
-static constexpr bool debug = true;
+static constexpr bool debug = false;
 
 template <std::uint8_t DECIMAL_PLACES>
 static int test_all()

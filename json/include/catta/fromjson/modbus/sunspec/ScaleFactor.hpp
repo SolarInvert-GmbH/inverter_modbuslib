@@ -35,9 +35,22 @@ class Parser<catta::modbus::sunspec::ScaleFactor>
         const auto handle = [this, stay, input, error]()
         {
             if (!input.type().integerNumber()) return error();
-            const auto number = input.integerValue();
-            if (number < -10 || number > 10) return error();
-            _data = static_cast<std::int8_t>(number);
+
+            switch (input.type())
+            {
+                case catta::json::TokenType::integerNumber():
+                {
+                    const auto number = input.integerValue();
+                    if (number < -10 || number > 10) return error();
+                    _data = static_cast<std::int8_t>(number);
+                    break;
+                }
+                case catta::json::TokenType::nullObject():
+                    _data = 11;
+                    break;
+                default:
+                    return error();
+            }
             _state++;
             return stay();
         };

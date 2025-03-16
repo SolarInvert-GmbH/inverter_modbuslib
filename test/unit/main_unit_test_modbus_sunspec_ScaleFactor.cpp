@@ -29,9 +29,11 @@ int main()
     const auto test_tofromstring = catta::test::checkToFromString<Output, Type, debug>;
     const auto test_copymove = catta::test::checkCopyMove<Output, Type, catta::test::NO_CHECK>;
     const auto test_tofromjson = catta::test::checkToFromJson<Output, Type, debug>;
+    const auto test_tofromjsonempty = catta::test::checkToFromJsonEmpty<Output, Type, debug>;
     int error = 0;
     if (!catta::test::execute<Output>(test_tofromstring, "tofromstring", output, 10000)) error++;
     if (!catta::test::execute<Output>(test_copymove, "copymove", output, 10000)) error++;
     if (!catta::test::execute<Output>(test_tofromjson, "tofromjson", output, 10000)) error++;
+    if (!catta::test::execute<Output>(test_tofromjsonempty, "tofromjsonempty", output)) error++;
     return error;
 }

@@ -41,7 +41,7 @@ class Serializer<catta::modbus::sunspec::ScaleFactor>
         switch (_state)
         {
             case START + 0:
-                return input.isEmpty() ? done() : token(Output::integerNumber(input.factorExponent()));
+                return token(input.isEmpty() ? Output::nullObject() : Output::integerNumber(input.factorExponent()));
             case TAIL + 0:
                 return done();
             default:

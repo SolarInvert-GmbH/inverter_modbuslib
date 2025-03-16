@@ -65,7 +65,7 @@ class Serializer<catta::modbus::si::Type>
         switch (_state)
         {
             case START + 0:
-                return start(catta::json::Token::openString());
+                return input.isEmpty() ? jump(catta::json::Token::nullObject(), TAIL + 1) : start(catta::json::Token::openString());
             case SOLAR + 0:
                 return next(catta::json::Token::character('s'));
             case SOLAR + 1:

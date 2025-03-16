@@ -27,9 +27,8 @@ namespace test
  * @return Returns @b true if the test was successfull, otherwise @b false.
  */
 template <catta::test::Output OUTPUT, class T, bool DEBUG = false>
-static bool checkToFromJson(catta::test::Test<OUTPUT>& test)
+static bool checkToFromJsonInput(catta::test::Test<OUTPUT>& test, const T input)
 {
-    const auto input = test.random().template create<T>();
     if (DEBUG) test.status(catta::tostring::toString(input));
 
     catta::tojson::Serializer<T> serializer;
@@ -73,5 +72,36 @@ static bool checkToFromJson(catta::test::Test<OUTPUT>& test)
     }
     return test.failed("Serializer needed more than 1000 ticks.");
 }
+
+/**
+ * Tests one random T object. Serializes and deserializes random objects to/from json. The result object should be the same as the
+ * random created one.
+ * @param[in] test The test object.
+ * @tparam OUTPUT The output class for the test.
+ * @tparam T The class for which the test performed for.
+ * @return Returns @b true if the test was successfull, otherwise @b false.
+ */
+template <catta::test::Output OUTPUT, class T, bool DEBUG = false>
+static bool checkToFromJson(catta::test::Test<OUTPUT>& test)
+{
+    const auto input = test.random().template create<T>();
+    return checkToFromJsonInput<OUTPUT, T, DEBUG>(test, input);
+}
+
+/**
+ * Tests one random T object. Serializes and deserializes random objects to/from json. The result object should be the same as the
+ * random created one.
+ * @param[in] test The test object.
+ * @tparam OUTPUT The output class for the test.
+ * @tparam T The class for which the test performed for.
+ * @return Returns @b true if the test was successfull, otherwise @b false.
+ */
+template <catta::test::Output OUTPUT, class T, bool DEBUG = false>
+static bool checkToFromJsonEmpty(catta::test::Test<OUTPUT>& test)
+{
+    const auto input = T::empty();
+    return checkToFromJsonInput<OUTPUT, T, DEBUG>(test, input);
+}
+
 }  // namespace test
 }  // namespace catta
