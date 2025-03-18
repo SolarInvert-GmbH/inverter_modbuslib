@@ -213,6 +213,40 @@ module.exports = function(RED) {
                     break;
             }
         };
+        this.preRequest = function(msg)
+        {
+            switch(msg.payload.type)
+            {
+                case "readOperatingData33":
+                    return this.cache.voltScale!=null ? null : {"type":"readOperatingData3e","value":null};
+                case "readRegister":
+                    switch(msg.payload.value.registerAddress)
+                    {
+                        case "InverterAmps":
+                        case "InverterAmpsPhaseA":
+                        case "InverterAmpsPhaseB":
+                        case "InverterAmpsPhaseC":
+                            return this.cache.amps!=null ? null : {"type":"readRegister","value":{"registerAddress":"InverterAmpsScaleFactor"}};
+                        case "InverterPhaseVoltageA":
+                        case "InverterPhaseVoltageB":
+                        case "InverterPhaseVoltageC":
+                            return this.cache.phaseVoltage!=null ? null : {"type":"readRegister","value":{"registerAddress":"InverterPhaseVoltageScaleFactor"}};
+                        case "InverterWatt":
+                            return this.cache.watt!=null ? null : {"type":"readRegister","value":{"registerAddress":"InverterWattScaleFactor"}};
+                        case "InverterHertz":
+                            return this.cache.hertz!=null ? null : {"type":"readRegister","value":{"registerAddress":"InverterHertzScaleFactor"}};
+                        case "InverterPowerFactor":
+                            return this.cache.powerFactor!=null ? null : {"type":"readRegister","value":{"registerAddress":"InverterPowerFactorScaleFactor"}};
+                        case "InverterWattHours":
+                            return this.cache.wattHours!=null ? null : {"type":"readRegister","value":{"registerAddress":"InverterWattHoursScaleFactor"}};
+                        case "InverterDcVoltage":
+                            return this.cache.dcVoltage!=null ? null : {"type":"readRegister","value":{"registerAddress":"InverterDcVoltageScaleFactor"}};
+                        case "InverterTemperature":
+                            return this.cache.temperature!=null ? null : {"type":"readRegister","value":{"registerAddress":"InverterTemperatureScaleFactor"}};
+                    }
+            }
+            return null;
+        }
         var node = this;
 
         if (process.platform === 'linux' && fs.existsSync('/bin/bash')) {
@@ -264,8 +298,8 @@ module.exports = function(RED) {
                 if (node.timer !== 0) {
                     arg += " --timeout " + node.timer;
                 }
-                child = exec(arg, node.execOpt,
-                function(error, stdout, stderr) {
+
+                var mainCallback = function(error, stdout, stderr) {
                     delete msg.payload;
                     if (error) {
                         node.debug('[exec] stderr: ' + stderr);
@@ -302,7 +336,88 @@ module.exports = function(RED) {
                     }
                     delete node.activeProcesses[child.pid];
                     nodeDone();
-                });
+                };
+
+                var preCallback = function(error, stdout, stderr) {
+                    if (error) {
+                        node.debug('[exec] stderr: ' + stderr);
+                        msg.payload={"type":"error","value":stderr};
+                        nodeDone();
+                    }
+                    try {
+                        var result = Buffer.from(stdout, "binary");
+                        node.status({
+                            fill: "red",
+                            shape: "dot",
+                            text: result
+                        });
+                        result = result.toString();
+                        var pre;
+                        try {
+                            pre = JSON.parse(result);
+                        }
+                        catch(e) {
+                            msg.payload={"type":"error","value":result};
+                            nodeDone();
+                        }
+                        switch (pre.type)
+                        {
+                            case "readOperatingData3e":
+                                node.setVolt(pre.value);
+                                break;
+                            case "readRegister":
+                                switch(pre.value.registerAddress)
+                                {
+                                    case "InverterAmpsScaleFactor":
+                                        node.cache.amps=node.getScaleFactor(pre.value);
+                                        break;
+                                    case "InverterPhaseVoltageScaleFactor":
+                                        node.cache.phaseVoltage=node.getScaleFactor(pre.value);
+                                        break;
+                                    case "InverterWattScaleFactor":
+                                        node.cache.watt=node.getScaleFactor(pre.value);
+                                        break;
+                                    case "InverterHertzScaleFactor":
+                                        node.cache.hertz=node.getScaleFactor(pre.value);
+                                        break;
+                                    case "InverterPowerFactorScaleFactor":
+                                        node.cache.powerFactor=node.getScaleFactor(pre.value);
+                                        break;
+                                    case "InverterWattHoursScaleFactor":
+                                        node.cache.wattHours=node.getScaleFactor(pre.value);
+                                        break;
+                                    case "InverterDcVoltageScaleFactor":
+                                        node.cache.dcVoltage=node.getScaleFactor(pre.value);
+                                        break;
+                                    case "InverterTemperatureScaleFactor":
+                                        node.cache.temperature=node.getScaleFactor(pre.value);
+                                        break;
+                                }
+                        }
+                    } catch(e) {
+                        msg.payload={"type":"error","value":e.message};
+                        nodeDone();
+                    }
+                    if (child.tout) {
+                        clearTimeout(child.tout);
+                    }
+                    delete node.activeProcesses[child.pid];
+                    child = exec(arg, node.execOpt,mainCallback);
+                };
+
+
+                var preJson = node.preRequest(msg);
+
+                if (preJson != null)
+                {
+                    var arg1 = node.cmd + " --uart " + node.port + " --modbusid " + node.modbusid + " --request " + quote + JSON.stringify(preJson) + quote;
+                    if (node.timer !== 0) {
+                        arg1 += " --timeout " + node.timer;
+                    }
+                    child = exec(arg1, node.execOpt, preCallback);
+                }
+                else
+                    child = exec(arg, node.execOpt, mainCallback);
                 node.status({
                     fill: "blue",
                     shape: "dot",
