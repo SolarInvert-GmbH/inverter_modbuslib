@@ -2,7 +2,7 @@
     "name": "node-red-solarinvert",
     "version": "0.0.1",
     "description": "Node-RED nodes to handle solarinvert inverter.",
-    "license": "TBD",
+    "license": "MIT",
     "repository": {
         "type": "git",
         "url": "https://git.cattatech.de/company/ModbusLib.git"
