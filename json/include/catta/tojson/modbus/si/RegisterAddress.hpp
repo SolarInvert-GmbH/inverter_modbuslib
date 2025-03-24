@@ -129,12 +129,6 @@ class Serializer<catta::modbus::si::RegisterAddress>
                     _state = INVERTER_OPERATING_STATE + 0;
                     break;
                 case 26:
-                    _state = INVERTER_VENDOR_OPERATING_STATE + 0;
-                    break;
-                case 27:
-                    _state = INVERTER_VENDOR_EVENT_BITFIELD + 0;
-                    break;
-                case 28:
                     _state = NAMEPLATE_DER_TYPE + 0;
                     break;
                 default:
@@ -1209,116 +1203,6 @@ class Serializer<catta::modbus::si::RegisterAddress>
                 return next(catta::json::Token::character('t'));
             case INVERTER_OPERATING_STATE + 21:
                 return jump(catta::json::Token::character('e'), TAIL + 0);
-            case INVERTER_VENDOR_OPERATING_STATE + 0:
-                return next(catta::json::Token::character('I'));
-            case INVERTER_VENDOR_OPERATING_STATE + 1:
-                return next(catta::json::Token::character('n'));
-            case INVERTER_VENDOR_OPERATING_STATE + 2:
-                return next(catta::json::Token::character('v'));
-            case INVERTER_VENDOR_OPERATING_STATE + 3:
-                return next(catta::json::Token::character('e'));
-            case INVERTER_VENDOR_OPERATING_STATE + 4:
-                return next(catta::json::Token::character('r'));
-            case INVERTER_VENDOR_OPERATING_STATE + 5:
-                return next(catta::json::Token::character('t'));
-            case INVERTER_VENDOR_OPERATING_STATE + 6:
-                return next(catta::json::Token::character('e'));
-            case INVERTER_VENDOR_OPERATING_STATE + 7:
-                return next(catta::json::Token::character('r'));
-            case INVERTER_VENDOR_OPERATING_STATE + 8:
-                return next(catta::json::Token::character('V'));
-            case INVERTER_VENDOR_OPERATING_STATE + 9:
-                return next(catta::json::Token::character('e'));
-            case INVERTER_VENDOR_OPERATING_STATE + 10:
-                return next(catta::json::Token::character('n'));
-            case INVERTER_VENDOR_OPERATING_STATE + 11:
-                return next(catta::json::Token::character('d'));
-            case INVERTER_VENDOR_OPERATING_STATE + 12:
-                return next(catta::json::Token::character('o'));
-            case INVERTER_VENDOR_OPERATING_STATE + 13:
-                return next(catta::json::Token::character('r'));
-            case INVERTER_VENDOR_OPERATING_STATE + 14:
-                return next(catta::json::Token::character('O'));
-            case INVERTER_VENDOR_OPERATING_STATE + 15:
-                return next(catta::json::Token::character('p'));
-            case INVERTER_VENDOR_OPERATING_STATE + 16:
-                return next(catta::json::Token::character('e'));
-            case INVERTER_VENDOR_OPERATING_STATE + 17:
-                return next(catta::json::Token::character('r'));
-            case INVERTER_VENDOR_OPERATING_STATE + 18:
-                return next(catta::json::Token::character('a'));
-            case INVERTER_VENDOR_OPERATING_STATE + 19:
-                return next(catta::json::Token::character('t'));
-            case INVERTER_VENDOR_OPERATING_STATE + 20:
-                return next(catta::json::Token::character('i'));
-            case INVERTER_VENDOR_OPERATING_STATE + 21:
-                return next(catta::json::Token::character('n'));
-            case INVERTER_VENDOR_OPERATING_STATE + 22:
-                return next(catta::json::Token::character('g'));
-            case INVERTER_VENDOR_OPERATING_STATE + 23:
-                return next(catta::json::Token::character('S'));
-            case INVERTER_VENDOR_OPERATING_STATE + 24:
-                return next(catta::json::Token::character('t'));
-            case INVERTER_VENDOR_OPERATING_STATE + 25:
-                return next(catta::json::Token::character('a'));
-            case INVERTER_VENDOR_OPERATING_STATE + 26:
-                return next(catta::json::Token::character('t'));
-            case INVERTER_VENDOR_OPERATING_STATE + 27:
-                return jump(catta::json::Token::character('e'), TAIL + 0);
-            case INVERTER_VENDOR_EVENT_BITFIELD + 0:
-                return next(catta::json::Token::character('I'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 1:
-                return next(catta::json::Token::character('n'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 2:
-                return next(catta::json::Token::character('v'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 3:
-                return next(catta::json::Token::character('e'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 4:
-                return next(catta::json::Token::character('r'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 5:
-                return next(catta::json::Token::character('t'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 6:
-                return next(catta::json::Token::character('e'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 7:
-                return next(catta::json::Token::character('r'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 8:
-                return next(catta::json::Token::character('V'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 9:
-                return next(catta::json::Token::character('e'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 10:
-                return next(catta::json::Token::character('n'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 11:
-                return next(catta::json::Token::character('d'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 12:
-                return next(catta::json::Token::character('o'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 13:
-                return next(catta::json::Token::character('r'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 14:
-                return next(catta::json::Token::character('E'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 15:
-                return next(catta::json::Token::character('v'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 16:
-                return next(catta::json::Token::character('e'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 17:
-                return next(catta::json::Token::character('n'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 18:
-                return next(catta::json::Token::character('t'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 19:
-                return next(catta::json::Token::character('B'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 20:
-                return next(catta::json::Token::character('i'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 21:
-                return next(catta::json::Token::character('t'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 22:
-                return next(catta::json::Token::character('f'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 23:
-                return next(catta::json::Token::character('i'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 24:
-                return next(catta::json::Token::character('e'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 25:
-                return next(catta::json::Token::character('l'));
-            case INVERTER_VENDOR_EVENT_BITFIELD + 26:
-                return jump(catta::json::Token::character('d'), TAIL + 0);
             case NAMEPLATE_DER_TYPE + 0:
                 return next(catta::json::Token::character('N'));
             case NAMEPLATE_DER_TYPE + 1:
@@ -1459,9 +1343,7 @@ class Serializer<catta::modbus::si::RegisterAddress>
     static constexpr std::uint16_t INVERTER_TEMPERATURE = INVERTER_DC_VOLTAGE_SCALE_FACTOR + 28;
     static constexpr std::uint16_t INVERTER_TEMPERATURE_SCALE_FACTOR = INVERTER_TEMPERATURE + 19;
     static constexpr std::uint16_t INVERTER_OPERATING_STATE = INVERTER_TEMPERATURE_SCALE_FACTOR + 30;
-    static constexpr std::uint16_t INVERTER_VENDOR_OPERATING_STATE = INVERTER_OPERATING_STATE + 22;
-    static constexpr std::uint16_t INVERTER_VENDOR_EVENT_BITFIELD = INVERTER_VENDOR_OPERATING_STATE + 28;
-    static constexpr std::uint16_t NAMEPLATE_DER_TYPE = INVERTER_VENDOR_EVENT_BITFIELD + 27;
+    static constexpr std::uint16_t NAMEPLATE_DER_TYPE = INVERTER_OPERATING_STATE + 22;
     static constexpr std::uint16_t EXTENDED_MESUREMENTS_AC_WATT_HOURS = NAMEPLATE_DER_TYPE + 16;
     static constexpr std::uint16_t TAIL = EXTENDED_MESUREMENTS_AC_WATT_HOURS + 30;
     static constexpr std::uint16_t DONE = TAIL + 2;

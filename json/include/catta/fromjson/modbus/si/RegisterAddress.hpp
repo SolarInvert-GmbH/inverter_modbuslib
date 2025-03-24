@@ -43,7 +43,7 @@ class Parser<catta::modbus::si::RegisterAddress>
                        : input == catta::json::Token::openString() ? jump(HUB + 0)
                                                                    : error();
             case HUB + 0:
-                return input == catta::json::Token::character('N')   ? jump(HUB + 292)
+                return input == catta::json::Token::character('N')   ? jump(HUB + 259)
                        : input == catta::json::Token::character('I') ? jump(HUB + 78)
                        : input == catta::json::Token::character('E') ? jump(HUB + 48)
                        : input == catta::json::Token::character('C') ? jump(HUB + 1)
@@ -206,7 +206,7 @@ class Parser<catta::modbus::si::RegisterAddress>
             case HUB + 76:
                 return input == catta::json::Token::character('s') ? jump(HUB + 77) : error();
             case HUB + 77:
-                return input == catta::json::Token::closeString() ? close(29) : error();
+                return input == catta::json::Token::closeString() ? close(27) : error();
             case HUB + 78:
                 return input == catta::json::Token::character('n') ? jump(HUB + 79) : error();
             case HUB + 79:
@@ -222,8 +222,7 @@ class Parser<catta::modbus::si::RegisterAddress>
             case HUB + 84:
                 return input == catta::json::Token::character('r') ? jump(HUB + 85) : error();
             case HUB + 85:
-                return input == catta::json::Token::character('W')   ? jump(HUB + 261)
-                       : input == catta::json::Token::character('V') ? jump(HUB + 228)
+                return input == catta::json::Token::character('W')   ? jump(HUB + 228)
                        : input == catta::json::Token::character('T') ? jump(HUB + 206)
                        : input == catta::json::Token::character('P') ? jump(HUB + 159)
                        : input == catta::json::Token::character('O') ? jump(HUB + 145)
@@ -536,172 +535,104 @@ class Parser<catta::modbus::si::RegisterAddress>
             case HUB + 227:
                 return input == catta::json::Token::closeString() ? close(24) : error();
             case HUB + 228:
-                return input == catta::json::Token::character('e') ? jump(HUB + 229) : error();
+                return input == catta::json::Token::character('a') ? jump(HUB + 229) : error();
             case HUB + 229:
-                return input == catta::json::Token::character('n') ? jump(HUB + 230) : error();
+                return input == catta::json::Token::character('t') ? jump(HUB + 230) : error();
             case HUB + 230:
-                return input == catta::json::Token::character('d') ? jump(HUB + 231) : error();
+                return input == catta::json::Token::character('t') ? jump(HUB + 231) : error();
             case HUB + 231:
-                return input == catta::json::Token::character('o') ? jump(HUB + 232) : error();
-            case HUB + 232:
-                return input == catta::json::Token::character('r') ? jump(HUB + 233) : error();
-            case HUB + 233:
-                return input == catta::json::Token::character('O')   ? jump(HUB + 247)
-                       : input == catta::json::Token::character('E') ? jump(HUB + 234)
-                                                                     : error();
-            case HUB + 234:
-                return input == catta::json::Token::character('v') ? jump(HUB + 235) : error();
-            case HUB + 235:
-                return input == catta::json::Token::character('e') ? jump(HUB + 236) : error();
-            case HUB + 236:
-                return input == catta::json::Token::character('n') ? jump(HUB + 237) : error();
-            case HUB + 237:
-                return input == catta::json::Token::character('t') ? jump(HUB + 238) : error();
-            case HUB + 238:
-                return input == catta::json::Token::character('B') ? jump(HUB + 239) : error();
-            case HUB + 239:
-                return input == catta::json::Token::character('i') ? jump(HUB + 240) : error();
-            case HUB + 240:
-                return input == catta::json::Token::character('t') ? jump(HUB + 241) : error();
-            case HUB + 241:
-                return input == catta::json::Token::character('f') ? jump(HUB + 242) : error();
-            case HUB + 242:
-                return input == catta::json::Token::character('i') ? jump(HUB + 243) : error();
-            case HUB + 243:
-                return input == catta::json::Token::character('e') ? jump(HUB + 244) : error();
-            case HUB + 244:
-                return input == catta::json::Token::character('l') ? jump(HUB + 245) : error();
-            case HUB + 245:
-                return input == catta::json::Token::character('d') ? jump(HUB + 246) : error();
-            case HUB + 246:
-                return input == catta::json::Token::closeString() ? close(27) : error();
-            case HUB + 247:
-                return input == catta::json::Token::character('p') ? jump(HUB + 248) : error();
-            case HUB + 248:
-                return input == catta::json::Token::character('e') ? jump(HUB + 249) : error();
-            case HUB + 249:
-                return input == catta::json::Token::character('r') ? jump(HUB + 250) : error();
-            case HUB + 250:
-                return input == catta::json::Token::character('a') ? jump(HUB + 251) : error();
-            case HUB + 251:
-                return input == catta::json::Token::character('t') ? jump(HUB + 252) : error();
-            case HUB + 252:
-                return input == catta::json::Token::character('i') ? jump(HUB + 253) : error();
-            case HUB + 253:
-                return input == catta::json::Token::character('n') ? jump(HUB + 254) : error();
-            case HUB + 254:
-                return input == catta::json::Token::character('g') ? jump(HUB + 255) : error();
-            case HUB + 255:
-                return input == catta::json::Token::character('S') ? jump(HUB + 256) : error();
-            case HUB + 256:
-                return input == catta::json::Token::character('t') ? jump(HUB + 257) : error();
-            case HUB + 257:
-                return input == catta::json::Token::character('a') ? jump(HUB + 258) : error();
-            case HUB + 258:
-                return input == catta::json::Token::character('t') ? jump(HUB + 259) : error();
-            case HUB + 259:
-                return input == catta::json::Token::character('e') ? jump(HUB + 260) : error();
-            case HUB + 260:
-                return input == catta::json::Token::closeString() ? close(26) : error();
-            case HUB + 261:
-                return input == catta::json::Token::character('a') ? jump(HUB + 262) : error();
-            case HUB + 262:
-                return input == catta::json::Token::character('t') ? jump(HUB + 263) : error();
-            case HUB + 263:
-                return input == catta::json::Token::character('t') ? jump(HUB + 264) : error();
-            case HUB + 264:
-                return input == catta::json::Token::character('S')   ? jump(HUB + 281)
-                       : input == catta::json::Token::character('H') ? jump(HUB + 265)
+                return input == catta::json::Token::character('S')   ? jump(HUB + 248)
+                       : input == catta::json::Token::character('H') ? jump(HUB + 232)
                        : input == catta::json::Token::closeString()  ? close(13)
                                                                      : error();
-            case HUB + 265:
-                return input == catta::json::Token::character('o') ? jump(HUB + 266) : error();
-            case HUB + 266:
-                return input == catta::json::Token::character('u') ? jump(HUB + 267) : error();
-            case HUB + 267:
-                return input == catta::json::Token::character('r') ? jump(HUB + 268) : error();
-            case HUB + 268:
-                return input == catta::json::Token::character('s') ? jump(HUB + 269) : error();
-            case HUB + 269:
-                return input == catta::json::Token::character('S')  ? jump(HUB + 270)
+            case HUB + 232:
+                return input == catta::json::Token::character('o') ? jump(HUB + 233) : error();
+            case HUB + 233:
+                return input == catta::json::Token::character('u') ? jump(HUB + 234) : error();
+            case HUB + 234:
+                return input == catta::json::Token::character('r') ? jump(HUB + 235) : error();
+            case HUB + 235:
+                return input == catta::json::Token::character('s') ? jump(HUB + 236) : error();
+            case HUB + 236:
+                return input == catta::json::Token::character('S')  ? jump(HUB + 237)
                        : input == catta::json::Token::closeString() ? close(19)
                                                                     : error();
+            case HUB + 237:
+                return input == catta::json::Token::character('c') ? jump(HUB + 238) : error();
+            case HUB + 238:
+                return input == catta::json::Token::character('a') ? jump(HUB + 239) : error();
+            case HUB + 239:
+                return input == catta::json::Token::character('l') ? jump(HUB + 240) : error();
+            case HUB + 240:
+                return input == catta::json::Token::character('e') ? jump(HUB + 241) : error();
+            case HUB + 241:
+                return input == catta::json::Token::character('F') ? jump(HUB + 242) : error();
+            case HUB + 242:
+                return input == catta::json::Token::character('a') ? jump(HUB + 243) : error();
+            case HUB + 243:
+                return input == catta::json::Token::character('c') ? jump(HUB + 244) : error();
+            case HUB + 244:
+                return input == catta::json::Token::character('t') ? jump(HUB + 245) : error();
+            case HUB + 245:
+                return input == catta::json::Token::character('o') ? jump(HUB + 246) : error();
+            case HUB + 246:
+                return input == catta::json::Token::character('r') ? jump(HUB + 247) : error();
+            case HUB + 247:
+                return input == catta::json::Token::closeString() ? close(20) : error();
+            case HUB + 248:
+                return input == catta::json::Token::character('c') ? jump(HUB + 249) : error();
+            case HUB + 249:
+                return input == catta::json::Token::character('a') ? jump(HUB + 250) : error();
+            case HUB + 250:
+                return input == catta::json::Token::character('l') ? jump(HUB + 251) : error();
+            case HUB + 251:
+                return input == catta::json::Token::character('e') ? jump(HUB + 252) : error();
+            case HUB + 252:
+                return input == catta::json::Token::character('F') ? jump(HUB + 253) : error();
+            case HUB + 253:
+                return input == catta::json::Token::character('a') ? jump(HUB + 254) : error();
+            case HUB + 254:
+                return input == catta::json::Token::character('c') ? jump(HUB + 255) : error();
+            case HUB + 255:
+                return input == catta::json::Token::character('t') ? jump(HUB + 256) : error();
+            case HUB + 256:
+                return input == catta::json::Token::character('o') ? jump(HUB + 257) : error();
+            case HUB + 257:
+                return input == catta::json::Token::character('r') ? jump(HUB + 258) : error();
+            case HUB + 258:
+                return input == catta::json::Token::closeString() ? close(14) : error();
+            case HUB + 259:
+                return input == catta::json::Token::character('a') ? jump(HUB + 260) : error();
+            case HUB + 260:
+                return input == catta::json::Token::character('m') ? jump(HUB + 261) : error();
+            case HUB + 261:
+                return input == catta::json::Token::character('e') ? jump(HUB + 262) : error();
+            case HUB + 262:
+                return input == catta::json::Token::character('p') ? jump(HUB + 263) : error();
+            case HUB + 263:
+                return input == catta::json::Token::character('l') ? jump(HUB + 264) : error();
+            case HUB + 264:
+                return input == catta::json::Token::character('a') ? jump(HUB + 265) : error();
+            case HUB + 265:
+                return input == catta::json::Token::character('t') ? jump(HUB + 266) : error();
+            case HUB + 266:
+                return input == catta::json::Token::character('e') ? jump(HUB + 267) : error();
+            case HUB + 267:
+                return input == catta::json::Token::character('D') ? jump(HUB + 268) : error();
+            case HUB + 268:
+                return input == catta::json::Token::character('e') ? jump(HUB + 269) : error();
+            case HUB + 269:
+                return input == catta::json::Token::character('r') ? jump(HUB + 270) : error();
             case HUB + 270:
-                return input == catta::json::Token::character('c') ? jump(HUB + 271) : error();
+                return input == catta::json::Token::character('T') ? jump(HUB + 271) : error();
             case HUB + 271:
-                return input == catta::json::Token::character('a') ? jump(HUB + 272) : error();
+                return input == catta::json::Token::character('y') ? jump(HUB + 272) : error();
             case HUB + 272:
-                return input == catta::json::Token::character('l') ? jump(HUB + 273) : error();
+                return input == catta::json::Token::character('p') ? jump(HUB + 273) : error();
             case HUB + 273:
                 return input == catta::json::Token::character('e') ? jump(HUB + 274) : error();
             case HUB + 274:
-                return input == catta::json::Token::character('F') ? jump(HUB + 275) : error();
-            case HUB + 275:
-                return input == catta::json::Token::character('a') ? jump(HUB + 276) : error();
-            case HUB + 276:
-                return input == catta::json::Token::character('c') ? jump(HUB + 277) : error();
-            case HUB + 277:
-                return input == catta::json::Token::character('t') ? jump(HUB + 278) : error();
-            case HUB + 278:
-                return input == catta::json::Token::character('o') ? jump(HUB + 279) : error();
-            case HUB + 279:
-                return input == catta::json::Token::character('r') ? jump(HUB + 280) : error();
-            case HUB + 280:
-                return input == catta::json::Token::closeString() ? close(20) : error();
-            case HUB + 281:
-                return input == catta::json::Token::character('c') ? jump(HUB + 282) : error();
-            case HUB + 282:
-                return input == catta::json::Token::character('a') ? jump(HUB + 283) : error();
-            case HUB + 283:
-                return input == catta::json::Token::character('l') ? jump(HUB + 284) : error();
-            case HUB + 284:
-                return input == catta::json::Token::character('e') ? jump(HUB + 285) : error();
-            case HUB + 285:
-                return input == catta::json::Token::character('F') ? jump(HUB + 286) : error();
-            case HUB + 286:
-                return input == catta::json::Token::character('a') ? jump(HUB + 287) : error();
-            case HUB + 287:
-                return input == catta::json::Token::character('c') ? jump(HUB + 288) : error();
-            case HUB + 288:
-                return input == catta::json::Token::character('t') ? jump(HUB + 289) : error();
-            case HUB + 289:
-                return input == catta::json::Token::character('o') ? jump(HUB + 290) : error();
-            case HUB + 290:
-                return input == catta::json::Token::character('r') ? jump(HUB + 291) : error();
-            case HUB + 291:
-                return input == catta::json::Token::closeString() ? close(14) : error();
-            case HUB + 292:
-                return input == catta::json::Token::character('a') ? jump(HUB + 293) : error();
-            case HUB + 293:
-                return input == catta::json::Token::character('m') ? jump(HUB + 294) : error();
-            case HUB + 294:
-                return input == catta::json::Token::character('e') ? jump(HUB + 295) : error();
-            case HUB + 295:
-                return input == catta::json::Token::character('p') ? jump(HUB + 296) : error();
-            case HUB + 296:
-                return input == catta::json::Token::character('l') ? jump(HUB + 297) : error();
-            case HUB + 297:
-                return input == catta::json::Token::character('a') ? jump(HUB + 298) : error();
-            case HUB + 298:
-                return input == catta::json::Token::character('t') ? jump(HUB + 299) : error();
-            case HUB + 299:
-                return input == catta::json::Token::character('e') ? jump(HUB + 300) : error();
-            case HUB + 300:
-                return input == catta::json::Token::character('D') ? jump(HUB + 301) : error();
-            case HUB + 301:
-                return input == catta::json::Token::character('e') ? jump(HUB + 302) : error();
-            case HUB + 302:
-                return input == catta::json::Token::character('r') ? jump(HUB + 303) : error();
-            case HUB + 303:
-                return input == catta::json::Token::character('T') ? jump(HUB + 304) : error();
-            case HUB + 304:
-                return input == catta::json::Token::character('y') ? jump(HUB + 305) : error();
-            case HUB + 305:
-                return input == catta::json::Token::character('p') ? jump(HUB + 306) : error();
-            case HUB + 306:
-                return input == catta::json::Token::character('e') ? jump(HUB + 307) : error();
-            case HUB + 307:
-                return input == catta::json::Token::closeString() ? close(28) : error();
+                return input == catta::json::Token::closeString() ? close(26) : error();
             case TAIL + 0:
                 return input == catta::json::Token::end() ? jump(DONE + 0) : error();
             default:
@@ -723,7 +654,7 @@ class Parser<catta::modbus::si::RegisterAddress>
     std::uint8_t _data;
     static constexpr std::uint16_t START = 0;
     static constexpr std::uint16_t HUB = START + 1;
-    static constexpr std::uint16_t TAIL = HUB + 308;
+    static constexpr std::uint16_t TAIL = HUB + 275;
     static constexpr std::uint16_t DONE = TAIL + 1;
     static constexpr std::uint16_t ERROR_STATE = DONE + 1;
 };
