@@ -1,7 +1,424 @@
 <script type="text/html" data-help-name="batteryinvert">
-    <p>Handles SolarInvert invert.</p>
+    <p>Handles SolarInvert inverter.</p>
+    <h3>Executable</h3>
+    To communicate with the inverter you have to install an excutable.
+    <ul>
+       <li>Download the <a href="https://cloud.cattatech.de/index.php/s/qPpdrr7A8Ak3G4i/download?path=/v0.0.2/&files=ModbusLib-master-v0.0.2.zip">source code</a></li>
+       <li>Unzip the zip file</li>
+       <li>Install dependencies:
+          <ul>
+             <li><code>sudo apt update</code></li>
+             <li><code>sudo apt install -y git build-essential cmake</code></li>
+          </ul>
+       </li>
+       <li>Build and install executable <code>sudo ./build.sh --requestonly --install</code> with the script from the unziped folder.</li>
+    </ul>
     <h3>Inputs</h3>
-    <p>Request</p>
+    <dl class="message-properties">
+        <dt>request<span class="property-type">object</span></dt>
+        <dd>A JavaScript object. The following objects are possible:
+            <ul>
+                <li>
+                    <code>factoryValues</code>
+                    <pre><code>{
+   "type":"factoryValues",
+   "value":null
+}</code></pre>
+                    Reads the factory Values.
+                </li>
+                <li>
+                    <code>readOperatingData33</code>
+                    <pre><code>{
+   "type":"readOperatingData33",
+   "value":null
+}</code></pre>
+                    Reads the operatring Data (address 0x33).
+                </li>
+                <li>
+                    <code>readOperatingData3e</code>
+                    <pre><code>{
+   "type":"readOperatingData3e",
+   "value":null
+}</code></pre>
+                    Reads the operatring Data (address 0x3e).
+                </li>
+                <li>
+                    <code>switchOffGridRelay</code>
+                    <pre><code>{
+   "type":"switchOffGridRelay",
+   "value":null
+}</code></pre>
+                    Switches the grid relay off.
+                </li>
+                <li>
+                    <code>switchOnGridRelay</code>
+                    <pre><code>{
+   "type":"switchOnGridRelay",
+   "value":null
+}</code></pre>
+                    Switches the grid relay on.
+                </li>
+                <li>
+                    <code>forceIdle</code>
+                    <pre><code>{
+   "type":"forceIdle",
+   "value":null
+}</code></pre>
+                    Forces idle.
+                </li>
+                <li>
+                    <code>deactivateIdle</code>
+                    <pre><code>{
+   "type":"deactivateIdle",
+   "value":null
+}</code></pre>
+                    Deactivate idle.
+                </li>
+                <li>
+                    <code>startConstantVoltage</code><br>
+                    <pre><code>{
+   "type":"startConstantVoltage",
+   "value":
+   {
+      "uSet":
+      {
+         "quantety":24.6,
+         "unit":"V"
+      }
+   }
+}</code></pre>
+                    The inverter produces constant voltage.
+                    <ul>
+                        <li><code>uSet</code> The volatage to set in V. Has to be in 0.0 … 6553.5</li>
+                    </ul>
+                </li>
+                <li>
+                    <code>endConstantVoltage</code>
+                    <pre><code>{
+   "type":"endConstantVoltage",
+   "value":null
+}</code></pre>
+                     End constant voltage.
+                </li>
+                <li>
+                    <code>controlBatteryInvert</code>
+                    <pre><code>{
+   "type":"controlBatteryInvert",
+   "value":
+   {
+      "pMax":
+      {
+         "Charging":false,
+         "Power":
+         {
+            "quantety":2000,
+            "unit":"W"
+         }
+      },
+      "uMin":
+      {
+         "quantety":24.5,
+         "unit":"V"
+      },
+      "uMax":
+      {
+         "quantety":27.2,
+         "unit":"V"
+      },
+      "timeout":
+      {
+         "quantety":30,
+         "unit":"s"
+      }
+   }
+}</code></pre>
+                    Controls inverter.
+                    <ul>
+                        <li><code>Charging</code> <code>true</code> Loads from grid into the battery.<code>false</code> Loads from battery into the grid. </li>
+                        <li><code>Power</code> The power to set in W. Has to be in 0.0 … 3200.0</li>
+                        <li><code>uMin</code> The minimal voltage in V. Has to be in 0.0 … 6553.5</li>
+                        <li><code>uMax</code> The maximal voltage in V. Has to be in 0.0 … 6553.5</li>
+                        <li><code>timeout</code> Watchdog timeout. Command has to be renewed, otherwise it is reverted after given time. Has to be activated in inverter config.</li>
+                    </ul>
+                </li>
+                <li>
+                    <code>limitBatteryInvert</code><br>
+                    <pre><code>{
+   "type":"limitBatteryInvert",
+   "value":
+   {
+      "pMaxfeed":
+      {
+         "quantety":70.0,
+         "unit":"%"
+      }
+   }
+}</code></pre>
+                    Sets the percentage for power output relative to pv input.
+                    <ul>
+                        <li><code>pMaxfeed</code> The percentage to set in %. Has to be in 0.0 … 100.0</li>
+                    </ul>
+                </li>
+                <li>
+                    <code>readError</code>
+                    <pre><code>{
+   "type":"readError",
+   "value":null
+}</code></pre>
+                    Read 20 internal error counter.
+                </li>
+                <li>
+                    <code>readError</code>
+                    <pre><code>{
+   "type":"readRegister",
+   "value":
+   {
+      "registerAddress":"CommonManufacturer"
+   }
+}</code></pre>
+                    Reads sunspec register.
+                    <code>registerAddress</code>:
+                    <ul>
+                        <li><code>CommonManufacturer</code> The manufacture as string</li>
+                        <li><code>CommonModel</code> The model as string</li>
+                        <li><code>CommonSerialNumber</code> The serialnumber as string</li>
+                        <li><code>CommonDeviceAddress</code> The device address</li>
+                        <li><code>InverterAmps</code> The inverter ampere</li>
+                        <li><code>InverterAmpsPhaseA</code> The inverter ampere for first phase</li>
+                        <li><code>InverterAmpsPhaseB</code> The inverter ampere for second phase</li>
+                        <li><code>InverterAmpsPhaseC</code> The inverter ampere for third phase</li>
+                        <li><code>InverterAmpsScaleFactor</code> The scaling factor for inverter ampere</li>
+                        <li><code>InverterPhaseVoltageA</code> The inverter voltage for first phase</li>
+                        <li><code>InverterPhaseVoltageB</code> The inverter voltage for first phase</li>
+                        <li><code>InverterPhaseVoltageC</code> The inverter voltage for first phase</li>
+                        <li><code>InverterPhaseVoltageScaleFactor</code> The scaling factor for inverter voltage</li>
+                        <li><code>InverterWatt</code>The inverter power</li>
+                        <li><code>InverterWattScaleFactor</code> The scaling factor for inverter power</li>
+                        <li><code>InverterHertz</code> The frequency of the grid</li>
+                        <li><code>InverterHertzScaleFactor</code> The scaling factor for grid frequncy</li>
+                        <li><code>InverterPowerFactor</code> The power factor in percentage</li>
+                        <li><code>InverterPowerFactorScaleFactor</code> The scaling factor for the power factor</li>
+                        <li><code>InverterWattHours</code> The produced watt hours</li>
+                        <li><code>InverterWattHoursScaleFactor</code> The scaling factor for the produced watt hours</li>
+                        <li><code>InverterDcVoltage</code> The dc voltage.</li>
+                        <li><code>InverterDcVoltageScaleFactor</code> The scaling factor for the dc voltage</li>
+                        <li><code>InverterTemperature</code> The inverter temperature.</li>
+                        <li><code>InverterTemperatureScaleFactor</code> The scaling factor for the inverter temperature</li>
+                        <li><code>InverterOperatingState</code> The operating state.</li>
+                        <li><code>NameplateDerType</code> The DER type</li>
+                        <li><code>ExtendedMesurementsAcWattHours</code> The produced watt houres over all time.</li>
+                    </ul>
+                </li>
+            </ul>
+        </dd>
+    </dl>
     <h3>Outputs</h3>
-    <p>Response</p>
+    <dl class="message-properties">
+        <dt>response<span class="property-type">object</span></dt>
+        <dd>A JavaScript object. The following objects are possible:
+            <ul>
+                <li>
+                    <code>factoryValues</code>
+                    <pre><code>{
+   "type":"factoryValues",
+   "value":
+   {
+      "serialnumber":12345,
+      "productionDate":
+      {
+         "day":1,
+         "month":1,
+         "year":25
+      },
+      "hardwareVersion":1,
+      "firmwareVersion":0,
+      "bootstrappVersion":0
+   }
+}</code></pre>
+                    Possible factory values response.
+                </li>
+                <li>
+                    <code>readOperatingData33</code>
+                    <pre><code>{
+   "type":"readOperatingData33",
+   "value":
+   {
+      "dcVoltage":
+      {
+         "quantety":24.0,
+         "unit":"V"
+      },
+      "acVoltage":
+      {
+         "quantety":230,
+         "unit":"V"
+      },
+      "gridFrequency":
+      {
+         "quantety":50.0,
+         "unit":"Hz"
+      },
+      "acPower":
+      {
+         "quantety":3200.0,
+         "unit":"W"
+      },
+      "state":"init level 1"
+   }
+}</code></pre>
+                    Possible operatring Data (address 0x33) responses. Possible states: <code>init level 1</code>, <code>init level 2</code>, <code>init level 3</code>, <code>mppt</code>, <code>reset</code>, <code>constant voltage</code>, <code>lower power mode</code>, <code>wind</code>, <code>factory mode</code>, <code>battery</code> or <code>battery safety</code>.
+                </li>
+                <li>
+                    <code>readOperatingData3e</code>
+                    <pre><code>{
+   "type":"readOperatingData3e",
+   "value":
+   {
+      "serialNumber":12345,
+      "type":"battery",
+      "voltageType":
+      {
+         "quantety":24.0,
+         "unit":"V"
+      },
+      "nominalPower":
+      {
+         "quantety":400.0,
+         "unit":"W"
+      },
+      "cosphi":1.0,
+      "gridSupplyDailySum":
+      {
+         "quantety":2000.0,
+         "unit":"Wh"
+      },
+      "powerLimitation":
+      {
+         "quantety":400.0,
+         "unit":"W"
+      },
+      "operatingHours":
+      {
+         "quantety":5.3,
+         "unit":"h"
+      },
+      "phase":0,
+      "modbusId":10
+   }
+}</code></pre>
+                    Possible operatring Data (address 0x3e) responses.
+                </li>
+                <li>
+                    <code>switchOffGridRelay</code>
+                    <pre><code>{
+   "type":"switchOffGridRelay",
+   "value":true
+}</code></pre>
+                    Response for switch off grid relay. <code>value</code> represents the success of the request.
+                </li>
+                <li>
+                    <code>switchOnGridRelay</code>
+                    <pre><code>{
+   "type":"switchOnGridRelay",
+   "value":true
+}</code></pre>
+                    Response for switch on grid relay. <code>value</code> represents the success of the request.
+                </li>
+                <li>
+                    <code>forceIdle</code>
+                    <pre><code>{
+   "type":"forceIdle",
+   "value":true
+}</code></pre>
+                    Forces idle.
+                </li>
+                <li>
+                    <code>deactivateIdle</code>
+                    <pre><code>{
+   "type":"deactivateIdle",
+   "value":true
+}</code></pre>
+                    Response for deactivate idle. <code>value</code> represents the success of the request.
+                </li>
+                <li>
+                    <code>startConstantVoltage</code><br>
+                    <pre><code>{
+   "type":"startConstantVoltage",
+   "value":true
+}</code></pre>
+                    Response for start constant voltage. <code>value</code> represents the success of the request.
+                </li>
+                <li>
+                    <code>endConstantVoltage</code>
+                    <pre><code>{
+   "type":"endConstantVoltage",
+   "value":true
+}</code></pre>
+                    Response for end constant voltage. <code>value</code> represents the success of the request.
+                </li>
+                <li>
+                    <code>controlBatteryInvert</code>
+                    <pre><code>{
+   "type":"controlBatteryInvert",
+   "value":true
+}</code></pre>
+                    Response for control battery invert. <code>value</code> represents the success of the request.
+                </li>
+                <li>
+                    <code>limitBatteryInvert</code><br>
+                    <pre><code>{
+   "type":"limitBatteryInvert",
+   "value":true
+}</code></pre>
+                    Response for limit battery invert. <code>value</code> represents the success of the request.
+                </li>
+                <li>
+                    <code>readError</code>
+                    <pre><code>{
+   "overVoltageAC":0,
+   "underVoltageAC":0,
+   "overVoltageDC":0,
+   "underVoltageDC":0,
+   "overFrequency":0,
+   "underFrequency":0,
+   "limitedPowerT1":0,
+   "limitedPowerT2":0,
+   "limitedPowerT3":0,
+   "limitedPowerT4":0,
+   "limitedPowerT5":0,
+   "com":0,
+   "islandGrid":0,
+   "overCurrentInterrupt":0,
+   "overVoltageInterrupt":0,
+   "averageGridOverVoltage":0,
+   "overTempratureShutdown":0,
+   "differenceGridVoltage":0,
+   "errorGridRelais":0,
+   "errorCurrentSensor":0
+}</code></pre>
+                    Response for control read error. Number for counters.
+                </li>
+                <li>
+                    <code>exception</code><br>
+                    <pre><code>{
+   "type":"exception",
+   "value":
+   {
+      "value":"invalidFunctionCode",
+      "request":"readRegister"
+   }
+}</code></pre>
+                    Response with modbus exception (error). There are the possible codes: <code>invalidFunctionCode</code>, <code>invalidRegisterAddress</code>, <code>invalidDataValue</code>, <code>deviceError</code>.
+                </li>
+                <li>
+                    <code>error</code><br>
+                    <pre><code>{
+   "type":"error",
+   "value":"Timeout"
+}</code></pre>
+                    Response with modbus error message what went wrong.
+                </li>
+            </ul>
+        </dd>
+    </dl>
 </script>
