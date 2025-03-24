@@ -1,6 +1,6 @@
 {
     "name": "node-red-solarinvert",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Node-RED nodes to handle solarinvert inverter.",
     "license": "MIT",
     "repository": {
