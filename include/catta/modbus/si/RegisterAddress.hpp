@@ -47,11 +47,9 @@ class RegisterAddress
     constexpr static std::uint8_t INVERTER_TEMPERATURE = 23;
     constexpr static std::uint8_t INVERTER_TEMPERATURE_SCALE_FACTOR = 24;
     constexpr static std::uint8_t INVERTER_OPERATING_STATE = 25;
-    constexpr static std::uint8_t INVERTER_VENDOR_OPERATING_STATE = 26;
-    constexpr static std::uint8_t INVERTER_VENDOR_EVENT_BITFIELD = 27;
-    constexpr static std::uint8_t NAMEPLATE_DER_TYPE = 28;
-    constexpr static std::uint8_t EXTENDED_MESUREMENTS_AC_WATT_HOURS = 29;
-    constexpr static std::uint8_t EMPTY = 30;
+    constexpr static std::uint8_t NAMEPLATE_DER_TYPE = 26;
+    constexpr static std::uint8_t EXTENDED_MESUREMENTS_AC_WATT_HOURS = 27;
+    constexpr static std::uint8_t EMPTY = 28;
 
   public:
     /**
@@ -61,8 +59,7 @@ class RegisterAddress
      * inverterPhaseVoltageB(), inverterPhaseVoltageC(), inverterPhaseVoltageScaleFactor(), inverterWatt(), inverterWattScaleFactor(),
      * inverterHertz(), inverterHertzScaleFactor(), inverterPowerFactor(), inverterPowerFactorScaleFactor(), inverterWattHours(),
      * inverterWattHoursScaleFactor(), inverterDcVoltage(), inverterDcVoltageScaleFactor(), inverterTemperature(), inverterTemperatureScaleFactor(),
-     * inverterOperatingState(), inverterVendorOperatingState(), inverterVendorEventBitfield(), nameplateDerType(), extendedMesurementsAcWattHours()
-     * or empty(). Explicit constructor. Converts uint8 to register.
+     * inverterOperatingState(), nameplateDerType(), extendedMesurementsAcWattHours() or empty(). Explicit constructor. Converts uint8 to register.
      */
     [[nodiscard]] constexpr explicit RegisterAddress(const std::uint8_t value) noexcept : _value(value) {}
     /**
@@ -188,17 +185,6 @@ class RegisterAddress
      * @return Returns the operating state from the inverter model.
      */
     [[nodiscard]] constexpr static RegisterAddress inverterOperatingState() noexcept { return RegisterAddress{INVERTER_OPERATING_STATE}; }
-    /**
-     * @return Returns the vendor operating state from the inverter model.
-     */
-    [[nodiscard]] constexpr static RegisterAddress inverterVendorOperatingState() noexcept
-    {
-        return RegisterAddress{INVERTER_VENDOR_OPERATING_STATE};
-    }
-    /**
-     * @return Returns the vendor event bitfield from the inverter model.
-     */
-    [[nodiscard]] constexpr static RegisterAddress inverterVendorEventBitfield() noexcept { return RegisterAddress{INVERTER_VENDOR_EVENT_BITFIELD}; }
     /**
      * @return Returns the der type from the nameplate model.
      */
@@ -328,14 +314,6 @@ class RegisterAddress
      */
     [[nodiscard]] constexpr bool isInverterOperatingState() const noexcept { return _value == INVERTER_OPERATING_STATE; }
     /**
-     * @return Returns @b true if vendor operating state from the inverter model is represented, otherwise @b false.
-     */
-    [[nodiscard]] constexpr bool isInverterVendorOperatingState() const noexcept { return _value == INVERTER_VENDOR_OPERATING_STATE; }
-    /**
-     * @return Returns @b true if vendor event bitfield from the inverter model is represented, otherwise @b false.
-     */
-    [[nodiscard]] constexpr bool isInverterVendorEventBitfield() const noexcept { return _value == INVERTER_VENDOR_EVENT_BITFIELD; }
-    /**
      * @return Returns @b true if der type from the nameplate model is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isNameplateDerType() const noexcept { return _value == NAMEPLATE_DER_TYPE; }
@@ -376,8 +354,6 @@ class RegisterAddress
                                                                       "INVERTER_TEMPERATURE",
                                                                       "INVERTER_TEMPERATURE_SCALE_FACTOR",
                                                                       "INVERTER_OPERATING_STATE",
-                                                                      "INVERTER_VENDOR_OPERATING_STATE",
-                                                                      "INVERTER_VENDOR_EVENT_BITFIELD",
                                                                       "NAMEPLATE_DER_TYPE",
                                                                       "EXTENDED_MESUREMENTS_AC_WATT_HOURS"};
 
@@ -440,10 +416,6 @@ class RegisterAddress
                 return std::uint16_t(40107);
             case INVERTER_OPERATING_STATE:
                 return std::uint16_t(40108);
-            case INVERTER_VENDOR_OPERATING_STATE:
-                return std::uint16_t(40109);
-            case INVERTER_VENDOR_EVENT_BITFIELD:
-                return std::uint16_t(40114);
             case NAMEPLATE_DER_TYPE:
                 return std::uint16_t(40124);
             case EXTENDED_MESUREMENTS_AC_WATT_HOURS:
@@ -513,10 +485,6 @@ class RegisterAddress
                 return Type::scaleFactor();
             case INVERTER_OPERATING_STATE:
                 return Type::uint16();
-            case INVERTER_VENDOR_OPERATING_STATE:
-                return Type::uint16();
-            case INVERTER_VENDOR_EVENT_BITFIELD:
-                return Type::uint32();
             case NAMEPLATE_DER_TYPE:
                 return Type::uint16();
             case EXTENDED_MESUREMENTS_AC_WATT_HOURS:
@@ -587,10 +555,6 @@ class RegisterAddress
                 return Address(INVERTER_TEMPERATURE_SCALE_FACTOR);
             case 40108:
                 return Address(INVERTER_OPERATING_STATE);
-            case 40109:
-                return Address(INVERTER_VENDOR_OPERATING_STATE);
-            case 40114:
-                return Address(INVERTER_VENDOR_EVENT_BITFIELD);
             case 40124:
                 return Address(NAMEPLATE_DER_TYPE);
             case 40187:
