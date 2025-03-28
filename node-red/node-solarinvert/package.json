@@ -10,8 +10,13 @@
     "author": {
         "name": "Maik Urbannek",
         "email": "maik.urbannek@cattatech.de",
-        "url": "TBD"
+        "url": "https://www.cattatech.de/"
     },
+    "contributors" : [
+        {
+            "name": "Franco d´Angelico"
+        }
+    ],
     "keywords": [
         "node-red",
         "solarinvert",
