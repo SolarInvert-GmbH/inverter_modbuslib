@@ -1,7 +1,3 @@
-/**
- * TODO LICENSE
- **/
-
 module.exports = function(RED) {
     "use strict";
     var exec = require('child_process').exec;
@@ -56,7 +52,7 @@ module.exports = function(RED) {
                         case  8: nodeValue.voltageType={"quantety":160,"unit":"V"}; this.cache.voltScale=0.244; break;
                         case  9: nodeValue.voltageType={"quantety":240,"unit":"V"}; this.cache.voltScale=0.357; break;
                         case 10: nodeValue.voltageType={"quantety":320,"unit":"V"}; this.cache.voltScale=0.479; break;
-                        default: nodeValue.voltageType=null; break;
+                        default: break;
                     }
                     break;
                 case "wind":
@@ -72,7 +68,7 @@ module.exports = function(RED) {
                         case  8: nodeValue.voltageType={"quantety":120,"unit":"V"}; this.cache.voltScale=0.244; break;
                         case  9: nodeValue.voltageType={"quantety":160,"unit":"V"}; this.cache.voltScale=0.357; break;
                         case 10: nodeValue.voltageType={"quantety":240,"unit":"V"}; this.cache.voltScale=0.479; break;
-                        default: nodeValue.voltageType=null; break;
+                        default: break;
                     }
                     break;
                 case "battery":
@@ -88,10 +84,10 @@ module.exports = function(RED) {
                         case  8: nodeValue.voltageType={"quantety":120,"unit":"V"}; this.cache.voltScale=0.244; break;
                         case  9: nodeValue.voltageType={"quantety":160,"unit":"V"}; this.cache.voltScale=0.357; break;
                         case 10: nodeValue.voltageType={"quantety":240,"unit":"V"}; this.cache.voltScale=0.479; break;
-                        default: nodeValue.voltageType=null; break;
+                        default: break;
                     }
                     break;
-                default: nodeValue.voltageType=null; break;
+                default: break;
             }
         };
         this.handleResponse = function(msg)
@@ -138,7 +134,7 @@ module.exports = function(RED) {
                         case "InverterWattHours":
                             msg.payload.value.value = this.cache.wattHours === null ? null : {"quantety" : msg.payload.value.value*this.cache.wattHours, "unit":"Wh"};
                             break;
-                        case " InverterDcVoltage":
+                        case "InverterDcVoltage":
                             msg.payload.value.value = this.cache.dcVoltage === null ? null : {"quantety" : msg.payload.value.value*this.cache.dcVoltage, "unit":"V"};
                             break;
                         case "InverterTemperature":
