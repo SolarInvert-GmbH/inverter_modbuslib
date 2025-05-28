@@ -645,7 +645,13 @@ module.exports = function(RED) {
             return null;
         }
 
-        // TODO timeout
+
+        this.wait = function(ms) {
+            return new Promise((_, reject) => {
+                setTimeout(() => reject('Timeout'), ms);
+            });
+        }
+
         this.uartCall = function(send) {
             return new Promise(function(resolve, reject) {
 
@@ -682,12 +688,15 @@ module.exports = function(RED) {
         this.on("input",
             function(msg, nodeSend, nodeDone) {
                 const send = node.convertRequestToModbus(msg.payload);
-                node.uartCall(send).then(function(value) {
+                Promise.race([node.wait(node.timer), node.uartCall(send)]).then(function(value) {
                     msg.payload = value;
                     nodeSend([msg]);
                     nodeDone();
                 }, function(error) {
-                    msg.payload = error;
+                    msg.payload = {
+                        "type": "error",
+                        "value": error.toString()
+                    };
                     nodeSend([msg]);
                     nodeDone();
                 });
