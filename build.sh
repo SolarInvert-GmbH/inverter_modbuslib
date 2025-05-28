@@ -160,6 +160,7 @@ format()
         find "${ROOT}/string"  -type f -regex ".*\.\(c\|cpp\|h\|hpp\)" -exec "${FORMAT_COMAND}" -i {} +
         find "${ROOT}/test"    -type f -regex ".*\.\(c\|cpp\|h\|hpp\)" -exec "${FORMAT_COMAND}" -i {} +
         find "${ROOT}/example" -type f -regex ".*\.\(c\|cpp\|h\|hpp\)" -exec "${FORMAT_COMAND}" -i {} +
+        js-beautify -r "${ROOT}/node-red/node-solarinvert/batteryinvert.js" > /dev/null
     fi
 }
 
