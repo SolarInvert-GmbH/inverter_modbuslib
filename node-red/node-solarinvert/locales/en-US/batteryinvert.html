@@ -1,18 +1,5 @@
 <script type="text/html" data-help-name="batteryinvert">
     <p>Handles SolarInvert inverter.</p>
-    <h3>Executable</h3>
-    To communicate with the inverter you have to install an excutable.
-    <ul>
-       <li>Download the <a href="https://cloud.cattatech.de/index.php/s/qPpdrr7A8Ak3G4i/download?path=/v0.0.2/&files=ModbusLib-master-v0.0.2.zip">source code</a></li>
-       <li>Unzip the zip file</li>
-       <li>Install dependencies:
-          <ul>
-             <li><code>sudo apt update</code></li>
-             <li><code>sudo apt install -y git build-essential cmake</code></li>
-          </ul>
-       </li>
-       <li>Build and install executable <code>sudo ./build.sh --requestonly --install</code> with the script from the unziped folder.</li>
-    </ul>
     <h3>Inputs</h3>
     <dl class="message-properties">
         <dt>request<span class="property-type">object</span></dt>
@@ -168,7 +155,7 @@
                     Read 20 internal error counter.
                 </li>
                 <li>
-                    <code>readError</code>
+                    <code>readRegister</code>
                     <pre><code>{
    "type":"readRegister",
    "value":

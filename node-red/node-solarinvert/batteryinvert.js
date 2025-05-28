@@ -1,11 +1,12 @@
 module.exports = function(RED) {
     "use strict";
-    var exec = require('child_process').exec;
-    var fs = require('fs');
-    const isWindows = process.platform === 'win32'
+    const {
+        SerialPort
+    } = require('serialport')
 
     function BatteryInvertNode(n) {
         RED.nodes.createNode(this, n);
+        var node = this;
         this.cache = {
             "voltScale": null,
             "amps": null,
@@ -17,16 +18,152 @@ module.exports = function(RED) {
             "dcVoltage": null,
             "temperature": null
         };
-        this.cmd = (n.command || "").trim();
-        this.port = (n.serialport || "").trim();
-        this.modbusid = (n.modbusid || "00").trim();
+        this.modbusid = Number("0x" + (n.modbusid || "00").trim());
         this.timer = Number(n.timer || 0) * 1000;
-        this.activeProcesses = {};
-        this.execOpt = {
-            encoding: 'binary',
-            maxBuffer: RED.settings.execMaxBufferSize || 10000000,
-            windowsHide: (n.winHide === true)
+        this.config = {
+            baudRate: 57600,
+            path: (n.serialport || "").trim(),
+            dataBits: 8,
+            parity: "none",
+            stopBits: 1,
+            autoOpen: true
         };
+        this.computeCrc = function(oldCrc, data) {
+            const v = data;
+            var result = ((oldCrc ^ v) | 0xFF00) & (oldCrc | 0x00FF);
+            for (var i = 0; i < 8; i++) {
+                const leastSignifcantByteSet = result & 0x0001;
+                result = result / 2;
+                if (leastSignifcantByteSet) result = result ^ 0xA001;
+            }
+            return result;
+        };
+        this.convertRequestToModbus = function(request) {
+
+            function build(array) {
+                var buffer = new Uint8Array(array.length + 2);
+                var crc = 0xffff;
+                for (var i = 0; i < array.length; i++) {
+                    buffer[i] = array[i];
+                    crc = node.computeCrc(crc, array[i]);
+                }
+                buffer[array.length + 0] = (crc >> 0) & 0xff;
+                buffer[array.length + 1] = (crc >> 8) & 0xff;
+                return buffer;
+            };
+            switch (request.type) {
+                case "factoryValues":
+                    return build([node.modbusid, 0x31, 0x01, 0x01]);
+                default:
+                    return null;
+            }
+        }
+        class Parser {
+
+            constructor(id) {
+                this.state = 0;
+                this.id = id;
+                this.crc = 0xffff;
+            }
+            read(byte) {
+                this.blub = byte;
+                const STATE_ID = 0;
+                const STATE_FUNCTION = STATE_ID + 1;
+                const STATE_FACTORY_VALUES = STATE_FUNCTION + 1;
+                const STATE_DONE = STATE_FACTORY_VALUES + 15;
+
+                function jump(state, obj) {
+                    obj.state = state;
+                    return null;
+                };
+
+                function crcAndJump(state, data, obj) {
+                    obj.crc = node.computeCrc(obj.crc, data);
+                    return jump(state, obj);
+                };
+
+                function checkCrcLowAndJump(state, obj) {
+                    const low = (obj.crc >> 0) & 0xff;
+                    if (low != byte) throw new Error("Expected 0x" + low.toString(16).padStart(2, '0') + " as low crc, but got 0x" + byte.toString(16).padStart(2, '0'));
+                    return jump(state, obj);
+                };
+
+                function checkCrcHighAndDone(result, obj) {
+                    const high = (obj.crc >> 8) & 0xff;
+                    if (high != byte) throw new Error("Expected 0x" + high.toString(16).padStart(2, '0') + " as high crc, but got 0x" + byte.toString(16).padStart(2, '0'));
+                    return result;
+                };
+                switch (this.state) {
+                    case STATE_ID + 0:
+                        if (byte != this.id) throw new Error("Received wrong modbus(" + byte.toString(16).padStart(2, '0') + ") id(0x" + this.id.toString(16).padStart(2, '0') + ")");
+                        return crcAndJump(STATE_FUNCTION + 0, byte, this);
+                    case STATE_FUNCTION + 0:
+                        switch (byte) {
+                            case 0x31:
+                                return crcAndJump(STATE_FACTORY_VALUES + 0, byte, this);
+                            default:
+                                throw new Error("Received unknown modbus function(0x" + byte.toString(16).padStart(2, '0') + ")");
+                        }
+                    case STATE_FACTORY_VALUES + 0:
+                        if (byte != 0x0c) throw new Error("Expected 0x0c as length for factory values response, but got 0x" + byte.toString(16).padStart(2, '0'));
+                        return crcAndJump(STATE_FACTORY_VALUES + 1, byte, this);
+                    case STATE_FACTORY_VALUES + 1:
+                        this.serialnumber = byte << 8;
+                        return crcAndJump(STATE_FACTORY_VALUES + 2, byte, this);
+                    case STATE_FACTORY_VALUES + 2:
+                        this.serialnumber = this.serialnumber | byte;
+                        return crcAndJump(STATE_FACTORY_VALUES + 3, byte, this);
+                    case STATE_FACTORY_VALUES + 3:
+                        if (byte <= 0 || byte > 31) throw new Error("Expected 1…31 as day for factory values response, but got " + byte.toString());
+                        this.day = byte;
+                        return crcAndJump(STATE_FACTORY_VALUES + 4, byte, this);
+                    case STATE_FACTORY_VALUES + 4:
+                        if (byte <= 0 || byte > 12) throw new Error("Expected 1…12 as month for factory values response, but got " + byte.toString());
+                        this.month = byte;
+                        return crcAndJump(STATE_FACTORY_VALUES + 5, byte, this);
+                    case STATE_FACTORY_VALUES + 5:
+                        if (byte <= 0 || byte > 99) throw new Error("Expected 1…99 as year for factory values response, but got " + byte.toString());
+                        this.year = byte;
+                        return crcAndJump(STATE_FACTORY_VALUES + 6, byte, this);
+                    case STATE_FACTORY_VALUES + 6:
+                        this.hardwareVersion = byte;
+                        return crcAndJump(STATE_FACTORY_VALUES + 7, byte, this);
+                    case STATE_FACTORY_VALUES + 7:
+                        this.firmwareVersion = byte;
+                        return crcAndJump(STATE_FACTORY_VALUES + 8, byte, this);
+                    case STATE_FACTORY_VALUES + 8:
+                        this.bootstrappVersion = byte;
+                        return crcAndJump(STATE_FACTORY_VALUES + 9, byte, this);
+                    case STATE_FACTORY_VALUES + 9:
+                        return crcAndJump(STATE_FACTORY_VALUES + 10, byte, this);
+                    case STATE_FACTORY_VALUES + 10:
+                        return crcAndJump(STATE_FACTORY_VALUES + 11, byte, this);
+                    case STATE_FACTORY_VALUES + 11:
+                        return crcAndJump(STATE_FACTORY_VALUES + 12, byte, this);
+                    case STATE_FACTORY_VALUES + 12:
+                        return crcAndJump(STATE_FACTORY_VALUES + 13, byte, this);
+                    case STATE_FACTORY_VALUES + 13:
+                        return checkCrcLowAndJump(STATE_FACTORY_VALUES + 14, this);
+                    case STATE_FACTORY_VALUES + 14:
+                        return checkCrcHighAndDone({
+                            "type": "factoryValues",
+                            "value": {
+                                "serialnumber": this.serialnumber,
+                                "productionDate": {
+                                    "day": this.day,
+                                    "month": this.month,
+                                    "year": this.year
+                                },
+                                "hardwareVersion": this.hardwareVersion,
+                                "firmwareVersion": this.firmwareVersion,
+                                "bootstrappVersion": this.bootstrappVersion
+                            }
+                        }, this);
+                    default:
+                        throw new Error("Unexpected state");
+                }
+            }
+        }
         this.getScaleFactor = function(nodeValue) {
             if (nodeValue.value !== parseInt(nodeValue.value, 10)) return null;
             var value = nodeValue.value > 32767 ? nodeValue.value - 65536 : nodeValue.value;
@@ -34,6 +171,7 @@ module.exports = function(RED) {
             nodeValue.value = value;
             return 10 ** value;
         };
+
         this.setVolt = function(nodeValue) {
             switch (nodeValue.type) {
                 case "solar":
@@ -506,220 +644,57 @@ module.exports = function(RED) {
             }
             return null;
         }
-        var node = this;
 
-        if (process.platform === 'linux' && fs.existsSync('/bin/bash')) {
-            node.execOpt.shell = '/bin/bash';
-        }
+        // TODO timeout
+        this.uartCall = function(send) {
+            return new Promise(function(resolve, reject) {
 
-        var cleanup = function(p) {
-            node.activeProcesses[p].kill();
-        }
+                var parser = new Parser(node.modbusid);
+                var serial = new SerialPort(node.config, function(err, results) {
+                    if (err) {
+                        reject(err);
+                    }
+                });
+                serial.on('error', function(err) {
+                    reject(err);
+                });
+                serial.on('close', function() {});
+                serial.on('open', function() {
+                    serial.write(send);
+                });
+                serial.on('data', function(d) {
+                    var result = null;
+                    try {
+                        for (var i = 0; i < d.length; i++) {
+                            result = parser.read(d[i]);
+                        }
+                        if (result != null) {
+                            resolve(result);
+                            serial.close();
+                        }
+                    } catch (err) {
+                        reject(err);
+                    }
+                });
+            });
+        };
 
         this.on("input",
             function(msg, nodeSend, nodeDone) {
-                if (msg.hasOwnProperty("kill")) {
-                    if (typeof msg.kill !== "string" || msg.kill.length === 0 || !msg.kill.toUpperCase().startsWith("SIG")) {
-                        msg.kill = "SIGTERM";
-                    }
-                    if (msg.hasOwnProperty("pid")) {
-                        if (node.activeProcesses.hasOwnProperty(msg.pid)) {
-                            node.activeProcesses[msg.pid].kill(msg.kill.toUpperCase());
-                            node.status({
-                                fill: "red",
-                                shape: "dot",
-                                text: "killed"
-                            });
-                        }
-                    } else {
-                        if (Object.keys(node.activeProcesses).length === 1) {
-                            node.activeProcesses[Object.keys(node.activeProcesses)[0]].kill(msg.kill.toUpperCase());
-                            node.status({
-                                fill: "red",
-                                shape: "dot",
-                                text: "killed"
-                            });
-                        }
-                    }
+                const send = node.convertRequestToModbus(msg.payload);
+                node.uartCall(send).then(function(value) {
+                    msg.payload = value;
+                    nodeSend([msg]);
                     nodeDone();
-                } else {
-                    try {
-                        node.handleRequest(msg);
-                    } catch (e) {
-                        msg.payload = {
-                            "type": "error",
-                            "value": e.message
-                        };
-                        nodeDone();
-                    }
-
-                    var child;
-                    const quote = isWindows ? "" : "'";
-                    var arg = node.cmd + " --uart " + node.port + " --modbusid " + node.modbusid + " --request " + quote + JSON.stringify(msg.payload) + quote;
-                    if (node.timer !== 0) {
-                        arg += " --timeout " + node.timer;
-                    }
-
-                    var mainCallback = function(error, stdout, stderr) {
-                        delete msg.payload;
-                        if (error) {
-                            node.debug('[exec] stderr: ' + stderr);
-                            msg.payload = {
-                                "type": "error",
-                                "value": stderr
-                            };
-                            nodeDone();
-                        }
-                        try {
-                            var result = Buffer.from(stdout, "binary");
-                            node.status({
-                                fill: "red",
-                                shape: "dot",
-                                text: result
-                            });
-                            result = result.toString();
-                            try {
-                                msg.payload = JSON.parse(result);
-                            } catch (e) {
-                                msg.payload = {
-                                    "type": "error",
-                                    "value": result
-                                };
-                                nodeDone();
-                            }
-                            node.handleResponse(msg);
-                        } catch (e) {
-                            msg.payload = {
-                                "type": "error",
-                                "value": e.message
-                            };
-                            nodeDone();
-                        }
-                        node.status({});
-                        if (error !== null) {
-                            node.debug('[exec] error: ' + error);
-                        }
-                        nodeSend([msg]);
-                        if (child.tout) {
-                            clearTimeout(child.tout);
-                        }
-                        delete node.activeProcesses[child.pid];
-                        nodeDone();
-                    };
-
-                    var preCallback = function(error, stdout, stderr) {
-                        if (error) {
-                            node.debug('[exec] stderr: ' + stderr);
-                            msg.payload = {
-                                "type": "error",
-                                "value": stderr
-                            };
-                            nodeDone();
-                        }
-                        try {
-                            var result = Buffer.from(stdout, "binary");
-                            node.status({
-                                fill: "red",
-                                shape: "dot",
-                                text: result
-                            });
-                            result = result.toString();
-                            var pre;
-                            try {
-                                pre = JSON.parse(result);
-                            } catch (e) {
-                                msg.payload = {
-                                    "type": "error",
-                                    "value": result
-                                };
-                                nodeDone();
-                            }
-                            switch (pre.type) {
-                                case "readOperatingData3e":
-                                    node.setVolt(pre.value);
-                                    break;
-                                case "readRegister":
-                                    switch (pre.value.registerAddress) {
-                                        case "InverterAmpsScaleFactor":
-                                            node.cache.amps = node.getScaleFactor(pre.value);
-                                            break;
-                                        case "InverterPhaseVoltageScaleFactor":
-                                            node.cache.phaseVoltage = node.getScaleFactor(pre.value);
-                                            break;
-                                        case "InverterWattScaleFactor":
-                                            node.cache.watt = node.getScaleFactor(pre.value);
-                                            break;
-                                        case "InverterHertzScaleFactor":
-                                            node.cache.hertz = node.getScaleFactor(pre.value);
-                                            break;
-                                        case "InverterPowerFactorScaleFactor":
-                                            node.cache.powerFactor = node.getScaleFactor(pre.value);
-                                            break;
-                                        case "InverterWattHoursScaleFactor":
-                                            node.cache.wattHours = node.getScaleFactor(pre.value);
-                                            break;
-                                        case "InverterDcVoltageScaleFactor":
-                                            node.cache.dcVoltage = node.getScaleFactor(pre.value);
-                                            break;
-                                        case "InverterTemperatureScaleFactor":
-                                            node.cache.temperature = node.getScaleFactor(pre.value);
-                                            break;
-                                    }
-                            }
-                        } catch (e) {
-                            msg.payload = {
-                                "type": "error",
-                                "value": e.message
-                            };
-                            nodeDone();
-                        }
-                        if (child.tout) {
-                            clearTimeout(child.tout);
-                        }
-                        delete node.activeProcesses[child.pid];
-                        child = exec(arg, node.execOpt, mainCallback);
-                    };
-
-
-                    var preJson = node.preRequest(msg);
-
-                    if (preJson != null) {
-                        var arg1 = node.cmd + " --uart " + node.port + " --modbusid " + node.modbusid + " --request " + quote + JSON.stringify(preJson) + quote;
-                        if (node.timer !== 0) {
-                            arg1 += " --timeout " + node.timer;
-                        }
-                        child = exec(arg1, node.execOpt, preCallback);
-                    } else
-                        child = exec(arg, node.execOpt, mainCallback);
-                    node.status({
-                        fill: "blue",
-                        shape: "dot",
-                        text: "pid:" + child.pid
-                    });
-                    child.on('error',
-                        function() {});
-                    if (node.timer !== 0) {
-                        child.tout = setTimeout(function() {
-                                cleanup(child.pid);
-                            },
-                            node.timer + 1000);
-                    }
-                    node.activeProcesses[child.pid] = child;
-                }
+                }, function(error) {
+                    msg.payload = error;
+                    nodeSend([msg]);
+                    nodeDone();
+                });
             });
 
         this.on('close',
             function() {
-                for (var pid in node.activeProcesses) {
-                    if (node.activeProcesses.hasOwnProperty(pid)) {
-                        if (node.activeProcesses[pid].tout) {
-                            clearTimeout(node.activeProcesses[pid].tout);
-                        }
-                        var process = node.activeProcesses[pid];
-                        node.activeProcesses[pid] = null;
-                        process.kill();
-                    }
-                }
                 node.activeProcesses = {};
                 node.status({});
             });

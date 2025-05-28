@@ -6,9 +6,7 @@
             "serialport": "Serial Port",
             "modbusid": "Modbus Id",
             "timeout": "Timeout",
-            "seconds": "seconds",
-            "command": "Command",
-            "winHide": "Hide console"
+            "seconds": "seconds"
         },
         "placeholder":
         {
