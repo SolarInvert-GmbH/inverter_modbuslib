@@ -7,6 +7,7 @@ module.exports = function(RED) {
     function BatteryInvertNode(n) {
         RED.nodes.createNode(this, n);
         var node = this;
+        this.serial = null;
         this.cache = {
             "voltScale": null,
             "amps": null,
@@ -26,6 +27,7 @@ module.exports = function(RED) {
             dataBits: 8,
             parity: "none",
             stopBits: 1,
+            lock: false, // Hack: Without the this hack, the serial connection is not unlocked in the error/timeout case.
             autoOpen: true
         };
         this.computeCrc = function(oldCrc, data) {
@@ -661,6 +663,7 @@ module.exports = function(RED) {
                         reject(err);
                     }
                 });
+                node.serial = serial;
                 serial.on('error', function(err) {
                     reject(err);
                 });
@@ -675,8 +678,8 @@ module.exports = function(RED) {
                             result = parser.read(d[i]);
                         }
                         if (result != null) {
-                            resolve(result);
                             serial.close();
+                            resolve(result);
                         }
                     } catch (err) {
                         reject(err);
@@ -697,6 +700,7 @@ module.exports = function(RED) {
                         "type": "error",
                         "value": error.toString()
                     };
+                    if (node.serial != null && node.serial.isOpen) node.serial.close();
                     nodeSend([msg]);
                     nodeDone();
                 });
