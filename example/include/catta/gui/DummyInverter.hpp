@@ -710,7 +710,10 @@ class DummyInverter : public Fl_Double_Window
                 {
                     const std::uint8_t id = modbus.modbusId();
                     const auto request = parser.data();
-                    if (_uart->id() == id) handleRequest(request, response);
+                    if (_uart->id() == id)
+                        handleRequest(request, response);
+                    else
+                        modbus = {};
                     if (isDebug)
                     {
                         debugLog("Received Bytes: " + printLine(receiveLine) + '\n');
