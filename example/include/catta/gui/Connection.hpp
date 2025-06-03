@@ -131,84 +131,62 @@ class Connection : public Fl_Group
         catta::modbus::si::response::Response resultResponse;
 
         const auto isInIdle = [this]() -> bool { return _request.isEmpty() && _timeout.count() == 0; };
+        const auto setLable = [](const catta::modbus::sunspec::String::Raw& value, catta::modbus::sunspec::String::Raw& raw, Fl_Box* box)
+        {
+            raw = value;
+            box->label(raw.data());
+        };
+        const auto setNextClient = [this]() { _current = (_current + 1) % _clients; };
 
         bool something = false;
         if (!_uart.isEmpty() && _error.isEmpty())
         {
             const auto resetConnectionTry = [this](const bool jump = false)
             {
-                if (_choice->value() == 0 && jump)  // auto
-                {
+                if (_choice->value() == 0 && jump)  // auto case
                     _id = static_cast<std::uint8_t>((_id + 1) % 16);
-                }
                 _request = REQUEST_MANUFACTURER;
             };
 
             const auto [somethingHappend, error, response] = handleMasterUart(now, _id);
             something = somethingHappend;
-            if (_current < _clients)
+            static constexpr bool JUMP = true;
+            static constexpr bool DONT_JUMP = false;
+            const auto handleSearch = [error, &response, resetConnectionTry, setLable, this](const bool jump,
+                                                                                             catta::modbus::sunspec::String::Raw& raw, Fl_Box* box,
+                                                                                             const std::size_t currentOnSuccess, const auto onSuccess)
             {
                 if (error)
-                {
-                    _current = (_current + 1) % _clients;
-                }
-                else if (!response.isEmpty())
-                {
-                    resultResponse = response;
-                    _current = (_current + 1) % _clients;
-                }
-            }
-            else if (_current == _clients + UART_CONNECTED)
-            {
-                if (error)
-                    resetConnectionTry(true);
+                    resetConnectionTry(jump);
                 else if (!response.isEmpty())
                 {
                     if (response.type().isString())
                     {
-                        _stringManufacturer = response.stringValue().data();
-                        _manufacturer->label(_stringManufacturer.data());
-                        _request = REQUEST_MODEL;
-                        _current = _clients + MANUFACTURE_RECEIVED;
+                        setLable(response.stringValue().data(), raw, box);
+                        _current = currentOnSuccess;
+                        onSuccess();
                     }
                     else
                         resetConnectionTry(true);
                 }
+            };
+
+            if (_current < _clients)
+            {
+                if (error)
+                    setNextClient();
+                else if (!response.isEmpty())
+                {
+                    resultResponse = response;
+                    setNextClient();
+                }
             }
+            else if (_current == _clients + UART_CONNECTED)
+                handleSearch(JUMP, _stringManufacturer, _manufacturer, _clients + MANUFACTURE_RECEIVED, [this]() { _request = REQUEST_MODEL; });
             else if (_current == _clients + MANUFACTURE_RECEIVED)
-            {
-                if (error)
-                    resetConnectionTry();
-                else if (!response.isEmpty())
-                {
-                    if (response.type().isString())
-                    {
-                        _stringModel = response.stringValue().data();
-                        _model->label(_stringModel.data());
-                        _request = REQUEST_SERIAL_NUMBER;
-                        _current = _clients + MODEL_RECEIVED;
-                    }
-                    else
-                        resetConnectionTry();
-                }
-            }
+                handleSearch(DONT_JUMP, _stringModel, _model, _clients + MODEL_RECEIVED, [this]() { _request = REQUEST_SERIAL_NUMBER; });
             else if (_current == _clients + MODEL_RECEIVED)
-            {
-                if (error)
-                    resetConnectionTry();
-                else if (!response.isEmpty())
-                {
-                    if (response.type().isString())
-                    {
-                        _stringSerialNumber = response.stringValue().data();
-                        _serialNumber->label(_stringSerialNumber.data());
-                        _choice->value(_id + 1);
-                        _current = 0;
-                    }
-                    else
-                        resetConnectionTry();
-                }
-            }
+                handleSearch(DONT_JUMP, _stringSerialNumber, _serialNumber, 0, [this]() { _choice->value(_id + 1); });
         }
         else
         {
@@ -216,12 +194,9 @@ class Connection : public Fl_Group
             {
                 _timeout = now + TIMEOUT;
                 _waitForClear = true;
-                _stringManufacturer = {};
-                _stringModel = {};
-                _stringSerialNumber = {};
-                _manufacturer->label(_stringManufacturer.data());
-                _model->label(_stringModel.data());
-                _serialNumber->label(_stringSerialNumber.data());
+                setLable({}, _stringManufacturer, _manufacturer);
+                setLable({}, _stringModel, _model);
+                setLable({}, _stringSerialNumber, _serialNumber);
                 clearModbusHandling();
             }
         }
@@ -230,7 +205,7 @@ class Connection : public Fl_Group
         if (isInIdle() && _current < _clients)
         {
             if (request.isEmpty())
-                _current = (_current + 1) % _clients;
+                setNextClient();
             else
             {
                 tookRequest = true;
@@ -297,17 +272,12 @@ class Connection : public Fl_Group
     static constexpr std::size_t UART_CONNECTED = UART_NOT_CONNECTED + 1;
     static constexpr std::size_t MANUFACTURE_RECEIVED = UART_CONNECTED + 1;
     static constexpr std::size_t MODEL_RECEIVED = MANUFACTURE_RECEIVED + 1;
-    static constexpr catta::modbus::si::ReadRegister REGISTER_MANUFACTURER =
-        catta::modbus::si::ReadRegister::create(catta::modbus::si::RegisterAddress::commonManufacturer());
-    static constexpr catta::modbus::si::ReadRegister REGISTER_MODEL =
-        catta::modbus::si::ReadRegister::create(catta::modbus::si::RegisterAddress::commonModel());
-    static constexpr catta::modbus::si::ReadRegister REGISTER_SERIAL_NUMBER =
-        catta::modbus::si::ReadRegister::create(catta::modbus::si::RegisterAddress::commonSerialNumber());
-    static constexpr catta::modbus::si::request::Request REQUEST_MANUFACTURER =
-        catta::modbus::si::request::Request::readRegister(REGISTER_MANUFACTURER);
-    static constexpr catta::modbus::si::request::Request REQUEST_MODEL = catta::modbus::si::request::Request::readRegister(REGISTER_MODEL);
-    static constexpr catta::modbus::si::request::Request REQUEST_SERIAL_NUMBER =
-        catta::modbus::si::request::Request::readRegister(REGISTER_SERIAL_NUMBER);
+    using ReadRegister = catta::modbus::si::ReadRegister;
+    using RegisterAddress = catta::modbus::si::RegisterAddress;
+    using Request = catta::modbus::si::request::Request;
+    static constexpr Request REQUEST_MANUFACTURER = Request::readRegister(ReadRegister::create(RegisterAddress::commonManufacturer()));
+    static constexpr Request REQUEST_MODEL = Request::readRegister(ReadRegister::create(RegisterAddress::commonModel()));
+    static constexpr Request REQUEST_SERIAL_NUMBER = Request::readRegister(ReadRegister::create(RegisterAddress::commonSerialNumber()));
     const char* getErrorString()
     {
         return this->_uart.isEmpty() ? "NOT_CONNECTED" : this->_error.isEmpty() ? "CONNECTED" : ERROR::enumNames[this->_error].data();
@@ -327,11 +297,11 @@ class Connection : public Fl_Group
             connection->_status->label(connection->getErrorString());
             if (!(connection->_uart.isEmpty()) && connection->_uart.error().isEmpty())
             {
+                const auto getChoice = [connection]() { return static_cast<std::uint8_t>(connection->_choice->value() - 1); };
                 connection->_button0->deactivate();
                 connection->_button1->activate();
                 connection->_current = connection->_clients + UART_CONNECTED;
-                connection->_id =
-                    connection->_choice->value() == 0 ? std::uint8_t(0x00) : static_cast<std::uint8_t>(connection->_choice->value() - 1);
+                connection->_id = connection->_choice->value() == 0 ? std::uint8_t(0x00) : getChoice();
                 connection->_choice->deactivate();
                 connection->_request = REQUEST_MANUFACTURER;
             }
@@ -387,16 +357,21 @@ class Connection : public Fl_Group
 
     std::tuple<bool, bool, catta::modbus::si::response::Response> handleMasterUart(const std::chrono::microseconds now, const std::uint8_t id)
     {
+        const auto setTimeout = [this, now]() { _timeout = now + TIMEOUT; };
+        const auto clearTimeout = [this]() { _timeout = std::chrono::microseconds::zero(); };
+        using Tuple = std::tuple<bool, bool, catta::modbus::si::response::Response>;
+        static constexpr Tuple EMPTY_TUPLE = Tuple(false, false, catta::modbus::si::response::Response::empty());
         if (_waitForClear)
         {
             if (now > _timeout)
             {
-                _timeout = std::chrono::microseconds::zero();
+                clearTimeout();
                 _waitForClear = false;
             }
             else
-                return std::tuple<bool, bool, catta::modbus::si::response::Response>{false, false, catta::modbus::si::response::Response::empty()};
+                return EMPTY_TUPLE;
         }
+
         bool somethingHappend = false;
         bool failed = false;
         catta::modbus::si::response::Response response = {};
@@ -407,7 +382,6 @@ class Connection : public Fl_Group
             if (sendHandled) _sendToken = {};
             _receivedByte = {};
             _sendByte = sendByteLocal;
-
             _receiveToken = recevieTokenLocal;
             if (_sendByte || !_receiveToken.isEmpty()) somethingHappend = true;
         }
@@ -435,12 +409,12 @@ class Connection : public Fl_Group
             {
                 response = _parser.data();
                 _parser = {};
-                _timeout = std::chrono::microseconds::zero();
+                clearTimeout();
             }
             if (_parser.state().isFailed())
             {
                 clearModbusHandling();
-                _timeout = now + TIMEOUT;
+                setTimeout();
                 _waitForClear = true;
                 failed = true;
             }
@@ -455,7 +429,7 @@ class Connection : public Fl_Group
             if (_serializer.state().isDone())
             {
                 _serializer = {};
-                _timeout = now + TIMEOUT;
+                setTimeout();
                 _request = {};
             }
             if (_serializer.state().isFailed())
@@ -468,13 +442,13 @@ class Connection : public Fl_Group
         {
             clearModbusHandling();
             failed = true;
-            _timeout = std::chrono::microseconds::zero();
+            clearTimeout();
         }
         if (_uart.isEmpty() || !_uart.error().isEmpty())
         {
             failed = true;
         }
-        return std::tuple<bool, bool, catta::modbus::si::response::Response>{somethingHappend, failed, response};
+        return Tuple{somethingHappend, failed, response};
     }
 };
 }  // namespace gui
