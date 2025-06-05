@@ -122,13 +122,15 @@ class Connection : public Fl_Group
      * @param[in] now The current time.
      * @retval somethingHappend Returns @b true if something happend and the main loop should not wait, otherwise @b false.
      * @retval tookRequest Returns @b true if the input request was accepted, otherwise @b false.
-     * @retval resultResponse Returns the response for the in the past given response. Matches to the current client.
+     * @retval resultResponse Returns the response for the in the past given request. Matches to the current client.
+     * @retval resultRequest Returns request to the corresponding response. Matches to the current client.
      * @retval current Returns the current client. The @b resultResponse is for the current client. Only the current client can send requests.
      */
-    std::tuple<bool, bool, catta::modbus::si::response::Response, std::size_t> loop(const catta::modbus::si::request::Request request,
-                                                                                    const std::chrono::microseconds now) noexcept
+    std::tuple<bool, bool, catta::modbus::si::response::Response, catta::modbus::si::request::Request, std::size_t> loop(
+        const catta::modbus::si::request::Request request, const std::chrono::microseconds now) noexcept
     {
         catta::modbus::si::response::Response resultResponse;
+        catta::modbus::si::request::Request resultRequest;
 
         const auto isInIdle = [this]() -> bool { return _request.isEmpty() && _timeout.count() == 0; };
         const auto setLable = [](const catta::modbus::sunspec::String::Raw& value, catta::modbus::sunspec::String::Raw& raw, Fl_Box* box)
@@ -178,6 +180,8 @@ class Connection : public Fl_Group
                 else if (!response.isEmpty())
                 {
                     resultResponse = response;
+                    resultRequest = _requestBackup;
+                    _requestBackup = {};
                     setNextClient();
                 }
             }
@@ -210,10 +214,12 @@ class Connection : public Fl_Group
             {
                 tookRequest = true;
                 _request = request;
+                _requestBackup = request;
             }
         }
         const std::size_t current = _current < _clients ? _current : _clients;
-        return std::tuple<bool, bool, catta::modbus::si::response::Response, std::size_t>(something, tookRequest, resultResponse, current);
+        return std::tuple<bool, bool, catta::modbus::si::response::Response, catta::modbus::si::request::Request, std::size_t>(
+            something, tookRequest, resultResponse, resultRequest, current);
     }
     /**
      * Destructor.
@@ -247,6 +253,7 @@ class Connection : public Fl_Group
     catta::modbus::Token _receiveToken;
 
     catta::modbus::si::request::Request _request;
+    catta::modbus::si::request::Request _requestBackup;
 
     catta::modbus::sunspec::String::Raw _stringManufacturer;
     catta::modbus::sunspec::String::Raw _stringModel;
