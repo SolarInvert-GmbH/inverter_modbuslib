@@ -31,7 +31,7 @@ class MiniSicc : public Fl_Double_Window
      * @param[in] defaultUartName The default device address of the uart.
      * Constructor.
      */
-    MiniSicc(const char* defaultUartName) : Fl_Double_Window(200, 200, WIDTH, HEIGHT, "miniSICC"), _run(true)
+    MiniSicc(const char* defaultUartName) : Fl_Double_Window(200, 200, WIDTH, HEIGHT, "miniSICC"), _run(true), _current(CLIENTS)
     {
         this->_connection = new Connection<UART>(10, 10, WIDTH - 20, HEIGHT - 20, defaultUartName, nullptr, CLIENTS);
         this->resizable(this->_connection);
@@ -51,12 +51,17 @@ class MiniSicc : public Fl_Double_Window
             bool somethingHappend = false;
 
             {
-                const catta::modbus::si::request::Request request;
-                const auto [happend, tookRequest, receivedResponse, receivedRequest, current] = _connection->loop(request, now);
+                const auto [happend, tookRequest, receivedResponse, receivedRequest, current] = _connection->loop(_request, now);
                 if (happend) somethingHappend = true;
-                const Request old = _request;
-                _request = _cache.work(_request.isEmpty(), receivedResponse, receivedRequest, now);
-                if (old != _request) somethingHappend = true;
+                const Request cacheRequest = _cache.work(_request.isEmpty() && _current == CLIENT_CACHE, receivedResponse, receivedRequest, now);
+                if (!cacheRequest.isEmpty())
+                {
+                    _request = cacheRequest;
+                    somethingHappend = true;
+                }
+                if (_current < CLIENTS && current >= CLIENTS)
+                    for (std::size_t i = 0; i < CACHE_SIZE; i++) _cache.setInvalid(i);
+                _current = current;
             }
             Fl::wait(0);
             if (!somethingHappend) TIME::sleep(10us);
@@ -66,6 +71,7 @@ class MiniSicc : public Fl_Double_Window
   private:
     static constexpr std::size_t CLIENTS = 1;
     static constexpr std::size_t CACHE_SIZE = 2;
+    static constexpr std::size_t CLIENT_CACHE = 0;
 
     using Request = catta::modbus::si::request::Request;
     using Response = catta::modbus::si::response::Response;
@@ -75,6 +81,7 @@ class MiniSicc : public Fl_Double_Window
     Connection<UART>* _connection;
     catta::modbus::ValueCache<CACHE_SIZE> _cache;
     Request _request;
+    std::size_t _current;
 
     static constexpr int WIDTH = 600;
     static constexpr int HEIGHT = 800;

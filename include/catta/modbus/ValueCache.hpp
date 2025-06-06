@@ -71,7 +71,14 @@ class ValueCache
      * @param i The index. Has to be smaller than @b N.
      * @warning @b i has to be smaller than @b N.
      */
-    void setInvalid(const std::size_t i) noexcept { std::get<RESPONSE>(_data[i]) = {}; }
+    void setInvalid(const std::size_t i) noexcept
+    {
+        if (!std::get<RESPONSE>(_data[i]).isEmpty())
+        {
+            std::get<RESPONSE>(_data[i]) = Response::empty();
+            if (std::get<CALLBACK>(_data[i])) std::get<CALLBACK>(_data[i])(Response::empty());
+        }
+    }
     /**
      * @param i The index. Has to be smaller than @b N.
      * @warning @b i has to be smaller than @b N.
