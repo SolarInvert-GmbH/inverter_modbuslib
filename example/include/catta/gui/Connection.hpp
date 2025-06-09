@@ -122,17 +122,17 @@ class Connection : public Fl_Group
      * @param[in] now The current time.
      * @retval somethingHappend Returns @b true if something happend and the main loop should not wait, otherwise @b false.
      * @retval tookRequest Returns @b true if the input request was accepted, otherwise @b false.
+     * @retval isInIdle Returns @b true if the connection is free to accept new message, otherwise @b false.
      * @retval resultResponse Returns the response for the in the past given request. Matches to the current client.
      * @retval resultRequest Returns request to the corresponding response. Matches to the current client.
      * @retval current Returns the current client. The @b resultResponse is for the current client. Only the current client can send requests.
      */
-    std::tuple<bool, bool, catta::modbus::si::response::Response, catta::modbus::si::request::Request, std::size_t> loop(
+    std::tuple<bool, bool, bool, catta::modbus::si::response::Response, catta::modbus::si::request::Request, std::size_t> loop(
         const catta::modbus::si::request::Request request, const std::chrono::microseconds now) noexcept
     {
         catta::modbus::si::response::Response resultResponse;
         catta::modbus::si::request::Request resultRequest;
 
-        const auto isInIdle = [this]() -> bool { return _request.isEmpty() && _timeout.count() == 0; };
         const auto setLable = [](const catta::modbus::sunspec::String::Raw& value, catta::modbus::sunspec::String::Raw& raw, Fl_Box* box)
         {
             raw = value;
@@ -190,7 +190,12 @@ class Connection : public Fl_Group
             else if (_current == _clients + MANUFACTURE_RECEIVED)
                 handleSearch(DONT_JUMP, _stringModel, _model, _clients + MODEL_RECEIVED, [this]() { _request = REQUEST_SERIAL_NUMBER; });
             else if (_current == _clients + MODEL_RECEIVED)
-                handleSearch(DONT_JUMP, _stringSerialNumber, _serialNumber, 0, [this]() { _choice->value(_id + 1); });
+                handleSearch(DONT_JUMP, _stringSerialNumber, _serialNumber, 0,
+                             [this]()
+                             {
+                                 _choice->value(_id + 1);
+                                 _requestBackup = {};
+                             });
         }
         else
         {
@@ -206,7 +211,7 @@ class Connection : public Fl_Group
         }
 
         bool tookRequest = false;
-        if (isInIdle() && _current < _clients)
+        if (_requestBackup.isEmpty() && _current < _clients)
         {
             if (request.isEmpty())
                 setNextClient();
@@ -218,8 +223,8 @@ class Connection : public Fl_Group
             }
         }
         const std::size_t current = _current < _clients ? _current : _clients;
-        return std::tuple<bool, bool, catta::modbus::si::response::Response, catta::modbus::si::request::Request, std::size_t>(
-            something, tookRequest, resultResponse, resultRequest, current);
+        return std::tuple<bool, bool, bool, catta::modbus::si::response::Response, catta::modbus::si::request::Request, std::size_t>(
+            something, tookRequest, _requestBackup.isEmpty(), resultResponse, resultRequest, current);
     }
     /**
      * Destructor.
