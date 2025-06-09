@@ -154,18 +154,25 @@ static void handleRequest(const catta::modbus::si::request::Request &request, ca
     {
         case Type::readRegister():
 
-            switch (request.readRegisterValue().registerAddress().type().size())
+            switch (request.readRegisterValue().registerAddress().type())
             {
-                case 2:
+                case catta::modbus::si::RegisterType::uint16():
+                case catta::modbus::si::RegisterType::sint16():
                     response = Response::value16(random.create<std::uint16_t>());
                     break;
-                case 4:
+                case catta::modbus::si::RegisterType::connectedPhase():
+                    response = Response::value16(random.interval(std::uint16_t(1), std::uint16_t(3)));
+                    break;
+                case catta::modbus::si::RegisterType::scaleFactor():
+                    response = Response::value16(static_cast<std::uint16_t>(random.interval(std::int16_t(-10), std::int16_t(+10))));
+                    break;
+                case catta::modbus::si::RegisterType::uint32():
                     response = Response::value32(random.create<std::uint32_t>());
                     break;
-                case 8:
+                case catta::modbus::si::RegisterType::uint64():
                     response = Response::value64(random.interval(std::uint64_t(0), std::uint64_t(1) << 50));
                     break;
-                case 32:
+                case catta::modbus::si::RegisterType::string32():
                     response = Response::string(random.create<catta::modbus::sunspec::String>());
                     break;
 
