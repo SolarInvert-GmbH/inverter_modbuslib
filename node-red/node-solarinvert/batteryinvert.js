@@ -183,6 +183,8 @@ module.exports = function(RED) {
             switch (request.type) {
                 case "factoryValues":
                     return build([node.modbusid, 0x31, 0x01, 0x01]);
+                case "readOperatingData3e":
+                    return build([node.modbusid, 0x3e, 0x01, 0x01]);
                 case "readRegister":
                     if (!("value" in request)) throw new Error("Request from type 'readRegister' has no 'value'.");
                     if (!("registerAddress" in request.value)) throw new Error("Request value from type 'readRegister' has no 'registerAddress'.");
@@ -206,7 +208,8 @@ module.exports = function(RED) {
                 const STATE_ID = 0;
                 const STATE_FUNCTION = STATE_ID + 1;
                 const STATE_FACTORY_VALUES = STATE_FUNCTION + 1;
-                const STATE_READ_REGISTER = STATE_FACTORY_VALUES + 15;
+                const STATE_OPERATING_DATA_3E = STATE_FACTORY_VALUES + 15;
+                const STATE_READ_REGISTER = STATE_OPERATING_DATA_3E + 22;
                 const STATE_DONE = STATE_READ_REGISTER + 4;
 
                 function jump(state, obj) {
@@ -242,6 +245,10 @@ module.exports = function(RED) {
                             case 0x31:
                                 if (this.request.type != "factoryValues") throw Error("Expected '0x31' as modbus function code for 'factoryValues' request, but got " + byte.toString(16).padStart(2, '0'));
                                 return crcAndJump(STATE_FACTORY_VALUES + 0, byte, this);
+                            case 0x3e:
+                                if (this.request.type != "readOperatingData3e") throw Error("Expected '0x3e' as modbus function code for 'readOperatingData3e' request, but got " + byte.toString(16).padStart(2, '0'));
+                                return crcAndJump(STATE_OPERATING_DATA_3E + 0, byte, this);
+
                             default:
                                 throw new Error("Received unknown modbus function(0x" + byte.toString(16).padStart(2, '0') + ")");
                         }
@@ -298,6 +305,129 @@ module.exports = function(RED) {
                                 "hardwareVersion": this.hardwareVersion,
                                 "firmwareVersion": this.firmwareVersion,
                                 "bootstrappVersion": this.bootstrappVersion
+                            }
+                        }, this);
+                    case STATE_OPERATING_DATA_3E + 0:
+                        if (byte != 0x13) throw new Error("Expected 0x13 as length for operating data 3e response, but got 0x" + byte.toString(16).padStart(2, '0'));
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 1, byte, this);
+                    case STATE_OPERATING_DATA_3E + 1:
+                        this.serialnumber = byte << 8;
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 2, byte, this);
+                    case STATE_OPERATING_DATA_3E + 2:
+                        this.serialnumber = this.serialnumber | byte;
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 3, byte, this);
+                    case STATE_OPERATING_DATA_3E + 3:
+                        switch (byte) {
+                            case 0x01:
+                                this.type = "solar";
+                                break;
+                            case 0x02:
+                                this.type = "wind";
+                                break;
+                            case 0x03:
+                                this.type = "battery";
+                                break;
+                            default:
+                                throw new Error("Expected 0x01, 0x02 or 0x03 as type for operating data 3e response, but got 0x" + byte.toString(16).padStart(2, '0'));
+                        }
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 4, byte, this);
+                    case STATE_OPERATING_DATA_3E + 4:
+                        if (byte < 0x01 || byte > 0x0a) throw new Error("Expected 0x01…0x0a as voltageType for operating data 3e response, but got 0x" + byte.toString(16).padStart(2, '0'));
+                        var lookup = null;
+                        switch (this.type) {
+                            case "solar":
+                                lookup = [12, 17, 35, 50, 70, 90, 120, 160, 240, 320];
+                                break;
+                            case "wind":
+                                lookup = [12, 18, 24, 36, 48, 72, 96, 120, 160, 240];
+                                break;
+                            case "battery":
+                                lookup = [8, 12, 24, 30, 36, 48, 96, 120, 160, 240];
+                                break;
+                        }
+                        this.voltageType = {
+                            "quantety": lookup[byte - 1],
+                            "unit": "A"
+                        };
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 5, byte, this);
+                    case STATE_OPERATING_DATA_3E + 5:
+                        if (byte < 0x01 || byte > 0x20) throw new Error("Expected 0x01…0x20 as nominalPower for operating data 3e response, but got 0x" + byte.toString(16).padStart(2, '0'));
+                        this.nominalPower = {
+                            "quantety": byte * 100,
+                            "unit": "W"
+                        };
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 6, byte, this);
+                    case STATE_OPERATING_DATA_3E + 6:
+                        this.cosphi = 1.0 + (100 - byte) / 200;
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 7, byte, this);
+                    case STATE_OPERATING_DATA_3E + 7:
+                        this.gridSupplyDailySum = byte << 24;
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 8, byte, this);
+                    case STATE_OPERATING_DATA_3E + 8:
+                        this.gridSupplyDailySum |= byte << 16;
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 9, byte, this);
+                    case STATE_OPERATING_DATA_3E + 9:
+                        this.gridSupplyDailySum |= byte << 8;
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 10, byte, this);
+                    case STATE_OPERATING_DATA_3E + 10:
+                        this.gridSupplyDailySum |= byte << 0;
+                        this.gridSupplyDailySum = {
+                            "quantety": this.gridSupplyDailySum / 36000,
+                            "unit": "Wh"
+                        };
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 11, byte, this);
+                    case STATE_OPERATING_DATA_3E + 11:
+                        this.powerLimitation = byte << 8;
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 12, byte, this);
+                    case STATE_OPERATING_DATA_3E + 12:
+                        this.powerLimitation |= byte << 0;
+                        this.powerLimitation = {
+                            "quantety": this.powerLimitation / 10,
+                            "unit": "W"
+                        };
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 13, byte, this);
+                    case STATE_OPERATING_DATA_3E + 13:
+                        this.operatingHours = byte << 24;
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 14, byte, this);
+                    case STATE_OPERATING_DATA_3E + 14:
+                        this.operatingHours |= byte << 16;
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 15, byte, this);
+                    case STATE_OPERATING_DATA_3E + 15:
+                        this.operatingHours |= byte << 8;
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 16, byte, this);
+                    case STATE_OPERATING_DATA_3E + 16:
+                        this.operatingHours |= byte << 0;
+                        this.operatingHours = {
+                            "quantety": this.operatingHours / 36000,
+                            "unit": "h"
+                        };
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 17, byte, this);
+                    case STATE_OPERATING_DATA_3E + 17:
+                        if (byte > 0x03) throw new Error("Expected 0x00…0x03 as phase for operating data 3e response, but got 0x" + byte.toString(16).padStart(2, '0'));
+                        this.phase = byte;
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 18, byte, this);
+                    case STATE_OPERATING_DATA_3E + 18:
+                        if (byte > 0x0f) throw new Error("Expected 0x00…0x0f as modbusId for operating data 3e response, but got 0x" + byte.toString(16).padStart(2, '0'));
+                        this.modbusId = byte;
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 19, byte, this);
+                    case STATE_OPERATING_DATA_3E + 19:
+                        return crcAndJump(STATE_OPERATING_DATA_3E + 20, byte, this);
+                    case STATE_OPERATING_DATA_3E + 20:
+                        return checkCrcLowAndJump(STATE_OPERATING_DATA_3E + 21, this);
+                    case STATE_OPERATING_DATA_3E + 21:
+                        return checkCrcHighAndDone({
+                            "type": "readOperatingData3e",
+                            "value": {
+                                "serialNumber": this.serialnumber,
+                                "type": this.type,
+                                "voltageType": this.voltageType,
+                                "nominalPower": this.nominalPower,
+                                "cosphi": this.cosphi,
+                                "gridSupplyDailySum": this.gridSupplyDailySum,
+                                "powerLimitation": this.powerLimitation,
+                                "operatingHours": this.operatingHours,
+                                "phase": this.phase,
+                                "modbusId": this.modbusId
                             }
                         }, this);
                     case STATE_READ_REGISTER + 0:
@@ -397,245 +527,11 @@ module.exports = function(RED) {
                             }
                         }, this);
                     default:
-                        throw new Error("Unexpected state");
+                        throw new Error("Unexpected parsing state");
                 }
             }
         }
 
-        this.setVolt = function(nodeValue) {
-            switch (nodeValue.type) {
-                case "solar":
-                    switch (nodeValue.voltageType) {
-                        case 1:
-                            nodeValue.voltageType = {
-                                "quantety": 12,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.028;
-                            break;
-                        case 2:
-                            nodeValue.voltageType = {
-                                "quantety": 17,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.054;
-                            break;
-                        case 3:
-                            nodeValue.voltageType = {
-                                "quantety": 35,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.054;
-                            break;
-                        case 4:
-                            nodeValue.voltageType = {
-                                "quantety": 50,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.079;
-                            break;
-                        case 5:
-                            nodeValue.voltageType = {
-                                "quantety": 70,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.108;
-                            break;
-                        case 6:
-                            nodeValue.voltageType = {
-                                "quantety": 90,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.142;
-                            break;
-                        case 7:
-                            nodeValue.voltageType = {
-                                "quantety": 120,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.186;
-                            break;
-                        case 8:
-                            nodeValue.voltageType = {
-                                "quantety": 160,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.244;
-                            break;
-                        case 9:
-                            nodeValue.voltageType = {
-                                "quantety": 240,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.357;
-                            break;
-                        case 10:
-                            nodeValue.voltageType = {
-                                "quantety": 320,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.479;
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case "wind":
-                    switch (nodeValue.voltageType) {
-                        case 1:
-                            nodeValue.voltageType = {
-                                "quantety": 12,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.028;
-                            break;
-                        case 2:
-                            nodeValue.voltageType = {
-                                "quantety": 18,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.054;
-                            break;
-                        case 3:
-                            nodeValue.voltageType = {
-                                "quantety": 24,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.054;
-                            break;
-                        case 4:
-                            nodeValue.voltageType = {
-                                "quantety": 36,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.079;
-                            break;
-                        case 5:
-                            nodeValue.voltageType = {
-                                "quantety": 48,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.108;
-                            break;
-                        case 6:
-                            nodeValue.voltageType = {
-                                "quantety": 72,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.142;
-                            break;
-                        case 7:
-                            nodeValue.voltageType = {
-                                "quantety": 96,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.186;
-                            break;
-                        case 8:
-                            nodeValue.voltageType = {
-                                "quantety": 120,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.244;
-                            break;
-                        case 9:
-                            nodeValue.voltageType = {
-                                "quantety": 160,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.357;
-                            break;
-                        case 10:
-                            nodeValue.voltageType = {
-                                "quantety": 240,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.479;
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case "battery":
-                    switch (nodeValue.voltageType) {
-                        case 1:
-                            nodeValue.voltageType = {
-                                "quantety": 8,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.028;
-                            break;
-                        case 2:
-                            nodeValue.voltageType = {
-                                "quantety": 12,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.054;
-                            break;
-                        case 3:
-                            nodeValue.voltageType = {
-                                "quantety": 24,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.054;
-                            break;
-                        case 4:
-                            nodeValue.voltageType = {
-                                "quantety": 30,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.079;
-                            break;
-                        case 5:
-                            nodeValue.voltageType = {
-                                "quantety": 36,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.108;
-                            break;
-                        case 6:
-                            nodeValue.voltageType = {
-                                "quantety": 48,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.142;
-                            break;
-                        case 7:
-                            nodeValue.voltageType = {
-                                "quantety": 96,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.186;
-                            break;
-                        case 8:
-                            nodeValue.voltageType = {
-                                "quantety": 120,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.244;
-                            break;
-                        case 9:
-                            nodeValue.voltageType = {
-                                "quantety": 160,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.357;
-                            break;
-                        case 10:
-                            nodeValue.voltageType = {
-                                "quantety": 240,
-                                "unit": "V"
-                            };
-                            this.cache.voltScale = 0.479;
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        };
         this.updateCache = function(payload) {
             const lookup = [0.028, 0.054, 0.054, 0.079, 0.108, 0.142, 0.186, 0.244, 0.357, 0.479];
 
