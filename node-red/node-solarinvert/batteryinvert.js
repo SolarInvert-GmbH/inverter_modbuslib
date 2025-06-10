@@ -40,7 +40,133 @@ module.exports = function(RED) {
             }
             return result;
         };
+        this.getAddressAndLengthFromRegisterType = function(registerType) {
+            switch (registerType) {
+                case "CommonManufacturer":
+                    return {
+                        "address": 40004, "length": 16
+                    };
+                case "CommonModel":
+                    return {
+                        "address": 40020, "length": 16
+                    };
+                case "CommonSerialNumber":
+                    return {
+                        "address": 40052, "length": 16
+                    };
+                case "CommonDeviceAddress":
+                    return {
+                        "address": 40068, "length": 1
+                    };
+                case "InverterAmps":
+                    return {
+                        "address": 40072, "length": 1
+                    };
+                case "InverterAmpsPhaseA":
+                    return {
+                        "address": 40073, "length": 1
+                    };
+                case "InverterAmpsPhaseB":
+                    return {
+                        "address": 40074, "length": 1
+                    };
+                case "InverterAmpsPhaseC":
+                    return {
+                        "address": 40075, "length": 1
+                    };
+                case "InverterAmpsScaleFactor":
+                    return {
+                        "address": 40076, "length": 1
+                    };
+                case "InverterPhaseVoltageA":
+                    return {
+                        "address": 40080, "length": 1
+                    };
+                case "InverterPhaseVoltageB":
+                    return {
+                        "address": 40081, "length": 1
+                    };
+                case "InverterPhaseVoltageC":
+                    return {
+                        "address": 40082, "length": 1
+                    };
+                case "InverterPhaseVoltageScaleFactor":
+                    return {
+                        "address": 40083, "length": 1
+                    };
+                case "InverterWatt":
+                    return {
+                        "address": 40084, "length": 1
+                    };
+                case "InverterWattScaleFactor":
+                    return {
+                        "address": 40085, "length": 1
+                    };
+                case "InverterHertz":
+                    return {
+                        "address": 40086, "length": 1
+                    };
+                case "InverterHertzScaleFactor":
+                    return {
+                        "address": 40087, "length": 1
+                    };
+                case "InverterPowerFactor":
+                    return {
+                        "address": 40092, "length": 1
+                    };
+                case "InverterPowerFactorScaleFactor":
+                    return {
+                        "address": 40093, "length": 1
+                    };
+                case "InverterWattHours":
+                    return {
+                        "address": 40094, "length": 2
+                    };
+                case "InverterWattHoursScaleFactor":
+                    return {
+                        "address": 40096, "length": 1
+                    };
+                case "InverterDcVoltage":
+                    return {
+                        "address": 40099, "length": 1
+                    };
+                case "InverterDcVoltageScaleFactor":
+                    return {
+                        "address": 40100, "length": 1
+                    };
+                case "InverterTemperature":
+                    return {
+                        "address": 40103, "length": 1
+                    };
+                case "InverterTemperatureScaleFactor":
+                    return {
+                        "address": 40107, "length": 1
+                    };
+                case "InverterOperatingState":
+                    return {
+                        "address": 40108, "length": 1
+                    };
+                case "NameplateDerType":
+                    return {
+                        "address": 40124, "length": 1
+                    };
+                case "ExtendedMesurementsAcWattHours":
+                    return {
+                        "address": 40187, "length": 2
+                    };
+                default:
+                    return null;
+            }
+        };
         this.convertRequestToModbus = function(request) {
+
+            function high(value16) {
+                return (value16 >> 8) & 0xff;
+            };
+
+            function low(value16) {
+                return (value16 >> 0) & 0xff;
+            };
 
             function build(array) {
                 var buffer = new Uint8Array(array.length + 2);
@@ -49,30 +175,39 @@ module.exports = function(RED) {
                     buffer[i] = array[i];
                     crc = node.computeCrc(crc, array[i]);
                 }
-                buffer[array.length + 0] = (crc >> 0) & 0xff;
-                buffer[array.length + 1] = (crc >> 8) & 0xff;
+                buffer[array.length + 0] = low(crc);
+                buffer[array.length + 1] = high(crc);
                 return buffer;
             };
+            if (!("type" in request)) throw new Error("Request has no type.");
             switch (request.type) {
                 case "factoryValues":
                     return build([node.modbusid, 0x31, 0x01, 0x01]);
+                case "readRegister":
+                    if (!("value" in request)) throw new Error("Request from type 'readRegister' has no 'value'.");
+                    if (!("registerAddress" in request.value)) throw new Error("Request value from type 'readRegister' has no 'registerAddress'.");
+                    const addressAndSize = node.getAddressAndLengthFromRegisterType(request.value.registerAddress);
+                    if (addressAndSize == null) throw new Error("Request registerAddress '" + request.value.registerAddress + "' unknown.");
+                    return build([node.modbusid, 0x03, high(addressAndSize.address), low(addressAndSize.address), 0x00, addressAndSize.length]);
                 default:
-                    return null;
+                    throw new Error("Request type '" + request.type + "' unknown.");
             }
         }
         class Parser {
 
-            constructor(id) {
+            constructor(id, request) {
                 this.state = 0;
                 this.id = id;
                 this.crc = 0xffff;
+                this.request = request;
             }
             read(byte) {
                 this.blub = byte;
                 const STATE_ID = 0;
                 const STATE_FUNCTION = STATE_ID + 1;
                 const STATE_FACTORY_VALUES = STATE_FUNCTION + 1;
-                const STATE_DONE = STATE_FACTORY_VALUES + 15;
+                const STATE_READ_REGISTER = STATE_FACTORY_VALUES + 15;
+                const STATE_DONE = STATE_READ_REGISTER + 4;
 
                 function jump(state, obj) {
                     obj.state = state;
@@ -101,7 +236,11 @@ module.exports = function(RED) {
                         return crcAndJump(STATE_FUNCTION + 0, byte, this);
                     case STATE_FUNCTION + 0:
                         switch (byte) {
+                            case 0x03:
+                                if (this.request.type != "readRegister") throw Error("Expected '0x03' as modbus function code for 'readRegister' request, but got " + byte.toString(16).padStart(2, '0'));
+                                return crcAndJump(STATE_READ_REGISTER + 0, byte, this);
                             case 0x31:
+                                if (this.request.type != "factoryValues") throw Error("Expected '0x31' as modbus function code for 'factoryValues' request, but got " + byte.toString(16).padStart(2, '0'));
                                 return crcAndJump(STATE_FACTORY_VALUES + 0, byte, this);
                             default:
                                 throw new Error("Received unknown modbus function(0x" + byte.toString(16).padStart(2, '0') + ")");
@@ -161,18 +300,107 @@ module.exports = function(RED) {
                                 "bootstrappVersion": this.bootstrappVersion
                             }
                         }, this);
+                    case STATE_READ_REGISTER + 0:
+                        const addressAndSize = node.getAddressAndLengthFromRegisterType(this.request.value.registerAddress);
+                        if (addressAndSize == null) throw new Error("Request registerAddress '" + request.value.registerAddress + "' unknown.");
+                        if (addressAndSize.length * 2 != byte) throw new Error("Expected " + (addressAndSize.length * 2).toString() + " as length for readRegister response, but got " + byte + ".");
+                        this.data = Array(byte);
+                        this.position = 0;
+                        return crcAndJump(STATE_READ_REGISTER + 1, byte, this);
+                    case STATE_READ_REGISTER + 1:
+                        this.data[this.position] = byte;
+                        this.position++;
+                        return crcAndJump(STATE_READ_REGISTER + (this.position >= this.data.length ? 2 : 1), byte, this);
+                    case STATE_READ_REGISTER + 2:
+                        return checkCrcLowAndJump(STATE_READ_REGISTER + 3, this);
+                    case STATE_READ_REGISTER + 3:
+                        function getResult(address, data) {
+                            switch (address) {
+                                case "CommonManufacturer":
+                                case "CommonModel":
+                                case "CommonSerialNumber":
+                                    function buildString(array) {
+                                        var s = "";
+                                        for (var i = 0; i < array.length; i++)
+                                            if (array[i] >= ' '.charCodeAt(0) && array[i] <= '~'.charCodeAt(0)) s += String.fromCharCode(array[i]);
+                                        return s;
+                                    };
+                                    return (buildString(data));
+                                case "InverterAmps":
+                                case "InverterAmpsPhaseA":
+                                case "InverterAmpsPhaseB":
+                                case "InverterAmpsPhaseC":
+                                    return {
+                                        "quantety": node.cache.amps * (data[0] << 8 | data[1]), "unit": "A"
+                                    };
+                                case "InverterPhaseVoltageA":
+                                case "InverterPhaseVoltageB":
+                                case "InverterPhaseVoltageC":
+                                    return {
+                                        "quantety": node.cache.phaseVoltage * (data[0] << 8 | data[1]), "unit": "V"
+                                    };
+                                case "InverterWatt":
+                                    return {
+                                        "quantety": node.cache.watt * (data[0] << 8 | data[1]), "unit": "W"
+                                    };
+                                case "InverterHertz":
+                                    return {
+                                        "quantety": node.cache.hertz * (data[0] << 8 | data[1]), "unit": "Hz"
+                                    };
+                                case "InverterPowerFactor":
+                                    return {
+                                        "quantety": node.cache.powerFactor * (data[0] << 8 | data[1]), "unit": "%"
+                                    };
+                                case "InverterWattHours":
+                                    return {
+                                        "quantety": node.cache.wattHours * (data[0] << 24 | data[1] << 16 | data[2] << 8 | data[3]), "unit": "Wh"
+                                    };
+                                case "InverterDcVoltage":
+                                    return {
+                                        "quantety": node.cache.dcVoltage * (data[0] << 8 | data[1]), "unit": "V"
+                                    };
+                                case "InverterTemperature":
+                                    return {
+                                        "quantety": node.cache.temperature * (data[0] << 8 | data[1]), "unit": "°C"
+                                    };
+                                case "CommonDeviceAddress":
+                                case "InverterOperatingState":
+                                case "NameplateDerType":
+                                    return (data[0] << 8 | data[1]);
+                                case "ExtendedMesurementsAcWattHours":
+                                    return {
+                                        "quantety": (data[0] << 24 | data[1] << 16 | data[2] << 8 | data[3]), "unit": "Wh"
+                                    };
+                                case "InverterAmpsScaleFactor":
+                                case "InverterPhaseVoltageScaleFactor":
+                                case "InverterWattScaleFactor":
+                                case "InverterHertzScaleFactor":
+                                case "InverterPowerFactorScaleFactor":
+                                case "InverterWattHoursScaleFactor":
+                                case "InverterDcVoltageScaleFactor":
+                                case "InverterTemperatureScaleFactor":
+                                    const v0 = data[0] << 8 | data[1];
+                                    const v1 = v0 > 32767 ? v0 - 65536 : v0;
+                                    if (v1 < -10 || v1 > 10) throw Error("Scale factor(" + v1.toString() + ") is not in scale [-10,+10]");
+                                    return v1;
+                                default:
+                                    throw Error("Can not handle request register address(" + address + ").");
+                            }
+                        };
+                        const result = getResult(this.request.value.registerAddress, this.data);
+                        return checkCrcHighAndDone({
+                            "type": "readRegister",
+                            "value": {
+
+                                "value": result,
+                                "registerAddress": this.request.value.registerAddress
+                            }
+                        }, this);
                     default:
                         throw new Error("Unexpected state");
                 }
             }
         }
-        this.getScaleFactor = function(nodeValue) {
-            if (nodeValue.value !== parseInt(nodeValue.value, 10)) return null;
-            var value = nodeValue.value > 32767 ? nodeValue.value - 65536 : nodeValue.value;
-            if (value < -10 || value > 10) return null;
-            nodeValue.value = value;
-            return 10 ** value;
-        };
 
         this.setVolt = function(nodeValue) {
             switch (nodeValue.type) {
@@ -408,170 +636,129 @@ module.exports = function(RED) {
                     break;
             }
         };
-        this.handleResponse = function(msg) {
-            switch (msg.payload.type) {
-                case "readOperatingData33":
-                    msg.payload.value.dcVoltage = this.cache.voltScale === null ? null : {
-                        "quantety": msg.payload.value.dcVoltage * this.cache.voltScale,
-                        "unit": "V"
-                    };
-                    msg.payload.value.acVoltage = {
-                        "quantety": msg.payload.value.acVoltage + 50,
-                        "unit": "V"
-                    };
-                    msg.payload.value.gridFrequency = {
-                        "quantety": msg.payload.value.gridFrequency / 100,
-                        "unit": "Hz"
-                    };
-                    msg.payload.value.acPower = {
-                        "quantety": msg.payload.value.acPower / 10,
-                        "unit": "W"
-                    };
-                    break;
+        this.updateCache = function(payload) {
+            const lookup = [0.028, 0.054, 0.054, 0.079, 0.108, 0.142, 0.186, 0.244, 0.357, 0.479];
+
+            function getIndex(type, quantety) {
+                switch (type) {
+                    case "solar":
+                        switch (quantety) {
+                            case 12:
+                                return 0;
+                            case 17:
+                                return 1;
+                            case 35:
+                                return 2;
+                            case 50:
+                                return 3;
+                            case 70:
+                                return 4;
+                            case 90:
+                                return 5;
+                            case 120:
+                                return 6;
+                            case 160:
+                                return 7;
+                            case 240:
+                                return 8;
+                            case 320:
+                                return 9;
+                            default:
+                                return null;
+                        }
+                    case "wind":
+                        switch (quantety) {
+                            case 12:
+                                return 0;
+                            case 18:
+                                return 1;
+                            case 24:
+                                return 2;
+                            case 36:
+                                return 3;
+                            case 48:
+                                return 4;
+                            case 72:
+                                return 5;
+                            case 96:
+                                return 6;
+                            case 120:
+                                return 7;
+                            case 160:
+                                return 8;
+                            case 240:
+                                return 9;
+                            default:
+                                return null;
+                        }
+                    case "battery":
+                        switch (quantety) {
+                            case 8:
+                                return 0;
+                            case 12:
+                                return 1;
+                            case 24:
+                                return 2;
+                            case 30:
+                                return 3;
+                            case 36:
+                                return 4;
+                            case 48:
+                                return 5;
+                            case 96:
+                                return 6;
+                            case 120:
+                                return 7;
+                            case 160:
+                                return 8;
+                            case 240:
+                                return 9;
+                            default:
+                                return null;
+                        }
+                    default:
+                        return null;
+                }
+            };
+
+            switch (payload.type) {
                 case "readOperatingData3e":
-                    msg.payload.value.cosphi = 1.0 + (100 - msg.payload.value.cosphi) / 200;
-                    msg.payload.value.nominalPower = {
-                        "quantety": msg.payload.value.nominalPower * 100,
-                        "unit": "W"
-                    };
-                    msg.payload.value.gridSupplyDailySum = {
-                        "quantety": msg.payload.value.gridSupplyDailySum / 36000,
-                        "unit": "Wh"
-                    };
-                    msg.payload.value.powerLimitation = {
-                        "quantety": msg.payload.value.powerLimitation / 10,
-                        "unit": "W"
-                    };
-                    msg.payload.value.operatingHours = {
-                        "quantety": msg.payload.value.operatingHours / 36000,
-                        "unit": "h"
-                    };
-                    this.setVolt(msg.payload.value);
+                    const index = getIndex(payload.value.type, payload.value.voltageType.quantety);
+                    if (index != null) node.cache.voltScale = lookup[index];
                     break;
                 case "readRegister":
-                    switch (msg.payload.value.registerAddress) {
-                        case "InverterAmps":
-                        case "InverterAmpsPhaseA":
-                        case "InverterAmpsPhaseB":
-                        case "InverterAmpsPhaseC":
-                            msg.payload.value.value = this.cache.amps === null ? null : {
-                                "quantety": msg.payload.value.value * this.cache.amps,
-                                "unit": "A"
-                            };
-                            break;
-                        case "InverterPhaseVoltageA":
-                        case "InverterPhaseVoltageB":
-                        case "InverterPhaseVoltageC":
-                            msg.payload.value.value = this.cache.phaseVoltage === null ? null : {
-                                "quantety": msg.payload.value.value * this.cache.phaseVoltage,
-                                "unit": "V"
-                            };
-                            break;
-                        case "InverterWatt":
-                            msg.payload.value.value = this.cache.watt === null ? null : {
-                                "quantety": msg.payload.value.value * this.cache.watt,
-                                "unit": "W"
-                            };
-                            break;
-                        case "InverterHertz":
-                            msg.payload.value.value = this.cache.hertz === null ? null : {
-                                "quantety": msg.payload.value.value * this.cache.hertz,
-                                "unit": "Hz"
-                            };
-                            break;
-                        case "InverterPowerFactor":
-                            msg.payload.value.value = this.cache.powerFactor === null ? null : {
-                                "quantety": msg.payload.value.value * this.cache.powerFactor,
-                                "unit": "%"
-                            };
-                            break;
-                        case "InverterWattHours":
-                            msg.payload.value.value = this.cache.wattHours === null ? null : {
-                                "quantety": msg.payload.value.value * this.cache.wattHours,
-                                "unit": "Wh"
-                            };
-                            break;
-                        case "InverterDcVoltage":
-                            msg.payload.value.value = this.cache.dcVoltage === null ? null : {
-                                "quantety": msg.payload.value.value * this.cache.dcVoltage,
-                                "unit": "V"
-                            };
-                            break;
-                        case "InverterTemperature":
-                            msg.payload.value.value = this.cache.temperature === null ? null : {
-                                "quantety": msg.payload.value.value * this.cache.temperature,
-                                "unit": "°C"
-                            };
-                            break;
+                    switch (payload.value.registerAddress) {
                         case "InverterAmpsScaleFactor":
-                            this.cache.amps = this.getScaleFactor(msg.payload.value);
+                            node.cache.amps = 10 ** payload.value.value;
                             break;
                         case "InverterPhaseVoltageScaleFactor":
-                            this.cache.phaseVoltage = this.getScaleFactor(msg.payload.value);
+                            node.cache.phaseVoltage = 10 ** payload.value.value;
                             break;
                         case "InverterWattScaleFactor":
-                            this.cache.watt = this.getScaleFactor(msg.payload.value);
+                            node.cache.watt = 10 ** payload.value.value;
                             break;
                         case "InverterHertzScaleFactor":
-                            this.cache.hertz = this.getScaleFactor(msg.payload.value);
+                            node.cache.hertz = 10 ** payload.value.value;
                             break;
                         case "InverterPowerFactorScaleFactor":
-                            this.cache.powerFactor = this.getScaleFactor(msg.payload.value);
+                            node.cache.powerFactor = 10 ** payload.value.value;
                             break;
                         case "InverterWattHoursScaleFactor":
-                            this.cache.wattHours = this.getScaleFactor(msg.payload.value);
+                            node.cache.wattHours = 10 ** payload.value.value;
                             break;
                         case "InverterDcVoltageScaleFactor":
-                            this.cache.dcVoltage = this.getScaleFactor(msg.payload.value);
+                            node.cache.dcVoltage = 10 ** payload.value.value;
                             break;
                         case "InverterTemperatureScaleFactor":
-                            this.cache.temperature = this.getScaleFactor(msg.payload.value);
-                            break;
-                        case "ExtendedMesurementsAcWattHours":
-                            msg.payload.value.value = {
-                                "quantety": msg.payload.value.value,
-                                "unit": "Wh"
-                            };
+                            node.cache.temperature = 10 ** payload.value.value;
                             break;
                     }
                     break;
             }
+
+
         };
-        this.handleRequest = function(msg) {
-            var checkPhsicalValue = function(value, unit, name, minValue, maxValue) {
-                if (Object.keys(value).length !== 2 || value.unit !== unit || typeof value.quantety !== "number")
-                    throw new Error(name + " is wrong");
-                if (value.quantety < minValue || value.quantety > maxValue)
-                    throw new Error(name + ".quantety has to be in " + minValue + " … " + maxValue);
-            };
-            switch (msg.payload.type) {
-                case "startConstantVoltage":
-                    checkPhsicalValue(msg.payload.value.uSet, "V", "value.uSet", 0.0, 6553.5);
-                    msg.payload.value.uSet = (msg.payload.value.uSet.quantety * 10) | 0;
-                    break;
-                case "setPowerFactor":
-                    if (typeof msg.payload.value.cosPhi !== "number")
-                        throw new Error("value.cosPhi is wrong");
-                    if (msg.payload.value.cosPhi < 0.5 || msg.payload.value.cosPhi > 1.5)
-                        throw new Error("value.cosPhi has to be in 0.5 … 1.5");
-                    msg.payload.value.cosPhi = (100 - (msg.payload.value.cosPhi - 1) * 200) | 0;
-                    break;
-                case "controlBatteryInvert":
-                    checkPhsicalValue(msg.payload.value.pMax.Power, "W", "value.pMax.Power", 0, 3200);
-                    msg.payload.value.pMax.Power = msg.payload.value.pMax.Power.quantety | 0;
-                    checkPhsicalValue(msg.payload.value.uMin, "V", "value.uMin", 0.0, 6553.5);
-                    msg.payload.value.uMin = (msg.payload.value.uMin.quantety * 10) | 0;
-                    checkPhsicalValue(msg.payload.value.uMax, "V", "value.uMax", 0.0, 6553.5);
-                    msg.payload.value.uMax = (msg.payload.value.uMax.quantety * 10) | 0;
-                    checkPhsicalValue(msg.payload.value.timeout, "s", "value.timeout", 15.0, 12000.0);
-                    msg.payload.value.timeout = (msg.payload.value.timeout.quantety * 5) | 0;
-                    break;
-                case "limitBatteryInvert":
-                    checkPhsicalValue(msg.payload.value.pMaxfeed, "%", "value.pMaxfeed", 0, 100);
-                    msg.payload.value.pMaxfeed = msg.payload.value.pMaxfeed.quantety | 0;
-                    break;
-            }
-        };
+
         this.preRequest = function(msg) {
             switch (msg.payload.type) {
                 case "readOperatingData33":
@@ -654,10 +841,10 @@ module.exports = function(RED) {
             });
         }
 
-        this.uartCall = function(send) {
+        this.uartCall = function(request, send) {
             return new Promise(function(resolve, reject) {
 
-                var parser = new Parser(node.modbusid);
+                var parser = new Parser(node.modbusid, request);
                 var serial = new SerialPort(node.config, function(err, results) {
                     if (err) {
                         reject(err);
@@ -690,20 +877,48 @@ module.exports = function(RED) {
 
         this.on("input",
             function(msg, nodeSend, nodeDone) {
-                const send = node.convertRequestToModbus(msg.payload);
-                Promise.race([node.wait(node.timer), node.uartCall(send)]).then(function(value) {
-                    msg.payload = value;
-                    nodeSend([msg]);
-                    nodeDone();
-                }, function(error) {
-                    msg.payload = {
-                        "type": "error",
-                        "value": error.toString()
-                    };
-                    if (node.serial != null && node.serial.isOpen) node.serial.close();
-                    nodeSend([msg]);
-                    nodeDone();
-                });
+
+
+
+                function mainCall(msg, nodeSend, nodeDone) {
+                    const send = node.convertRequestToModbus(msg.payload);
+                    Promise.race([node.wait(node.timer), node.uartCall(msg.payload, send)]).then(function(value) {
+                        node.updateCache(value);
+                        msg.payload = value;
+                        nodeSend([msg]);
+                        nodeDone();
+                    }, function(error) {
+                        msg.payload = {
+                            "type": "error",
+                            "value": error.toString()
+                        };
+                        if (node.serial != null && node.serial.isOpen) node.serial.close(); //Does not unlock correct
+                        nodeSend([msg]);
+                        nodeDone();
+                    });
+                };
+
+                function handlePreCall(msg, nodeSend, nodeDone) {
+                    const preRequest = node.preRequest(msg);
+                    if (preRequest == null) mainCall(msg, nodeSend, nodeDone);
+                    else {
+                        const send = node.convertRequestToModbus(preRequest);
+                        Promise.race([node.wait(node.timer), node.uartCall(preRequest, send)]).then(function(value) {
+                            node.updateCache(value);
+                            mainCall(msg, nodeSend, nodeDone);
+                        }, function(error) {
+                            msg.payload = {
+                                "type": "error",
+                                "value": error.toString()
+                            };
+                            if (node.serial != null && node.serial.isOpen) node.serial.close(); //Does not unlock correct
+                            nodeSend([msg]);
+                            nodeDone();
+                        });
+                    }
+                };
+                handlePreCall(msg, nodeSend, nodeDone);
+
             });
 
         this.on('close',
