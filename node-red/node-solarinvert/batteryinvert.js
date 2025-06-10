@@ -183,6 +183,8 @@ module.exports = function(RED) {
             switch (request.type) {
                 case "factoryValues":
                     return build([node.modbusid, 0x31, 0x01, 0x01]);
+                case "readOperatingData33":
+                    return build([node.modbusid, 0x33, 0x01, 0x01]);
                 case "readOperatingData3e":
                     return build([node.modbusid, 0x3e, 0x01, 0x01]);
                 case "readRegister":
@@ -208,7 +210,8 @@ module.exports = function(RED) {
                 const STATE_ID = 0;
                 const STATE_FUNCTION = STATE_ID + 1;
                 const STATE_FACTORY_VALUES = STATE_FUNCTION + 1;
-                const STATE_OPERATING_DATA_3E = STATE_FACTORY_VALUES + 15;
+                const STATE_OPERATING_DATA_33 = STATE_FACTORY_VALUES + 15;
+                const STATE_OPERATING_DATA_3E = STATE_OPERATING_DATA_33 + 24;
                 const STATE_READ_REGISTER = STATE_OPERATING_DATA_3E + 22;
                 const STATE_DONE = STATE_READ_REGISTER + 4;
 
@@ -245,6 +248,9 @@ module.exports = function(RED) {
                             case 0x31:
                                 if (this.request.type != "factoryValues") throw Error("Expected '0x31' as modbus function code for 'factoryValues' request, but got " + byte.toString(16).padStart(2, '0'));
                                 return crcAndJump(STATE_FACTORY_VALUES + 0, byte, this);
+                            case 0x33:
+                                if (this.request.type != "readOperatingData33") throw Error("Expected '0x33' as modbus function code for 'readOperatingData33' request, but got " + byte.toString(16).padStart(2, '0'));
+                                return crcAndJump(STATE_OPERATING_DATA_33 + 0, byte, this);
                             case 0x3e:
                                 if (this.request.type != "readOperatingData3e") throw Error("Expected '0x3e' as modbus function code for 'readOperatingData3e' request, but got " + byte.toString(16).padStart(2, '0'));
                                 return crcAndJump(STATE_OPERATING_DATA_3E + 0, byte, this);
@@ -307,6 +313,123 @@ module.exports = function(RED) {
                                 "bootstrappVersion": this.bootstrappVersion
                             }
                         }, this);
+                    case STATE_OPERATING_DATA_33 + 0:
+                        if (byte != 0x15) throw new Error("Expected 0x15 as length for operating data 3e response, but got 0x" + byte.toString(16).padStart(2, '0'));
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 1, byte, this);
+                    case STATE_OPERATING_DATA_33 + 1:
+                        this.dcVoltage |= byte << 8;
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 2, byte, this);
+                    case STATE_OPERATING_DATA_33 + 2:
+                        this.dcVoltage |= byte << 0;
+                        this.dcVoltage = {
+                            "quantety": node.cache.voltScale * this.dcVoltage,
+                            "unit": "V"
+                        };
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 3, byte, this);
+                    case STATE_OPERATING_DATA_33 + 3:
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 4, byte, this);
+                    case STATE_OPERATING_DATA_33 + 4:
+                        this.acVoltage = {
+                            "quantety": byte + 50,
+                            "unit": "V"
+                        };
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 5, byte, this);
+                    case STATE_OPERATING_DATA_33 + 5:
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 6, byte, this);
+                    case STATE_OPERATING_DATA_33 + 6:
+                        this.gridFrequency = byte << 8;
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 7, byte, this);
+                    case STATE_OPERATING_DATA_33 + 7:
+                        this.gridFrequency |= byte << 0;
+                        this.gridFrequency = {
+                            "quantety": this.gridFrequency / 100,
+                            "unit": "Hz"
+                        };
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 8, byte, this);
+                    case STATE_OPERATING_DATA_33 + 8:
+                        this.acPower = byte << 8;
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 9, byte, this);
+                    case STATE_OPERATING_DATA_33 + 9:
+                        this.acPower |= byte << 0;
+                        this.acPower = {
+                            "quantety": this.acPower / 10,
+                            "unit": "W"
+                        };
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 10, byte, this);
+                    case STATE_OPERATING_DATA_33 + 10:
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 11, byte, this);
+                    case STATE_OPERATING_DATA_33 + 11:
+                        switch (byte) {
+                            case 0x00:
+                                this.statestring = "init level 1";
+                                break;
+                            case 0x01:
+                                this.statestring = "init level 2";
+                                break;
+                            case 0x02:
+                                this.statestring = "init level 3";
+                                break;
+                            case 0x03:
+                                this.statestring = "mppt";
+                                break;
+                            case 0x04:
+                                this.statestring = "reset";
+                                break;
+                            case 0x05:
+                                this.statestring = "constant voltage";
+                                break;
+                            case 0x06:
+                                this.statestring = "lower power mode";
+                                break;
+                            case 0x07:
+                                this.statestring = "wind";
+                                break;
+                            case 0x08:
+                                this.statestring = "factory mode";
+                                break;
+                            case 0x09:
+                                this.statestring = "battery";
+                                break;
+                            case 0x0a:
+                                this.statestring = "battery safety";
+                                break;
+                            default:
+                                throw new Error("Expected 0x00…0x0a as state for operating data 33 response, but got 0x" + byte.toString(16).padStart(2, '0'));
+                        }
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 12, byte, this);
+                    case STATE_OPERATING_DATA_33 + 12:
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 13, byte, this);
+                    case STATE_OPERATING_DATA_33 + 13:
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 14, byte, this);
+                    case STATE_OPERATING_DATA_33 + 14:
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 15, byte, this);
+                    case STATE_OPERATING_DATA_33 + 15:
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 16, byte, this);
+                    case STATE_OPERATING_DATA_33 + 16:
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 17, byte, this);
+                    case STATE_OPERATING_DATA_33 + 17:
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 18, byte, this);
+                    case STATE_OPERATING_DATA_33 + 18:
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 19, byte, this);
+                    case STATE_OPERATING_DATA_33 + 19:
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 20, byte, this);
+                    case STATE_OPERATING_DATA_33 + 20:
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 21, byte, this);
+                    case STATE_OPERATING_DATA_33 + 21:
+                        return crcAndJump(STATE_OPERATING_DATA_33 + 22, byte, this);
+                    case STATE_OPERATING_DATA_33 + 22:
+                        return checkCrcLowAndJump(STATE_OPERATING_DATA_33 + 23, this);
+                    case STATE_OPERATING_DATA_33 + 23:
+                        return checkCrcHighAndDone({
+                            "type": "readOperatingData33",
+                            "value": {
+                                "dcVoltage": this.dcVoltage,
+                                "acVoltage": this.acVoltage,
+                                "gridFrequency": this.gridFrequency,
+                                "acPower": this.acPower,
+                                "state": this.statestring
+                            }
+                        }, this);
                     case STATE_OPERATING_DATA_3E + 0:
                         if (byte != 0x13) throw new Error("Expected 0x13 as length for operating data 3e response, but got 0x" + byte.toString(16).padStart(2, '0'));
                         return crcAndJump(STATE_OPERATING_DATA_3E + 1, byte, this);
@@ -314,7 +437,7 @@ module.exports = function(RED) {
                         this.serialnumber = byte << 8;
                         return crcAndJump(STATE_OPERATING_DATA_3E + 2, byte, this);
                     case STATE_OPERATING_DATA_3E + 2:
-                        this.serialnumber = this.serialnumber | byte;
+                        this.serialnumber |= byte;
                         return crcAndJump(STATE_OPERATING_DATA_3E + 3, byte, this);
                     case STATE_OPERATING_DATA_3E + 3:
                         switch (byte) {
