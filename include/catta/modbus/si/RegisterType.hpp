@@ -160,7 +160,7 @@ class RegisterType
             case UINT64:
                 return std::string_view("uI64");
             case STRING32:
-                return std::string_view("uI64");
+                return std::string_view("St32");
             default:
                 return std::string_view("EMPT");
         }
