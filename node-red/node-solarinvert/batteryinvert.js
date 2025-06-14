@@ -179,20 +179,92 @@ module.exports = function(RED) {
                 buffer[array.length + 1] = high(crc);
                 return buffer;
             };
+
+            function checkPhsicalValue(value, unit, name, minValue, maxValue) {
+                if (Object.keys(value).length !== 2 || !("unit" in value) || value.unit !== unit || !("quantety" in value) || typeof value.quantety !== "number")
+                    throw new Error(name + " is wrong");
+                if (value.quantety < minValue || value.quantety > maxValue)
+                    throw new Error(name + ".quantety has to be in " + minValue + " … " + maxValue);
+            };
+
             if (!("type" in request)) throw new Error("Request has no type.");
             switch (request.type) {
                 case "factoryValues":
                     return build([node.modbusid, 0x31, 0x01, 0x01]);
                 case "readOperatingData33":
                     return build([node.modbusid, 0x33, 0x01, 0x01]);
+                case "switchOffGridRelay":
+                    return build([node.modbusid, 0x34, 0x01, 0x01]);
+                case "switchOnGridRelay":
+                    return build([node.modbusid, 0x35, 0x01, 0x01]);
+                case "forceIdle":
+                    return build([node.modbusid, 0x36, 0x01, 0x01]);
+                case "deactivateIdle":
+                    return build([node.modbusid, 0x37, 0x01, 0x01]);
+                case "startConstantVoltage":
+                    if (!("value" in request))
+                        throw new Error("Request from type 'startConstantVoltage' has no 'value'.");
+                    if (!("uSet" in request.value))
+                        throw new Error("Request from type 'startConstantVoltage' has no 'value.uSet'.");
+                    checkPhsicalValue(request.value.uSet, "V", "value.uSet", 0.0, 6553.5)
+                    const v = parseInt(request.value.uSet.quantety * 10);
+                    return build([node.modbusid, 0x38, 0x02, high(v), low(v)]);
+                case "endConstantVoltage":
+                    return build([node.modbusid, 0x39, 0x01, 0x01]);
+                case "setPowerFactor":
+                    if (!("value" in request))
+                        throw new Error("Request from type 'setPowerFactor' has no 'value'.");
+                    if (!("cosPhi" in request.value))
+                        throw new Error("Request from type 'setPowerFactor' has no 'value.cosPhi'.");
+                    const byte = parseInt(100 - (request.value.cosPhi - 1) * 200);
+                    if (byte < 0x00 || byte > 0xff)
+                        throw new Error("'value.cosPhi' from type 'setPowerFactor' should be inside " + (1.0 + (100 - 0x00) / 200).toString() + "…" + (1.0 + (100 - 0xff) / 200).toString() + ".");
+                    return build([node.modbusid, 0x3b, 0x01, byte]);
                 case "readOperatingData3e":
                     return build([node.modbusid, 0x3e, 0x01, 0x01]);
+                case "controlBatteryInvert":
+                    if (!("value" in request))
+                        throw new Error("Request from type 'controlBatteryInvert' has no 'value'.");
+                    if (!("pMax" in request.value))
+                        throw new Error("Request from type 'controlBatteryInvert' has no 'value.pMax'.");
+                    if (!("Charging" in request.value.pMax))
+                        throw new Error("Request from type 'controlBatteryInvert' has no 'value.pMax.Charging'.");
+                    if (request.value.pMax.Charging != true && request.value.pMax.Charging != false)
+                        throw new Error("'value.pMax.Charging'. from type 'controlBatteryInvert' should be inside true or false.");
+                    const charging = request.value.pMax.Charging;
+                    if (!("Power" in request.value.pMax))
+                        throw new Error("Request from type 'controlBatteryInvert' has no 'value.pMax.Power'.");
+                    checkPhsicalValue(request.value.pMax.Power, "W", "value.pMax.Power", 0, 3200);
+                    const power = parseInt(request.value.pMax.Power.quantety);
+                    const pMax = (charging ? 0x8000 : 0x0000) | power;
+                    if (!("uMin" in request.value))
+                        throw new Error("Request from type 'controlBatteryInvert' has no 'value.uMin'.");
+                    checkPhsicalValue(request.value.uMin, "V", "value.uMin", 0.0, 6553.5);
+                    const uMin = parseInt(request.value.uMin.quantety * 10);
+                    if (!("uMax" in request.value))
+                        throw new Error("Request from type 'controlBatteryInvert' has no 'value.uMax'.");
+                    checkPhsicalValue(request.value.uMax, "V", "value.uMax", 0.0, 6553.5);
+                    const uMax = parseInt(request.value.uMax.quantety * 10);
+                    if (!("timeout" in request.value))
+                        throw new Error("Request from type 'controlBatteryInvert' has no 'value.timeout'.");
+                    checkPhsicalValue(request.value.timeout, "s", "value.timeout", 15.0, 12000.0);
+                    const timeout = parseInt(request.value.timeout.quantety * 5);
+                    return build([node.modbusid, 0x3f, 0x0d, high(pMax), low(pMax), high(uMin), low(uMin), high(uMax), low(uMax), high(timeout), low(timeout), 0x00, 0x00, 0x00, 0x00, 0x00]);
                 case "readRegister":
                     if (!("value" in request)) throw new Error("Request from type 'readRegister' has no 'value'.");
                     if (!("registerAddress" in request.value)) throw new Error("Request value from type 'readRegister' has no 'registerAddress'.");
                     const addressAndSize = node.getAddressAndLengthFromRegisterType(request.value.registerAddress);
                     if (addressAndSize == null) throw new Error("Request registerAddress '" + request.value.registerAddress + "' unknown.");
                     return build([node.modbusid, 0x03, high(addressAndSize.address), low(addressAndSize.address), 0x00, addressAndSize.length]);
+                case "limitBatteryInvert":
+                    if (!("value" in request))
+                        throw new Error("Request from type 'limitBatteryInvert' has no 'value'.");
+                    if (!("pMaxfeed" in request.value))
+                        throw new Error("Request from type 'limitBatteryInvert' has no 'value.pMaxfeed'.");
+                    checkPhsicalValue(request.value.pMaxfeed, "%", "request.value.pMaxfeed", 0.0, 255.0);
+                    return build([node.modbusid, 0x44, 0x01, parseInt(request.value.pMaxfeed.quantety)]);
+                case "readError":
+                    return build([node.modbusid, 0x40, 0x01, 0x01]);
                 default:
                     throw new Error("Request type '" + request.type + "' unknown.");
             }
@@ -213,7 +285,9 @@ module.exports = function(RED) {
                 const STATE_OPERATING_DATA_33 = STATE_FACTORY_VALUES + 15;
                 const STATE_OPERATING_DATA_3E = STATE_OPERATING_DATA_33 + 24;
                 const STATE_READ_REGISTER = STATE_OPERATING_DATA_3E + 22;
-                const STATE_DONE = STATE_READ_REGISTER + 4;
+                const STATE_READ_ERROR = STATE_READ_REGISTER + 4;
+                const STATE_BOOLEAN = STATE_READ_ERROR + 49;
+                const STATE_DONE = STATE_BOOLEAN + 4;
 
                 function jump(state, obj) {
                     obj.state = state;
@@ -243,17 +317,61 @@ module.exports = function(RED) {
                     case STATE_FUNCTION + 0:
                         switch (byte) {
                             case 0x03:
-                                if (this.request.type != "readRegister") throw Error("Expected '0x03' as modbus function code for 'readRegister' request, but got " + byte.toString(16).padStart(2, '0'));
+                                if (this.request.type != "readRegister")
+                                    throw Error("Expected '0x03' as modbus function code for 'readRegister' request, but got " + byte.toString(16).padStart(2, '0'));
                                 return crcAndJump(STATE_READ_REGISTER + 0, byte, this);
                             case 0x31:
-                                if (this.request.type != "factoryValues") throw Error("Expected '0x31' as modbus function code for 'factoryValues' request, but got " + byte.toString(16).padStart(2, '0'));
+                                if (this.request.type != "factoryValues")
+                                    throw Error("Expected '0x31' as modbus function code for 'factoryValues' request, but got " + byte.toString(16).padStart(2, '0'));
                                 return crcAndJump(STATE_FACTORY_VALUES + 0, byte, this);
                             case 0x33:
-                                if (this.request.type != "readOperatingData33") throw Error("Expected '0x33' as modbus function code for 'readOperatingData33' request, but got " + byte.toString(16).padStart(2, '0'));
+                                if (this.request.type != "readOperatingData33")
+                                    throw Error("Expected '0x33' as modbus function code for 'readOperatingData33' request, but got " + byte.toString(16).padStart(2, '0'));
                                 return crcAndJump(STATE_OPERATING_DATA_33 + 0, byte, this);
+                            case 0x34:
+                                if (this.request.type != "switchOffGridRelay")
+                                    throw Error("Expected '0x34' as modbus function code for 'switchOffGridRelay' request, but got " + byte.toString(16).padStart(2, '0'));
+                                return crcAndJump(STATE_BOOLEAN + 0, byte, this);
+                            case 0x35:
+                                if (this.request.type != "switchOnGridRelay")
+                                    throw Error("Expected '0x35' as modbus function code for 'switchOnGridRelay' request, but got " + byte.toString(16).padStart(2, '0'));
+                                return crcAndJump(STATE_BOOLEAN + 0, byte, this);
+                            case 0x36:
+                                if (this.request.type != "forceIdle")
+                                    throw Error("Expected '0x36' as modbus function code for 'forceIdle' request, but got " + byte.toString(16).padStart(2, '0'));
+                                return crcAndJump(STATE_BOOLEAN + 0, byte, this);
+                            case 0x37:
+                                if (this.request.type != "deactivateIdle")
+                                    throw Error("Expected '0x37' as modbus function code for 'deactivateIdle' request, but got " + byte.toString(16).padStart(2, '0'));
+                                return crcAndJump(STATE_BOOLEAN + 0, byte, this);
+                            case 0x38:
+                                if (this.request.type != "startConstantVoltage")
+                                    throw Error("Expected '0x38' as modbus function code for 'startConstantVoltage' request, but got " + byte.toString(16).padStart(2, '0'));
+                                return crcAndJump(STATE_BOOLEAN + 0, byte, this);
+                            case 0x39:
+                                if (this.request.type != "endConstantVoltage")
+                                    throw Error("Expected '0x39' as modbus function code for 'endConstantVoltage' request, but got " + byte.toString(16).padStart(2, '0'));
+                                return crcAndJump(STATE_BOOLEAN + 0, byte, this);
+                            case 0x3b:
+                                if (this.request.type != "setPowerFactor")
+                                    throw Error("Expected '0x3b' as modbus function code for 'setPowerFactor' request, but got " + byte.toString(16).padStart(2, '0'));
+                                return crcAndJump(STATE_BOOLEAN + 0, byte, this);
                             case 0x3e:
-                                if (this.request.type != "readOperatingData3e") throw Error("Expected '0x3e' as modbus function code for 'readOperatingData3e' request, but got " + byte.toString(16).padStart(2, '0'));
+                                if (this.request.type != "readOperatingData3e")
+                                    throw Error("Expected '0x3e' as modbus function code for 'readOperatingData3e' request, but got " + byte.toString(16).padStart(2, '0'));
                                 return crcAndJump(STATE_OPERATING_DATA_3E + 0, byte, this);
+                            case 0x3f:
+                                if (this.request.type != "controlBatteryInvert")
+                                    throw Error("Expected '0x3f' as modbus function code for 'controlBatteryInvert' request, but got " + byte.toString(16).padStart(2, '0'));
+                                return crcAndJump(STATE_BOOLEAN + 0, byte, this);
+                            case 0x40:
+                                if (this.request.type != "readError")
+                                    throw Error("Expected '0x40' as modbus function code for 'readError' request, but got " + byte.toString(16).padStart(2, '0'));
+                                return crcAndJump(STATE_READ_ERROR + 0, byte, this);
+                            case 0x44:
+                                if (this.request.type != "limitBatteryInvert")
+                                    throw Error("Expected '0x44' as modbus function code for 'limitBatteryInvert' request, but got " + byte.toString(16).padStart(2, '0'));
+                                return crcAndJump(STATE_BOOLEAN + 0, byte, this);
 
                             default:
                                 throw new Error("Received unknown modbus function(0x" + byte.toString(16).padStart(2, '0') + ")");
@@ -648,6 +766,183 @@ module.exports = function(RED) {
                                 "value": result,
                                 "registerAddress": this.request.value.registerAddress
                             }
+                        }, this);
+                    case STATE_READ_ERROR + 0:
+                        if (byte != 0x2e) throw new Error("Expected 0x2e as lenght for readError response, but got 0x" + byte.toString(16).padStart(2, '0'));
+                        return crcAndJump(STATE_READ_ERROR + 1, byte, this);
+                    case STATE_READ_ERROR + 1:
+                        this.overVoltageAC = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 2, byte, this);
+                    case STATE_READ_ERROR + 2:
+                        this.overVoltageAC |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 3, byte, this);
+                    case STATE_READ_ERROR + 3:
+                        this.underVoltageAC = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 4, byte, this);
+                    case STATE_READ_ERROR + 4:
+                        this.underVoltageAC |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 5, byte, this);
+                    case STATE_READ_ERROR + 5:
+                        this.overVoltageDC = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 6, byte, this);
+                    case STATE_READ_ERROR + 6:
+                        this.overVoltageDC |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 7, byte, this);
+                    case STATE_READ_ERROR + 7:
+                        this.underVoltageDC = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 8, byte, this);
+                    case STATE_READ_ERROR + 8:
+                        this.underVoltageDC |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 9, byte, this);
+                    case STATE_READ_ERROR + 9:
+                        this.overFrequency = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 10, byte, this);
+                    case STATE_READ_ERROR + 10:
+                        this.overFrequency |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 11, byte, this);
+                    case STATE_READ_ERROR + 11:
+                        this.underFrequency = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 12, byte, this);
+                    case STATE_READ_ERROR + 12:
+                        this.underFrequency |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 13, byte, this);
+                    case STATE_READ_ERROR + 13:
+                        this.limitedPowerT1 = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 14, byte, this);
+                    case STATE_READ_ERROR + 14:
+                        this.limitedPowerT1 |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 15, byte, this);
+                    case STATE_READ_ERROR + 15:
+                        this.limitedPowerT2 = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 16, byte, this);
+                    case STATE_READ_ERROR + 16:
+                        this.limitedPowerT2 |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 17, byte, this);
+                    case STATE_READ_ERROR + 17:
+                        this.limitedPowerT3 = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 18, byte, this);
+                    case STATE_READ_ERROR + 18:
+                        this.limitedPowerT3 |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 19, byte, this);
+                    case STATE_READ_ERROR + 19:
+                        this.limitedPowerT4 = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 20, byte, this);
+                    case STATE_READ_ERROR + 20:
+                        this.limitedPowerT4 |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 21, byte, this);
+                    case STATE_READ_ERROR + 21:
+                        this.limitedPowerT5 = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 22, byte, this);
+                    case STATE_READ_ERROR + 22:
+                        this.limitedPowerT5 |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 23, byte, this);
+                    case STATE_READ_ERROR + 23:
+                        this.com = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 24, byte, this);
+                    case STATE_READ_ERROR + 24:
+                        this.com |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 25, byte, this);
+                    case STATE_READ_ERROR + 25:
+                        this.islandGrid = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 26, byte, this);
+                    case STATE_READ_ERROR + 26:
+                        this.islandGrid |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 27, byte, this);
+                    case STATE_READ_ERROR + 27:
+                        return crcAndJump(STATE_READ_ERROR + 28, byte, this);
+                    case STATE_READ_ERROR + 28:
+                        return crcAndJump(STATE_READ_ERROR + 29, byte, this);
+                    case STATE_READ_ERROR + 29:
+                        return crcAndJump(STATE_READ_ERROR + 30, byte, this);
+                    case STATE_READ_ERROR + 30:
+                        return crcAndJump(STATE_READ_ERROR + 31, byte, this);
+                    case STATE_READ_ERROR + 31:
+                        this.overCurrentInterrupt = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 32, byte, this);
+                    case STATE_READ_ERROR + 32:
+                        this.overCurrentInterrupt |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 33, byte, this);
+                    case STATE_READ_ERROR + 33:
+                        return crcAndJump(STATE_READ_ERROR + 34, byte, this);
+                    case STATE_READ_ERROR + 34:
+                        return crcAndJump(STATE_READ_ERROR + 35, byte, this);
+                    case STATE_READ_ERROR + 35:
+                        this.overVoltageInterrupt = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 36, byte, this);
+                    case STATE_READ_ERROR + 36:
+                        this.overVoltageInterrupt |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 37, byte, this);
+                    case STATE_READ_ERROR + 37:
+                        this.averageGridOverVoltage = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 38, byte, this);
+                    case STATE_READ_ERROR + 38:
+                        this.averageGridOverVoltage |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 39, byte, this);
+                    case STATE_READ_ERROR + 39:
+                        this.overTempratureShutdown = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 40, byte, this);
+                    case STATE_READ_ERROR + 40:
+                        this.overTempratureShutdown |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 41, byte, this);
+                    case STATE_READ_ERROR + 41:
+                        this.differenceGridVoltage = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 42, byte, this);
+                    case STATE_READ_ERROR + 42:
+                        this.differenceGridVoltage |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 43, byte, this);
+                    case STATE_READ_ERROR + 43:
+                        this.errorGridRelais = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 44, byte, this);
+                    case STATE_READ_ERROR + 44:
+                        this.errorGridRelais |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 45, byte, this);
+                    case STATE_READ_ERROR + 45:
+                        this.errorCurrentSensor = byte << 8;
+                        return crcAndJump(STATE_READ_ERROR + 46, byte, this);
+                    case STATE_READ_ERROR + 46:
+                        this.errorCurrentSensor |= byte;
+                        return crcAndJump(STATE_READ_ERROR + 47, byte, this);
+                    case STATE_READ_ERROR + 47:
+                        return checkCrcLowAndJump(STATE_READ_ERROR + 48, this);
+                    case STATE_READ_ERROR + 48:
+                        return checkCrcHighAndDone({
+                            "type": this.request.type,
+                            "value": {
+                                "overVoltageAC": this.overVoltageAC,
+                                "underVoltageAC": this.underVoltageAC,
+                                "overVoltageDC": this.overVoltageDC,
+                                "underVoltageDC": this.underVoltageDC,
+                                "overFrequency": this.overFrequency,
+                                "underFrequency": this.underFrequency,
+                                "limitedPowerT1": this.limitedPowerT1,
+                                "limitedPowerT2": this.limitedPowerT2,
+                                "limitedPowerT3": this.limitedPowerT3,
+                                "limitedPowerT4": this.limitedPowerT4,
+                                "limitedPowerT5": this.limitedPowerT5,
+                                "com": this.com,
+                                "islandGrid": this.islandGrid,
+                                "overCurrentInterrupt": this.overCurrentInterrupt,
+                                "overVoltageInterrupt": this.overVoltageInterrupt,
+                                "averageGridOverVoltage": this.averageGridOverVoltage,
+                                "overTempratureShutdown": this.overTempratureShutdown,
+                                "differenceGridVoltage": this.differenceGridVoltage,
+                                "errorGridRelais": this.errorGridRelais,
+                                "errorCurrentSensor": this.errorCurrentSensor
+                            }
+                        }, this);
+                    case STATE_BOOLEAN + 0:
+                        if (byte != 0x01) throw new Error("Expected 0x01 as lenght for " + this.request.type + " response, but got 0x" + byte.toString(16).padStart(2, '0'));
+                        return crcAndJump(STATE_BOOLEAN + 1, byte, this);
+                    case STATE_BOOLEAN + 1:
+                        if (byte > 0x01) throw new Error("Expected 0x00 or 0x01 as result for " + this.request.type + " response, but got 0x" + byte.toString(16).padStart(2, '0'));
+                        this.result = (byte == 0x01);
+                        return crcAndJump(STATE_BOOLEAN + 2, byte, this);
+                    case STATE_BOOLEAN + 2:
+                        return checkCrcLowAndJump(STATE_BOOLEAN + 3, this);
+                    case STATE_BOOLEAN + 3:
+                        return checkCrcHighAndDone({
+                            "type": this.request.type,
+                            "value": this.result
                         }, this);
                     default:
                         throw new Error("Unexpected parsing state");
