@@ -39,7 +39,9 @@ class Parser<catta::modbus::sunspec::ConnectedPhase>
         switch (_state)
         {
             case START + 0:
-                return input == catta::json::Token::openString() ? jump(HUB + 0) : error();
+                return input == catta::json::Token::nullObject()   ? jump(TAIL + 0)
+                       : input == catta::json::Token::openString() ? jump(HUB + 0)
+                                                                   : error();
             case HUB + 0:
                 return input == catta::json::Token::character('p') ? jump(HUB + 1) : error();
             case HUB + 1:
@@ -67,7 +69,7 @@ class Parser<catta::modbus::sunspec::ConnectedPhase>
                 return error();
         }
     }
-    [[nodiscard]] constexpr Parser() noexcept : _state(START) {}
+    [[nodiscard]] constexpr Parser() noexcept : _state(START), _data(Output::empty()) {}
     [[nodiscard]] constexpr Output data() const noexcept { return _state == DONE + 0 ? Output(_data) : Output(); }
     [[nodiscard]] constexpr catta::parser::State state() const noexcept
     {
