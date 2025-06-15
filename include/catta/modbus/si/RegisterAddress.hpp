@@ -34,32 +34,48 @@ class RegisterAddress
     constexpr static std::uint8_t INVERTER_PHASE_VOLTAGE_B = 10;
     constexpr static std::uint8_t INVERTER_PHASE_VOLTAGE_C = 11;
     constexpr static std::uint8_t INVERTER_PHASE_VOLTAGE_SCALE_FACTOR = 12;
-    constexpr static std::uint8_t INVERTER_WATT = 13;
-    constexpr static std::uint8_t INVERTER_WATT_SCALE_FACTOR = 14;
+    constexpr static std::uint8_t INVERTER_AC_POWER = 13;
+    constexpr static std::uint8_t INVERTER_AC_POWER_SCALE_FACTOR = 14;
     constexpr static std::uint8_t INVERTER_HERTZ = 15;
     constexpr static std::uint8_t INVERTER_HERTZ_SCALE_FACTOR = 16;
-    constexpr static std::uint8_t INVERTER_POWER_FACTOR = 17;
-    constexpr static std::uint8_t INVERTER_POWER_FACTOR_SCALE_FACTOR = 18;
-    constexpr static std::uint8_t INVERTER_WATT_HOURS = 19;
-    constexpr static std::uint8_t INVERTER_WATT_HOURS_SCALE_FACTOR = 20;
-    constexpr static std::uint8_t INVERTER_DC_VOLTAGE = 21;
-    constexpr static std::uint8_t INVERTER_DC_VOLTAGE_SCALE_FACTOR = 22;
-    constexpr static std::uint8_t INVERTER_TEMPERATURE = 23;
-    constexpr static std::uint8_t INVERTER_TEMPERATURE_SCALE_FACTOR = 24;
-    constexpr static std::uint8_t INVERTER_OPERATING_STATE = 25;
-    constexpr static std::uint8_t NAMEPLATE_DER_TYPE = 26;
-    constexpr static std::uint8_t EXTENDED_MESUREMENTS_AC_WATT_HOURS = 27;
-    constexpr static std::uint8_t EMPTY = 28;
+    constexpr static std::uint8_t INVERTER_AC_APPARENT_POWER = 17;
+    constexpr static std::uint8_t INVERTER_AC_APPARENT_POWER_SCALE_FACTOR = 18;
+    constexpr static std::uint8_t INVERTER_AC_REACTIVE_POWER = 19;
+    constexpr static std::uint8_t INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR = 20;
+    constexpr static std::uint8_t INVERTER_POWER_FACTOR = 21;
+    constexpr static std::uint8_t INVERTER_POWER_FACTOR_SCALE_FACTOR = 22;
+    constexpr static std::uint8_t INVERTER_WATT_HOURS = 23;
+    constexpr static std::uint8_t INVERTER_WATT_HOURS_SCALE_FACTOR = 24;
+    constexpr static std::uint8_t INVERTER_DC_VOLTAGE = 25;
+    constexpr static std::uint8_t INVERTER_DC_VOLTAGE_SCALE_FACTOR = 26;
+    constexpr static std::uint8_t INVERTER_DC_POWER = 27;
+    constexpr static std::uint8_t INVERTER_DC_POWER_SCALE_FACTOR = 28;
+    constexpr static std::uint8_t INVERTER_TEMPERATURE = 29;
+    constexpr static std::uint8_t INVERTER_TEMPERATURE_SCALE_FACTOR = 30;
+    constexpr static std::uint8_t INVERTER_OPERATING_STATE = 31;
+    constexpr static std::uint8_t INVERTER_VENDOR_OPERATING_STATE = 32;
+    constexpr static std::uint8_t INVERTER_VENDOR_EVENT_BITFIELD_1 = 33;
+    constexpr static std::uint8_t INVERTER_VENDOR_EVENT_BITFIELD_2 = 34;
+    constexpr static std::uint8_t INVERTER_VENDOR_EVENT_BITFIELD_3 = 35;
+    constexpr static std::uint8_t INVERTER_VENDOR_EVENT_BITFIELD_4 = 36;
+    constexpr static std::uint8_t NAMEPLATE_DER_TYPE = 37;
+    constexpr static std::uint8_t EXTENDED_MESUREMENTS_AC_WATT_HOURS = 38;
+    constexpr static std::uint8_t EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE = 39;
+    constexpr static std::uint8_t EMPTY = 40;
 
   public:
     /**
      * @param[in] value The enum value of the register.
      * @warning This constructor should not be used. Use commonManufacturer(), commonModel(), commonSerialNumber(), commonDeviceAddress(),
      * inverterAmps(), inverterAmpsPhaseA(), inverterAmpsPhaseB(), inverterAmpsPhaseC(), inverterAmpsScaleFactor(), inverterPhaseVoltageA(),
-     * inverterPhaseVoltageB(), inverterPhaseVoltageC(), inverterPhaseVoltageScaleFactor(), inverterWatt(), inverterWattScaleFactor(),
-     * inverterHertz(), inverterHertzScaleFactor(), inverterPowerFactor(), inverterPowerFactorScaleFactor(), inverterWattHours(),
-     * inverterWattHoursScaleFactor(), inverterDcVoltage(), inverterDcVoltageScaleFactor(), inverterTemperature(), inverterTemperatureScaleFactor(),
-     * inverterOperatingState(), nameplateDerType(), extendedMesurementsAcWattHours() or empty(). Explicit constructor. Converts uint8 to register.
+     * inverterPhaseVoltageB(), inverterPhaseVoltageC(), inverterPhaseVoltageScaleFactor(), inverterAcPower(), inverterAcPowerScaleFactor(),
+     * inverterHertz(), inverterHertzScaleFactor(), inverterAcApparentPower(), inverterAcApparentPowerScaleFactor(), inverterAcReactivePower(),
+     * inverterAcReactivePowerScaleFactor(), inverterPowerFactor(), inverterPowerFactorScaleFactor(), inverterWattHours(),
+     * inverterWattHoursScaleFactor(), inverterDcVoltage(), inverterDcVoltageScaleFactor(), inverterDcPower(), inverterDcPowerScaleFactor(),
+     * inverterTemperature(), inverterTemperatureScaleFactor(), inverterOperatingState(), inverterVendorOperatingState(),
+     * inverterVendorEventBitfield1(), inverterVendorEventBitfield2(), inverterVendorEventBitfield3(), inverterVendorEventBitfield4(),
+     * nameplateDerType(), extendedMesurementsAcWattHours(), extendedMesurementsAcLifetimeCharge() or empty(). Explicit constructor. Converts uint8 to
+     * register.
      */
     [[nodiscard]] constexpr explicit RegisterAddress(const std::uint8_t value) noexcept : _value(value) {}
     /**
@@ -124,11 +140,11 @@ class RegisterAddress
     /**
      * @return Returns the device AC power from the inverter model.
      */
-    [[nodiscard]] constexpr static RegisterAddress inverterWatt() noexcept { return RegisterAddress{INVERTER_WATT}; }
+    [[nodiscard]] constexpr static RegisterAddress inverterAcPower() noexcept { return RegisterAddress{INVERTER_AC_POWER}; }
     /**
      * @return Returns the device AC power scale factor from the inverter model.
      */
-    [[nodiscard]] constexpr static RegisterAddress inverterWattScaleFactor() noexcept { return RegisterAddress{INVERTER_WATT_SCALE_FACTOR}; }
+    [[nodiscard]] constexpr static RegisterAddress inverterAcPowerScaleFactor() noexcept { return RegisterAddress{INVERTER_AC_POWER_SCALE_FACTOR}; }
     /**
      * @return Returns the device line frequency from the inverter model.
      */
@@ -137,6 +153,28 @@ class RegisterAddress
      * @return Returns the device line frequency scale factor from the inverter model.
      */
     [[nodiscard]] constexpr static RegisterAddress inverterHertzScaleFactor() noexcept { return RegisterAddress{INVERTER_HERTZ_SCALE_FACTOR}; }
+    /**
+     * @return Returns the device AC apparent power from the inverter model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress inverterAcApparentPower() noexcept { return RegisterAddress{INVERTER_AC_APPARENT_POWER}; }
+    /**
+     * @return Returns the device AC apparent power scale factor from the inverter model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress inverterAcApparentPowerScaleFactor() noexcept
+    {
+        return RegisterAddress{INVERTER_AC_APPARENT_POWER_SCALE_FACTOR};
+    }
+    /**
+     * @return Returns the device AC reactive power from the inverter model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress inverterAcReactivePower() noexcept { return RegisterAddress{INVERTER_AC_REACTIVE_POWER}; }
+    /**
+     * @return Returns the device AC reactive power scale factor from the inverter model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress inverterAcReactivePowerScaleFactor() noexcept
+    {
+        return RegisterAddress{INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR};
+    }
     /**
      * @return Returns the device AC power factor from the inverter model.
      */
@@ -171,6 +209,14 @@ class RegisterAddress
         return RegisterAddress{INVERTER_DC_VOLTAGE_SCALE_FACTOR};
     }
     /**
+     * @return Returns the device DC power from the inverter model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress inverterDcPower() noexcept { return RegisterAddress{INVERTER_DC_POWER}; }
+    /**
+     * @return Returns the device DC power scale factor from the inverter model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress inverterDcPowerScaleFactor() noexcept { return RegisterAddress{INVERTER_DC_POWER_SCALE_FACTOR}; }
+    /**
      * @return Returns the device cabinet temperature from the inverter model.
      */
     [[nodiscard]] constexpr static RegisterAddress inverterTemperature() noexcept { return RegisterAddress{INVERTER_TEMPERATURE}; }
@@ -186,6 +232,41 @@ class RegisterAddress
      */
     [[nodiscard]] constexpr static RegisterAddress inverterOperatingState() noexcept { return RegisterAddress{INVERTER_OPERATING_STATE}; }
     /**
+     * @return Returns the vendor operating state from the inverter model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress inverterVendorOperatingState() noexcept
+    {
+        return RegisterAddress{INVERTER_VENDOR_OPERATING_STATE};
+    }
+    /**
+     * @return Returns the vendor event bitfield 1 from the inverter model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress inverterVendorEventBitfield1() noexcept
+    {
+        return RegisterAddress{INVERTER_VENDOR_EVENT_BITFIELD_1};
+    }
+    /**
+     * @return Returns the vendor event bitfield 2 from the inverter model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress inverterVendorEventBitfield2() noexcept
+    {
+        return RegisterAddress{INVERTER_VENDOR_EVENT_BITFIELD_2};
+    }
+    /**
+     * @return Returns the vendor event bitfield 3 from the inverter model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress inverterVendorEventBitfield3() noexcept
+    {
+        return RegisterAddress{INVERTER_VENDOR_EVENT_BITFIELD_3};
+    }
+    /**
+     * @return Returns the vendor event bitfield 4 from the inverter model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress inverterVendorEventBitfield4() noexcept
+    {
+        return RegisterAddress{INVERTER_VENDOR_EVENT_BITFIELD_4};
+    }
+    /**
      * @return Returns the der type from the nameplate model.
      */
     [[nodiscard]] constexpr static RegisterAddress nameplateDerType() noexcept { return RegisterAddress{NAMEPLATE_DER_TYPE}; }
@@ -195,6 +276,13 @@ class RegisterAddress
     [[nodiscard]] constexpr static RegisterAddress extendedMesurementsAcWattHours() noexcept
     {
         return RegisterAddress{EXTENDED_MESUREMENTS_AC_WATT_HOURS};
+    }
+    /**
+     * @return Returns the AC lifetime active (real) energy charge from the extended mesurements model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress extendedMesurementsAcLifetimeCharge() noexcept
+    {
+        return RegisterAddress{EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE};
     }
     /**
      * @return Returns the invalid register.
@@ -264,11 +352,11 @@ class RegisterAddress
     /**
      * @return Returns @b true if device AC power from the inverter model is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isInverterWatt() const noexcept { return _value == INVERTER_WATT; }
+    [[nodiscard]] constexpr bool isInverterAcPower() const noexcept { return _value == INVERTER_AC_POWER; }
     /**
      * @return Returns @b true if device AC power scale factor from the inverter model is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isInverterWattScaleFactor() const noexcept { return _value == INVERTER_WATT_SCALE_FACTOR; }
+    [[nodiscard]] constexpr bool isInverterAcPowerScaleFactor() const noexcept { return _value == INVERTER_AC_POWER_SCALE_FACTOR; }
     /**
      * @return Returns @b true if device line frequency from the inverter model is represented, otherwise @b false.
      */
@@ -277,6 +365,22 @@ class RegisterAddress
      * @return Returns @b true if device line frequency scale factor from the inverter model is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isInverterHertzScaleFactor() const noexcept { return _value == INVERTER_HERTZ_SCALE_FACTOR; }
+    /**
+     * @return Returns @b true if device AC apparent power from the inverter model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isInverterAcApparentPower() const noexcept { return _value == INVERTER_AC_APPARENT_POWER; }
+    /**
+     * @return Returns @b true if device AC apparent power scale factor from the inverter model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isInverterAcApparentPowerScaleFactor() const noexcept { return _value == INVERTER_AC_APPARENT_POWER_SCALE_FACTOR; }
+    /**
+     * @return Returns @b true if device AC reactive power from the inverter model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isInverterAcReactivePower() const noexcept { return _value == INVERTER_AC_REACTIVE_POWER; }
+    /**
+     * @return Returns @b true if device AC reactive power scale factor from the inverter model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isInverterAcReactivePowerScaleFactor() const noexcept { return _value == INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR; }
     /**
      * @return Returns @b true if device AC power factor from the inverter model is represented, otherwise @b false.
      */
@@ -302,6 +406,14 @@ class RegisterAddress
      */
     [[nodiscard]] constexpr bool isInverterDcVoltageScaleFactor() const noexcept { return _value == INVERTER_DC_VOLTAGE_SCALE_FACTOR; }
     /**
+     * @return Returns @b true if device DC power from the inverter model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isInverterDcPower() const noexcept { return _value == INVERTER_DC_POWER; }
+    /**
+     * @return Returns @b true if device DC power scale factor from the inverter model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isInverterDcPowerScaleFactor() const noexcept { return _value == INVERTER_DC_POWER_SCALE_FACTOR; }
+    /**
      * @return Returns @b true if device cabinet temperature from the inverter model is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isInverterTemperature() const noexcept { return _value == INVERTER_TEMPERATURE; }
@@ -314,6 +426,26 @@ class RegisterAddress
      */
     [[nodiscard]] constexpr bool isInverterOperatingState() const noexcept { return _value == INVERTER_OPERATING_STATE; }
     /**
+     * @return Returns @b true if vendor operating state from the inverter model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isInverterVendorOperatingState() const noexcept { return _value == INVERTER_VENDOR_OPERATING_STATE; }
+    /**
+     * @return Returns @b true if vendor event bitfield 1 from the inverter model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isInverterVendorEventBitfield1() const noexcept { return _value == INVERTER_VENDOR_EVENT_BITFIELD_1; }
+    /**
+     * @return Returns @b true if vendor event bitfield 2 from the inverter model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isInverterVendorEventBitfield2() const noexcept { return _value == INVERTER_VENDOR_EVENT_BITFIELD_2; }
+    /**
+     * @return Returns @b true if vendor event bitfield 3 from the inverter model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isInverterVendorEventBitfield3() const noexcept { return _value == INVERTER_VENDOR_EVENT_BITFIELD_3; }
+    /**
+     * @return Returns @b true if vendor event bitfield 4 from the inverter model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isInverterVendorEventBitfield4() const noexcept { return _value == INVERTER_VENDOR_EVENT_BITFIELD_4; }
+    /**
      * @return Returns @b true if der type from the nameplate model is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isNameplateDerType() const noexcept { return _value == NAMEPLATE_DER_TYPE; }
@@ -321,6 +453,10 @@ class RegisterAddress
      * @return Returns @b true if AC lifetime active (real) energy output from the extended mesurements model is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isExtendedMesurementsAcWattHours() const noexcept { return _value == EXTENDED_MESUREMENTS_AC_WATT_HOURS; }
+    /**
+     * @return Returns @b true if AC lifetime active (real) energy charge from the extended mesurements model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isExtendedMesurementsAcLifetimeCharge() const noexcept { return _value == EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE; }
     /**
      * @return Returns @b true if invalid register is represented, otherwise @b false.
      */
@@ -341,21 +477,33 @@ class RegisterAddress
                                                                       "INVERTER_PHASE_VOLTAGE_B",
                                                                       "INVERTER_PHASE_VOLTAGE_C",
                                                                       "INVERTER_PHASE_VOLTAGE_SCALE_FACTOR",
-                                                                      "INVERTER_WATT",
-                                                                      "INVERTER_WATT_SCALE_FACTOR",
+                                                                      "INVERTER_AC_POWER",
+                                                                      "INVERTER_AC_POWER_SCALE_FACTOR",
                                                                       "INVERTER_HERTZ",
                                                                       "INVERTER_HERTZ_SCALE_FACTOR",
+                                                                      "INVERTER_AC_APPARENT_POWER",
+                                                                      "INVERTER_AC_APPARENT_POWER_SCALE_FACTOR",
+                                                                      "INVERTER_AC_REACTIVE_POWER",
+                                                                      "INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR",
                                                                       "INVERTER_POWER_FACTOR",
                                                                       "INVERTER_POWER_FACTOR_SCALE_FACTOR",
                                                                       "INVERTER_WATT_HOURS",
                                                                       "INVERTER_WATT_HOURS_SCALE_FACTOR",
                                                                       "INVERTER_DC_VOLTAGE",
                                                                       "INVERTER_DC_VOLTAGE_SCALE_FACTOR",
+                                                                      "INVERTER_DC_POWER",
+                                                                      "INVERTER_DC_POWER_SCALE_FACTOR",
                                                                       "INVERTER_TEMPERATURE",
                                                                       "INVERTER_TEMPERATURE_SCALE_FACTOR",
                                                                       "INVERTER_OPERATING_STATE",
+                                                                      "INVERTER_VENDOR_OPERATING_STATE",
+                                                                      "INVERTER_VENDOR_EVENT_BITFIELD_1",
+                                                                      "INVERTER_VENDOR_EVENT_BITFIELD_2",
+                                                                      "INVERTER_VENDOR_EVENT_BITFIELD_3",
+                                                                      "INVERTER_VENDOR_EVENT_BITFIELD_4",
                                                                       "NAMEPLATE_DER_TYPE",
-                                                                      "EXTENDED_MESUREMENTS_AC_WATT_HOURS"};
+                                                                      "EXTENDED_MESUREMENTS_AC_WATT_HOURS",
+                                                                      "EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE"};
 
     /**
      *@return Returns the address of the register.
@@ -390,14 +538,22 @@ class RegisterAddress
                 return std::uint16_t(40082);
             case INVERTER_PHASE_VOLTAGE_SCALE_FACTOR:
                 return std::uint16_t(40083);
-            case INVERTER_WATT:
+            case INVERTER_AC_POWER:
                 return std::uint16_t(40084);
-            case INVERTER_WATT_SCALE_FACTOR:
+            case INVERTER_AC_POWER_SCALE_FACTOR:
                 return std::uint16_t(40085);
             case INVERTER_HERTZ:
                 return std::uint16_t(40086);
             case INVERTER_HERTZ_SCALE_FACTOR:
                 return std::uint16_t(40087);
+            case INVERTER_AC_APPARENT_POWER:
+                return std::uint16_t(40088);
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR:
+                return std::uint16_t(40089);
+            case INVERTER_AC_REACTIVE_POWER:
+                return std::uint16_t(40090);
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR:
+                return std::uint16_t(40091);
             case INVERTER_POWER_FACTOR:
                 return std::uint16_t(40092);
             case INVERTER_POWER_FACTOR_SCALE_FACTOR:
@@ -410,16 +566,32 @@ class RegisterAddress
                 return std::uint16_t(40099);
             case INVERTER_DC_VOLTAGE_SCALE_FACTOR:
                 return std::uint16_t(40100);
+            case INVERTER_DC_POWER:
+                return std::uint16_t(40101);
+            case INVERTER_DC_POWER_SCALE_FACTOR:
+                return std::uint16_t(40102);
             case INVERTER_TEMPERATURE:
                 return std::uint16_t(40103);
             case INVERTER_TEMPERATURE_SCALE_FACTOR:
                 return std::uint16_t(40107);
             case INVERTER_OPERATING_STATE:
                 return std::uint16_t(40108);
+            case INVERTER_VENDOR_OPERATING_STATE:
+                return std::uint16_t(40109);
+            case INVERTER_VENDOR_EVENT_BITFIELD_1:
+                return std::uint16_t(40110);
+            case INVERTER_VENDOR_EVENT_BITFIELD_2:
+                return std::uint16_t(40112);
+            case INVERTER_VENDOR_EVENT_BITFIELD_3:
+                return std::uint16_t(40114);
+            case INVERTER_VENDOR_EVENT_BITFIELD_4:
+                return std::uint16_t(40116);
             case NAMEPLATE_DER_TYPE:
                 return std::uint16_t(40124);
             case EXTENDED_MESUREMENTS_AC_WATT_HOURS:
                 return std::uint16_t(40187);
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE:
+                return std::uint16_t(40203);
             default:
                 return std::uint16_t(0);
         }
@@ -459,13 +631,21 @@ class RegisterAddress
                 return Type::uint16();
             case INVERTER_PHASE_VOLTAGE_SCALE_FACTOR:
                 return Type::scaleFactor();
-            case INVERTER_WATT:
+            case INVERTER_AC_POWER:
                 return Type::sint16();
-            case INVERTER_WATT_SCALE_FACTOR:
+            case INVERTER_AC_POWER_SCALE_FACTOR:
                 return Type::scaleFactor();
             case INVERTER_HERTZ:
                 return Type::uint16();
             case INVERTER_HERTZ_SCALE_FACTOR:
+                return Type::scaleFactor();
+            case INVERTER_AC_APPARENT_POWER:
+                return Type::uint16();
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR:
+                return Type::scaleFactor();
+            case INVERTER_AC_REACTIVE_POWER:
+                return Type::uint16();
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR:
                 return Type::scaleFactor();
             case INVERTER_POWER_FACTOR:
                 return Type::sint16();
@@ -479,15 +659,31 @@ class RegisterAddress
                 return Type::uint16();
             case INVERTER_DC_VOLTAGE_SCALE_FACTOR:
                 return Type::scaleFactor();
+            case INVERTER_DC_POWER:
+                return Type::uint16();
+            case INVERTER_DC_POWER_SCALE_FACTOR:
+                return Type::scaleFactor();
             case INVERTER_TEMPERATURE:
                 return Type::sint16();
             case INVERTER_TEMPERATURE_SCALE_FACTOR:
                 return Type::scaleFactor();
             case INVERTER_OPERATING_STATE:
                 return Type::uint16();
+            case INVERTER_VENDOR_OPERATING_STATE:
+                return Type::uint16();
+            case INVERTER_VENDOR_EVENT_BITFIELD_1:
+                return Type::uint32();
+            case INVERTER_VENDOR_EVENT_BITFIELD_2:
+                return Type::uint32();
+            case INVERTER_VENDOR_EVENT_BITFIELD_3:
+                return Type::uint32();
+            case INVERTER_VENDOR_EVENT_BITFIELD_4:
+                return Type::uint32();
             case NAMEPLATE_DER_TYPE:
                 return Type::uint16();
             case EXTENDED_MESUREMENTS_AC_WATT_HOURS:
+                return Type::uint32();
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE:
                 return Type::uint32();
             default:
                 return Type::empty();
@@ -530,13 +726,21 @@ class RegisterAddress
             case 40083:
                 return Address(INVERTER_PHASE_VOLTAGE_SCALE_FACTOR);
             case 40084:
-                return Address(INVERTER_WATT);
+                return Address(INVERTER_AC_POWER);
             case 40085:
-                return Address(INVERTER_WATT_SCALE_FACTOR);
+                return Address(INVERTER_AC_POWER_SCALE_FACTOR);
             case 40086:
                 return Address(INVERTER_HERTZ);
             case 40087:
                 return Address(INVERTER_HERTZ_SCALE_FACTOR);
+            case 40088:
+                return Address(INVERTER_AC_APPARENT_POWER);
+            case 40089:
+                return Address(INVERTER_AC_APPARENT_POWER_SCALE_FACTOR);
+            case 40090:
+                return Address(INVERTER_AC_REACTIVE_POWER);
+            case 40091:
+                return Address(INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR);
             case 40092:
                 return Address(INVERTER_POWER_FACTOR);
             case 40093:
@@ -549,16 +753,32 @@ class RegisterAddress
                 return Address(INVERTER_DC_VOLTAGE);
             case 40100:
                 return Address(INVERTER_DC_VOLTAGE_SCALE_FACTOR);
+            case 40101:
+                return Address(INVERTER_DC_POWER);
+            case 40102:
+                return Address(INVERTER_DC_POWER_SCALE_FACTOR);
             case 40103:
                 return Address(INVERTER_TEMPERATURE);
             case 40107:
                 return Address(INVERTER_TEMPERATURE_SCALE_FACTOR);
             case 40108:
                 return Address(INVERTER_OPERATING_STATE);
+            case 40109:
+                return Address(INVERTER_VENDOR_OPERATING_STATE);
+            case 40110:
+                return Address(INVERTER_VENDOR_EVENT_BITFIELD_1);
+            case 40112:
+                return Address(INVERTER_VENDOR_EVENT_BITFIELD_2);
+            case 40114:
+                return Address(INVERTER_VENDOR_EVENT_BITFIELD_3);
+            case 40116:
+                return Address(INVERTER_VENDOR_EVENT_BITFIELD_4);
             case 40124:
                 return Address(NAMEPLATE_DER_TYPE);
             case 40187:
                 return Address(EXTENDED_MESUREMENTS_AC_WATT_HOURS);
+            case 40203:
+                return Address(EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE);
             default:
                 return Address();
         }

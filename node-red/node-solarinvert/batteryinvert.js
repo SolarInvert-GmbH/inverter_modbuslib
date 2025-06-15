@@ -12,11 +12,14 @@ module.exports = function(RED) {
             "voltScale": null,
             "amps": null,
             "phaseVoltage": null,
-            "watt": null,
+            "acPower": null,
             "hertz": null,
+            "acApparentPower": null,
+            "acReactivePower": null,
             "powerFactor": null,
             "wattHours": null,
             "dcVoltage": null,
+            "dcPower": null,
             "temperature": null
         };
         this.modbusid = Number("0x" + (n.modbusid || "00").trim());
@@ -94,11 +97,11 @@ module.exports = function(RED) {
                     return {
                         "address": 40083, "length": 1
                     };
-                case "InverterWatt":
+                case "InverterAcPower":
                     return {
                         "address": 40084, "length": 1
                     };
-                case "InverterWattScaleFactor":
+                case "InverterAcPowerScaleFactor":
                     return {
                         "address": 40085, "length": 1
                     };
@@ -109,6 +112,22 @@ module.exports = function(RED) {
                 case "InverterHertzScaleFactor":
                     return {
                         "address": 40087, "length": 1
+                    };
+                case "InverterAcApparentPower":
+                    return {
+                        "address": 40088, "length": 1
+                    };
+                case "InverterAcApparentPowerScaleFactor":
+                    return {
+                        "address": 40089, "length": 1
+                    };
+                case "InverterAcReactivePower":
+                    return {
+                        "address": 40090, "length": 1
+                    };
+                case "InverterAcReactivePowerScaleFactor":
+                    return {
+                        "address": 40091, "length": 1
                     };
                 case "InverterPowerFactor":
                     return {
@@ -134,6 +153,14 @@ module.exports = function(RED) {
                     return {
                         "address": 40100, "length": 1
                     };
+                case "InverterDcPower":
+                    return {
+                        "address": 40101, "length": 1
+                    };
+                case "InverterDcPowerScaleFactor":
+                    return {
+                        "address": 40102, "length": 1
+                    };
                 case "InverterTemperature":
                     return {
                         "address": 40103, "length": 1
@@ -146,6 +173,26 @@ module.exports = function(RED) {
                     return {
                         "address": 40108, "length": 1
                     };
+                case "InverterVendorOperatingState":
+                    return {
+                        "address": 40109, "length": 1
+                    };
+                case "InverterVendorEventBitfield1":
+                    return {
+                        "address": 40110, "length": 2
+                    };
+                case "InverterVendorEventBitfield2":
+                    return {
+                        "address": 40112, "length": 2
+                    };
+                case "InverterVendorEventBitfield3":
+                    return {
+                        "address": 40114, "length": 2
+                    };
+                case "InverterVendorEventBitfield4":
+                    return {
+                        "address": 40116, "length": 2
+                    };
                 case "NameplateDerType":
                     return {
                         "address": 40124, "length": 1
@@ -153,6 +200,10 @@ module.exports = function(RED) {
                 case "ExtendedMesurementsAcWattHours":
                     return {
                         "address": 40187, "length": 2
+                    };
+                case "ExtendedMesurementsAcLifetimeCharge":
+                    return {
+                        "address": 40203, "length": 2
                     };
                 default:
                     return null;
@@ -710,13 +761,22 @@ module.exports = function(RED) {
                                     return {
                                         "quantety": node.cache.phaseVoltage * (data[0] << 8 | data[1]), "unit": "V"
                                     };
-                                case "InverterWatt":
+                                case "InverterAcPower":
+                                case "InverterDcPower":
                                     return {
-                                        "quantety": node.cache.watt * (data[0] << 8 | data[1]), "unit": "W"
+                                        "quantety": node.cache.acPower * (data[0] << 8 | data[1]), "unit": "W"
                                     };
                                 case "InverterHertz":
                                     return {
                                         "quantety": node.cache.hertz * (data[0] << 8 | data[1]), "unit": "Hz"
+                                    };
+                                case "InverterAcApparentPower":
+                                    return {
+                                        "quantety": node.cache.acApparentPower * (data[0] << 8 | data[1]), "unit": "VA"
+                                    };
+                                case "InverterAcReactivePower":
+                                    return {
+                                        "quantety": node.cache.acReactivePower * (data[0] << 8 | data[1]), "unit": "VA"
                                     };
                                 case "InverterPowerFactor":
                                     return {
@@ -736,19 +796,32 @@ module.exports = function(RED) {
                                     };
                                 case "CommonDeviceAddress":
                                 case "InverterOperatingState":
+                                case "InverterVendorOperatingState":
                                 case "NameplateDerType":
                                     return (data[0] << 8 | data[1]);
+                                case "InverterVendorEventBitfield1":
+                                case "InverterVendorEventBitfield2":
+                                case "InverterVendorEventBitfield3":
+                                case "InverterVendorEventBitfield4":
+                                    return (data[0] << 24 | data[1] << 16 | data[2] << 8 | data[3]);
                                 case "ExtendedMesurementsAcWattHours":
+                                    return {
+                                        "quantety": (data[0] << 24 | data[1] << 16 | data[2] << 8 | data[3]), "unit": "Wh"
+                                    };
+                                case "ExtendedMesurementsAcLifetimeCharge":
                                     return {
                                         "quantety": (data[0] << 24 | data[1] << 16 | data[2] << 8 | data[3]), "unit": "Wh"
                                     };
                                 case "InverterAmpsScaleFactor":
                                 case "InverterPhaseVoltageScaleFactor":
-                                case "InverterWattScaleFactor":
+                                case "InverterAcPowerScaleFactor":
                                 case "InverterHertzScaleFactor":
+                                case "InverterAcApparentPowerScaleFactor":
+                                case "InverterAcReactivePowerScaleFactor":
                                 case "InverterPowerFactorScaleFactor":
                                 case "InverterWattHoursScaleFactor":
                                 case "InverterDcVoltageScaleFactor":
+                                case "InverterDcPowerScaleFactor":
                                 case "InverterTemperatureScaleFactor":
                                     const v0 = data[0] << 8 | data[1];
                                     const v1 = v0 > 32767 ? v0 - 65536 : v0;
@@ -1048,11 +1121,17 @@ module.exports = function(RED) {
                         case "InverterPhaseVoltageScaleFactor":
                             node.cache.phaseVoltage = 10 ** payload.value.value;
                             break;
-                        case "InverterWattScaleFactor":
-                            node.cache.watt = 10 ** payload.value.value;
+                        case "InverterAcPowerScaleFactor":
+                            node.cache.acPower = 10 ** payload.value.value;
                             break;
                         case "InverterHertzScaleFactor":
                             node.cache.hertz = 10 ** payload.value.value;
+                            break;
+                        case "InverterAcApparentPowerScaleFactor":
+                            node.cache.acApparentPower = 10 ** payload.value.value;
+                            break;
+                        case "InverterAcReactivePowerScaleFactor":
+                            node.cache.acReactivePower = 10 ** payload.value.value;
                             break;
                         case "InverterPowerFactorScaleFactor":
                             node.cache.powerFactor = 10 ** payload.value.value;
@@ -1062,6 +1141,9 @@ module.exports = function(RED) {
                             break;
                         case "InverterDcVoltageScaleFactor":
                             node.cache.dcVoltage = 10 ** payload.value.value;
+                            break;
+                        case "InverterDcPowerScaleFactor":
+                            node.cache.dcPower = 10 ** payload.value.value;
                             break;
                         case "InverterTemperatureScaleFactor":
                             node.cache.temperature = 10 ** payload.value.value;
@@ -1101,11 +1183,11 @@ module.exports = function(RED) {
                                     "registerAddress": "InverterPhaseVoltageScaleFactor"
                                 }
                             };
-                        case "InverterWatt":
-                            return this.cache.watt != null ? null : {
+                        case "InverterAcPower":
+                            return this.cache.acPower != null ? null : {
                                 "type": "readRegister",
                                 "value": {
-                                    "registerAddress": "InverterWattScaleFactor"
+                                    "registerAddress": "InverterAcPowerScaleFactor"
                                 }
                             };
                         case "InverterHertz":
@@ -1113,6 +1195,20 @@ module.exports = function(RED) {
                                 "type": "readRegister",
                                 "value": {
                                     "registerAddress": "InverterHertzScaleFactor"
+                                }
+                            };
+                        case "InverterAcApparentPower":
+                            return this.cache.acApparentPower != null ? null : {
+                                "type": "readRegister",
+                                "value": {
+                                    "registerAddress": "InverterAcApparentPowerScaleFactor"
+                                }
+                            };
+                        case "InverterAcReactivePower":
+                            return this.cache.acReactivePower != null ? null : {
+                                "type": "readRegister",
+                                "value": {
+                                    "registerAddress": "InverterAcReactivePowerScaleFactor"
                                 }
                             };
                         case "InverterPowerFactor":
@@ -1134,6 +1230,13 @@ module.exports = function(RED) {
                                 "type": "readRegister",
                                 "value": {
                                     "registerAddress": "InverterDcVoltageScaleFactor"
+                                }
+                            };
+                        case "InverterDcPower":
+                            return this.cache.dcPower != null ? null : {
+                                "type": "readRegister",
+                                "value": {
+                                    "registerAddress": "InverterDcPowerScaleFactor"
                                 }
                             };
                         case "InverterTemperature":

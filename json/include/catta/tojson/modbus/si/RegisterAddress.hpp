@@ -90,10 +90,10 @@ class Serializer<catta::modbus::si::RegisterAddress>
                     _state = INVERTER_PHASE_VOLTAGE_SCALE_FACTOR + 0;
                     break;
                 case 13:
-                    _state = INVERTER_WATT + 0;
+                    _state = INVERTER_AC_POWER + 0;
                     break;
                 case 14:
-                    _state = INVERTER_WATT_SCALE_FACTOR + 0;
+                    _state = INVERTER_AC_POWER_SCALE_FACTOR + 0;
                     break;
                 case 15:
                     _state = INVERTER_HERTZ + 0;
@@ -102,37 +102,73 @@ class Serializer<catta::modbus::si::RegisterAddress>
                     _state = INVERTER_HERTZ_SCALE_FACTOR + 0;
                     break;
                 case 17:
-                    _state = INVERTER_POWER_FACTOR + 0;
+                    _state = INVERTER_AC_APPARENT_POWER + 0;
                     break;
                 case 18:
-                    _state = INVERTER_POWER_FACTOR_SCALE_FACTOR + 0;
+                    _state = INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 0;
                     break;
                 case 19:
-                    _state = INVERTER_WATT_HOURS + 0;
+                    _state = INVERTER_AC_REACTIV_POWER + 0;
                     break;
                 case 20:
-                    _state = INVERTER_WATT_HOURS_SCALE_FACTOR + 0;
+                    _state = INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 0;
                     break;
                 case 21:
-                    _state = INVERTER_DC_VOLTAGE + 0;
+                    _state = INVERTER_POWER_FACTOR + 0;
                     break;
                 case 22:
-                    _state = INVERTER_DC_VOLTAGE_SCALE_FACTOR + 0;
+                    _state = INVERTER_POWER_FACTOR_SCALE_FACTOR + 0;
                     break;
                 case 23:
-                    _state = INVERTER_TEMPERATURE + 0;
+                    _state = INVERTER_WATT_HOURS + 0;
                     break;
                 case 24:
-                    _state = INVERTER_TEMPERATURE_SCALE_FACTOR + 0;
+                    _state = INVERTER_WATT_HOURS_SCALE_FACTOR + 0;
                     break;
                 case 25:
-                    _state = INVERTER_OPERATING_STATE + 0;
+                    _state = INVERTER_DC_VOLTAGE + 0;
                     break;
                 case 26:
+                    _state = INVERTER_DC_VOLTAGE_SCALE_FACTOR + 0;
+                    break;
+                case 27:
+                    _state = INVERTER_DC_POWER + 0;
+                    break;
+                case 28:
+                    _state = INVERTER_DC_POWER_SCALE_FACTOR + 0;
+                    break;
+                case 29:
+                    _state = INVERTER_TEMPERATURE + 0;
+                    break;
+                case 30:
+                    _state = INVERTER_TEMPERATURE_SCALE_FACTOR + 0;
+                    break;
+                case 31:
+                    _state = INVERTER_OPERATING_STATE + 0;
+                    break;
+                case 32:
+                    _state = INVERTER_VENDOR_OPERATING_STATE + 0;
+                    break;
+                case 33:
+                    _state = INVERTER_VENDOR_EVENT_BITFIELD1 + 0;
+                    break;
+                case 34:
+                    _state = INVERTER_VENDOR_EVENT_BITFIELD2 + 0;
+                    break;
+                case 35:
+                    _state = INVERTER_VENDOR_EVENT_BITFIELD3 + 0;
+                    break;
+                case 36:
+                    _state = INVERTER_VENDOR_EVENT_BITFIELD4 + 0;
+                    break;
+                case 37:
                     _state = NAMEPLATE_DER_TYPE + 0;
                     break;
-                default:
+                case 38:
                     _state = EXTENDED_MESUREMENTS_AC_WATT_HOURS + 0;
+                    break;
+                default:
+                    _state = EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 0;
                     break;
             }
             return stay(token);
@@ -639,75 +675,87 @@ class Serializer<catta::modbus::si::RegisterAddress>
                 return next(catta::json::Token::character('o'));
             case INVERTER_PHASE_VOLTAGE_SCALE_FACTOR + 30:
                 return jump(catta::json::Token::character('r'), TAIL + 0);
-            case INVERTER_WATT + 0:
+            case INVERTER_AC_POWER + 0:
                 return next(catta::json::Token::character('I'));
-            case INVERTER_WATT + 1:
+            case INVERTER_AC_POWER + 1:
                 return next(catta::json::Token::character('n'));
-            case INVERTER_WATT + 2:
+            case INVERTER_AC_POWER + 2:
                 return next(catta::json::Token::character('v'));
-            case INVERTER_WATT + 3:
+            case INVERTER_AC_POWER + 3:
                 return next(catta::json::Token::character('e'));
-            case INVERTER_WATT + 4:
+            case INVERTER_AC_POWER + 4:
                 return next(catta::json::Token::character('r'));
-            case INVERTER_WATT + 5:
+            case INVERTER_AC_POWER + 5:
                 return next(catta::json::Token::character('t'));
-            case INVERTER_WATT + 6:
+            case INVERTER_AC_POWER + 6:
                 return next(catta::json::Token::character('e'));
-            case INVERTER_WATT + 7:
+            case INVERTER_AC_POWER + 7:
                 return next(catta::json::Token::character('r'));
-            case INVERTER_WATT + 8:
-                return next(catta::json::Token::character('W'));
-            case INVERTER_WATT + 9:
-                return next(catta::json::Token::character('a'));
-            case INVERTER_WATT + 10:
-                return next(catta::json::Token::character('t'));
-            case INVERTER_WATT + 11:
-                return jump(catta::json::Token::character('t'), TAIL + 0);
-            case INVERTER_WATT_SCALE_FACTOR + 0:
-                return next(catta::json::Token::character('I'));
-            case INVERTER_WATT_SCALE_FACTOR + 1:
-                return next(catta::json::Token::character('n'));
-            case INVERTER_WATT_SCALE_FACTOR + 2:
-                return next(catta::json::Token::character('v'));
-            case INVERTER_WATT_SCALE_FACTOR + 3:
-                return next(catta::json::Token::character('e'));
-            case INVERTER_WATT_SCALE_FACTOR + 4:
-                return next(catta::json::Token::character('r'));
-            case INVERTER_WATT_SCALE_FACTOR + 5:
-                return next(catta::json::Token::character('t'));
-            case INVERTER_WATT_SCALE_FACTOR + 6:
-                return next(catta::json::Token::character('e'));
-            case INVERTER_WATT_SCALE_FACTOR + 7:
-                return next(catta::json::Token::character('r'));
-            case INVERTER_WATT_SCALE_FACTOR + 8:
-                return next(catta::json::Token::character('W'));
-            case INVERTER_WATT_SCALE_FACTOR + 9:
-                return next(catta::json::Token::character('a'));
-            case INVERTER_WATT_SCALE_FACTOR + 10:
-                return next(catta::json::Token::character('t'));
-            case INVERTER_WATT_SCALE_FACTOR + 11:
-                return next(catta::json::Token::character('t'));
-            case INVERTER_WATT_SCALE_FACTOR + 12:
-                return next(catta::json::Token::character('S'));
-            case INVERTER_WATT_SCALE_FACTOR + 13:
+            case INVERTER_AC_POWER + 8:
+                return next(catta::json::Token::character('A'));
+            case INVERTER_AC_POWER + 9:
                 return next(catta::json::Token::character('c'));
-            case INVERTER_WATT_SCALE_FACTOR + 14:
-                return next(catta::json::Token::character('a'));
-            case INVERTER_WATT_SCALE_FACTOR + 15:
-                return next(catta::json::Token::character('l'));
-            case INVERTER_WATT_SCALE_FACTOR + 16:
-                return next(catta::json::Token::character('e'));
-            case INVERTER_WATT_SCALE_FACTOR + 17:
-                return next(catta::json::Token::character('F'));
-            case INVERTER_WATT_SCALE_FACTOR + 18:
-                return next(catta::json::Token::character('a'));
-            case INVERTER_WATT_SCALE_FACTOR + 19:
-                return next(catta::json::Token::character('c'));
-            case INVERTER_WATT_SCALE_FACTOR + 20:
-                return next(catta::json::Token::character('t'));
-            case INVERTER_WATT_SCALE_FACTOR + 21:
+            case INVERTER_AC_POWER + 10:
+                return next(catta::json::Token::character('P'));
+            case INVERTER_AC_POWER + 11:
                 return next(catta::json::Token::character('o'));
-            case INVERTER_WATT_SCALE_FACTOR + 22:
+            case INVERTER_AC_POWER + 12:
+                return next(catta::json::Token::character('w'));
+            case INVERTER_AC_POWER + 13:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_POWER + 14:
+                return jump(catta::json::Token::character('r'), TAIL + 0);
+            case INVERTER_AC_POWER_SCALE_FACTOR + 0:
+                return next(catta::json::Token::character('I'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 1:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 2:
+                return next(catta::json::Token::character('v'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 3:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 4:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 5:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 6:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 7:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 8:
+                return next(catta::json::Token::character('A'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 9:
+                return next(catta::json::Token::character('c'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 10:
+                return next(catta::json::Token::character('P'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 11:
+                return next(catta::json::Token::character('o'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 12:
+                return next(catta::json::Token::character('w'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 13:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 14:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 15:
+                return next(catta::json::Token::character('S'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 16:
+                return next(catta::json::Token::character('c'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 17:
+                return next(catta::json::Token::character('a'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 18:
+                return next(catta::json::Token::character('l'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 19:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 20:
+                return next(catta::json::Token::character('F'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 21:
+                return next(catta::json::Token::character('a'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 22:
+                return next(catta::json::Token::character('c'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 23:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 24:
+                return next(catta::json::Token::character('o'));
+            case INVERTER_AC_POWER_SCALE_FACTOR + 25:
                 return jump(catta::json::Token::character('r'), TAIL + 0);
             case INVERTER_HERTZ + 0:
                 return next(catta::json::Token::character('I'));
@@ -782,6 +830,230 @@ class Serializer<catta::modbus::si::RegisterAddress>
             case INVERTER_HERTZ_SCALE_FACTOR + 22:
                 return next(catta::json::Token::character('o'));
             case INVERTER_HERTZ_SCALE_FACTOR + 23:
+                return jump(catta::json::Token::character('r'), TAIL + 0);
+            case INVERTER_AC_APPARENT_POWER + 0:
+                return next(catta::json::Token::character('I'));
+            case INVERTER_AC_APPARENT_POWER + 1:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_AC_APPARENT_POWER + 2:
+                return next(catta::json::Token::character('v'));
+            case INVERTER_AC_APPARENT_POWER + 3:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_APPARENT_POWER + 4:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_AC_APPARENT_POWER + 5:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_AC_APPARENT_POWER + 6:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_APPARENT_POWER + 7:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_AC_APPARENT_POWER + 8:
+                return next(catta::json::Token::character('A'));
+            case INVERTER_AC_APPARENT_POWER + 9:
+                return next(catta::json::Token::character('c'));
+            case INVERTER_AC_APPARENT_POWER + 10:
+                return next(catta::json::Token::character('A'));
+            case INVERTER_AC_APPARENT_POWER + 11:
+                return next(catta::json::Token::character('p'));
+            case INVERTER_AC_APPARENT_POWER + 12:
+                return next(catta::json::Token::character('p'));
+            case INVERTER_AC_APPARENT_POWER + 13:
+                return next(catta::json::Token::character('a'));
+            case INVERTER_AC_APPARENT_POWER + 14:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_AC_APPARENT_POWER + 15:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_APPARENT_POWER + 16:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_AC_APPARENT_POWER + 17:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_AC_APPARENT_POWER + 18:
+                return next(catta::json::Token::character('P'));
+            case INVERTER_AC_APPARENT_POWER + 19:
+                return next(catta::json::Token::character('o'));
+            case INVERTER_AC_APPARENT_POWER + 20:
+                return next(catta::json::Token::character('w'));
+            case INVERTER_AC_APPARENT_POWER + 21:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_APPARENT_POWER + 22:
+                return jump(catta::json::Token::character('r'), TAIL + 0);
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 0:
+                return next(catta::json::Token::character('I'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 1:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 2:
+                return next(catta::json::Token::character('v'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 3:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 4:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 5:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 6:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 7:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 8:
+                return next(catta::json::Token::character('A'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 9:
+                return next(catta::json::Token::character('c'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 10:
+                return next(catta::json::Token::character('A'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 11:
+                return next(catta::json::Token::character('p'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 12:
+                return next(catta::json::Token::character('p'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 13:
+                return next(catta::json::Token::character('a'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 14:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 15:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 16:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 17:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 18:
+                return next(catta::json::Token::character('P'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 19:
+                return next(catta::json::Token::character('o'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 20:
+                return next(catta::json::Token::character('w'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 21:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 22:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 23:
+                return next(catta::json::Token::character('S'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 24:
+                return next(catta::json::Token::character('c'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 25:
+                return next(catta::json::Token::character('a'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 26:
+                return next(catta::json::Token::character('l'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 27:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 28:
+                return next(catta::json::Token::character('F'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 29:
+                return next(catta::json::Token::character('a'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 30:
+                return next(catta::json::Token::character('c'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 31:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 32:
+                return next(catta::json::Token::character('o'));
+            case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 33:
+                return jump(catta::json::Token::character('r'), TAIL + 0);
+            case INVERTER_AC_REACTIV_POWER + 0:
+                return next(catta::json::Token::character('I'));
+            case INVERTER_AC_REACTIV_POWER + 1:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_AC_REACTIV_POWER + 2:
+                return next(catta::json::Token::character('v'));
+            case INVERTER_AC_REACTIV_POWER + 3:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_REACTIV_POWER + 4:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_AC_REACTIV_POWER + 5:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_AC_REACTIV_POWER + 6:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_REACTIV_POWER + 7:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_AC_REACTIV_POWER + 8:
+                return next(catta::json::Token::character('A'));
+            case INVERTER_AC_REACTIV_POWER + 9:
+                return next(catta::json::Token::character('c'));
+            case INVERTER_AC_REACTIV_POWER + 10:
+                return next(catta::json::Token::character('R'));
+            case INVERTER_AC_REACTIV_POWER + 11:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_REACTIV_POWER + 12:
+                return next(catta::json::Token::character('a'));
+            case INVERTER_AC_REACTIV_POWER + 13:
+                return next(catta::json::Token::character('c'));
+            case INVERTER_AC_REACTIV_POWER + 14:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_AC_REACTIV_POWER + 15:
+                return next(catta::json::Token::character('i'));
+            case INVERTER_AC_REACTIV_POWER + 16:
+                return next(catta::json::Token::character('v'));
+            case INVERTER_AC_REACTIV_POWER + 17:
+                return next(catta::json::Token::character('P'));
+            case INVERTER_AC_REACTIV_POWER + 18:
+                return next(catta::json::Token::character('o'));
+            case INVERTER_AC_REACTIV_POWER + 19:
+                return next(catta::json::Token::character('w'));
+            case INVERTER_AC_REACTIV_POWER + 20:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_REACTIV_POWER + 21:
+                return jump(catta::json::Token::character('r'), TAIL + 0);
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 0:
+                return next(catta::json::Token::character('I'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 1:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 2:
+                return next(catta::json::Token::character('v'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 3:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 4:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 5:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 6:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 7:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 8:
+                return next(catta::json::Token::character('A'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 9:
+                return next(catta::json::Token::character('c'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 10:
+                return next(catta::json::Token::character('R'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 11:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 12:
+                return next(catta::json::Token::character('a'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 13:
+                return next(catta::json::Token::character('c'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 14:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 15:
+                return next(catta::json::Token::character('i'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 16:
+                return next(catta::json::Token::character('v'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 17:
+                return next(catta::json::Token::character('P'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 18:
+                return next(catta::json::Token::character('o'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 19:
+                return next(catta::json::Token::character('w'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 20:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 21:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 22:
+                return next(catta::json::Token::character('S'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 23:
+                return next(catta::json::Token::character('c'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 24:
+                return next(catta::json::Token::character('a'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 25:
+                return next(catta::json::Token::character('l'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 26:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 27:
+                return next(catta::json::Token::character('F'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 28:
+                return next(catta::json::Token::character('a'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 29:
+                return next(catta::json::Token::character('c'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 30:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 31:
+                return next(catta::json::Token::character('o'));
+            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 32:
                 return jump(catta::json::Token::character('r'), TAIL + 0);
             case INVERTER_POWER_FACTOR + 0:
                 return next(catta::json::Token::character('I'));
@@ -1061,6 +1333,88 @@ class Serializer<catta::modbus::si::RegisterAddress>
                 return next(catta::json::Token::character('o'));
             case INVERTER_DC_VOLTAGE_SCALE_FACTOR + 27:
                 return jump(catta::json::Token::character('r'), TAIL + 0);
+            case INVERTER_DC_POWER + 0:
+                return next(catta::json::Token::character('I'));
+            case INVERTER_DC_POWER + 1:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_DC_POWER + 2:
+                return next(catta::json::Token::character('v'));
+            case INVERTER_DC_POWER + 3:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_DC_POWER + 4:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_DC_POWER + 5:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_DC_POWER + 6:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_DC_POWER + 7:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_DC_POWER + 8:
+                return next(catta::json::Token::character('D'));
+            case INVERTER_DC_POWER + 9:
+                return next(catta::json::Token::character('c'));
+            case INVERTER_DC_POWER + 10:
+                return next(catta::json::Token::character('P'));
+            case INVERTER_DC_POWER + 11:
+                return next(catta::json::Token::character('o'));
+            case INVERTER_DC_POWER + 12:
+                return next(catta::json::Token::character('w'));
+            case INVERTER_DC_POWER + 13:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_DC_POWER + 14:
+                return jump(catta::json::Token::character('r'), TAIL + 0);
+            case INVERTER_DC_POWER_SCALE_FACTOR + 0:
+                return next(catta::json::Token::character('I'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 1:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 2:
+                return next(catta::json::Token::character('v'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 3:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 4:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 5:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 6:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 7:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 8:
+                return next(catta::json::Token::character('D'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 9:
+                return next(catta::json::Token::character('c'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 10:
+                return next(catta::json::Token::character('P'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 11:
+                return next(catta::json::Token::character('o'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 12:
+                return next(catta::json::Token::character('w'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 13:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 14:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 15:
+                return next(catta::json::Token::character('S'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 16:
+                return next(catta::json::Token::character('c'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 17:
+                return next(catta::json::Token::character('a'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 18:
+                return next(catta::json::Token::character('l'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 19:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 20:
+                return next(catta::json::Token::character('F'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 21:
+                return next(catta::json::Token::character('a'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 22:
+                return next(catta::json::Token::character('c'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 23:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 24:
+                return next(catta::json::Token::character('o'));
+            case INVERTER_DC_POWER_SCALE_FACTOR + 25:
+                return jump(catta::json::Token::character('r'), TAIL + 0);
             case INVERTER_TEMPERATURE + 0:
                 return next(catta::json::Token::character('I'));
             case INVERTER_TEMPERATURE + 1:
@@ -1203,6 +1557,286 @@ class Serializer<catta::modbus::si::RegisterAddress>
                 return next(catta::json::Token::character('t'));
             case INVERTER_OPERATING_STATE + 21:
                 return jump(catta::json::Token::character('e'), TAIL + 0);
+            case INVERTER_VENDOR_OPERATING_STATE + 0:
+                return next(catta::json::Token::character('I'));
+            case INVERTER_VENDOR_OPERATING_STATE + 1:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_VENDOR_OPERATING_STATE + 2:
+                return next(catta::json::Token::character('v'));
+            case INVERTER_VENDOR_OPERATING_STATE + 3:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_OPERATING_STATE + 4:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_VENDOR_OPERATING_STATE + 5:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_VENDOR_OPERATING_STATE + 6:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_OPERATING_STATE + 7:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_VENDOR_OPERATING_STATE + 8:
+                return next(catta::json::Token::character('V'));
+            case INVERTER_VENDOR_OPERATING_STATE + 9:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_OPERATING_STATE + 10:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_VENDOR_OPERATING_STATE + 11:
+                return next(catta::json::Token::character('d'));
+            case INVERTER_VENDOR_OPERATING_STATE + 12:
+                return next(catta::json::Token::character('o'));
+            case INVERTER_VENDOR_OPERATING_STATE + 13:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_VENDOR_OPERATING_STATE + 14:
+                return next(catta::json::Token::character('O'));
+            case INVERTER_VENDOR_OPERATING_STATE + 15:
+                return next(catta::json::Token::character('p'));
+            case INVERTER_VENDOR_OPERATING_STATE + 16:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_OPERATING_STATE + 17:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_VENDOR_OPERATING_STATE + 18:
+                return next(catta::json::Token::character('a'));
+            case INVERTER_VENDOR_OPERATING_STATE + 19:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_VENDOR_OPERATING_STATE + 20:
+                return next(catta::json::Token::character('i'));
+            case INVERTER_VENDOR_OPERATING_STATE + 21:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_VENDOR_OPERATING_STATE + 22:
+                return next(catta::json::Token::character('g'));
+            case INVERTER_VENDOR_OPERATING_STATE + 23:
+                return next(catta::json::Token::character('S'));
+            case INVERTER_VENDOR_OPERATING_STATE + 24:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_VENDOR_OPERATING_STATE + 25:
+                return next(catta::json::Token::character('a'));
+            case INVERTER_VENDOR_OPERATING_STATE + 26:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_VENDOR_OPERATING_STATE + 27:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 0:
+                return next(catta::json::Token::character('I'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 1:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 2:
+                return next(catta::json::Token::character('v'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 3:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 4:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 5:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 6:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 7:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 8:
+                return next(catta::json::Token::character('V'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 9:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 10:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 11:
+                return next(catta::json::Token::character('d'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 12:
+                return next(catta::json::Token::character('o'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 13:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 14:
+                return next(catta::json::Token::character('E'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 15:
+                return next(catta::json::Token::character('v'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 16:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 17:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 18:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 19:
+                return next(catta::json::Token::character('B'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 20:
+                return next(catta::json::Token::character('i'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 21:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 22:
+                return next(catta::json::Token::character('f'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 23:
+                return next(catta::json::Token::character('i'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 24:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 25:
+                return next(catta::json::Token::character('l'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 26:
+                return next(catta::json::Token::character('d'));
+            case INVERTER_VENDOR_EVENT_BITFIELD1 + 27:
+                return jump(catta::json::Token::character('1'), TAIL + 0);
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 0:
+                return next(catta::json::Token::character('I'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 1:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 2:
+                return next(catta::json::Token::character('v'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 3:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 4:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 5:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 6:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 7:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 8:
+                return next(catta::json::Token::character('V'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 9:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 10:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 11:
+                return next(catta::json::Token::character('d'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 12:
+                return next(catta::json::Token::character('o'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 13:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 14:
+                return next(catta::json::Token::character('E'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 15:
+                return next(catta::json::Token::character('v'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 16:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 17:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 18:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 19:
+                return next(catta::json::Token::character('B'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 20:
+                return next(catta::json::Token::character('i'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 21:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 22:
+                return next(catta::json::Token::character('f'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 23:
+                return next(catta::json::Token::character('i'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 24:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 25:
+                return next(catta::json::Token::character('l'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 26:
+                return next(catta::json::Token::character('d'));
+            case INVERTER_VENDOR_EVENT_BITFIELD2 + 27:
+                return jump(catta::json::Token::character('2'), TAIL + 0);
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 0:
+                return next(catta::json::Token::character('I'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 1:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 2:
+                return next(catta::json::Token::character('v'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 3:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 4:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 5:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 6:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 7:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 8:
+                return next(catta::json::Token::character('V'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 9:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 10:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 11:
+                return next(catta::json::Token::character('d'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 12:
+                return next(catta::json::Token::character('o'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 13:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 14:
+                return next(catta::json::Token::character('E'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 15:
+                return next(catta::json::Token::character('v'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 16:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 17:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 18:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 19:
+                return next(catta::json::Token::character('B'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 20:
+                return next(catta::json::Token::character('i'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 21:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 22:
+                return next(catta::json::Token::character('f'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 23:
+                return next(catta::json::Token::character('i'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 24:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 25:
+                return next(catta::json::Token::character('l'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 26:
+                return next(catta::json::Token::character('d'));
+            case INVERTER_VENDOR_EVENT_BITFIELD3 + 27:
+                return jump(catta::json::Token::character('3'), TAIL + 0);
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 0:
+                return next(catta::json::Token::character('I'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 1:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 2:
+                return next(catta::json::Token::character('v'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 3:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 4:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 5:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 6:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 7:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 8:
+                return next(catta::json::Token::character('V'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 9:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 10:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 11:
+                return next(catta::json::Token::character('d'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 12:
+                return next(catta::json::Token::character('o'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 13:
+                return next(catta::json::Token::character('r'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 14:
+                return next(catta::json::Token::character('E'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 15:
+                return next(catta::json::Token::character('v'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 16:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 17:
+                return next(catta::json::Token::character('n'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 18:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 19:
+                return next(catta::json::Token::character('B'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 20:
+                return next(catta::json::Token::character('i'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 21:
+                return next(catta::json::Token::character('t'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 22:
+                return next(catta::json::Token::character('f'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 23:
+                return next(catta::json::Token::character('i'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 24:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 25:
+                return next(catta::json::Token::character('l'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 26:
+                return next(catta::json::Token::character('d'));
+            case INVERTER_VENDOR_EVENT_BITFIELD4 + 27:
+                return jump(catta::json::Token::character('4'), TAIL + 0);
             case NAMEPLATE_DER_TYPE + 0:
                 return next(catta::json::Token::character('N'));
             case NAMEPLATE_DER_TYPE + 1:
@@ -1295,6 +1929,76 @@ class Serializer<catta::modbus::si::RegisterAddress>
                 return next(catta::json::Token::character('r'));
             case EXTENDED_MESUREMENTS_AC_WATT_HOURS + 29:
                 return jump(catta::json::Token::character('s'), TAIL + 0);
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 0:
+                return next(catta::json::Token::character('E'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 1:
+                return next(catta::json::Token::character('x'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 2:
+                return next(catta::json::Token::character('t'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 3:
+                return next(catta::json::Token::character('e'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 4:
+                return next(catta::json::Token::character('n'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 5:
+                return next(catta::json::Token::character('d'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 6:
+                return next(catta::json::Token::character('e'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 7:
+                return next(catta::json::Token::character('d'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 8:
+                return next(catta::json::Token::character('M'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 9:
+                return next(catta::json::Token::character('e'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 10:
+                return next(catta::json::Token::character('s'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 11:
+                return next(catta::json::Token::character('u'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 12:
+                return next(catta::json::Token::character('r'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 13:
+                return next(catta::json::Token::character('e'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 14:
+                return next(catta::json::Token::character('m'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 15:
+                return next(catta::json::Token::character('e'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 16:
+                return next(catta::json::Token::character('n'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 17:
+                return next(catta::json::Token::character('t'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 18:
+                return next(catta::json::Token::character('s'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 19:
+                return next(catta::json::Token::character('A'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 20:
+                return next(catta::json::Token::character('c'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 21:
+                return next(catta::json::Token::character('L'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 22:
+                return next(catta::json::Token::character('i'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 23:
+                return next(catta::json::Token::character('f'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 24:
+                return next(catta::json::Token::character('e'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 25:
+                return next(catta::json::Token::character('t'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 26:
+                return next(catta::json::Token::character('i'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 27:
+                return next(catta::json::Token::character('m'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 28:
+                return next(catta::json::Token::character('e'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 29:
+                return next(catta::json::Token::character('C'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 30:
+                return next(catta::json::Token::character('h'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 31:
+                return next(catta::json::Token::character('a'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 32:
+                return next(catta::json::Token::character('r'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 33:
+                return next(catta::json::Token::character('g'));
+            case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 34:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
             case TAIL + 0:
                 return next(catta::json::Token::closeString());
             case TAIL + 1:
@@ -1330,22 +2034,34 @@ class Serializer<catta::modbus::si::RegisterAddress>
     static constexpr std::uint16_t INVERTER_PHASE_VOLTAGE_B = INVERTER_PHASE_VOLTAGE_A + 21;
     static constexpr std::uint16_t INVERTER_PHASE_VOLTAGE_C = INVERTER_PHASE_VOLTAGE_B + 21;
     static constexpr std::uint16_t INVERTER_PHASE_VOLTAGE_SCALE_FACTOR = INVERTER_PHASE_VOLTAGE_C + 21;
-    static constexpr std::uint16_t INVERTER_WATT = INVERTER_PHASE_VOLTAGE_SCALE_FACTOR + 31;
-    static constexpr std::uint16_t INVERTER_WATT_SCALE_FACTOR = INVERTER_WATT + 12;
-    static constexpr std::uint16_t INVERTER_HERTZ = INVERTER_WATT_SCALE_FACTOR + 23;
+    static constexpr std::uint16_t INVERTER_AC_POWER = INVERTER_PHASE_VOLTAGE_SCALE_FACTOR + 31;
+    static constexpr std::uint16_t INVERTER_AC_POWER_SCALE_FACTOR = INVERTER_AC_POWER + 15;
+    static constexpr std::uint16_t INVERTER_HERTZ = INVERTER_AC_POWER_SCALE_FACTOR + 26;
     static constexpr std::uint16_t INVERTER_HERTZ_SCALE_FACTOR = INVERTER_HERTZ + 13;
-    static constexpr std::uint16_t INVERTER_POWER_FACTOR = INVERTER_HERTZ_SCALE_FACTOR + 24;
+    static constexpr std::uint16_t INVERTER_AC_APPARENT_POWER = INVERTER_HERTZ_SCALE_FACTOR + 24;
+    static constexpr std::uint16_t INVERTER_AC_APPARENT_POWER_SCALE_FACTOR = INVERTER_AC_APPARENT_POWER + 23;
+    static constexpr std::uint16_t INVERTER_AC_REACTIV_POWER = INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 34;
+    static constexpr std::uint16_t INVERTER_AC_REACTIV_POWER_SCALE_FACTOR = INVERTER_AC_REACTIV_POWER + 22;
+    static constexpr std::uint16_t INVERTER_POWER_FACTOR = INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 33;
     static constexpr std::uint16_t INVERTER_POWER_FACTOR_SCALE_FACTOR = INVERTER_POWER_FACTOR + 19;
     static constexpr std::uint16_t INVERTER_WATT_HOURS = INVERTER_POWER_FACTOR_SCALE_FACTOR + 30;
     static constexpr std::uint16_t INVERTER_WATT_HOURS_SCALE_FACTOR = INVERTER_WATT_HOURS + 17;
     static constexpr std::uint16_t INVERTER_DC_VOLTAGE = INVERTER_WATT_HOURS_SCALE_FACTOR + 28;
     static constexpr std::uint16_t INVERTER_DC_VOLTAGE_SCALE_FACTOR = INVERTER_DC_VOLTAGE + 17;
-    static constexpr std::uint16_t INVERTER_TEMPERATURE = INVERTER_DC_VOLTAGE_SCALE_FACTOR + 28;
+    static constexpr std::uint16_t INVERTER_DC_POWER = INVERTER_DC_VOLTAGE_SCALE_FACTOR + 28;
+    static constexpr std::uint16_t INVERTER_DC_POWER_SCALE_FACTOR = INVERTER_DC_POWER + 15;
+    static constexpr std::uint16_t INVERTER_TEMPERATURE = INVERTER_DC_POWER_SCALE_FACTOR + 26;
     static constexpr std::uint16_t INVERTER_TEMPERATURE_SCALE_FACTOR = INVERTER_TEMPERATURE + 19;
     static constexpr std::uint16_t INVERTER_OPERATING_STATE = INVERTER_TEMPERATURE_SCALE_FACTOR + 30;
-    static constexpr std::uint16_t NAMEPLATE_DER_TYPE = INVERTER_OPERATING_STATE + 22;
+    static constexpr std::uint16_t INVERTER_VENDOR_OPERATING_STATE = INVERTER_OPERATING_STATE + 22;
+    static constexpr std::uint16_t INVERTER_VENDOR_EVENT_BITFIELD1 = INVERTER_VENDOR_OPERATING_STATE + 28;
+    static constexpr std::uint16_t INVERTER_VENDOR_EVENT_BITFIELD2 = INVERTER_VENDOR_EVENT_BITFIELD1 + 28;
+    static constexpr std::uint16_t INVERTER_VENDOR_EVENT_BITFIELD3 = INVERTER_VENDOR_EVENT_BITFIELD2 + 28;
+    static constexpr std::uint16_t INVERTER_VENDOR_EVENT_BITFIELD4 = INVERTER_VENDOR_EVENT_BITFIELD3 + 28;
+    static constexpr std::uint16_t NAMEPLATE_DER_TYPE = INVERTER_VENDOR_EVENT_BITFIELD4 + 28;
     static constexpr std::uint16_t EXTENDED_MESUREMENTS_AC_WATT_HOURS = NAMEPLATE_DER_TYPE + 16;
-    static constexpr std::uint16_t TAIL = EXTENDED_MESUREMENTS_AC_WATT_HOURS + 30;
+    static constexpr std::uint16_t EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE = EXTENDED_MESUREMENTS_AC_WATT_HOURS + 30;
+    static constexpr std::uint16_t TAIL = EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 35;
     static constexpr std::uint16_t DONE = TAIL + 2;
     static constexpr std::uint16_t ERROR_STATE = DONE + 1;
 };
