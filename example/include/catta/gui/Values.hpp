@@ -42,7 +42,19 @@ class Values : public Fl_Group
         _interval = new Fl_Box(X + (W * 4) / 5, Y, W / 5, 50, _invervalText.data());
 
         const int w = (W - 20) / 2;
-        _temperature = new Value(X + 5, Y + 55, w, H_LINE, "Temperature");
+        const int X0 = X + 5;
+        const int X1 = X + 10 + w;
+        _acCurrent = new Value(X0, Y + 55 + H_LINE * 0, w, H_LINE, "AcCurrent");
+        _acVoltage = new Value(X1, Y + 55 + H_LINE * 0, w, H_LINE, "AcVoltage");
+        _acPower = new Value(X0, Y + 55 + H_LINE * 1, w, H_LINE, "AcPower");
+        _frequency = new Value(X1, Y + 55 + H_LINE * 1, w, H_LINE, "Frequency");
+        _acApparentPower = new Value(X0, Y + 55 + H_LINE * 2, w, H_LINE, "AcApparentPower");
+        _acReactivePower = new Value(X1, Y + 55 + H_LINE * 2, w, H_LINE, "AcReactivePower");
+        _powerFactor = new Value(X0, Y + 55 + H_LINE * 3, w, H_LINE, "PowerFactor");
+        _energyProduction = new Value(X1, Y + 55 + H_LINE * 3, w, H_LINE, "EnergyProduction");
+        _dcVoltage = new Value(X0, Y + 55 + H_LINE * 4, w, H_LINE, "DcVoltage");
+        _dcPower = new Value(X1, Y + 55 + H_LINE * 4, w, H_LINE, "DcPower");
+        _temperature = new Value(X0, Y + 55 + H_LINE * 5, w, H_LINE, "Temperature");
         this->end();
         this->show();
     }
@@ -50,6 +62,50 @@ class Values : public Fl_Group
      * Destructor.
      */
     ~Values() {}
+    /**
+     * @param[in] text The string for the ac current field.
+     */
+    void setAcCurrent(const std::string& text) noexcept { _acCurrent->set(text); }
+    /**
+     * @param[in] text The string for the ac voltage field.
+     */
+    void setAcVoltage(const std::string& text) noexcept { _acVoltage->set(text); }
+    /**
+     * @param[in] text The string for the ac power field.
+     */
+    void setAcPower(const std::string& text) noexcept { _acPower->set(text); }
+    /**
+     * @param[in] text The string for the frequency field.
+     */
+    void setFrequency(const std::string& text) noexcept { _frequency->set(text); }
+    /**
+     * @param[in] text The string for the ac apparent power field.
+     */
+    void setAcApparentPower(const std::string& text) noexcept { _acApparentPower->set(text); }
+    /**
+     * @param[in] text The string for the _ac reactive power field.
+     */
+    void setAcReactivePower(const std::string& text) noexcept { _acReactivePower->set(text); }
+    /**
+     * @param[in] text The string for the power factor field.
+     */
+    void setPowerFactor(const std::string& text) noexcept { _powerFactor->set(text); }
+    /**
+     * @param[in] text The string for the energy production field.
+     */
+    void setEnergyProduction(const std::string& text) noexcept
+    {
+        std::cout << "SET EP: " << text << '\n';
+        _energyProduction->set(text);
+    }
+    /**
+     * @param[in] text The string for the dc voltage field.
+     */
+    void setDcVoltage(const std::string& text) noexcept { _dcVoltage->set(text); }
+    /**
+     * @param[in] text The string for the dc power field.
+     */
+    void setDcPower(const std::string& text) noexcept { _dcPower->set(text); }
     /**
      * @param[in] text The string for the temperature field.
      */
@@ -62,6 +118,16 @@ class Values : public Fl_Group
   private:
     Fl_Slider* _slider;
     Fl_Box* _interval;
+    Value* _acCurrent;
+    Value* _acVoltage;
+    Value* _acPower;
+    Value* _frequency;
+    Value* _acApparentPower;
+    Value* _acReactivePower;
+    Value* _powerFactor;
+    Value* _energyProduction;
+    Value* _dcVoltage;
+    Value* _dcPower;
     Value* _temperature;
     std::function<void(const std::chrono::microseconds interval)> _callback;
     std::array<char, 4> _invervalText;

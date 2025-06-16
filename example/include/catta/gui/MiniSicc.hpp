@@ -33,7 +33,20 @@ class MiniSicc : public Fl_Double_Window
      * Constructor.
      */
     MiniSicc(const char* defaultUartName)
-        : Fl_Double_Window(200, 200, WIDTH, HEIGHT, "miniSICC"), _run(true), _current(CLIENTS), _temperatureCallback(*this), _sliderCallback(*this)
+        : Fl_Double_Window(200, 200, WIDTH, HEIGHT, "miniSICC"),
+          _run(true),
+          _current(CLIENTS),
+          _acCurrentCallback(*this),
+          _acPowerCallback(*this),
+          _frequencyCallback(*this),
+          _acApparentPowerCallback(*this),
+          _acReactivePowerCallback(*this),
+          _powerFactorCallback(*this),
+          _energyProductionCallback(*this),
+          _dcVoltageCallback(*this),
+          _dcPowerCallback(*this),
+          _temperatureCallback(*this),
+          _sliderCallback(*this)
     {
         this->_connection = new Connection<UART>(10, 10, WIDTH - 20, 130, defaultUartName, nullptr, CLIENTS);
         this->_tabs = new Fl_Tabs(10, 150, WIDTH - 20, HEIGHT - 160);
@@ -44,8 +57,35 @@ class MiniSicc : public Fl_Double_Window
         this->end();
         this->callback(close_cb);
         this->show();
+        _cache.setRequest(CACHE_AC_CURRENT_SCALE, REQUEST_AC_CURRENT_SCALE);
+        _cache.setRequest(CACHE_AC_CURRENT, REQUEST_AC_CURRENT);
+        _cache.setRequest(CACHE_AC_POWER_SCALE, REQUEST_AC_POWER_SCALE);
+        _cache.setRequest(CACHE_AC_POWER, REQUEST_AC_POWER);
+        _cache.setRequest(CACHE_FREQUENCY_SCALE, REQUEST_FREQUENCY_SCALE);
+        _cache.setRequest(CACHE_FREQUENCY, REQUEST_FREQUENCY);
+        _cache.setRequest(CACHE_AC_APPARENT_POWER_SCALE, REQUEST_AC_APPARENT_POWER_SCALE);
+        _cache.setRequest(CACHE_AC_APPARENT_POWER, REQUEST_AC_APPARENT_POWER);
+        _cache.setRequest(CACHE_AC_REACTIVE_POWER_SCALE, REQUEST_AC_REACTIVE_POWER_SCALE);
+        _cache.setRequest(CACHE_AC_REACTIVE_POWER, REQUEST_AC_REACTIVE_POWER);
+        _cache.setRequest(CACHE_POWER_FACTOR_SCALE, REQUEST_POWER_FACTOR_SCALE);
+        _cache.setRequest(CACHE_POWER_FACTOR, REQUEST_POWER_FACTOR);
+        _cache.setRequest(CACHE_ENERGY_PRODUCTION_SCALE, REQUEST_ENERGY_PRODUCTION_SCALE);
+        _cache.setRequest(CACHE_ENERGY_PRODUCTION, REQUEST_ENERGY_PRODUCTION);
+        _cache.setRequest(CACHE_DC_VOLTAGE_SCALE, REQUEST_DC_VOLTAGE_SCALE);
+        _cache.setRequest(CACHE_DC_VOLTAGE, REQUEST_DC_VOLTAGE);
+        _cache.setRequest(CACHE_DC_POWER_SCALE, REQUEST_DC_POWER_SCALE);
+        _cache.setRequest(CACHE_DC_POWER, REQUEST_DC_POWER);
         _cache.setRequest(CACHE_TEMPERATURE_SCALE, REQUEST_TEMPERATURE_SCALE);
         _cache.setRequest(CACHE_TEMPERATURE, REQUEST_TEMPERATURE);
+        _cache.setCallback(CACHE_AC_CURRENT, _acCurrentCallback);
+        _cache.setCallback(CACHE_AC_POWER, _acPowerCallback);
+        _cache.setCallback(CACHE_FREQUENCY, _frequencyCallback);
+        _cache.setCallback(CACHE_AC_APPARENT_POWER, _acApparentPowerCallback);
+        _cache.setCallback(CACHE_AC_REACTIVE_POWER, _acReactivePowerCallback);
+        _cache.setCallback(CACHE_POWER_FACTOR, _powerFactorCallback);
+        _cache.setCallback(CACHE_ENERGY_PRODUCTION, _energyProductionCallback);
+        _cache.setCallback(CACHE_DC_VOLTAGE, _dcVoltageCallback);
+        _cache.setCallback(CACHE_DC_POWER, _dcPowerCallback);
         _cache.setCallback(CACHE_TEMPERATURE, _temperatureCallback);
         _sliderCallback(std::chrono::seconds{1});
         _values->setCallback(_sliderCallback);
@@ -85,7 +125,29 @@ class MiniSicc : public Fl_Double_Window
     static constexpr std::size_t CLIENT_CACHE = 0;
     static constexpr std::size_t CLIENTS = CLIENT_CACHE + 1;
 
-    static constexpr std::size_t CACHE_TEMPERATURE_SCALE = 0;
+    static constexpr std::size_t CACHE_AC_CURRENT_SCALE = 0;
+    static constexpr std::size_t CACHE_AC_CURRENT = CACHE_AC_CURRENT_SCALE + 1;
+    static constexpr std::size_t CACHE_AC_VOLTAGE_SCALE = CACHE_AC_CURRENT + 1;
+    static constexpr std::size_t CACHE_AC_VOLTAGE_A = CACHE_AC_VOLTAGE_SCALE + 1;
+    static constexpr std::size_t CACHE_AC_VOLTAGE_B = CACHE_AC_VOLTAGE_A + 1;
+    static constexpr std::size_t CACHE_AC_VOLTAGE_C = CACHE_AC_VOLTAGE_B + 1;
+    static constexpr std::size_t CACHE_AC_POWER_SCALE = CACHE_AC_VOLTAGE_C + 1;
+    static constexpr std::size_t CACHE_AC_POWER = CACHE_AC_POWER_SCALE + 1;
+    static constexpr std::size_t CACHE_FREQUENCY_SCALE = CACHE_AC_POWER + 1;
+    static constexpr std::size_t CACHE_FREQUENCY = CACHE_FREQUENCY_SCALE + 1;
+    static constexpr std::size_t CACHE_AC_APPARENT_POWER_SCALE = CACHE_FREQUENCY + 1;
+    static constexpr std::size_t CACHE_AC_APPARENT_POWER = CACHE_AC_APPARENT_POWER_SCALE + 1;
+    static constexpr std::size_t CACHE_AC_REACTIVE_POWER_SCALE = CACHE_AC_APPARENT_POWER + 1;
+    static constexpr std::size_t CACHE_AC_REACTIVE_POWER = CACHE_AC_REACTIVE_POWER_SCALE + 1;
+    static constexpr std::size_t CACHE_POWER_FACTOR_SCALE = CACHE_AC_REACTIVE_POWER + 1;
+    static constexpr std::size_t CACHE_POWER_FACTOR = CACHE_POWER_FACTOR_SCALE + 1;
+    static constexpr std::size_t CACHE_ENERGY_PRODUCTION_SCALE = CACHE_POWER_FACTOR + 1;
+    static constexpr std::size_t CACHE_ENERGY_PRODUCTION = CACHE_ENERGY_PRODUCTION_SCALE + 1;
+    static constexpr std::size_t CACHE_DC_VOLTAGE_SCALE = CACHE_ENERGY_PRODUCTION + 1;
+    static constexpr std::size_t CACHE_DC_VOLTAGE = CACHE_DC_VOLTAGE_SCALE + 1;
+    static constexpr std::size_t CACHE_DC_POWER_SCALE = CACHE_DC_VOLTAGE + 1;
+    static constexpr std::size_t CACHE_DC_POWER = CACHE_DC_POWER_SCALE + 1;
+    static constexpr std::size_t CACHE_TEMPERATURE_SCALE = CACHE_DC_POWER + 1;
     static constexpr std::size_t CACHE_TEMPERATURE = CACHE_TEMPERATURE_SCALE + 1;
     static constexpr std::size_t CACHE_SIZE = CACHE_TEMPERATURE + 1;
 
@@ -113,15 +175,143 @@ class MiniSicc : public Fl_Double_Window
         if (self) self->_run = false;
     }
 
-    static constexpr Request REQUEST_TEMPERATURE_SCALE =
-        Request::readRegister(ReadRegister::create(RegisterAddress::inverterTemperatureScaleFactor()));
-    static constexpr Request REQUEST_TEMPERATURE = Request::readRegister(ReadRegister::create(RegisterAddress::inverterTemperature()));
+    static constexpr RegisterAddress REGISTER_AC_CURRENT_SCALE = RegisterAddress::inverterAmpsScaleFactor();
+    static constexpr RegisterAddress REGISTER_AC_CURRENT = RegisterAddress::inverterAmps();
+    static constexpr RegisterAddress REGISTER_AC_VOLTAGE_SCALE = RegisterAddress::inverterPhaseVoltageScaleFactor();
+    static constexpr RegisterAddress REGISTER_AC_VOLTAGE_A = RegisterAddress::inverterPhaseVoltageA();
+    static constexpr RegisterAddress REGISTER_AC_VOLTAGE_B = RegisterAddress::inverterPhaseVoltageB();
+    static constexpr RegisterAddress REGISTER_AC_VOLTAGE_C = RegisterAddress::inverterPhaseVoltageC();
+    static constexpr RegisterAddress REGISTER_AC_POWER_SCALE = RegisterAddress::inverterAcPowerScaleFactor();
+    static constexpr RegisterAddress REGISTER_AC_POWER = RegisterAddress::inverterAcPower();
+    static constexpr RegisterAddress REGISTER_FREQUENCY_SCALE = RegisterAddress::inverterHertzScaleFactor();
+    static constexpr RegisterAddress REGISTER_FREQUENCY = RegisterAddress::inverterHertz();
+    static constexpr RegisterAddress REGISTER_AC_APPARENT_POWER_SCALE = RegisterAddress::inverterAcApparentPowerScaleFactor();
+    static constexpr RegisterAddress REGISTER_AC_APPARENT_POWER = RegisterAddress::inverterAcApparentPower();
+    static constexpr RegisterAddress REGISTER_AC_REACTIVE_POWER_SCALE = RegisterAddress::inverterAcReactivePowerScaleFactor();
+    static constexpr RegisterAddress REGISTER_AC_REACTIVE_POWER = RegisterAddress::inverterAcReactivePower();
+    static constexpr RegisterAddress REGISTER_POWER_FACTOR_SCALE = RegisterAddress::inverterPowerFactorScaleFactor();
+    static constexpr RegisterAddress REGISTER_POWER_FACTOR = RegisterAddress::inverterPowerFactor();
+    static constexpr RegisterAddress REGISTER_ENERGY_PRODUCTION_SCALE = RegisterAddress::inverterWattHoursScaleFactor();
+    static constexpr RegisterAddress REGISTER_ENERGY_PRODUCTION = RegisterAddress::inverterWattHours();
+    static constexpr RegisterAddress REGISTER_DC_VOLTAGE_SCALE = RegisterAddress::inverterPhaseVoltageScaleFactor();
+    static constexpr RegisterAddress REGISTER_DC_VOLTAGE = RegisterAddress::inverterPhaseVoltageA();
+    static constexpr RegisterAddress REGISTER_DC_POWER_SCALE = RegisterAddress::inverterDcPowerScaleFactor();
+    static constexpr RegisterAddress REGISTER_DC_POWER = RegisterAddress::inverterDcPower();
+    static constexpr RegisterAddress REGISTER_TEMPERATURE_SCALE = RegisterAddress::inverterTemperatureScaleFactor();
+    static constexpr RegisterAddress REGISTER_TEMPERATURE = RegisterAddress::inverterTemperature();
+
+    static constexpr Request REQUEST_AC_CURRENT_SCALE = Request::readRegister(ReadRegister::create(REGISTER_AC_CURRENT_SCALE));
+    static constexpr Request REQUEST_AC_CURRENT = Request::readRegister(ReadRegister::create(REGISTER_AC_CURRENT));
+    static constexpr Request REQUEST_AC_VOLTAGE_SCALE = Request::readRegister(ReadRegister::create(REGISTER_AC_VOLTAGE_SCALE));
+    static constexpr Request REQUEST_AC_VOLTAGE_A = Request::readRegister(ReadRegister::create(REGISTER_AC_VOLTAGE_A));
+    static constexpr Request REQUEST_AC_VOLTAGE_B = Request::readRegister(ReadRegister::create(REGISTER_AC_VOLTAGE_B));
+    static constexpr Request REQUEST_AC_VOLTAGE_C = Request::readRegister(ReadRegister::create(REGISTER_AC_VOLTAGE_C));
+    static constexpr Request REQUEST_AC_POWER_SCALE = Request::readRegister(ReadRegister::create(REGISTER_AC_POWER_SCALE));
+    static constexpr Request REQUEST_AC_POWER = Request::readRegister(ReadRegister::create(REGISTER_AC_POWER));
+    static constexpr Request REQUEST_FREQUENCY_SCALE = Request::readRegister(ReadRegister::create(REGISTER_FREQUENCY_SCALE));
+    static constexpr Request REQUEST_FREQUENCY = Request::readRegister(ReadRegister::create(REGISTER_FREQUENCY));
+    static constexpr Request REQUEST_AC_APPARENT_POWER_SCALE = Request::readRegister(ReadRegister::create(REGISTER_AC_APPARENT_POWER_SCALE));
+    static constexpr Request REQUEST_AC_APPARENT_POWER = Request::readRegister(ReadRegister::create(REGISTER_AC_APPARENT_POWER));
+    static constexpr Request REQUEST_AC_REACTIVE_POWER_SCALE = Request::readRegister(ReadRegister::create(REGISTER_AC_REACTIVE_POWER_SCALE));
+    static constexpr Request REQUEST_AC_REACTIVE_POWER = Request::readRegister(ReadRegister::create(REGISTER_AC_REACTIVE_POWER));
+    static constexpr Request REQUEST_POWER_FACTOR_SCALE = Request::readRegister(ReadRegister::create(REGISTER_POWER_FACTOR_SCALE));
+    static constexpr Request REQUEST_POWER_FACTOR = Request::readRegister(ReadRegister::create(REGISTER_POWER_FACTOR));
+    static constexpr Request REQUEST_ENERGY_PRODUCTION_SCALE = Request::readRegister(ReadRegister::create(REGISTER_ENERGY_PRODUCTION_SCALE));
+    static constexpr Request REQUEST_ENERGY_PRODUCTION = Request::readRegister(ReadRegister::create(REGISTER_ENERGY_PRODUCTION));
+    static constexpr Request REQUEST_DC_VOLTAGE_SCALE = Request::readRegister(ReadRegister::create(REGISTER_DC_VOLTAGE_SCALE));
+    static constexpr Request REQUEST_DC_VOLTAGE = Request::readRegister(ReadRegister::create(REGISTER_DC_VOLTAGE));
+    static constexpr Request REQUEST_DC_POWER_SCALE = Request::readRegister(ReadRegister::create(REGISTER_DC_POWER_SCALE));
+    static constexpr Request REQUEST_DC_POWER = Request::readRegister(ReadRegister::create(REGISTER_DC_POWER));
+    static constexpr Request REQUEST_TEMPERATURE_SCALE = Request::readRegister(ReadRegister::create(REGISTER_TEMPERATURE_SCALE));
+    static constexpr Request REQUEST_TEMPERATURE = Request::readRegister(ReadRegister::create(REGISTER_TEMPERATURE));
+
+    class AcCurrent
+    {
+      public:
+        static constexpr const char* unit = "A";
+        static constexpr std::size_t cacheScale = CACHE_AC_CURRENT_SCALE;
+        static constexpr RegisterAddress address = REGISTER_AC_CURRENT;
+        static void setValue(Values* values, const std::string& value) { values->setAcCurrent(value); }
+    };
+
+    class AcPower
+    {
+      public:
+        static constexpr const char* unit = "W";
+        static constexpr std::size_t cacheScale = CACHE_AC_POWER_SCALE;
+        static constexpr RegisterAddress address = REGISTER_AC_POWER;
+        static void setValue(Values* values, const std::string& value) { values->setAcPower(value); }
+    };
+
+    class Frequency
+    {
+      public:
+        static constexpr const char* unit = "Hz";
+        static constexpr std::size_t cacheScale = CACHE_FREQUENCY_SCALE;
+        static constexpr RegisterAddress address = REGISTER_FREQUENCY;
+        static void setValue(Values* values, const std::string& value) { values->setFrequency(value); }
+    };
+
+    class AcApparentPower
+    {
+      public:
+        static constexpr const char* unit = "VA";
+        static constexpr std::size_t cacheScale = CACHE_AC_APPARENT_POWER_SCALE;
+        static constexpr RegisterAddress address = REGISTER_AC_APPARENT_POWER;
+        static void setValue(Values* values, const std::string& value) { values->setAcApparentPower(value); }
+    };
+
+    class AcReactivePower
+    {
+      public:
+        static constexpr const char* unit = "VA";
+        static constexpr std::size_t cacheScale = CACHE_AC_REACTIVE_POWER_SCALE;
+        static constexpr RegisterAddress address = REGISTER_AC_REACTIVE_POWER;
+        static void setValue(Values* values, const std::string& value) { values->setAcReactivePower(value); }
+    };
+
+    class PowerFactor
+    {
+      public:
+        static constexpr const char* unit = "%";
+        static constexpr std::size_t cacheScale = CACHE_POWER_FACTOR_SCALE;
+        static constexpr RegisterAddress address = REGISTER_POWER_FACTOR;
+        static void setValue(Values* values, const std::string& value) { values->setPowerFactor(value); }
+    };
+
+    class EnergyProduction
+    {
+      public:
+        static constexpr const char* unit = "Wh";
+        static constexpr std::size_t cacheScale = CACHE_ENERGY_PRODUCTION_SCALE;
+        static constexpr RegisterAddress address = REGISTER_ENERGY_PRODUCTION;
+        static void setValue(Values* values, const std::string& value) { values->setEnergyProduction(value); }
+    };
+
+    class DcVoltage
+    {
+      public:
+        static constexpr const char* unit = "V";
+        static constexpr std::size_t cacheScale = CACHE_DC_VOLTAGE_SCALE;
+        static constexpr RegisterAddress address = REGISTER_DC_VOLTAGE;
+        static void setValue(Values* values, const std::string& value) { values->setDcVoltage(value); }
+    };
+
+    class DcPower
+    {
+      public:
+        static constexpr const char* unit = "W";
+        static constexpr std::size_t cacheScale = CACHE_DC_POWER_SCALE;
+        static constexpr RegisterAddress address = REGISTER_DC_POWER;
+        static void setValue(Values* values, const std::string& value) { values->setDcPower(value); }
+    };
 
     class Temperature
     {
       public:
         static constexpr const char* unit = "°C";
         static constexpr std::size_t cacheScale = CACHE_TEMPERATURE_SCALE;
+        static constexpr RegisterAddress address = REGISTER_TEMPERATURE;
         static void setValue(Values* values, const std::string& value) { values->setTemperature(value); }
     };
 
@@ -141,37 +331,52 @@ class MiniSicc : public Fl_Double_Window
             }
             else
             {
-                if (r.type().isValue16())
+                std::uint64_t t = 0;
+                bool minus = false;
+
+                switch (T::address.type())
                 {
-                    const std::int16_t t = static_cast<std::int16_t>(r.value16Value());
-                    const std::string scaledNumber = [scale, t]()
+                    case catta::modbus::si::RegisterType::sint16():
                     {
-                        if (scale == 0) return std::to_string(t);
-                        if (scale > 0) return std::to_string(t) + std::string(static_cast<std::size_t>(scale), '0');
-                        const std::uint32_t factor = [scale]()
+                        if (static_cast<std::int16_t>(r.value16Value()) < 0)
                         {
-                            std::uint32_t result = 1;
-                            for (std::int16_t i = 0; i > scale; i--) result = result * 10;
-                            return result;
-                        }();
-                        std::string result;
-                        std::uint32_t number;
-                        if (t < 0)
-                        {
-                            number = static_cast<std::uint32_t>(-t);
-                            result += '-';
+                            minus = true;
+                            t = static_cast<std::uint16_t>(-static_cast<std::int16_t>(r.value16Value()));
                         }
                         else
-                            number = static_cast<std::uint32_t>(t);
-                        result += std::to_string(number / factor);
-                        result += '.';
-                        for (std::uint32_t i = factor / 10; i > 0; i = i / 10) result += static_cast<char>('0' + (number / i) % 10);
+                            t = r.value16Value();
+                        break;
+                    }
+                    case catta::modbus::si::RegisterType::uint16():
+                        t = r.value16Value();
+                        break;
+                    case catta::modbus::si::RegisterType::uint32():
+                        t = r.value32Value();
+                        break;
+                    case catta::modbus::si::RegisterType::uint64():
+                        t = r.value64Value();
+                        break;
+                    default:
+                        return T::setValue(_miniSicc._values, std::string());
+                }
+                const std::string scaledNumber = [scale, minus, t]()
+                {
+                    if (scale == 0) return std::to_string(t);
+                    if (scale > 0) return std::to_string(t) + std::string(static_cast<std::size_t>(scale), '0');
+                    const std::uint64_t factor = [scale]()
+                    {
+                        std::uint64_t result = 1;
+                        for (std::int16_t i = 0; i > scale; i--) result = result * 10;
                         return result;
                     }();
-                    T::setValue(_miniSicc._values, scaledNumber + ' ' + T::unit);
-                }
-                else
-                    T::setValue(_miniSicc._values, std::string());
+                    std::string result;
+                    if (minus) result += '-';
+                    result += std::to_string(t / factor);
+                    result += '.';
+                    for (std::uint64_t i = factor / 10; i > 0; i = i / 10) result += static_cast<char>('0' + (t / i) % 10);
+                    return result;
+                }();
+                T::setValue(_miniSicc._values, scaledNumber + ' ' + T::unit);
             }
         }
 
@@ -179,13 +384,34 @@ class MiniSicc : public Fl_Double_Window
         MiniSicc& _miniSicc;
     };
 
+    ScaledValueCallback<AcCurrent> _acCurrentCallback;
+    ScaledValueCallback<AcPower> _acPowerCallback;
+    ScaledValueCallback<Frequency> _frequencyCallback;
+    ScaledValueCallback<AcApparentPower> _acApparentPowerCallback;
+    ScaledValueCallback<AcReactivePower> _acReactivePowerCallback;
+    ScaledValueCallback<PowerFactor> _powerFactorCallback;
+    ScaledValueCallback<EnergyProduction> _energyProductionCallback;
+    ScaledValueCallback<DcVoltage> _dcVoltageCallback;
+    ScaledValueCallback<DcPower> _dcPowerCallback;
     ScaledValueCallback<Temperature> _temperatureCallback;
 
     class SliderCallback
     {
       public:
         SliderCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
-        void operator()(const std::chrono::microseconds t) { _miniSicc._cache.setValidTime(CACHE_TEMPERATURE, t * 4); }
+        void operator()(const std::chrono::microseconds t)
+        {
+            _miniSicc._cache.setValidTime(CACHE_AC_CURRENT, t * 4);
+            _miniSicc._cache.setValidTime(CACHE_AC_POWER, t * 4);
+            _miniSicc._cache.setValidTime(CACHE_FREQUENCY, t * 4);
+            _miniSicc._cache.setValidTime(CACHE_AC_APPARENT_POWER, t * 4);
+            _miniSicc._cache.setValidTime(CACHE_AC_REACTIVE_POWER, t * 4);
+            _miniSicc._cache.setValidTime(CACHE_POWER_FACTOR, t * 4);
+            _miniSicc._cache.setValidTime(CACHE_ENERGY_PRODUCTION, t * 4);
+            _miniSicc._cache.setValidTime(CACHE_DC_VOLTAGE, t * 4);
+            _miniSicc._cache.setValidTime(CACHE_DC_POWER, t * 4);
+            _miniSicc._cache.setValidTime(CACHE_TEMPERATURE, t * 4);
+        }
 
       private:
         MiniSicc& _miniSicc;
