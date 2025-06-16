@@ -3,7 +3,7 @@
 // fltk
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
-#include <FL/Fl_Choice.H>
+#include <FL/Fl_Check_Button.H>
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Input.H>
 
@@ -19,6 +19,10 @@
 // toformmodbus
 #include <catta/frommodbus/modbus/si/response/Response.hpp>
 #include <catta/tomodbus/modbus/si/request/Request.hpp>
+
+// tofromstring
+#include <catta/fromstring/Hexadecimal.hpp>
+#include <catta/tostring/Hexadecimal.hpp>
 
 // std
 #include <chrono>
@@ -87,24 +91,14 @@ class Connection : public Fl_Group
         this->_button1->deactivate();
         this->_status = new Fl_Box(GAP + W_INPUT + GAP + W_BUTTON + GAP + W_BUTTON + GAP, GAP, W_BOX, H_LINE, getErrorString());
         this->_status->box(FL_DOWN_BOX);
-        auto menu = [](const char* text)
-        {
-            return Fl_Menu_Item{.text = text,
-                                .shortcut_ = 0,
-                                .callback_ = nullptr,
-                                .user_data_ = nullptr,
-                                .flags = 0,
-                                .labeltype_ = 0,
-                                .labelfont_ = 0,
-                                .labelsize_ = 0,
-                                .labelcolor_ = 0};
-        };
-        static const Fl_Menu_Item id[] = {menu("auto"), menu("00"), menu("01"), menu("02"), menu("03"), menu("04"),
-                                          menu("05"),   menu("06"), menu("07"), menu("08"), menu("09"), menu("0a"),
-                                          menu("0b"),   menu("0c"), menu("0d"), menu("0e"), menu("0f"), menu(nullptr)};
-        this->_choice = new Fl_Choice(GAP + W_INPUT + GAP + W_BUTTON + GAP + W_BUTTON + GAP + W_BOX + GAP, GAP, W_INPUT, H_LINE);
-        this->_choice->menu(id);
-        this->_choice->value(0);
+        this->_autoSearch =
+            new Fl_Check_Button(GAP + W_INPUT + GAP + W_BUTTON + GAP + W_BUTTON + GAP + W_BOX + GAP, GAP, W_INPUT / 2 + 10, H_LINE, "auto");
+        this->_autoSearch->callback(autocb, this);
+        this->_autoSearch->value(1);
+        this->_modbusId = new Fl_Input(GAP + W_INPUT + GAP + W_BUTTON + GAP + W_BUTTON + GAP + W_BOX + GAP + W_INPUT / 2 + 2 * GAP, GAP,
+                                       W_INPUT / 2 - 2 * GAP, H_LINE);
+        this->_modbusId->value("00");
+        this->_modbusId->deactivate();
         this->_manufacturer = new Fl_Box(GAP, GAP * 2 + H_LINE, W_LABLE, H_LINE, _stringManufacturer.data());
         this->_model = new Fl_Box(GAP * 2 + W_LABLE, GAP * 2 + H_LINE, W_LABLE, H_LINE, _stringModel.data());
         this->_serialNumber = new Fl_Box(GAP * 3 + W_LABLE * 2, GAP * 2 + H_LINE, W_LABLE, H_LINE, _stringSerialNumber.data());
@@ -145,8 +139,11 @@ class Connection : public Fl_Group
         {
             const auto resetConnectionTry = [this](const bool jump = false)
             {
-                if (_choice->value() == 0 && jump)  // auto case
-                    _id = static_cast<std::uint8_t>((_id + 1) % 16);
+                if (_autoSearch->value() == 1 && jump)  // auto case
+                {
+                    _id++;
+                    _modbusId->value(catta::tostring::toString(catta::Hexadecimal(_id)).c_str());
+                }
                 _request = REQUEST_MANUFACTURER;
                 _modbus = {requestTimeout, dataTimeout, stayInError, waitForIdle};
             };
@@ -194,7 +191,7 @@ class Connection : public Fl_Group
                 handleSearch(DONT_JUMP, _stringSerialNumber, _serialNumber, 0,
                              [this]()
                              {
-                                 _choice->value(_id + 1);
+                                 _autoSearch->value(0);
                                  _requestBackup = {};
                              });
         }
@@ -236,7 +233,8 @@ class Connection : public Fl_Group
         if (_button0) delete _button0;
         if (_button1) delete _button1;
         if (_status) delete _status;
-        if (_choice) delete _choice;
+        if (_modbusId) delete _modbusId;
+        if (_autoSearch) delete _autoSearch;
         if (_manufacturer) delete _manufacturer;
         if (_model) delete _model;
         if (_serialNumber) delete _serialNumber;
@@ -278,7 +276,8 @@ class Connection : public Fl_Group
     Fl_Button* _button0;
     Fl_Button* _button1;
     Fl_Box* _status;
-    Fl_Choice* _choice;
+    Fl_Input* _modbusId;
+    Fl_Check_Button* _autoSearch;
     Fl_Box* _manufacturer;
     Fl_Box* _model;
     Fl_Box* _serialNumber;
@@ -315,12 +314,15 @@ class Connection : public Fl_Group
             connection->_status->label(connection->getErrorString());
             if (!(connection->_uart.isEmpty()) && connection->_uart.error().isEmpty())
             {
-                const auto getChoice = [connection]() { return static_cast<std::uint8_t>(connection->_choice->value() - 1); };
+                const auto getChoice = [connection]()
+                { return std::uint8_t(catta::fromstring::fromString<catta::Hexadecimal<std::uint8_t>>(connection->_modbusId->value())); };
                 connection->_button0->deactivate();
                 connection->_button1->activate();
                 connection->_current = connection->_clients + UART_CONNECTED;
-                connection->_id = connection->_choice->value() == 0 ? std::uint8_t(0x00) : getChoice();
-                connection->_choice->deactivate();
+                connection->_id = getChoice();
+                connection->_modbusId->value(catta::tostring::toString(catta::Hexadecimal(connection->_id)).c_str());
+                connection->_modbusId->deactivate();
+                connection->_autoSearch->deactivate();
                 connection->_request = REQUEST_MANUFACTURER;
             }
             else
@@ -336,13 +338,25 @@ class Connection : public Fl_Group
             connection->setDisconnect();
         }
     }
+    static void autocb(Fl_Widget*, void* object)
+    {
+        Connection* connection = static_cast<Connection*>(object);
+        if (connection)
+        {
+            if (connection->_autoSearch->value())
+                connection->_modbusId->deactivate();
+            else
+                connection->_modbusId->activate();
+        }
+    }
     void setDisconnect()
     {
         this->_button0->activate();
         this->_button1->deactivate();
         this->_error = _uart.error();
         this->_status->label(getErrorString());
-        this->_choice->activate();
+        this->_autoSearch->activate();
+        if (this->_autoSearch->value() == 0) this->_modbusId->activate();
     }
 
     bool write(const char c) noexcept
