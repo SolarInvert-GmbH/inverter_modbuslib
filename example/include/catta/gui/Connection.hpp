@@ -62,7 +62,7 @@ class Connection : public Fl_Group
           _uart(UART::empty()),
           _current(clients + UART_NOT_CONNECTED),
           _clients(clients),
-          _modbus{},
+          _modbus{requestTimeout, dataTimeout, stayInError, waitForIdle},
           _serializer{},
           _parser{},
           _receivedByte{},
@@ -148,6 +148,7 @@ class Connection : public Fl_Group
                 if (_choice->value() == 0 && jump)  // auto case
                     _id = static_cast<std::uint8_t>((_id + 1) % 16);
                 _request = REQUEST_MANUFACTURER;
+                _modbus = {requestTimeout, dataTimeout, stayInError, waitForIdle};
             };
 
             const auto [somethingHappend, error, response] = handleMasterUart(now, _id);
@@ -246,6 +247,11 @@ class Connection : public Fl_Group
 
     std::size_t _current;
     std::size_t _clients;
+
+    static constexpr std::chrono::microseconds requestTimeout = std::chrono::milliseconds{500};
+    static constexpr std::chrono::microseconds dataTimeout = std::chrono::milliseconds{500};  // should b mush smaller
+    static constexpr std::chrono::microseconds stayInError = std::chrono::seconds{5};
+    static constexpr std::chrono::microseconds waitForIdle = std::chrono::microseconds{1};
 
     catta::modbus::MasterUart _modbus;
 
@@ -364,7 +370,7 @@ class Connection : public Fl_Group
         _sendToken = {};
         _receiveToken = {};
         _request = {};
-        _modbus = {};
+        _modbus = {requestTimeout, dataTimeout, stayInError, waitForIdle};
     }
 
     std::tuple<bool, bool, catta::modbus::si::response::Response> handleMasterUart(const std::chrono::microseconds now, const std::uint8_t id)
