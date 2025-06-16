@@ -96,7 +96,7 @@ class Uart : public Fl_Group
      */
     [[nodiscard]] std::optional<char> read() noexcept
     {
-        if (this->_uart.isEmpty()) return false;
+        if (this->_uart.isEmpty()) return std::optional<char>{};
         const auto result = this->_uart.read();
         if (this->_button0 && (this->_uart.isEmpty() || !this->_uart.error().isEmpty())) this->setDisconnect();
         return result;
