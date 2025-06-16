@@ -61,7 +61,23 @@ class RegisterAddress
     constexpr static std::uint8_t NAMEPLATE_DER_TYPE = 37;
     constexpr static std::uint8_t EXTENDED_MESUREMENTS_AC_WATT_HOURS = 38;
     constexpr static std::uint8_t EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE = 39;
-    constexpr static std::uint8_t EMPTY = 40;
+    constexpr static std::uint8_t MPP_STEP_DAC_0 = 40;
+    constexpr static std::uint8_t MPP_STEP_DAC_1 = 41;
+    constexpr static std::uint8_t MPP_STEP_DAC_2 = 42;
+    constexpr static std::uint8_t MPP_STEP_DAC_3 = 43;
+    constexpr static std::uint8_t MPP_STEP_UDC_0 = 44;
+    constexpr static std::uint8_t MPP_STEP_UDC_1 = 45;
+    constexpr static std::uint8_t MPP_STEP_UDC_2 = 46;
+    constexpr static std::uint8_t MPP_STEP_UDC_3 = 47;
+    constexpr static std::uint8_t MPP_SAMPLE_DAC_0 = 48;
+    constexpr static std::uint8_t MPP_SAMPLE_DAC_1 = 49;
+    constexpr static std::uint8_t MPP_SAMPLE_DAC_2 = 50;
+    constexpr static std::uint8_t MPP_SAMPLE_DAC_3 = 51;
+    constexpr static std::uint8_t MPP_SAMPLE_UDC_0 = 52;
+    constexpr static std::uint8_t MPP_SAMPLE_UDC_1 = 53;
+    constexpr static std::uint8_t MPP_SAMPLE_UDC_2 = 54;
+    constexpr static std::uint8_t MPP_SAMPLE_UDC_3 = 55;
+    constexpr static std::uint8_t EMPTY = 56;
 
   public:
     /**
@@ -74,8 +90,9 @@ class RegisterAddress
      * inverterWattHoursScaleFactor(), inverterDcVoltage(), inverterDcVoltageScaleFactor(), inverterDcPower(), inverterDcPowerScaleFactor(),
      * inverterTemperature(), inverterTemperatureScaleFactor(), inverterOperatingState(), inverterVendorOperatingState(),
      * inverterVendorEventBitfield1(), inverterVendorEventBitfield2(), inverterVendorEventBitfield3(), inverterVendorEventBitfield4(),
-     * nameplateDerType(), extendedMesurementsAcWattHours(), extendedMesurementsAcLifetimeCharge() or empty(). Explicit constructor. Converts uint8 to
-     * register.
+     * nameplateDerType(), extendedMesurementsAcWattHours(), extendedMesurementsAcLifetimeCharge(), mppStepDac0(), mppStepDac1(), mppStepDac2(),
+     * mppStepDac3(), mppStepUdc0(), mppStepUdc1(), mppStepUdc2(), mppStepUdc3(), mppSampleDac0(), mppSampleDac1(), mppSampleDac2(), mppSampleDac3(),
+     * mppSampleUdc0(), mppSampleUdc1(), mppSampleUdc2(), mppSampleUdc3() or empty(). Explicit constructor. Converts uint8 to register.
      */
     [[nodiscard]] constexpr explicit RegisterAddress(const std::uint8_t value) noexcept : _value(value) {}
     /**
@@ -285,6 +302,70 @@ class RegisterAddress
         return RegisterAddress{EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE};
     }
     /**
+     * @return Returns the mpp step dac 0.
+     */
+    [[nodiscard]] constexpr static RegisterAddress mppStepDac0() noexcept { return RegisterAddress{MPP_STEP_DAC_0}; }
+    /**
+     * @return Returns the mpp step dac 1.
+     */
+    [[nodiscard]] constexpr static RegisterAddress mppStepDac1() noexcept { return RegisterAddress{MPP_STEP_DAC_1}; }
+    /**
+     * @return Returns the mpp step dac 2.
+     */
+    [[nodiscard]] constexpr static RegisterAddress mppStepDac2() noexcept { return RegisterAddress{MPP_STEP_DAC_2}; }
+    /**
+     * @return Returns the mpp step dac 3.
+     */
+    [[nodiscard]] constexpr static RegisterAddress mppStepDac3() noexcept { return RegisterAddress{MPP_STEP_DAC_3}; }
+    /**
+     * @return Returns the mpp step udc 0.
+     */
+    [[nodiscard]] constexpr static RegisterAddress mppStepUdc0() noexcept { return RegisterAddress{MPP_STEP_UDC_0}; }
+    /**
+     * @return Returns the mpp step udc 1.
+     */
+    [[nodiscard]] constexpr static RegisterAddress mppStepUdc1() noexcept { return RegisterAddress{MPP_STEP_UDC_1}; }
+    /**
+     * @return Returns the mpp step udc 2.
+     */
+    [[nodiscard]] constexpr static RegisterAddress mppStepUdc2() noexcept { return RegisterAddress{MPP_STEP_UDC_2}; }
+    /**
+     * @return Returns the mpp step udc 3.
+     */
+    [[nodiscard]] constexpr static RegisterAddress mppStepUdc3() noexcept { return RegisterAddress{MPP_STEP_UDC_3}; }
+    /**
+     * @return Returns the mpp sample dac 0.
+     */
+    [[nodiscard]] constexpr static RegisterAddress mppSampleDac0() noexcept { return RegisterAddress{MPP_SAMPLE_DAC_0}; }
+    /**
+     * @return Returns the mpp sample dac 1.
+     */
+    [[nodiscard]] constexpr static RegisterAddress mppSampleDac1() noexcept { return RegisterAddress{MPP_SAMPLE_DAC_1}; }
+    /**
+     * @return Returns the mpp sample dac 2.
+     */
+    [[nodiscard]] constexpr static RegisterAddress mppSampleDac2() noexcept { return RegisterAddress{MPP_SAMPLE_DAC_2}; }
+    /**
+     * @return Returns the mpp sample dac 3.
+     */
+    [[nodiscard]] constexpr static RegisterAddress mppSampleDac3() noexcept { return RegisterAddress{MPP_SAMPLE_DAC_3}; }
+    /**
+     * @return Returns the mpp sample udc 0.
+     */
+    [[nodiscard]] constexpr static RegisterAddress mppSampleUdc0() noexcept { return RegisterAddress{MPP_SAMPLE_UDC_0}; }
+    /**
+     * @return Returns the mpp sample udc 1.
+     */
+    [[nodiscard]] constexpr static RegisterAddress mppSampleUdc1() noexcept { return RegisterAddress{MPP_SAMPLE_UDC_1}; }
+    /**
+     * @return Returns the mpp sample udc 2.
+     */
+    [[nodiscard]] constexpr static RegisterAddress mppSampleUdc2() noexcept { return RegisterAddress{MPP_SAMPLE_UDC_2}; }
+    /**
+     * @return Returns the mpp sample udc 3.
+     */
+    [[nodiscard]] constexpr static RegisterAddress mppSampleUdc3() noexcept { return RegisterAddress{MPP_SAMPLE_UDC_3}; }
+    /**
      * @return Returns the invalid register.
      */
     [[nodiscard]] constexpr static RegisterAddress empty() noexcept { return RegisterAddress{EMPTY}; }
@@ -458,6 +539,70 @@ class RegisterAddress
      */
     [[nodiscard]] constexpr bool isExtendedMesurementsAcLifetimeCharge() const noexcept { return _value == EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE; }
     /**
+     * @return Returns @b true if mpp step dac 0 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isMppStepDac0() const noexcept { return _value == MPP_STEP_DAC_0; }
+    /**
+     * @return Returns @b true if mpp step dac 1 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isMppStepDac1() const noexcept { return _value == MPP_STEP_DAC_1; }
+    /**
+     * @return Returns @b true if mpp step dac 2 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isMppStepDac2() const noexcept { return _value == MPP_STEP_DAC_2; }
+    /**
+     * @return Returns @b true if mpp step dac 3 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isMppStepDac3() const noexcept { return _value == MPP_STEP_DAC_3; }
+    /**
+     * @return Returns @b true if mpp step udc 0 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isMppStepUdc0() const noexcept { return _value == MPP_STEP_UDC_0; }
+    /**
+     * @return Returns @b true if mpp step udc 1 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isMppStepUdc1() const noexcept { return _value == MPP_STEP_UDC_1; }
+    /**
+     * @return Returns @b true if mpp step udc 2 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isMppStepUdc2() const noexcept { return _value == MPP_STEP_UDC_2; }
+    /**
+     * @return Returns @b true if mpp step udc 3 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isMppStepUdc3() const noexcept { return _value == MPP_STEP_UDC_3; }
+    /**
+     * @return Returns @b true if mpp sample dac 0 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isMppSampleDac0() const noexcept { return _value == MPP_SAMPLE_DAC_0; }
+    /**
+     * @return Returns @b true if mpp sample dac 1 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isMppSampleDac1() const noexcept { return _value == MPP_SAMPLE_DAC_1; }
+    /**
+     * @return Returns @b true if mpp sample dac 2 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isMppSampleDac2() const noexcept { return _value == MPP_SAMPLE_DAC_2; }
+    /**
+     * @return Returns @b true if mpp sample dac 3 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isMppSampleDac3() const noexcept { return _value == MPP_SAMPLE_DAC_3; }
+    /**
+     * @return Returns @b true if mpp sample udc 0 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isMppSampleUdc0() const noexcept { return _value == MPP_SAMPLE_UDC_0; }
+    /**
+     * @return Returns @b true if mpp sample udc 1 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isMppSampleUdc1() const noexcept { return _value == MPP_SAMPLE_UDC_1; }
+    /**
+     * @return Returns @b true if mpp sample udc 2 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isMppSampleUdc2() const noexcept { return _value == MPP_SAMPLE_UDC_2; }
+    /**
+     * @return Returns @b true if mpp sample udc 3 is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isMppSampleUdc3() const noexcept { return _value == MPP_SAMPLE_UDC_3; }
+    /**
      * @return Returns @b true if invalid register is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isEmpty() const noexcept { return _value >= EMPTY; }
@@ -503,7 +648,23 @@ class RegisterAddress
                                                                       "INVERTER_VENDOR_EVENT_BITFIELD_4",
                                                                       "NAMEPLATE_DER_TYPE",
                                                                       "EXTENDED_MESUREMENTS_AC_WATT_HOURS",
-                                                                      "EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE"};
+                                                                      "EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE",
+                                                                      "MPP_STEP_DAC_0",
+                                                                      "MPP_STEP_DAC_1",
+                                                                      "MPP_STEP_DAC_2",
+                                                                      "MPP_STEP_DAC_3",
+                                                                      "MPP_STEP_UDC_0",
+                                                                      "MPP_STEP_UDC_1",
+                                                                      "MPP_STEP_UDC_2",
+                                                                      "MPP_STEP_UDC_3",
+                                                                      "MPP_SAMPLE_DAC_0",
+                                                                      "MPP_SAMPLE_DAC_1",
+                                                                      "MPP_SAMPLE_DAC_2",
+                                                                      "MPP_SAMPLE_DAC_3",
+                                                                      "MPP_SAMPLE_UDC_0",
+                                                                      "MPP_SAMPLE_UDC_1",
+                                                                      "MPP_SAMPLE_UDC_2",
+                                                                      "MPP_SAMPLE_UDC_3"};
 
     /**
      *@return Returns the address of the register.
@@ -592,6 +753,38 @@ class RegisterAddress
                 return std::uint16_t(40187);
             case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE:
                 return std::uint16_t(40203);
+            case MPP_STEP_DAC_0:
+                return std::uint16_t(40340);
+            case MPP_STEP_DAC_1:
+                return std::uint16_t(40341);
+            case MPP_STEP_DAC_2:
+                return std::uint16_t(40342);
+            case MPP_STEP_DAC_3:
+                return std::uint16_t(40343);
+            case MPP_STEP_UDC_0:
+                return std::uint16_t(40344);
+            case MPP_STEP_UDC_1:
+                return std::uint16_t(40345);
+            case MPP_STEP_UDC_2:
+                return std::uint16_t(40346);
+            case MPP_STEP_UDC_3:
+                return std::uint16_t(40347);
+            case MPP_SAMPLE_DAC_0:
+                return std::uint16_t(40348);
+            case MPP_SAMPLE_DAC_1:
+                return std::uint16_t(40349);
+            case MPP_SAMPLE_DAC_2:
+                return std::uint16_t(40350);
+            case MPP_SAMPLE_DAC_3:
+                return std::uint16_t(40351);
+            case MPP_SAMPLE_UDC_0:
+                return std::uint16_t(40352);
+            case MPP_SAMPLE_UDC_1:
+                return std::uint16_t(40353);
+            case MPP_SAMPLE_UDC_2:
+                return std::uint16_t(40354);
+            case MPP_SAMPLE_UDC_3:
+                return std::uint16_t(40355);
             default:
                 return std::uint16_t(0);
         }
@@ -685,6 +878,38 @@ class RegisterAddress
                 return Type::uint32();
             case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE:
                 return Type::uint32();
+            case MPP_STEP_DAC_0:
+                return Type::uint16();
+            case MPP_STEP_DAC_1:
+                return Type::uint16();
+            case MPP_STEP_DAC_2:
+                return Type::uint16();
+            case MPP_STEP_DAC_3:
+                return Type::uint16();
+            case MPP_STEP_UDC_0:
+                return Type::uint16();
+            case MPP_STEP_UDC_1:
+                return Type::uint16();
+            case MPP_STEP_UDC_2:
+                return Type::uint16();
+            case MPP_STEP_UDC_3:
+                return Type::uint16();
+            case MPP_SAMPLE_DAC_0:
+                return Type::uint16();
+            case MPP_SAMPLE_DAC_1:
+                return Type::uint16();
+            case MPP_SAMPLE_DAC_2:
+                return Type::uint16();
+            case MPP_SAMPLE_DAC_3:
+                return Type::uint16();
+            case MPP_SAMPLE_UDC_0:
+                return Type::uint16();
+            case MPP_SAMPLE_UDC_1:
+                return Type::uint16();
+            case MPP_SAMPLE_UDC_2:
+                return Type::uint16();
+            case MPP_SAMPLE_UDC_3:
+                return Type::uint16();
             default:
                 return Type::empty();
         }
@@ -779,6 +1004,38 @@ class RegisterAddress
                 return Address(EXTENDED_MESUREMENTS_AC_WATT_HOURS);
             case 40203:
                 return Address(EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE);
+            case 40340:
+                return Address(MPP_STEP_DAC_0);
+            case 40341:
+                return Address(MPP_STEP_DAC_1);
+            case 40342:
+                return Address(MPP_STEP_DAC_2);
+            case 40343:
+                return Address(MPP_STEP_DAC_3);
+            case 40344:
+                return Address(MPP_STEP_UDC_0);
+            case 40345:
+                return Address(MPP_STEP_UDC_1);
+            case 40346:
+                return Address(MPP_STEP_UDC_2);
+            case 40347:
+                return Address(MPP_STEP_UDC_3);
+            case 40348:
+                return Address(MPP_SAMPLE_DAC_0);
+            case 40349:
+                return Address(MPP_SAMPLE_DAC_1);
+            case 40350:
+                return Address(MPP_SAMPLE_DAC_2);
+            case 40351:
+                return Address(MPP_SAMPLE_DAC_3);
+            case 40352:
+                return Address(MPP_SAMPLE_UDC_0);
+            case 40353:
+                return Address(MPP_SAMPLE_UDC_1);
+            case 40354:
+                return Address(MPP_SAMPLE_UDC_2);
+            case 40355:
+                return Address(MPP_SAMPLE_UDC_3);
             default:
                 return Address();
         }
@@ -797,6 +1054,22 @@ class RegisterAddress
         switch (_value)
         {
             case COMMON_DEVICE_ADDRESS:
+            case MPP_STEP_DAC_0:
+            case MPP_STEP_DAC_1:
+            case MPP_STEP_DAC_2:
+            case MPP_STEP_DAC_3:
+            case MPP_STEP_UDC_0:
+            case MPP_STEP_UDC_1:
+            case MPP_STEP_UDC_2:
+            case MPP_STEP_UDC_3:
+            case MPP_SAMPLE_DAC_0:
+            case MPP_SAMPLE_DAC_1:
+            case MPP_SAMPLE_DAC_2:
+            case MPP_SAMPLE_DAC_3:
+            case MPP_SAMPLE_UDC_0:
+            case MPP_SAMPLE_UDC_1:
+            case MPP_SAMPLE_UDC_2:
+            case MPP_SAMPLE_UDC_3:
                 return true;
             default:
                 return false;

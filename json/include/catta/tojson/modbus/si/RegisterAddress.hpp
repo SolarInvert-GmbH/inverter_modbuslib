@@ -108,10 +108,10 @@ class Serializer<catta::modbus::si::RegisterAddress>
                     _state = INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 0;
                     break;
                 case 19:
-                    _state = INVERTER_AC_REACTIV_POWER + 0;
+                    _state = INVERTER_AC_REACTIVE_POWER + 0;
                     break;
                 case 20:
-                    _state = INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 0;
+                    _state = INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 0;
                     break;
                 case 21:
                     _state = INVERTER_POWER_FACTOR + 0;
@@ -167,8 +167,56 @@ class Serializer<catta::modbus::si::RegisterAddress>
                 case 38:
                     _state = EXTENDED_MESUREMENTS_AC_WATT_HOURS + 0;
                     break;
-                default:
+                case 39:
                     _state = EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 0;
+                    break;
+                case 40:
+                    _state = MPP_STEP_DAC0 + 0;
+                    break;
+                case 41:
+                    _state = MPP_STEP_DAC1 + 0;
+                    break;
+                case 42:
+                    _state = MPP_STEP_DAC2 + 0;
+                    break;
+                case 43:
+                    _state = MPP_STEP_DAC3 + 0;
+                    break;
+                case 44:
+                    _state = MPP_STEP_UDC0 + 0;
+                    break;
+                case 45:
+                    _state = MPP_STEP_UDC1 + 0;
+                    break;
+                case 46:
+                    _state = MPP_STEP_UDC2 + 0;
+                    break;
+                case 47:
+                    _state = MPP_STEP_UDC3 + 0;
+                    break;
+                case 48:
+                    _state = MPP_SAMPLE_DAC0 + 0;
+                    break;
+                case 49:
+                    _state = MPP_SAMPLE_DAC1 + 0;
+                    break;
+                case 50:
+                    _state = MPP_SAMPLE_DAC2 + 0;
+                    break;
+                case 51:
+                    _state = MPP_SAMPLE_DAC3 + 0;
+                    break;
+                case 52:
+                    _state = MPP_SAMPLE_UDC0 + 0;
+                    break;
+                case 53:
+                    _state = MPP_SAMPLE_UDC1 + 0;
+                    break;
+                case 54:
+                    _state = MPP_SAMPLE_UDC2 + 0;
+                    break;
+                default:
+                    _state = MPP_SAMPLE_UDC3 + 0;
                     break;
             }
             return stay(token);
@@ -945,115 +993,119 @@ class Serializer<catta::modbus::si::RegisterAddress>
                 return next(catta::json::Token::character('o'));
             case INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 33:
                 return jump(catta::json::Token::character('r'), TAIL + 0);
-            case INVERTER_AC_REACTIV_POWER + 0:
+            case INVERTER_AC_REACTIVE_POWER + 0:
                 return next(catta::json::Token::character('I'));
-            case INVERTER_AC_REACTIV_POWER + 1:
+            case INVERTER_AC_REACTIVE_POWER + 1:
                 return next(catta::json::Token::character('n'));
-            case INVERTER_AC_REACTIV_POWER + 2:
+            case INVERTER_AC_REACTIVE_POWER + 2:
                 return next(catta::json::Token::character('v'));
-            case INVERTER_AC_REACTIV_POWER + 3:
+            case INVERTER_AC_REACTIVE_POWER + 3:
                 return next(catta::json::Token::character('e'));
-            case INVERTER_AC_REACTIV_POWER + 4:
+            case INVERTER_AC_REACTIVE_POWER + 4:
                 return next(catta::json::Token::character('r'));
-            case INVERTER_AC_REACTIV_POWER + 5:
+            case INVERTER_AC_REACTIVE_POWER + 5:
                 return next(catta::json::Token::character('t'));
-            case INVERTER_AC_REACTIV_POWER + 6:
+            case INVERTER_AC_REACTIVE_POWER + 6:
                 return next(catta::json::Token::character('e'));
-            case INVERTER_AC_REACTIV_POWER + 7:
+            case INVERTER_AC_REACTIVE_POWER + 7:
                 return next(catta::json::Token::character('r'));
-            case INVERTER_AC_REACTIV_POWER + 8:
+            case INVERTER_AC_REACTIVE_POWER + 8:
                 return next(catta::json::Token::character('A'));
-            case INVERTER_AC_REACTIV_POWER + 9:
+            case INVERTER_AC_REACTIVE_POWER + 9:
                 return next(catta::json::Token::character('c'));
-            case INVERTER_AC_REACTIV_POWER + 10:
+            case INVERTER_AC_REACTIVE_POWER + 10:
                 return next(catta::json::Token::character('R'));
-            case INVERTER_AC_REACTIV_POWER + 11:
+            case INVERTER_AC_REACTIVE_POWER + 11:
                 return next(catta::json::Token::character('e'));
-            case INVERTER_AC_REACTIV_POWER + 12:
+            case INVERTER_AC_REACTIVE_POWER + 12:
                 return next(catta::json::Token::character('a'));
-            case INVERTER_AC_REACTIV_POWER + 13:
+            case INVERTER_AC_REACTIVE_POWER + 13:
                 return next(catta::json::Token::character('c'));
-            case INVERTER_AC_REACTIV_POWER + 14:
+            case INVERTER_AC_REACTIVE_POWER + 14:
                 return next(catta::json::Token::character('t'));
-            case INVERTER_AC_REACTIV_POWER + 15:
+            case INVERTER_AC_REACTIVE_POWER + 15:
                 return next(catta::json::Token::character('i'));
-            case INVERTER_AC_REACTIV_POWER + 16:
+            case INVERTER_AC_REACTIVE_POWER + 16:
                 return next(catta::json::Token::character('v'));
-            case INVERTER_AC_REACTIV_POWER + 17:
-                return next(catta::json::Token::character('P'));
-            case INVERTER_AC_REACTIV_POWER + 18:
-                return next(catta::json::Token::character('o'));
-            case INVERTER_AC_REACTIV_POWER + 19:
-                return next(catta::json::Token::character('w'));
-            case INVERTER_AC_REACTIV_POWER + 20:
+            case INVERTER_AC_REACTIVE_POWER + 17:
                 return next(catta::json::Token::character('e'));
-            case INVERTER_AC_REACTIV_POWER + 21:
+            case INVERTER_AC_REACTIVE_POWER + 18:
+                return next(catta::json::Token::character('P'));
+            case INVERTER_AC_REACTIVE_POWER + 19:
+                return next(catta::json::Token::character('o'));
+            case INVERTER_AC_REACTIVE_POWER + 20:
+                return next(catta::json::Token::character('w'));
+            case INVERTER_AC_REACTIVE_POWER + 21:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_REACTIVE_POWER + 22:
                 return jump(catta::json::Token::character('r'), TAIL + 0);
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 0:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 0:
                 return next(catta::json::Token::character('I'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 1:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 1:
                 return next(catta::json::Token::character('n'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 2:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 2:
                 return next(catta::json::Token::character('v'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 3:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 3:
                 return next(catta::json::Token::character('e'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 4:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 4:
                 return next(catta::json::Token::character('r'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 5:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 5:
                 return next(catta::json::Token::character('t'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 6:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 6:
                 return next(catta::json::Token::character('e'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 7:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 7:
                 return next(catta::json::Token::character('r'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 8:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 8:
                 return next(catta::json::Token::character('A'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 9:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 9:
                 return next(catta::json::Token::character('c'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 10:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 10:
                 return next(catta::json::Token::character('R'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 11:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 11:
                 return next(catta::json::Token::character('e'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 12:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 12:
                 return next(catta::json::Token::character('a'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 13:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 13:
                 return next(catta::json::Token::character('c'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 14:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 14:
                 return next(catta::json::Token::character('t'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 15:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 15:
                 return next(catta::json::Token::character('i'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 16:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 16:
                 return next(catta::json::Token::character('v'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 17:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 17:
+                return next(catta::json::Token::character('e'));
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 18:
                 return next(catta::json::Token::character('P'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 18:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 19:
                 return next(catta::json::Token::character('o'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 19:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 20:
                 return next(catta::json::Token::character('w'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 20:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 21:
                 return next(catta::json::Token::character('e'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 21:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 22:
                 return next(catta::json::Token::character('r'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 22:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 23:
                 return next(catta::json::Token::character('S'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 23:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 24:
                 return next(catta::json::Token::character('c'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 24:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 25:
                 return next(catta::json::Token::character('a'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 25:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 26:
                 return next(catta::json::Token::character('l'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 26:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 27:
                 return next(catta::json::Token::character('e'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 27:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 28:
                 return next(catta::json::Token::character('F'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 28:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 29:
                 return next(catta::json::Token::character('a'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 29:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 30:
                 return next(catta::json::Token::character('c'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 30:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 31:
                 return next(catta::json::Token::character('t'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 31:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 32:
                 return next(catta::json::Token::character('o'));
-            case INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 32:
+            case INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 33:
                 return jump(catta::json::Token::character('r'), TAIL + 0);
             case INVERTER_POWER_FACTOR + 0:
                 return next(catta::json::Token::character('I'));
@@ -1999,6 +2051,390 @@ class Serializer<catta::modbus::si::RegisterAddress>
                 return next(catta::json::Token::character('g'));
             case EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 34:
                 return jump(catta::json::Token::character('e'), TAIL + 0);
+            case MPP_STEP_DAC0 + 0:
+                return next(catta::json::Token::character('M'));
+            case MPP_STEP_DAC0 + 1:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_DAC0 + 2:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_DAC0 + 3:
+                return next(catta::json::Token::character('S'));
+            case MPP_STEP_DAC0 + 4:
+                return next(catta::json::Token::character('t'));
+            case MPP_STEP_DAC0 + 5:
+                return next(catta::json::Token::character('e'));
+            case MPP_STEP_DAC0 + 6:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_DAC0 + 7:
+                return next(catta::json::Token::character('D'));
+            case MPP_STEP_DAC0 + 8:
+                return next(catta::json::Token::character('a'));
+            case MPP_STEP_DAC0 + 9:
+                return next(catta::json::Token::character('c'));
+            case MPP_STEP_DAC0 + 10:
+                return jump(catta::json::Token::character('0'), TAIL + 0);
+            case MPP_STEP_DAC1 + 0:
+                return next(catta::json::Token::character('M'));
+            case MPP_STEP_DAC1 + 1:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_DAC1 + 2:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_DAC1 + 3:
+                return next(catta::json::Token::character('S'));
+            case MPP_STEP_DAC1 + 4:
+                return next(catta::json::Token::character('t'));
+            case MPP_STEP_DAC1 + 5:
+                return next(catta::json::Token::character('e'));
+            case MPP_STEP_DAC1 + 6:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_DAC1 + 7:
+                return next(catta::json::Token::character('D'));
+            case MPP_STEP_DAC1 + 8:
+                return next(catta::json::Token::character('a'));
+            case MPP_STEP_DAC1 + 9:
+                return next(catta::json::Token::character('c'));
+            case MPP_STEP_DAC1 + 10:
+                return jump(catta::json::Token::character('1'), TAIL + 0);
+            case MPP_STEP_DAC2 + 0:
+                return next(catta::json::Token::character('M'));
+            case MPP_STEP_DAC2 + 1:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_DAC2 + 2:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_DAC2 + 3:
+                return next(catta::json::Token::character('S'));
+            case MPP_STEP_DAC2 + 4:
+                return next(catta::json::Token::character('t'));
+            case MPP_STEP_DAC2 + 5:
+                return next(catta::json::Token::character('e'));
+            case MPP_STEP_DAC2 + 6:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_DAC2 + 7:
+                return next(catta::json::Token::character('D'));
+            case MPP_STEP_DAC2 + 8:
+                return next(catta::json::Token::character('a'));
+            case MPP_STEP_DAC2 + 9:
+                return next(catta::json::Token::character('c'));
+            case MPP_STEP_DAC2 + 10:
+                return jump(catta::json::Token::character('2'), TAIL + 0);
+            case MPP_STEP_DAC3 + 0:
+                return next(catta::json::Token::character('M'));
+            case MPP_STEP_DAC3 + 1:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_DAC3 + 2:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_DAC3 + 3:
+                return next(catta::json::Token::character('S'));
+            case MPP_STEP_DAC3 + 4:
+                return next(catta::json::Token::character('t'));
+            case MPP_STEP_DAC3 + 5:
+                return next(catta::json::Token::character('e'));
+            case MPP_STEP_DAC3 + 6:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_DAC3 + 7:
+                return next(catta::json::Token::character('D'));
+            case MPP_STEP_DAC3 + 8:
+                return next(catta::json::Token::character('a'));
+            case MPP_STEP_DAC3 + 9:
+                return next(catta::json::Token::character('c'));
+            case MPP_STEP_DAC3 + 10:
+                return jump(catta::json::Token::character('3'), TAIL + 0);
+            case MPP_STEP_UDC0 + 0:
+                return next(catta::json::Token::character('M'));
+            case MPP_STEP_UDC0 + 1:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_UDC0 + 2:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_UDC0 + 3:
+                return next(catta::json::Token::character('S'));
+            case MPP_STEP_UDC0 + 4:
+                return next(catta::json::Token::character('t'));
+            case MPP_STEP_UDC0 + 5:
+                return next(catta::json::Token::character('e'));
+            case MPP_STEP_UDC0 + 6:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_UDC0 + 7:
+                return next(catta::json::Token::character('U'));
+            case MPP_STEP_UDC0 + 8:
+                return next(catta::json::Token::character('d'));
+            case MPP_STEP_UDC0 + 9:
+                return next(catta::json::Token::character('c'));
+            case MPP_STEP_UDC0 + 10:
+                return jump(catta::json::Token::character('0'), TAIL + 0);
+            case MPP_STEP_UDC1 + 0:
+                return next(catta::json::Token::character('M'));
+            case MPP_STEP_UDC1 + 1:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_UDC1 + 2:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_UDC1 + 3:
+                return next(catta::json::Token::character('S'));
+            case MPP_STEP_UDC1 + 4:
+                return next(catta::json::Token::character('t'));
+            case MPP_STEP_UDC1 + 5:
+                return next(catta::json::Token::character('e'));
+            case MPP_STEP_UDC1 + 6:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_UDC1 + 7:
+                return next(catta::json::Token::character('U'));
+            case MPP_STEP_UDC1 + 8:
+                return next(catta::json::Token::character('d'));
+            case MPP_STEP_UDC1 + 9:
+                return next(catta::json::Token::character('c'));
+            case MPP_STEP_UDC1 + 10:
+                return jump(catta::json::Token::character('1'), TAIL + 0);
+            case MPP_STEP_UDC2 + 0:
+                return next(catta::json::Token::character('M'));
+            case MPP_STEP_UDC2 + 1:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_UDC2 + 2:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_UDC2 + 3:
+                return next(catta::json::Token::character('S'));
+            case MPP_STEP_UDC2 + 4:
+                return next(catta::json::Token::character('t'));
+            case MPP_STEP_UDC2 + 5:
+                return next(catta::json::Token::character('e'));
+            case MPP_STEP_UDC2 + 6:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_UDC2 + 7:
+                return next(catta::json::Token::character('U'));
+            case MPP_STEP_UDC2 + 8:
+                return next(catta::json::Token::character('d'));
+            case MPP_STEP_UDC2 + 9:
+                return next(catta::json::Token::character('c'));
+            case MPP_STEP_UDC2 + 10:
+                return jump(catta::json::Token::character('2'), TAIL + 0);
+            case MPP_STEP_UDC3 + 0:
+                return next(catta::json::Token::character('M'));
+            case MPP_STEP_UDC3 + 1:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_UDC3 + 2:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_UDC3 + 3:
+                return next(catta::json::Token::character('S'));
+            case MPP_STEP_UDC3 + 4:
+                return next(catta::json::Token::character('t'));
+            case MPP_STEP_UDC3 + 5:
+                return next(catta::json::Token::character('e'));
+            case MPP_STEP_UDC3 + 6:
+                return next(catta::json::Token::character('p'));
+            case MPP_STEP_UDC3 + 7:
+                return next(catta::json::Token::character('U'));
+            case MPP_STEP_UDC3 + 8:
+                return next(catta::json::Token::character('d'));
+            case MPP_STEP_UDC3 + 9:
+                return next(catta::json::Token::character('c'));
+            case MPP_STEP_UDC3 + 10:
+                return jump(catta::json::Token::character('3'), TAIL + 0);
+            case MPP_SAMPLE_DAC0 + 0:
+                return next(catta::json::Token::character('M'));
+            case MPP_SAMPLE_DAC0 + 1:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_DAC0 + 2:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_DAC0 + 3:
+                return next(catta::json::Token::character('S'));
+            case MPP_SAMPLE_DAC0 + 4:
+                return next(catta::json::Token::character('a'));
+            case MPP_SAMPLE_DAC0 + 5:
+                return next(catta::json::Token::character('m'));
+            case MPP_SAMPLE_DAC0 + 6:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_DAC0 + 7:
+                return next(catta::json::Token::character('l'));
+            case MPP_SAMPLE_DAC0 + 8:
+                return next(catta::json::Token::character('e'));
+            case MPP_SAMPLE_DAC0 + 9:
+                return next(catta::json::Token::character('D'));
+            case MPP_SAMPLE_DAC0 + 10:
+                return next(catta::json::Token::character('a'));
+            case MPP_SAMPLE_DAC0 + 11:
+                return next(catta::json::Token::character('c'));
+            case MPP_SAMPLE_DAC0 + 12:
+                return jump(catta::json::Token::character('0'), TAIL + 0);
+            case MPP_SAMPLE_DAC1 + 0:
+                return next(catta::json::Token::character('M'));
+            case MPP_SAMPLE_DAC1 + 1:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_DAC1 + 2:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_DAC1 + 3:
+                return next(catta::json::Token::character('S'));
+            case MPP_SAMPLE_DAC1 + 4:
+                return next(catta::json::Token::character('a'));
+            case MPP_SAMPLE_DAC1 + 5:
+                return next(catta::json::Token::character('m'));
+            case MPP_SAMPLE_DAC1 + 6:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_DAC1 + 7:
+                return next(catta::json::Token::character('l'));
+            case MPP_SAMPLE_DAC1 + 8:
+                return next(catta::json::Token::character('e'));
+            case MPP_SAMPLE_DAC1 + 9:
+                return next(catta::json::Token::character('D'));
+            case MPP_SAMPLE_DAC1 + 10:
+                return next(catta::json::Token::character('a'));
+            case MPP_SAMPLE_DAC1 + 11:
+                return next(catta::json::Token::character('c'));
+            case MPP_SAMPLE_DAC1 + 12:
+                return jump(catta::json::Token::character('1'), TAIL + 0);
+            case MPP_SAMPLE_DAC2 + 0:
+                return next(catta::json::Token::character('M'));
+            case MPP_SAMPLE_DAC2 + 1:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_DAC2 + 2:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_DAC2 + 3:
+                return next(catta::json::Token::character('S'));
+            case MPP_SAMPLE_DAC2 + 4:
+                return next(catta::json::Token::character('a'));
+            case MPP_SAMPLE_DAC2 + 5:
+                return next(catta::json::Token::character('m'));
+            case MPP_SAMPLE_DAC2 + 6:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_DAC2 + 7:
+                return next(catta::json::Token::character('l'));
+            case MPP_SAMPLE_DAC2 + 8:
+                return next(catta::json::Token::character('e'));
+            case MPP_SAMPLE_DAC2 + 9:
+                return next(catta::json::Token::character('D'));
+            case MPP_SAMPLE_DAC2 + 10:
+                return next(catta::json::Token::character('a'));
+            case MPP_SAMPLE_DAC2 + 11:
+                return next(catta::json::Token::character('c'));
+            case MPP_SAMPLE_DAC2 + 12:
+                return jump(catta::json::Token::character('2'), TAIL + 0);
+            case MPP_SAMPLE_DAC3 + 0:
+                return next(catta::json::Token::character('M'));
+            case MPP_SAMPLE_DAC3 + 1:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_DAC3 + 2:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_DAC3 + 3:
+                return next(catta::json::Token::character('S'));
+            case MPP_SAMPLE_DAC3 + 4:
+                return next(catta::json::Token::character('a'));
+            case MPP_SAMPLE_DAC3 + 5:
+                return next(catta::json::Token::character('m'));
+            case MPP_SAMPLE_DAC3 + 6:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_DAC3 + 7:
+                return next(catta::json::Token::character('l'));
+            case MPP_SAMPLE_DAC3 + 8:
+                return next(catta::json::Token::character('e'));
+            case MPP_SAMPLE_DAC3 + 9:
+                return next(catta::json::Token::character('D'));
+            case MPP_SAMPLE_DAC3 + 10:
+                return next(catta::json::Token::character('a'));
+            case MPP_SAMPLE_DAC3 + 11:
+                return next(catta::json::Token::character('c'));
+            case MPP_SAMPLE_DAC3 + 12:
+                return jump(catta::json::Token::character('3'), TAIL + 0);
+            case MPP_SAMPLE_UDC0 + 0:
+                return next(catta::json::Token::character('M'));
+            case MPP_SAMPLE_UDC0 + 1:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_UDC0 + 2:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_UDC0 + 3:
+                return next(catta::json::Token::character('S'));
+            case MPP_SAMPLE_UDC0 + 4:
+                return next(catta::json::Token::character('a'));
+            case MPP_SAMPLE_UDC0 + 5:
+                return next(catta::json::Token::character('m'));
+            case MPP_SAMPLE_UDC0 + 6:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_UDC0 + 7:
+                return next(catta::json::Token::character('l'));
+            case MPP_SAMPLE_UDC0 + 8:
+                return next(catta::json::Token::character('e'));
+            case MPP_SAMPLE_UDC0 + 9:
+                return next(catta::json::Token::character('U'));
+            case MPP_SAMPLE_UDC0 + 10:
+                return next(catta::json::Token::character('d'));
+            case MPP_SAMPLE_UDC0 + 11:
+                return next(catta::json::Token::character('c'));
+            case MPP_SAMPLE_UDC0 + 12:
+                return jump(catta::json::Token::character('0'), TAIL + 0);
+            case MPP_SAMPLE_UDC1 + 0:
+                return next(catta::json::Token::character('M'));
+            case MPP_SAMPLE_UDC1 + 1:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_UDC1 + 2:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_UDC1 + 3:
+                return next(catta::json::Token::character('S'));
+            case MPP_SAMPLE_UDC1 + 4:
+                return next(catta::json::Token::character('a'));
+            case MPP_SAMPLE_UDC1 + 5:
+                return next(catta::json::Token::character('m'));
+            case MPP_SAMPLE_UDC1 + 6:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_UDC1 + 7:
+                return next(catta::json::Token::character('l'));
+            case MPP_SAMPLE_UDC1 + 8:
+                return next(catta::json::Token::character('e'));
+            case MPP_SAMPLE_UDC1 + 9:
+                return next(catta::json::Token::character('U'));
+            case MPP_SAMPLE_UDC1 + 10:
+                return next(catta::json::Token::character('d'));
+            case MPP_SAMPLE_UDC1 + 11:
+                return next(catta::json::Token::character('c'));
+            case MPP_SAMPLE_UDC1 + 12:
+                return jump(catta::json::Token::character('1'), TAIL + 0);
+            case MPP_SAMPLE_UDC2 + 0:
+                return next(catta::json::Token::character('M'));
+            case MPP_SAMPLE_UDC2 + 1:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_UDC2 + 2:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_UDC2 + 3:
+                return next(catta::json::Token::character('S'));
+            case MPP_SAMPLE_UDC2 + 4:
+                return next(catta::json::Token::character('a'));
+            case MPP_SAMPLE_UDC2 + 5:
+                return next(catta::json::Token::character('m'));
+            case MPP_SAMPLE_UDC2 + 6:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_UDC2 + 7:
+                return next(catta::json::Token::character('l'));
+            case MPP_SAMPLE_UDC2 + 8:
+                return next(catta::json::Token::character('e'));
+            case MPP_SAMPLE_UDC2 + 9:
+                return next(catta::json::Token::character('U'));
+            case MPP_SAMPLE_UDC2 + 10:
+                return next(catta::json::Token::character('d'));
+            case MPP_SAMPLE_UDC2 + 11:
+                return next(catta::json::Token::character('c'));
+            case MPP_SAMPLE_UDC2 + 12:
+                return jump(catta::json::Token::character('2'), TAIL + 0);
+            case MPP_SAMPLE_UDC3 + 0:
+                return next(catta::json::Token::character('M'));
+            case MPP_SAMPLE_UDC3 + 1:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_UDC3 + 2:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_UDC3 + 3:
+                return next(catta::json::Token::character('S'));
+            case MPP_SAMPLE_UDC3 + 4:
+                return next(catta::json::Token::character('a'));
+            case MPP_SAMPLE_UDC3 + 5:
+                return next(catta::json::Token::character('m'));
+            case MPP_SAMPLE_UDC3 + 6:
+                return next(catta::json::Token::character('p'));
+            case MPP_SAMPLE_UDC3 + 7:
+                return next(catta::json::Token::character('l'));
+            case MPP_SAMPLE_UDC3 + 8:
+                return next(catta::json::Token::character('e'));
+            case MPP_SAMPLE_UDC3 + 9:
+                return next(catta::json::Token::character('U'));
+            case MPP_SAMPLE_UDC3 + 10:
+                return next(catta::json::Token::character('d'));
+            case MPP_SAMPLE_UDC3 + 11:
+                return next(catta::json::Token::character('c'));
+            case MPP_SAMPLE_UDC3 + 12:
+                return jump(catta::json::Token::character('3'), TAIL + 0);
             case TAIL + 0:
                 return next(catta::json::Token::closeString());
             case TAIL + 1:
@@ -2040,9 +2476,9 @@ class Serializer<catta::modbus::si::RegisterAddress>
     static constexpr std::uint16_t INVERTER_HERTZ_SCALE_FACTOR = INVERTER_HERTZ + 13;
     static constexpr std::uint16_t INVERTER_AC_APPARENT_POWER = INVERTER_HERTZ_SCALE_FACTOR + 24;
     static constexpr std::uint16_t INVERTER_AC_APPARENT_POWER_SCALE_FACTOR = INVERTER_AC_APPARENT_POWER + 23;
-    static constexpr std::uint16_t INVERTER_AC_REACTIV_POWER = INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 34;
-    static constexpr std::uint16_t INVERTER_AC_REACTIV_POWER_SCALE_FACTOR = INVERTER_AC_REACTIV_POWER + 22;
-    static constexpr std::uint16_t INVERTER_POWER_FACTOR = INVERTER_AC_REACTIV_POWER_SCALE_FACTOR + 33;
+    static constexpr std::uint16_t INVERTER_AC_REACTIVE_POWER = INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 34;
+    static constexpr std::uint16_t INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR = INVERTER_AC_REACTIVE_POWER + 23;
+    static constexpr std::uint16_t INVERTER_POWER_FACTOR = INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 34;
     static constexpr std::uint16_t INVERTER_POWER_FACTOR_SCALE_FACTOR = INVERTER_POWER_FACTOR + 19;
     static constexpr std::uint16_t INVERTER_WATT_HOURS = INVERTER_POWER_FACTOR_SCALE_FACTOR + 30;
     static constexpr std::uint16_t INVERTER_WATT_HOURS_SCALE_FACTOR = INVERTER_WATT_HOURS + 17;
@@ -2061,7 +2497,23 @@ class Serializer<catta::modbus::si::RegisterAddress>
     static constexpr std::uint16_t NAMEPLATE_DER_TYPE = INVERTER_VENDOR_EVENT_BITFIELD4 + 28;
     static constexpr std::uint16_t EXTENDED_MESUREMENTS_AC_WATT_HOURS = NAMEPLATE_DER_TYPE + 16;
     static constexpr std::uint16_t EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE = EXTENDED_MESUREMENTS_AC_WATT_HOURS + 30;
-    static constexpr std::uint16_t TAIL = EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 35;
+    static constexpr std::uint16_t MPP_STEP_DAC0 = EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 35;
+    static constexpr std::uint16_t MPP_STEP_DAC1 = MPP_STEP_DAC0 + 11;
+    static constexpr std::uint16_t MPP_STEP_DAC2 = MPP_STEP_DAC1 + 11;
+    static constexpr std::uint16_t MPP_STEP_DAC3 = MPP_STEP_DAC2 + 11;
+    static constexpr std::uint16_t MPP_STEP_UDC0 = MPP_STEP_DAC3 + 11;
+    static constexpr std::uint16_t MPP_STEP_UDC1 = MPP_STEP_UDC0 + 11;
+    static constexpr std::uint16_t MPP_STEP_UDC2 = MPP_STEP_UDC1 + 11;
+    static constexpr std::uint16_t MPP_STEP_UDC3 = MPP_STEP_UDC2 + 11;
+    static constexpr std::uint16_t MPP_SAMPLE_DAC0 = MPP_STEP_UDC3 + 11;
+    static constexpr std::uint16_t MPP_SAMPLE_DAC1 = MPP_SAMPLE_DAC0 + 13;
+    static constexpr std::uint16_t MPP_SAMPLE_DAC2 = MPP_SAMPLE_DAC1 + 13;
+    static constexpr std::uint16_t MPP_SAMPLE_DAC3 = MPP_SAMPLE_DAC2 + 13;
+    static constexpr std::uint16_t MPP_SAMPLE_UDC0 = MPP_SAMPLE_DAC3 + 13;
+    static constexpr std::uint16_t MPP_SAMPLE_UDC1 = MPP_SAMPLE_UDC0 + 13;
+    static constexpr std::uint16_t MPP_SAMPLE_UDC2 = MPP_SAMPLE_UDC1 + 13;
+    static constexpr std::uint16_t MPP_SAMPLE_UDC3 = MPP_SAMPLE_UDC2 + 13;
+    static constexpr std::uint16_t TAIL = MPP_SAMPLE_UDC3 + 13;
     static constexpr std::uint16_t DONE = TAIL + 2;
     static constexpr std::uint16_t ERROR_STATE = DONE + 1;
 };
