@@ -93,11 +93,7 @@ class Values : public Fl_Group
     /**
      * @param[in] text The string for the energy production field.
      */
-    void setEnergyProduction(const std::string& text) noexcept
-    {
-        std::cout << "SET EP: " << text << '\n';
-        _energyProduction->set(text);
-    }
+    void setEnergyProduction(const std::string& text) noexcept { _energyProduction->set(text); }
     /**
      * @param[in] text The string for the dc voltage field.
      */
