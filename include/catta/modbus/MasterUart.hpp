@@ -154,7 +154,7 @@ class MasterUart
             if (received.value() & 0x80) return receiveBase(RECEVIE_WAIT_FOR_LENGTH, Token::exception(received.value()));
             switch (received.value())
             {
-                case 0x16:
+                case 0x10:
                     return setLength(6, Token::function(received.value()));
                 default:
                     return receiveBase(RECEVIE_WAIT_FOR_LENGTH, Token::function(received.value()));

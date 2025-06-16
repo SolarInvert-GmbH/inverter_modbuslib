@@ -31,9 +31,9 @@ static bool checkCases(catta::test::Test<OUTPUT>& test)
     const ByteVec sendInput0 = {0x01, 0x31, 0x01, 0x01, 0x90, 0x47};
     const TokenVec sendOutput0 = {Token::start(), Token::function(0x31), Token::data(0x01), Token::data(0x01), Token::end()};
 
-    const TokenVec receiveInput1 = {Token::start(),    Token::function(0x16), Token::data(0x9c), Token::data(0x40), Token::data(0x00),
+    const TokenVec receiveInput1 = {Token::start(),    Token::function(0x10), Token::data(0x9c), Token::data(0x40), Token::data(0x00),
                                     Token::data(0x00), Token::data(0xaf),     Token::data(0xfe), Token::end()};
-    const ByteVec receiveOutput1 = {0x01, 0x16, 0x9c, 0x40, 0x00, 0x00, 0xaf, 0xfe, 0x16, 0x25};
+    const ByteVec receiveOutput1 = {0x01, 0x10, 0x9c, 0x40, 0x00, 0x00, 0xaf, 0xfe, 0x70, 0x25};
     const ByteVec sendInput1 = receiveOutput1;
     const TokenVec sendOutput1 = receiveInput1;
 
@@ -58,10 +58,6 @@ static bool checkCases(catta::test::Test<OUTPUT>& test)
         return s + "]";
     };
     catta::modbus::SlaveUart uart;
-
-    // sendInput0, sendOutput0, receiveInput0, receiveOutput0
-
-    // const ByteVec& sendOutputExpected,const TokenVec& sendInput,const TokenVec& receiveOutputExpected,const ByteVec& receiveInput,
 
     const auto checkNormal = [&now, &uart, &test](const ByteVec& sendInput, const TokenVec& sendOutputExpected, const TokenVec& receiveInput,
                                                   const ByteVec& receiveOutputExpected,

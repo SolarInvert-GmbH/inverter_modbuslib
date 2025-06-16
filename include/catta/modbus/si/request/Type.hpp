@@ -54,7 +54,7 @@ class Type
      */
     [[nodiscard]] constexpr static Type readRegister() noexcept { return Type{READ_REGISTER}; }
     /**
-     * @return Returns the write register 0x16.
+     * @return Returns the write register 0x10.
      */
     [[nodiscard]] constexpr static Type writeRegister() noexcept { return Type{WRITE_REGISTER}; }
     /**
@@ -127,7 +127,7 @@ class Type
      */
     [[nodiscard]] constexpr bool isReadRegister() const noexcept { return _value == READ_REGISTER; }
     /**
-     * @return Returns @b true if write register 0x16 is represented, otherwise @b false.
+     * @return Returns @b true if write register 0x10 is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isWriteRegister() const noexcept { return _value == WRITE_REGISTER; }
     /**
@@ -215,7 +215,7 @@ class Type
             case READ_REGISTER:
                 return 0x03;
             case WRITE_REGISTER:
-                return 0x16;
+                return 0x10;
             case FACTORY_VALUES:
                 return 0x31;
             case READ_OPERATING_DATA_33:
@@ -256,7 +256,7 @@ class Type
         {
             case 0x03:
                 return Type(READ_REGISTER);
-            case 0x16:
+            case 0x10:
                 return Type(WRITE_REGISTER);
             case 0x31:
                 return Type(FACTORY_VALUES);

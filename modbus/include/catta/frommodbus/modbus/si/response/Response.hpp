@@ -65,7 +65,7 @@ class Parser<catta::modbus::si::response::Response>
                     return startParserAndJump(_readOperatingData33Parser, READ_OPERATING_DATA_33 + 0);
                 case 0x3e:
                     return startParserAndJump(_readOperatingData3eParser, READ_OPERATING_DATA_3E + 0);
-                case 0x16:
+                case 0x10:
                     return startParserAndJump(_writeRegisterParser, WRITE_REGISTER + 0);
                 case 0x34:
                 case 0x35:
@@ -195,7 +195,7 @@ class Parser<catta::modbus::si::response::Response>
                     default:
                         return Output::empty();
                 }
-            case 0x16:
+            case 0x10:
                 return Output::writeRegister(_writeRegisterParser.data());
             case 0x31:
                 return Output::factoryValues(_factoryValuesParser.data());

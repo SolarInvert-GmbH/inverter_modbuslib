@@ -124,7 +124,7 @@ class SlaveUart
         {
             switch (received.value())
             {
-                case 0x16:
+                case 0x10:
                     return setLength(6, Token::function(received.value()));
                 case 0x03:
                     return setLength(4, Token::function(received.value()));

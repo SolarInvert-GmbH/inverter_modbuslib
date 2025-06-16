@@ -51,7 +51,7 @@ class Parser<catta::modbus::si::WriteRegister>
             case START + 0:
                 return input.type().isStart() ? next() : error();
             case ADDRESS + 0:
-                return input == Input::function(0x16) ? next() : error();
+                return input == Input::function(0x10) ? next() : error();
             case ADDRESS + 1:
                 return high(_address);
             case ADDRESS + 2:

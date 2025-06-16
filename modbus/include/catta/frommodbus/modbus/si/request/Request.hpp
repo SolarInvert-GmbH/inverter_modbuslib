@@ -57,7 +57,7 @@ class Parser<catta::modbus::si::request::Request>
             {
                 case 0x03:
                     return startParserAndJump(_readRegisterParser, READ_REGISTER + 0);
-                case 0x16:
+                case 0x10:
                     return startParserAndJump(_writeRegisterParser, WRITE_REGISTER + 0);
                 case 0x38:
                     return startParserAndJump(_constantVoltageParser, START_CONSTANT_VOLTAGE + 0);

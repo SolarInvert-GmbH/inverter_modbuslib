@@ -48,7 +48,7 @@ class Serializer<catta::modbus::si::WriteRegister>
             case START + 0:
                 return next(Output::start());
             case ADDRESS + 0:
-                return next(Output::function(0x16));
+                return next(Output::function(0x10));
             case ADDRESS + 1:
                 return high(input.registerAddress().raw());
             case ADDRESS + 2:
