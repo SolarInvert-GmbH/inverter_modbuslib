@@ -4,7 +4,6 @@
 #include <catta/modbus/si/response/Response.hpp>
 
 // tomodbus
-#include <catta/tomodbus/modbus/si/WriteRegister.hpp>
 #include <catta/tomodbus/modbus/si/response/FactoryValues.hpp>
 #include <catta/tomodbus/modbus/si/response/ReadError.hpp>
 #include <catta/tomodbus/modbus/si/response/ReadOperatingData33.hpp>
@@ -107,7 +106,7 @@ class Serializer<catta::modbus::si::response::Response>
                 case Type::limitBatteryInvert():
                     return jump(Output::start(), SUCCESS + 0);
                 case Type::writeRegister():
-                    return handle(_writeRegisterSerializer, input.writeRegisterValue());
+                    return jump(Output::start(), WRITE_REGISTER + 0);
                 case Type::value16():
                 case Type::value32():
                 case Type::value64():
@@ -133,13 +132,15 @@ class Serializer<catta::modbus::si::response::Response>
                     return 0;
             }
         };
-        const auto high = [this, jump, input]()
-        { return jump(Output::data(static_cast<std::uint8_t>(input.raw()[_index] >> 8)), READ_REGISTER + 3); };
-        const auto low = [this, jump, input, getSize]()
+        const auto high = [jump](const std::uint16_t i, const std::uint8_t state)
+        { return jump(Output::data(static_cast<std::uint8_t>(i >> 8)), state); };
+        const auto low = [jump](const std::uint16_t i, const std::uint8_t state)
+        { return jump(Output::data(static_cast<std::uint8_t>(i >> 0)), state); };
+        const auto lowRead = [this, low, input, getSize]()
         {
             const std::uint8_t index = _index;
             _index++;
-            return jump(Output::data(static_cast<std::uint8_t>(input.raw()[index] >> 0)), _index >= getSize() / 2 ? TAIL + 0 : READ_REGISTER + 2);
+            return low(input.raw()[index], _index >= getSize() / 2 ? TAIL + 0 : READ_REGISTER + 2);
         };
         switch (_state)
         {
@@ -152,9 +153,19 @@ class Serializer<catta::modbus::si::response::Response>
             case READ_REGISTER + 1:
                 return jump(Output::data(getSize()), READ_REGISTER + 2);
             case READ_REGISTER + 2:
-                return high();
+                return high(input.raw()[_index], READ_REGISTER + 3);
             case READ_REGISTER + 3:
-                return low();
+                return lowRead();
+            case WRITE_REGISTER + 0:
+                return jump(Output::function(0x10), WRITE_REGISTER + 1);
+            case WRITE_REGISTER + 1:
+                return high(input.writeRegisterValue().raw(), WRITE_REGISTER + 2);
+            case WRITE_REGISTER + 2:
+                return low(input.writeRegisterValue().raw(), WRITE_REGISTER + 3);
+            case WRITE_REGISTER + 3:
+                return jump(Output::data(0x00), WRITE_REGISTER + 4);
+            case WRITE_REGISTER + 4:
+                return jump(Output::data(0x01), TAIL + 0);
             case SUCCESS + 0:
                 return jump(Output::function(getFunctionCode()), SUCCESS + 1);
             case SUCCESS + 1:
@@ -192,11 +203,11 @@ class Serializer<catta::modbus::si::response::Response>
     Serializer<catta::modbus::si::response::ReadError> _readErrorSerializer;
     Serializer<catta::modbus::si::response::ReadOperatingData33> _readOperatingData33Serializer;
     Serializer<catta::modbus::si::response::ReadOperatingData3e> _readOperatingData3eSerializer;
-    Serializer<catta::modbus::si::WriteRegister> _writeRegisterSerializer;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t HANDLE = START + 1;
     static constexpr std::uint8_t READ_REGISTER = HANDLE + 1;
-    static constexpr std::uint8_t SUCCESS = READ_REGISTER + 4;
+    static constexpr std::uint8_t WRITE_REGISTER = READ_REGISTER + 4;
+    static constexpr std::uint8_t SUCCESS = WRITE_REGISTER + 5;
     static constexpr std::uint8_t EXCEPTION = SUCCESS + 3;
     static constexpr std::uint8_t TAIL = EXCEPTION + 3;
     static constexpr std::uint8_t DONE = TAIL + 1;

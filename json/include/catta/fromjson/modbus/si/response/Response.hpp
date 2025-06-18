@@ -5,7 +5,7 @@
 
 // fromjson
 #include <catta/fromjson/fromJson.hpp>
-#include <catta/fromjson/modbus/si/WriteRegister.hpp>
+#include <catta/fromjson/modbus/si/RegisterAddress.hpp>
 #include <catta/fromjson/modbus/si/response/Exception.hpp>
 #include <catta/fromjson/modbus/si/response/FactoryValues.hpp>
 #include <catta/fromjson/modbus/si/response/ReadError.hpp>
@@ -94,7 +94,7 @@ class Parser<catta::modbus::si::response::Response>
                 if (!parser.state().isFailed()) possible = true;
                 if (parser.state().isDone()) done = true;
             };
-            h(_writeRegisterParser);
+            h(_registerAddressParser);
             h(_exceptionParser);
             h(_factoryValuesParser);
             h(_readErrorParser);
@@ -191,7 +191,7 @@ class Parser<catta::modbus::si::response::Response>
             case Type::limitBatteryInvert():
                 return catta::modbus::si::response::Response::limitBatteryInvert(_valueSuccess);
             case Type::writeRegister():
-                return catta::modbus::si::response::Response::writeRegister(_writeRegisterParser.data());
+                return catta::modbus::si::response::Response::writeRegister(_registerAddressParser.data());
             case Type::value16():
                 return catta::modbus::si::response::Response::value16(_valueU16Parser.data().value());
             case Type::value32():
@@ -226,7 +226,7 @@ class Parser<catta::modbus::si::response::Response>
     Parser<catta::modbus::sunspec::ValueU32> _valueU32Parser;
     Parser<catta::modbus::sunspec::ValueU64> _valueU64Parser;
     Parser<catta::modbus::sunspec::String> _stringParser;
-    Parser<catta::modbus::si::WriteRegister> _writeRegisterParser;
+    Parser<catta::modbus::si::RegisterAddress> _registerAddressParser;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t HUB = START + 1;
     static constexpr std::uint8_t TAIL = HUB + 17;

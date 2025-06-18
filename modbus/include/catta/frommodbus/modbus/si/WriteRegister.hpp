@@ -61,8 +61,10 @@ class Parser<catta::modbus::si::WriteRegister>
             case DATA + 1:
                 return next();
             case DATA + 2:
-                return high(_data);
+                return next();
             case DATA + 3:
+                return high(_data);
+            case DATA + 4:
                 return low(_data);
             case TAIL + 0:
                 return input == catta::modbus::Token::end() ? jump(DONE + 0) : error();
@@ -90,7 +92,7 @@ class Parser<catta::modbus::si::WriteRegister>
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t ADDRESS = START + 1;
     static constexpr std::uint8_t DATA = ADDRESS + 3;
-    static constexpr std::uint8_t TAIL = DATA + 4;
+    static constexpr std::uint8_t TAIL = DATA + 5;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR_STATE = DONE + 1;
 };

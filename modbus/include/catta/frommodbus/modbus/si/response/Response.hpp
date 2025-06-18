@@ -5,7 +5,6 @@
 
 // frommodbus
 #include <catta/frommodbus/fromModbus.hpp>
-#include <catta/frommodbus/modbus/si/WriteRegister.hpp>
 #include <catta/frommodbus/modbus/si/response/FactoryValues.hpp>
 #include <catta/frommodbus/modbus/si/response/ReadError.hpp>
 #include <catta/frommodbus/modbus/si/response/ReadOperatingData33.hpp>
@@ -66,7 +65,8 @@ class Parser<catta::modbus::si::response::Response>
                 case 0x3e:
                     return startParserAndJump(_readOperatingData3eParser, READ_OPERATING_DATA_3E + 0);
                 case 0x10:
-                    return startParserAndJump(_writeRegisterParser, WRITE_REGISTER + 0);
+                    _count = 2;
+                    return jump(WRITE_REGISTER + 0);
                 case 0x34:
                 case 0x35:
                 case 0x36:
@@ -110,18 +110,18 @@ class Parser<catta::modbus::si::response::Response>
             _data[0] = v;
             return jump(state);
         };
-        const auto high = [input, error, jump, this]()
+        const auto high = [input, error, jump, this](const std::uint8_t state)
         {
             if (!input.type().isData()) return error();
             _data[_index] = static_cast<std::uint16_t>(input.value() << 8);
-            return jump(READ_REGISTER + 2);
+            return jump(state);
         };
-        const auto low = [input, error, jump, this]()
+        const auto low = [input, error, jump, this](const std::uint8_t preState, const std::uint8_t postState)
         {
             if (!input.type().isData()) return error();
             _data[_index] = static_cast<std::uint16_t>(_data[_index] | input.value());
             _index++;
-            return _index >= _count / 2 ? jump(TAIL + 0) : jump(READ_REGISTER + 1);
+            return jump(_index >= _count / 2 ? postState : preState);
         };
         switch (_state)
         {
@@ -130,7 +130,13 @@ class Parser<catta::modbus::si::response::Response>
             case START + 1:
                 return function();
             case WRITE_REGISTER + 0:
-                return handle(_writeRegisterParser);
+                return high(WRITE_REGISTER + 1);
+            case WRITE_REGISTER + 1:
+                return low(WRITE_REGISTER + 2, WRITE_REGISTER + 2);
+            case WRITE_REGISTER + 2:
+                return input == Input::data(0x00) ? next() : error();
+            case WRITE_REGISTER + 3:
+                return input == Input::data(0x01) ? jump(TAIL + 0) : error();
             case FACTORY_VALUES:
                 return handle(_factoryValuesParser);
             case READ_ERROR:
@@ -142,9 +148,9 @@ class Parser<catta::modbus::si::response::Response>
             case READ_REGISTER + 0:
                 return getCount(READ_REGISTER + 1);
             case READ_REGISTER + 1:
-                return high();
+                return high(READ_REGISTER + 2);
             case READ_REGISTER + 2:
-                return low();
+                return low(READ_REGISTER + 1, TAIL + 0);
             case SUCCESS + 0:
                 return input == Input::data(0x01) ? next() : error();
             case SUCCESS + 1:
@@ -196,7 +202,7 @@ class Parser<catta::modbus::si::response::Response>
                         return Output::empty();
                 }
             case 0x10:
-                return Output::writeRegister(_writeRegisterParser.data());
+                return Output::writeRegister(catta::modbus::si::RegisterAddress::fromRaw(_data[0]));
             case 0x31:
                 return Output::factoryValues(_factoryValuesParser.data());
             case 0x33:
@@ -248,14 +254,13 @@ class Parser<catta::modbus::si::response::Response>
     Parser<catta::modbus::si::response::ReadError> _readErrorParser;
     Parser<catta::modbus::si::response::ReadOperatingData33> _readOperatingData33Parser;
     Parser<catta::modbus::si::response::ReadOperatingData3e> _readOperatingData3eParser;
-    Parser<catta::modbus::si::WriteRegister> _writeRegisterParser;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t FACTORY_VALUES = START + 2;
     static constexpr std::uint8_t READ_ERROR = FACTORY_VALUES + 1;
     static constexpr std::uint8_t READ_OPERATING_DATA_33 = READ_ERROR + 1;
     static constexpr std::uint8_t READ_OPERATING_DATA_3E = READ_OPERATING_DATA_33 + 1;
     static constexpr std::uint8_t WRITE_REGISTER = READ_OPERATING_DATA_3E + 1;
-    static constexpr std::uint8_t READ_REGISTER = WRITE_REGISTER + 1;
+    static constexpr std::uint8_t READ_REGISTER = WRITE_REGISTER + 4;
     static constexpr std::uint8_t SUCCESS = READ_REGISTER + 3;
     static constexpr std::uint8_t EXCEPTION = SUCCESS + 2;
     static constexpr std::uint8_t TAIL = EXCEPTION + 2;

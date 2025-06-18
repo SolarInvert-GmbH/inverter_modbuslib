@@ -5,8 +5,8 @@
 
 // random
 #include <catta/random/Random.hpp>
+#include <catta/random/modbus/si/RegisterAddress.hpp>
 #include <catta/random/modbus/si/RegisterValue.hpp>
-#include <catta/random/modbus/si/WriteRegister.hpp>
 #include <catta/random/modbus/si/request/Type.hpp>
 #include <catta/random/modbus/si/response/Exception.hpp>
 #include <catta/random/modbus/si/response/FactoryValues.hpp>
@@ -60,7 +60,7 @@ class catta::random::Create<catta::modbus::si::response::NiceResponse>
             case Type::limitBatteryInvert():
                 return catta::modbus::si::response::NiceResponse::limitBatteryInvert(random.create<bool>());
             case Type::writeRegister():
-                return catta::modbus::si::response::NiceResponse::writeRegister(random.create<catta::modbus::si::WriteRegister>());
+                return catta::modbus::si::response::NiceResponse::writeRegister(random.create<catta::modbus::si::RegisterAddress>());
             case Type::readRegister():
                 return catta::modbus::si::response::NiceResponse::readRegister(random.create<catta::modbus::si::RegisterValue>());
             default:

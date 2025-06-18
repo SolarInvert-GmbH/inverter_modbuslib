@@ -181,7 +181,7 @@ static void handleRequest(const catta::modbus::si::request::Request &request, ca
             }
             break;
         case Type::writeRegister():
-            response = Response::writeRegister(request.writeRegisterValue());
+            response = Response::writeRegister(request.writeRegisterValue().registerAddress());
             break;
         case Type::factoryValues():
             response = Response::factoryValues(random.create<catta::modbus::si::response::FactoryValues>());

@@ -155,7 +155,7 @@ class MasterUart
             switch (received.value())
             {
                 case 0x10:
-                    return setLength(6, Token::function(received.value()));
+                    return setLength(4, Token::function(received.value()));
                 default:
                     return receiveBase(RECEVIE_WAIT_FOR_LENGTH, Token::function(received.value()));
             }

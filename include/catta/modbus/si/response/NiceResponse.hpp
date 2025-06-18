@@ -7,8 +7,8 @@
 #include <catta/modbus/sunspec/String.hpp>
 
 // si
+#include <catta/modbus/si/RegisterAddress.hpp>
 #include <catta/modbus/si/RegisterValue.hpp>
-#include <catta/modbus/si/WriteRegister.hpp>
 
 // response
 #include <catta/modbus/si/response/Exception.hpp>
@@ -203,10 +203,9 @@ class NiceResponse
      * @param[in] value The exception. Has to be not empty, otherwise empty is returned.
      * @return Returns exception response if input is valid, otherwise empty.
      */
-    static constexpr NiceResponse writeRegister(const catta::modbus::si::WriteRegister value)
+    static constexpr NiceResponse writeRegister(const catta::modbus::si::RegisterAddress value)
     {
-        return value.isEmpty() ? NiceResponse::empty()
-                               : NiceResponse(Raw{value.registerAddress(), value.raw()}, catta::modbus::si::response::NiceType::writeRegister());
+        return value.isEmpty() ? NiceResponse::empty() : NiceResponse(Raw{value}, catta::modbus::si::response::NiceType::writeRegister());
     }
     /**
      * @param[in] registerValue The registerValue. Has to be valid, otherwise empty is returned.
@@ -298,9 +297,9 @@ class NiceResponse
     /**
      * @return Returns write register value. Is only valid if type is write register.
      */
-    constexpr catta::modbus::si::WriteRegister writeRegisterValue() const noexcept
+    constexpr catta::modbus::si::RegisterAddress writeRegisterValue() const noexcept
     {
-        return catta::modbus::si::WriteRegister::fromRaw(catta::modbus::si::RegisterAddress(static_cast<std::uint8_t>(_data[0])), _data[1]);
+        return catta::modbus::si::RegisterAddress(static_cast<std::uint8_t>(_data[0]));
     }
     /**
      * @return Returns exception value. Is only valid if type is exception.

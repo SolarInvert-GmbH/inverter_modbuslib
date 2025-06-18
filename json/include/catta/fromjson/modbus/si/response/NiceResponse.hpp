@@ -5,8 +5,8 @@
 
 // fromjson
 #include <catta/fromjson/fromJson.hpp>
+#include <catta/fromjson/modbus/si/RegisterAddress.hpp>
 #include <catta/fromjson/modbus/si/RegisterValue.hpp>
-#include <catta/fromjson/modbus/si/WriteRegister.hpp>
 #include <catta/fromjson/modbus/si/response/Exception.hpp>
 #include <catta/fromjson/modbus/si/response/FactoryValues.hpp>
 #include <catta/fromjson/modbus/si/response/NiceType.hpp>
@@ -210,7 +210,7 @@ class Parser<catta::modbus::si::response::NiceResponse>
     Parser<catta::modbus::si::response::ReadError> _readErrorParser;
     Parser<catta::modbus::si::response::ReadOperatingData33> _readOperatingData33Parser;
     Parser<catta::modbus::si::response::ReadOperatingData3e> _readOperatingData3eParser;
-    Parser<catta::modbus::si::WriteRegister> _writeRegisterParser;
+    Parser<catta::modbus::si::RegisterAddress> _writeRegisterParser;
     Parser<catta::modbus::si::RegisterValue> _registerValueParser;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t HUB = START + 1;

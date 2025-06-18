@@ -32,8 +32,8 @@ static bool checkCases(catta::test::Test<OUTPUT>& test)
     const TokenVec sendOutput0 = {Token::start(), Token::function(0x31), Token::data(0x01), Token::data(0x01), Token::end()};
 
     const TokenVec receiveInput1 = {Token::start(),    Token::function(0x10), Token::data(0x9c), Token::data(0x40), Token::data(0x00),
-                                    Token::data(0x00), Token::data(0xaf),     Token::data(0xfe), Token::end()};
-    const ByteVec receiveOutput1 = {0x01, 0x10, 0x9c, 0x40, 0x00, 0x00, 0xaf, 0xfe, 0x70, 0x25};
+                                    Token::data(0x01), Token::data(0x02),     Token::data(0xaf), Token::data(0xfe), Token::end()};
+    const ByteVec receiveOutput1 = {0x01, 0x10, 0x9c, 0x40, 0x00, 0x01, 0x02, 0xaf, 0xfe, 0x08, 0xe9};
     const ByteVec sendInput1 = receiveOutput1;
     const TokenVec sendOutput1 = receiveInput1;
 

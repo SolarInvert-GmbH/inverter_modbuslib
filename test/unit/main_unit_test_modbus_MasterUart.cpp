@@ -30,9 +30,9 @@ static bool checkCases(catta::test::Test<OUTPUT>& test)
                                      Token::data(0x01), Token::data(0x1E),     Token::data(0x04), Token::data(0x0D),
                                      Token::data(0x22), Token::data(0x32),     Token::data(0x28), Token::data(0x00),
                                      Token::data(0x00), Token::data(0x00),     Token::data(0x00), Token::end()};
-    const TokenVec sendInput1 = {Token::start(),    Token::function(0x10), Token::data(0x9c), Token::data(0x40), Token::data(0x00),
-                                 Token::data(0x00), Token::data(0xaf),     Token::data(0xfe), Token::end()};
-    const ByteVec sendOutput1 = {0x01, 0x10, 0x9c, 0x40, 0x00, 0x00, 0xaf, 0xfe, 0x70, 0x25};
+    const TokenVec sendInput1 = {Token::start(),    Token::function(0x10), Token::data(0x9c), Token::data(0x40),
+                                 Token::data(0x00), Token::data(0x01),     Token::end()};
+    const ByteVec sendOutput1 = {0x01, 0x10, 0x9c, 0x40, 0x00, 0x01, 0x2e, 0x4d};
     const ByteVec receiveInput1 = sendOutput1;
     const TokenVec receiveOutput1 = sendInput1;
 
@@ -96,7 +96,7 @@ static bool checkCases(catta::test::Test<OUTPUT>& test)
             if (!token.isEmpty()) return test.failedExpected(Token::empty(), token, "idle token");
             if (send)
             {
-                test.failed("Expected " + printByte(Byte()) + " as receive output,");
+                test.failed("Expected " + printByte(Byte()) + " as received output,");
                 test.failed("but got  " + printByte(send) + ".");
                 return false;
             }
@@ -155,7 +155,7 @@ static bool checkCases(catta::test::Test<OUTPUT>& test)
             if (!token.isEmpty()) receiveOutput.push_back(token);
             if (send)
             {
-                test.failed("Expected " + printByte(Byte()) + " as receive output,");
+                test.failed("Expected " + printByte(Byte()) + " as received output,");
                 test.failed("but got  " + printByte(send) + ".");
                 return false;
             }
@@ -165,7 +165,7 @@ static bool checkCases(catta::test::Test<OUTPUT>& test)
         if (debug) test.status("  receive[token]: " + printTokenVec(receiveOutput));
         if (receiveOutput != receiveOutputExpected)
         {
-            test.failed("Expected " + printTokenVec(receiveOutputExpected) + " as receive output,");
+            test.failed("Expected " + printTokenVec(receiveOutputExpected) + " as received output,");
             test.failed("but got  " + printTokenVec(receiveOutput) + ".");
             return false;
         }

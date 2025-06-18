@@ -4,7 +4,7 @@
 #include <catta/modbus/si/response/Response.hpp>
 
 // tojson
-#include <catta/tojson/modbus/si/WriteRegister.hpp>
+#include <catta/tojson/modbus/si/RegisterAddress.hpp>
 #include <catta/tojson/modbus/si/response/Exception.hpp>
 #include <catta/tojson/modbus/si/response/FactoryValues.hpp>
 #include <catta/tojson/modbus/si/response/ReadError.hpp>
@@ -80,7 +80,7 @@ class Serializer<catta::modbus::si::response::Response>
                 case Type::readOperatingData3e():
                     return handle(_readOperatingData3eSerializer, input.readOperatingData3eValue(), token);
                 case Type::writeRegister():
-                    return handle(_writeRegisterSerializer, input.writeRegisterValue(), token);
+                    return handle(_registerAddressSerializer, input.writeRegisterValue(), token);
                 case Type::value16():
                     return handle(_valueU16Serializer, catta::modbus::sunspec::ValueU16::create(input.value16Value()), token);
                 case Type::value32():
@@ -163,7 +163,7 @@ class Serializer<catta::modbus::si::response::Response>
     Serializer<catta::modbus::sunspec::ValueU32> _valueU32Serializer;
     Serializer<catta::modbus::sunspec::ValueU64> _valueU64Serializer;
     Serializer<catta::modbus::sunspec::String> _stringSerializer;
-    Serializer<catta::modbus::si::WriteRegister> _writeRegisterSerializer;
+    Serializer<catta::modbus::si::RegisterAddress> _registerAddressSerializer;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t TYPE = START + 1;
     static constexpr std::uint8_t VALUE = TYPE + 8;

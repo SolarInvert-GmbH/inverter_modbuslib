@@ -164,7 +164,7 @@ class SiRegister : public Fl_Group
                             default:
                                 break;
                         }
-                        return Response::writeRegister(request.writeRegisterValue());
+                        return Response::writeRegister(request.writeRegisterValue().registerAddress());
                     }
                     case 1:  // nothing
                         return Response::empty();

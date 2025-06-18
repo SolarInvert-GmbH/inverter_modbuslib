@@ -4,8 +4,8 @@
 #include <catta/modbus/si/response/NiceResponse.hpp>
 
 // tojson
+#include <catta/tojson/modbus/si/RegisterAddress.hpp>
 #include <catta/tojson/modbus/si/RegisterValue.hpp>
-#include <catta/tojson/modbus/si/WriteRegister.hpp>
 #include <catta/tojson/modbus/si/response/Exception.hpp>
 #include <catta/tojson/modbus/si/response/FactoryValues.hpp>
 #include <catta/tojson/modbus/si/response/NiceType.hpp>
@@ -151,7 +151,7 @@ class Serializer<catta::modbus::si::response::NiceResponse>
     Serializer<catta::modbus::si::response::ReadOperatingData33> _readOperatingData33Serializer;
     Serializer<catta::modbus::si::response::ReadOperatingData3e> _readOperatingData3eSerializer;
     Serializer<catta::modbus::si::RegisterValue> _registerValueSerializer;
-    Serializer<catta::modbus::si::WriteRegister> _writeRegisterSerializer;
+    Serializer<catta::modbus::si::RegisterAddress> _writeRegisterSerializer;
     Serializer<catta::modbus::si::RegisterAddress> _registerAddressSerializer;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t TYPE = START + 1;
