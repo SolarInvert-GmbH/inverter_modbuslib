@@ -48,6 +48,9 @@ class MiniSicc : public Fl_Double_Window
           _temperatureCallback(*this),
           _sliderCallback(*this)
     {
+        Fl::scheme("plastic");  // plastic, gleam, oxy
+        Fl::foreground(0x00, 0x00, 0x00);
+        Fl::background(0x59, 0x6a, 0x79);
         this->_connection = new Connection<UART>(10, 10, WIDTH - 20, 130, defaultUartName, nullptr, CLIENTS);
         this->_tabs = new Fl_Tabs(10, 150, WIDTH - 20, HEIGHT - 160);
         Fl_Group* g0 = new Fl_Group(10, 180, WIDTH - 20, HEIGHT - 185, "Values");
