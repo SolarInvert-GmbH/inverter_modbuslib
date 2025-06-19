@@ -9,4 +9,4 @@ add_executable(Dummy_Inverter                                                   
 add_executable(miniSICC                                                                          $<TARGET_OBJECTS:main_miniSICC>                                                           )
 
 target_link_libraries  (Dummy_Inverter fltk gdiplus comctl32 ws2_32 winspool uuid comdlg32)
-target_link_libraries  (miniSICC       fltk gdiplus comctl32 ws2_32 winspool uuid comdlg32)
+target_link_libraries  (miniSICC       fltk gdiplus comctl32 ws2_32 winspool uuid comdlg32 wbemuuid)
