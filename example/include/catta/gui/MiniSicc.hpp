@@ -279,7 +279,7 @@ class MiniSicc : public Fl_Double_Window
     class PowerFactor
     {
       public:
-        static constexpr const char* unit = "%";
+        static constexpr const char* unit = "";
         static constexpr std::size_t cacheScale = CACHE_POWER_FACTOR_SCALE;
         static constexpr RegisterAddress address = REGISTER_POWER_FACTOR;
         static void setValue(Values* values, const std::string& value) { values->setPowerFactor(value); }
