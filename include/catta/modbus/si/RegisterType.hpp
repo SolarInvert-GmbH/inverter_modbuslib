@@ -24,14 +24,15 @@ class RegisterType
     constexpr static std::uint8_t CONNECTED_PHASE = 3;
     constexpr static std::uint8_t UINT32 = 4;
     constexpr static std::uint8_t UINT64 = 5;
-    constexpr static std::uint8_t STRING32 = 6;
-    constexpr static std::uint8_t EMPTY = 7;
+    constexpr static std::uint8_t STRING16 = 6;
+    constexpr static std::uint8_t STRING32 = 7;
+    constexpr static std::uint8_t EMPTY = 8;
 
   public:
     /**
      * @param[in] value The enum value of the register type.
-     * @warning This constructor should not be used. Use uint16(), sint16(), scaleFactor(), connectedPhase(), uint32(), uint64(), string32() or
-     * empty(). Explicit constructor. Converts uint8 to register type.
+     * @warning This constructor should not be used. Use uint16(), sint16(), scaleFactor(), connectedPhase(), uint32(), uint64(), string16(),
+     * string32() or empty(). Explicit constructor. Converts uint8 to register type.
      */
     [[nodiscard]] constexpr explicit RegisterType(const std::uint8_t value) noexcept : _value(value) {}
     /**
@@ -62,6 +63,10 @@ class RegisterType
      * @return Returns the uint64 type.
      */
     [[nodiscard]] constexpr static RegisterType uint64() noexcept { return RegisterType{UINT64}; }
+    /**
+     * @return Returns the string16 type.
+     */
+    [[nodiscard]] constexpr static RegisterType string16() noexcept { return RegisterType{STRING16}; }
     /**
      * @return Returns the string32 type.
      */
@@ -104,6 +109,10 @@ class RegisterType
      */
     [[nodiscard]] constexpr bool isUint64() const noexcept { return _value == UINT64; }
     /**
+     * @return Returns @b true if string16 type is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isString16() const noexcept { return _value == STRING16; }
+    /**
      * @return Returns @b true if string32 type is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isString32() const noexcept { return _value == STRING32; }
@@ -115,7 +124,7 @@ class RegisterType
      * Register type in text form.
      */
     constexpr static std::array<std::string_view, EMPTY> enumNames = {"UINT16", "SINT16", "SCALE_FACTOR", "CONNECTED_PHASE",
-                                                                      "UINT32", "UINT64", "STRING32"};
+                                                                      "UINT32", "UINT64", "STRING16",     "STRING32"};
 
     /**
      * @return Returns the needed bytes for the type.
@@ -133,6 +142,8 @@ class RegisterType
                 return 4;
             case UINT64:
                 return 8;
+            case STRING16:
+                return 16;
             case STRING32:
                 return 32;
             default:
@@ -159,8 +170,10 @@ class RegisterType
                 return std::string_view("uI32");
             case UINT64:
                 return std::string_view("uI64");
+            case STRING16:
+                return std::string_view("st16");
             case STRING32:
-                return std::string_view("St32");
+                return std::string_view("st32");
             default:
                 return std::string_view("EMPT");
         }

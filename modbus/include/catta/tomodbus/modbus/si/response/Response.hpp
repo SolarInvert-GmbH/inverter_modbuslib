@@ -110,7 +110,8 @@ class Serializer<catta::modbus::si::response::Response>
                 case Type::value16():
                 case Type::value32():
                 case Type::value64():
-                case Type::string():
+                case Type::string16():
+                case Type::string32():
                     return jump(Output::start(), READ_REGISTER + 0);
                 default:
                     return error();
@@ -126,7 +127,9 @@ class Serializer<catta::modbus::si::response::Response>
                     return 4;
                 case catta::modbus::si::response::Type::value64():
                     return 8;
-                case catta::modbus::si::response::Type::string():
+                case catta::modbus::si::response::Type::string16():
+                    return 16;
+                case catta::modbus::si::response::Type::string32():
                     return 32;
                 default:
                     return 0;

@@ -1,16 +1,16 @@
 // catta
-#include <catta/modbus/sunspec/String.hpp>
+#include <catta/modbus/sunspec/String16.hpp>
 
 // random
-#include <catta/random/modbus/sunspec/String.hpp>
+#include <catta/random/modbus/sunspec/String16.hpp>
 
 // fromtostring
-#include <catta/fromstring/modbus/sunspec/String.hpp>
-#include <catta/tostring/modbus/sunspec/String.hpp>
+#include <catta/fromstring/modbus/sunspec/String16.hpp>
+#include <catta/tostring/modbus/sunspec/String16.hpp>
 
 // json
-#include <catta/fromjson/modbus/sunspec/String.hpp>
-#include <catta/tojson/modbus/sunspec/String.hpp>
+#include <catta/fromjson/modbus/sunspec/String16.hpp>
+#include <catta/tojson/modbus/sunspec/String16.hpp>
 
 // test
 #include <catta/test/ConsoleOutput.hpp>
@@ -23,7 +23,7 @@ static constexpr bool debug = false;
 
 int main()
 {
-    using Type = catta::modbus::sunspec::String;
+    using Type = catta::modbus::sunspec::String16;
     using Output = catta::test::ConsoleOutput;
     Output output(catta::tostring::GetName<Type>::name.data());
     const auto test_tofromstring = catta::test::checkToFromString<Output, Type, debug>;

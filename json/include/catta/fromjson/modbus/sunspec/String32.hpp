@@ -1,7 +1,7 @@
 #pragma once
 
 // sunspec
-#include <catta/modbus/sunspec/String.hpp>
+#include <catta/modbus/sunspec/String32.hpp>
 
 // fromjson
 #include <catta/fromjson/fromJson.hpp>
@@ -11,12 +11,12 @@ namespace catta
 namespace fromjson
 {
 template <>
-class Parser<catta::modbus::sunspec::String>
+class Parser<catta::modbus::sunspec::String32>
 {
   public:
     using Error = catta::state::DefaultError;
     using Input = catta::json::Token;
-    using Output = catta::modbus::sunspec::String;
+    using Output = catta::modbus::sunspec::String32;
     [[nodiscard]] constexpr std::tuple<Error, catta::parser::InputHandled> read(const Input& input) noexcept
     {
         typedef std::tuple<Error, catta::parser::InputHandled> Tuple;
@@ -47,7 +47,8 @@ class Parser<catta::modbus::sunspec::String>
         {
             const std::uint8_t index = _state - DATA;
             if (input.type().isCloseString()) return close();
-            if (index >= catta::modbus::sunspec::String::size || !input.type().isCharacter() || input.unicodeCharacterValue() > 0xff) return error();
+            if (index >= catta::modbus::sunspec::String32::size || !input.type().isCharacter() || input.unicodeCharacterValue() > 0xff)
+                return error();
             _data[index] = static_cast<char>(input.unicodeCharacterValue());
             return next();
         };
@@ -73,10 +74,10 @@ class Parser<catta::modbus::sunspec::String>
 
   private:
     std::uint8_t _state;
-    catta::modbus::sunspec::String::Raw _data;
+    catta::modbus::sunspec::String32::Raw _data;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t DATA = START + 1;
-    static constexpr std::uint8_t TAIL = DATA + catta::modbus::sunspec::String::size;
+    static constexpr std::uint8_t TAIL = DATA + catta::modbus::sunspec::String32::size;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR_STATE = DONE + 1;
 };

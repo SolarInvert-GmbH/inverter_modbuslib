@@ -1,10 +1,10 @@
 #pragma once
 
 // catta
-#include <catta/modbus/sunspec/String.hpp>
+#include <catta/modbus/sunspec/String32.hpp>
 
 // fromjson
-#include <catta/fromjson/modbus/sunspec/String.hpp>
+#include <catta/fromjson/modbus/sunspec/String32.hpp>
 
 // fromstring
 #include <catta/fromstring/fromString.hpp>
@@ -14,12 +14,12 @@ namespace catta
 namespace fromstring
 {
 template <>
-class Parser<catta::modbus::sunspec::String>
+class Parser<catta::modbus::sunspec::String32>
 {
   public:
     using Error = catta::state::DefaultError;
     using Input = char;
-    using Output = catta::modbus::sunspec::String;
+    using Output = catta::modbus::sunspec::String32;
     [[nodiscard]] constexpr std::tuple<Error, catta::parser::InputHandled> read(const Input& input) noexcept
     {
         using Tuple = std::tuple<Error, catta::parser::InputHandled>;

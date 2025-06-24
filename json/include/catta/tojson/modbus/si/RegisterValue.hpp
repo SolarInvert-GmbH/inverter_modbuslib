@@ -5,7 +5,8 @@
 
 // tojson
 #include <catta/tojson/modbus/si/RegisterAddress.hpp>
-#include <catta/tojson/modbus/sunspec/String.hpp>
+#include <catta/tojson/modbus/sunspec/String16.hpp>
+#include <catta/tojson/modbus/sunspec/String32.hpp>
 #include <catta/tojson/modbus/sunspec/ValueU16.hpp>
 #include <catta/tojson/modbus/sunspec/ValueU32.hpp>
 #include <catta/tojson/modbus/sunspec/ValueU64.hpp>
@@ -121,8 +122,10 @@ class Serializer<catta::modbus::si::RegisterValue>
                         return handle(_valueU32Serializer, input.value32Value(), catta::json::Token::closeCurlyBracket());
                     case Type::uint64():
                         return handle(_valueU64Serializer, input.value64Value(), catta::json::Token::closeCurlyBracket());
+                    case Type::string16():
+                        return handle(_valueString16Serializer, input.string16Value(), catta::json::Token::closeCurlyBracket());
                     case Type::string32():
-                        return handle(_valueStringSerializer, input.stringValue(), catta::json::Token::closeCurlyBracket());
+                        return handle(_valueString32Serializer, input.string32Value(), catta::json::Token::closeCurlyBracket());
                 }
             case TAIL + 0:
                 return done();
@@ -147,7 +150,8 @@ class Serializer<catta::modbus::si::RegisterValue>
     Serializer<catta::modbus::sunspec::ValueU16> _valueU16Serializer;
     Serializer<catta::modbus::sunspec::ValueU32> _valueU32Serializer;
     Serializer<catta::modbus::sunspec::ValueU64> _valueU64Serializer;
-    Serializer<catta::modbus::sunspec::String> _valueStringSerializer;
+    Serializer<catta::modbus::sunspec::String16> _valueString16Serializer;
+    Serializer<catta::modbus::sunspec::String32> _valueString32Serializer;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t REGISTER_ADDRESS = START + 1;
     static constexpr std::uint8_t VALUE = REGISTER_ADDRESS + 19;

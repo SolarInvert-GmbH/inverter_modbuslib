@@ -5,7 +5,8 @@
 
 // random
 #include <catta/random/modbus/si/RegisterAddress.hpp>
-#include <catta/random/modbus/sunspec/String.hpp>
+#include <catta/random/modbus/sunspec/String16.hpp>
+#include <catta/random/modbus/sunspec/String32.hpp>
 #include <catta/random/modbus/sunspec/ValueU16.hpp>
 #include <catta/random/modbus/sunspec/ValueU32.hpp>
 #include <catta/random/modbus/sunspec/ValueU64.hpp>
@@ -31,8 +32,10 @@ class catta::random::Create<catta::modbus::si::RegisterValue>
                 return catta::modbus::si::RegisterValue::value32(registerAddress, random.create<catta::modbus::sunspec::ValueU32>());
             case Type::uint64():
                 return catta::modbus::si::RegisterValue::value64(registerAddress, random.create<catta::modbus::sunspec::ValueU64>());
+            case Type::string16():
+                return catta::modbus::si::RegisterValue::string16(registerAddress, random.create<catta::modbus::sunspec::String16>());
             case Type::string32():
-                return catta::modbus::si::RegisterValue::string(registerAddress, random.create<catta::modbus::sunspec::String>());
+                return catta::modbus::si::RegisterValue::string32(registerAddress, random.create<catta::modbus::sunspec::String32>());
         }
     }
 };

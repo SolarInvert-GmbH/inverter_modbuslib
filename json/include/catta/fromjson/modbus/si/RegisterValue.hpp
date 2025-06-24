@@ -6,7 +6,8 @@
 // fromjson
 #include <catta/fromjson/fromJson.hpp>
 #include <catta/fromjson/modbus/si/RegisterAddress.hpp>
-#include <catta/fromjson/modbus/sunspec/String.hpp>
+#include <catta/fromjson/modbus/sunspec/String16.hpp>
+#include <catta/fromjson/modbus/sunspec/String32.hpp>
 #include <catta/fromjson/modbus/sunspec/ValueU16.hpp>
 #include <catta/fromjson/modbus/sunspec/ValueU32.hpp>
 #include <catta/fromjson/modbus/sunspec/ValueU64.hpp>
@@ -165,8 +166,10 @@ class Parser<catta::modbus::si::RegisterValue>
                 if (!_token.type().isIntegerNumber()) return Output::empty();
                 return Output::value64(_registerAddressParser.data(),
                                        catta::modbus::sunspec::ValueU64::create(static_cast<std::uint64_t>(_token.integerValue())));
+            case Type::string16():
+                return Output::string16(_registerAddressParser.data(), catta::modbus::sunspec::String16::create(_string.data()));
             case Type::string32():
-                return Output::string(_registerAddressParser.data(), catta::modbus::sunspec::String::create(_string.data()));
+                return Output::string32(_registerAddressParser.data(), catta::modbus::sunspec::String32::create(_string.data()));
             default:
                 return Output::empty();
         }
@@ -185,7 +188,8 @@ class Parser<catta::modbus::si::RegisterValue>
     Parser<catta::modbus::sunspec::ValueU16> _valueU16Parser;
     Parser<catta::modbus::sunspec::ValueU32> _valueU32Parser;
     Parser<catta::modbus::sunspec::ValueU64> _valueU64Parser;
-    Parser<catta::modbus::sunspec::String> _valueStringParser;
+    Parser<catta::modbus::sunspec::String16> _valueString16Parser;
+    Parser<catta::modbus::sunspec::String32> _valueString32Parser;
     Input _token;
     std::array<char, 33> _string;
     std::uint8_t _index;

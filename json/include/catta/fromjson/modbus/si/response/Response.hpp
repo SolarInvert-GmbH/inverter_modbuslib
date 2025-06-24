@@ -12,7 +12,8 @@
 #include <catta/fromjson/modbus/si/response/ReadOperatingData33.hpp>
 #include <catta/fromjson/modbus/si/response/ReadOperatingData3e.hpp>
 #include <catta/fromjson/modbus/si/response/Type.hpp>
-#include <catta/fromjson/modbus/sunspec/String.hpp>
+#include <catta/fromjson/modbus/sunspec/String16.hpp>
+#include <catta/fromjson/modbus/sunspec/String32.hpp>
 #include <catta/fromjson/modbus/sunspec/ValueU16.hpp>
 #include <catta/fromjson/modbus/sunspec/ValueU32.hpp>
 #include <catta/fromjson/modbus/sunspec/ValueU64.hpp>
@@ -103,7 +104,8 @@ class Parser<catta::modbus::si::response::Response>
             h(_valueU16Parser);
             h(_valueU32Parser);
             h(_valueU64Parser);
-            h(_stringParser);
+            h(_string16Parser);
+            h(_string32Parser);
             if (done) return valueSet();
             return possible ? jump(HUB + 15) : error();
         };
@@ -198,8 +200,10 @@ class Parser<catta::modbus::si::response::Response>
                 return catta::modbus::si::response::Response::value32(_valueU32Parser.data().value());
             case Type::value64():
                 return catta::modbus::si::response::Response::value64(_valueU64Parser.data().value());
-            case Type::string():
-                return catta::modbus::si::response::Response::string(_stringParser.data());
+            case Type::string16():
+                return catta::modbus::si::response::Response::string16(_string16Parser.data());
+            case Type::string32():
+                return catta::modbus::si::response::Response::string32(_string32Parser.data());
             default:
                 return catta::modbus::si::response::Response::empty();
         }
@@ -225,7 +229,8 @@ class Parser<catta::modbus::si::response::Response>
     Parser<catta::modbus::sunspec::ValueU16> _valueU16Parser;
     Parser<catta::modbus::sunspec::ValueU32> _valueU32Parser;
     Parser<catta::modbus::sunspec::ValueU64> _valueU64Parser;
-    Parser<catta::modbus::sunspec::String> _stringParser;
+    Parser<catta::modbus::sunspec::String16> _string16Parser;
+    Parser<catta::modbus::sunspec::String32> _string32Parser;
     Parser<catta::modbus::si::RegisterAddress> _registerAddressParser;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t HUB = START + 1;

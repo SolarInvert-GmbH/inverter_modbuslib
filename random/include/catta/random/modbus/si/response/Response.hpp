@@ -13,7 +13,8 @@
 #include <catta/random/modbus/si/response/ReadOperatingData33.hpp>
 #include <catta/random/modbus/si/response/ReadOperatingData3e.hpp>
 #include <catta/random/modbus/si/response/Type.hpp>
-#include <catta/random/modbus/sunspec/String.hpp>
+#include <catta/random/modbus/sunspec/String16.hpp>
+#include <catta/random/modbus/sunspec/String32.hpp>
 
 template <>
 class catta::random::Create<catta::modbus::si::response::Response>
@@ -65,8 +66,10 @@ class catta::random::Create<catta::modbus::si::response::Response>
                 return catta::modbus::si::response::Response::value32(random.create<std::uint32_t>());
             case Type::value64():
                 return catta::modbus::si::response::Response::value64(random.interval(std::uint64_t(0), std::uint64_t(1) << 50));
-            case Type::string():
-                return catta::modbus::si::response::Response::string(random.create<catta::modbus::sunspec::String>());
+            case Type::string16():
+                return catta::modbus::si::response::Response::string16(random.create<catta::modbus::sunspec::String16>());
+            case Type::string32():
+                return catta::modbus::si::response::Response::string32(random.create<catta::modbus::sunspec::String32>());
             default:
                 return catta::modbus::si::response::Response::empty();
         }

@@ -4,7 +4,8 @@
 #include <array>
 
 // sunspec
-#include <catta/modbus/sunspec/String.hpp>
+#include <catta/modbus/sunspec/String16.hpp>
+#include <catta/modbus/sunspec/String32.hpp>
 
 // si
 #include <catta/modbus/si/RegisterAddress.hpp>
@@ -263,7 +264,8 @@ class NiceResponse
             case Type::value16():
             case Type::value32():
             case Type::value64():
-            case Type::string():
+            case Type::string16():
+            case Type::string32():
             {
                 const auto getRegisterValue = [uglyResponse, request]()
                 {
@@ -282,8 +284,10 @@ class NiceResponse
                             return Result::value32(address, catta::modbus::sunspec::ValueU32::create(uglyResponse.value32Value()));
                         case Type::uint64():
                             return Result::value64(address, catta::modbus::sunspec::ValueU64::create(uglyResponse.value64Value()));
+                        case Type::string16():
+                            return Result::string16(address, uglyResponse.string16Value());
                         case Type::string32():
-                            return Result::string(address, uglyResponse.stringValue());
+                            return Result::string32(address, uglyResponse.string32Value());
                         default:
                             return Result::empty();
                     }

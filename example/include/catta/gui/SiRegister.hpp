@@ -124,8 +124,10 @@ class SiRegister : public Fl_Group
                                 return Response::value32(this->_value.value<catta::modbus::sunspec::ValueU32>().value());
                             case Type::uint64():
                                 return Response::value64(this->_value.value<catta::modbus::sunspec::ValueU64>().value());
+                            case Type::string16():
+                                return Response::string16(this->_value.value<catta::modbus::sunspec::String16>());
                             case Type::string32():
-                                return Response::string(this->_value.value<catta::modbus::sunspec::String>());
+                                return Response::string32(this->_value.value<catta::modbus::sunspec::String32>());
                             default:
                                 return Response::empty();
                         }

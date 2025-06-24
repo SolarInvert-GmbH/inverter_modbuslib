@@ -2,7 +2,8 @@
 
 // si
 #include <catta/modbus/si/RegisterAddress.hpp>
-#include <catta/modbus/sunspec/String.hpp>
+#include <catta/modbus/sunspec/String16.hpp>
+#include <catta/modbus/sunspec/String32.hpp>
 #include <catta/modbus/sunspec/ValueU16.hpp>
 #include <catta/modbus/sunspec/ValueU32.hpp>
 #include <catta/modbus/sunspec/ValueU64.hpp>
@@ -74,14 +75,30 @@ class RegisterValue
     /**
      * @param[in] registerAddress The registerAddress. Has to be valid, otherwise empty is returned.
      * @param[in] value The string. Has to be not empty, otherwise empty is returned.
-     * @return Returns string response if input is valid, otherwise empty.
+     * @return Returns string16 response if input is valid, otherwise empty.
      */
-    static constexpr RegisterValue string(const catta::modbus::si::RegisterAddress registerAddress, const catta::modbus::sunspec::String& value)
+    static constexpr RegisterValue string16(const catta::modbus::si::RegisterAddress registerAddress, const catta::modbus::sunspec::String16& value)
     {
         const auto pack = [&value]()
         {
             Raw r = {};
-            for (std::size_t i = 0; i < catta::modbus::sunspec::String::size / 2; i++)
+            for (std::size_t i = 0; i < catta::modbus::sunspec::String16::size / 2; i++)
+                r[i] = static_cast<std::uint16_t>((value.data()[(i * 2) + 0] << 8) | value.data()[(i * 2) + 1]);
+            return r;
+        };
+        return value.isEmpty() || !registerAddress.type().isString16() ? RegisterValue::empty() : RegisterValue(pack(), registerAddress);
+    }
+    /**
+     * @param[in] registerAddress The registerAddress. Has to be valid, otherwise empty is returned.
+     * @param[in] value The string. Has to be not empty, otherwise empty is returned.
+     * @return Returns string32 response if input is valid, otherwise empty.
+     */
+    static constexpr RegisterValue string32(const catta::modbus::si::RegisterAddress registerAddress, const catta::modbus::sunspec::String32& value)
+    {
+        const auto pack = [&value]()
+        {
+            Raw r = {};
+            for (std::size_t i = 0; i < catta::modbus::sunspec::String32::size / 2; i++)
                 r[i] = static_cast<std::uint16_t>((value.data()[(i * 2) + 0] << 8) | value.data()[(i * 2) + 1]);
             return r;
         };
@@ -120,17 +137,30 @@ class RegisterValue
         return catta::modbus::sunspec::ValueU64::create(unpack(_data[0], _data[1], _data[2], _data[3]));
     }
     /**
-     * @return Returns string value. Is only valid if type is string.
+     * @return Returns string16 value. Is only valid if type is string16.
      */
-    constexpr catta::modbus::sunspec::String stringValue() const noexcept
+    constexpr catta::modbus::sunspec::String16 string16Value() const noexcept
     {
-        catta::modbus::sunspec::String::Raw r = {};
-        for (std::size_t i = 0; i < catta::modbus::sunspec::String::size / 2; i++)
+        catta::modbus::sunspec::String16::Raw r = {};
+        for (std::size_t i = 0; i < catta::modbus::sunspec::String16::size / 2; i++)
         {
             r[i * 2 + 0] = static_cast<char>(_data[i] >> 8);
             r[i * 2 + 1] = static_cast<char>(_data[i] >> 0);
         }
-        return catta::modbus::sunspec::String::create(r.data());
+        return catta::modbus::sunspec::String16::create(r.data());
+    }
+    /**
+     * @return Returns string32 value. Is only valid if type is string32.
+     */
+    constexpr catta::modbus::sunspec::String32 string32Value() const noexcept
+    {
+        catta::modbus::sunspec::String32::Raw r = {};
+        for (std::size_t i = 0; i < catta::modbus::sunspec::String32::size / 2; i++)
+        {
+            r[i * 2 + 0] = static_cast<char>(_data[i] >> 8);
+            r[i * 2 + 1] = static_cast<char>(_data[i] >> 0);
+        }
+        return catta::modbus::sunspec::String32::create(r.data());
     }
     /**
      * @return Returns the raw value. Is only valid if not empty.

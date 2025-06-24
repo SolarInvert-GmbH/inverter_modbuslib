@@ -14,7 +14,8 @@
 #include <catta/random/modbus/si/response/ReadError.hpp>
 #include <catta/random/modbus/si/response/ReadOperatingData33.hpp>
 #include <catta/random/modbus/si/response/ReadOperatingData3e.hpp>
-#include <catta/random/modbus/sunspec/String.hpp>
+#include <catta/random/modbus/sunspec/String16.hpp>
+#include <catta/random/modbus/sunspec/String32.hpp>
 
 // tostring
 #include <catta/tostring/Hexadecimal.hpp>
@@ -172,8 +173,11 @@ static void handleRequest(const catta::modbus::si::request::Request &request, ca
                 case catta::modbus::si::RegisterType::uint64():
                     response = Response::value64(random.interval(std::uint64_t(0), std::uint64_t(1) << 50));
                     break;
+                case catta::modbus::si::RegisterType::string16():
+                    response = Response::string16(random.create<catta::modbus::sunspec::String16>());
+                    break;
                 case catta::modbus::si::RegisterType::string32():
-                    response = Response::string(random.create<catta::modbus::sunspec::String>());
+                    response = Response::string32(random.create<catta::modbus::sunspec::String32>());
                     break;
 
                 default:

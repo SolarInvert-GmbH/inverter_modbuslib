@@ -11,7 +11,8 @@
 #include <catta/tojson/modbus/si/response/ReadOperatingData33.hpp>
 #include <catta/tojson/modbus/si/response/ReadOperatingData3e.hpp>
 #include <catta/tojson/modbus/si/response/Type.hpp>
-#include <catta/tojson/modbus/sunspec/String.hpp>
+#include <catta/tojson/modbus/sunspec/String16.hpp>
+#include <catta/tojson/modbus/sunspec/String32.hpp>
 #include <catta/tojson/modbus/sunspec/ValueU16.hpp>
 #include <catta/tojson/modbus/sunspec/ValueU32.hpp>
 #include <catta/tojson/modbus/sunspec/ValueU64.hpp>
@@ -87,8 +88,10 @@ class Serializer<catta::modbus::si::response::Response>
                     return handle(_valueU32Serializer, catta::modbus::sunspec::ValueU32::create(input.value32Value()), token);
                 case Type::value64():
                     return handle(_valueU64Serializer, catta::modbus::sunspec::ValueU64::create(input.value64Value()), token);
-                case Type::string():
-                    return handle(_stringSerializer, input.stringValue(), token);
+                case Type::string16():
+                    return handle(_string16Serializer, input.string16Value(), token);
+                case Type::string32():
+                    return handle(_string32Serializer, input.string32Value(), token);
                 default:
                     return jump(input.successValue() ? catta::json::Token::boolTrue() : catta::json::Token::boolFalse(), VALUE + 8);
             }
@@ -162,7 +165,8 @@ class Serializer<catta::modbus::si::response::Response>
     Serializer<catta::modbus::sunspec::ValueU16> _valueU16Serializer;
     Serializer<catta::modbus::sunspec::ValueU32> _valueU32Serializer;
     Serializer<catta::modbus::sunspec::ValueU64> _valueU64Serializer;
-    Serializer<catta::modbus::sunspec::String> _stringSerializer;
+    Serializer<catta::modbus::sunspec::String16> _string16Serializer;
+    Serializer<catta::modbus::sunspec::String32> _string32Serializer;
     Serializer<catta::modbus::si::RegisterAddress> _registerAddressSerializer;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t TYPE = START + 1;

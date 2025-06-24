@@ -1,7 +1,7 @@
 #pragma once
 
 // catta
-#include <catta/modbus/sunspec/String.hpp>
+#include <catta/modbus/sunspec/String16.hpp>
 
 // fromstring
 #include <catta/tostring/toString.hpp>
@@ -11,18 +11,18 @@ namespace catta
 namespace tostring
 {
 template <>
-class GetName<catta::modbus::sunspec::String>
+class GetName<catta::modbus::sunspec::String16>
 {
   public:
-    static constexpr std::string_view name = "catta::modbus::sunspec::String";
+    static constexpr std::string_view name = "catta::modbus::sunspec::String16";
 };
 
 template <>
-class Serializer<catta::modbus::sunspec::String>
+class Serializer<catta::modbus::sunspec::String16>
 {
   public:
     using Error = catta::state::DefaultError;
-    using Input = catta::modbus::sunspec::String;
+    using Input = catta::modbus::sunspec::String16;
     using Output = char;
     [[nodiscard]] constexpr std::tuple<Error, catta::parser::InputHandled> read(const Input& input) noexcept
     {

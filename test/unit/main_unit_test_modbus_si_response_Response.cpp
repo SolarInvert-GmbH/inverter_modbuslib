@@ -71,8 +71,10 @@ static bool checkCreate(catta::test::Test<OUTPUT>& test)
                 return catta::modbus::si::response::Response::value32(input.value32Value());
             case Type::value64():
                 return catta::modbus::si::response::Response::value64(input.value64Value());
-            case Type::string():
-                return catta::modbus::si::response::Response::string(input.stringValue());
+            case Type::string16():
+                return catta::modbus::si::response::Response::string16(input.string16Value());
+            case Type::string32():
+                return catta::modbus::si::response::Response::string32(input.string32Value());
             default:
                 return catta::modbus::si::response::Response::empty();
         }

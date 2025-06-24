@@ -1,22 +1,22 @@
 #pragma once
 
 // sunspec
-#include <catta/modbus/sunspec/String.hpp>
+#include <catta/modbus/sunspec/String16.hpp>
 
-// tojson
-#include <catta/tojson/toJson.hpp>
+// fromjson
+#include <catta/fromjson/fromJson.hpp>
 
 namespace catta
 {
-namespace tojson
+namespace fromjson
 {
 template <>
-class Serializer<catta::modbus::sunspec::String>
+class Parser<catta::modbus::sunspec::String16>
 {
   public:
     using Error = catta::state::DefaultError;
-    using Input = catta::modbus::sunspec::String;
-    using Output = catta::json::Token;
+    using Input = catta::json::Token;
+    using Output = catta::modbus::sunspec::String16;
     [[nodiscard]] constexpr std::tuple<Error, catta::parser::InputHandled> read(const Input& input) noexcept
     {
         typedef std::tuple<Error, catta::parser::InputHandled> Tuple;
@@ -25,42 +25,45 @@ class Serializer<catta::modbus::sunspec::String>
             _state = ERROR_STATE;
             return Tuple{Error::error(), catta::parser::InputHandled::yes()};
         };
-        const auto stay = []() { return Tuple{Error(), catta::parser::InputHandled::no()}; };
-        const auto close = [stay, this]()
+        const auto stay = []() { return Tuple{Error(), catta::parser::InputHandled::yes()}; };
+        const auto next = [stay, this]()
         {
-            _state = TAIL + 0;
-            _data = Output::closeString();
-            return stay();
-        };
-        const auto done = [this]()
-        {
-            _data = Output::end();
-            _state = DONE;
-            return Tuple{Error(), catta::parser::InputHandled::yes()};
-        };
-        const auto token = [this, stay](const Output t)
-        {
-            _data = t;
             _state++;
             return stay();
         };
-        const auto data = [this, input, close, token]()
+        const auto close = [stay, this]()
+        {
+            _state = TAIL + 0;
+            return stay();
+        };
+        const auto done = [this, input, error, stay]()
+        {
+            if (!input.type().isEnd()) return error();
+            _state = DONE;
+            return stay();
+        };
+
+        const auto data = [this, input, close, error, next]()
         {
             const std::uint8_t index = _state - DATA;
-            return input.data()[index] == '\0' ? close() : token(Output::character(static_cast<char32_t>(input.data()[index])));
+            if (input.type().isCloseString()) return close();
+            if (index >= catta::modbus::sunspec::String16::size || !input.type().isCharacter() || input.unicodeCharacterValue() > 0xff)
+                return error();
+            _data[index] = static_cast<char>(input.unicodeCharacterValue());
+            return next();
         };
         switch (_state)
         {
             case START + 0:
-                return input.isEmpty() ? done() : token(Output::openString());
+                return input == Input::openString() ? next() : error();
             case TAIL + 0:
                 return done();
             default:
                 return _state < TAIL ? data() : error();
         }
     }
-    [[nodiscard]] constexpr Serializer() noexcept : _state(START), _data(Output::empty()) {}
-    [[nodiscard]] constexpr Output data() const noexcept { return _data; }
+    [[nodiscard]] constexpr Parser() noexcept : _state(START), _data{} {}
+    [[nodiscard]] constexpr Output data() const noexcept { return _state == DONE ? Output::create(_data.data()) : Output::empty(); }
     [[nodiscard]] constexpr catta::parser::State state() const noexcept
     {
         if (_state == START) return catta::parser::State::start();
@@ -71,12 +74,12 @@ class Serializer<catta::modbus::sunspec::String>
 
   private:
     std::uint8_t _state;
-    Output _data;
+    catta::modbus::sunspec::String16::Raw _data;
     static constexpr std::uint8_t START = 0;
     static constexpr std::uint8_t DATA = START + 1;
-    static constexpr std::uint8_t TAIL = DATA + catta::modbus::sunspec::String::size;
+    static constexpr std::uint8_t TAIL = DATA + catta::modbus::sunspec::String16::size;
     static constexpr std::uint8_t DONE = TAIL + 1;
     static constexpr std::uint8_t ERROR_STATE = DONE + 1;
 };
-}  // namespace tojson
+}  // namespace fromjson
 }  // namespace catta

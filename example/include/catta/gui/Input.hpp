@@ -13,13 +13,15 @@
 #include <catta/EnumConcept.hpp>
 
 // tofromstring
-#include <catta/fromstring/modbus/sunspec/String.hpp>
+#include <catta/fromstring/modbus/sunspec/String16.hpp>
+#include <catta/fromstring/modbus/sunspec/String32.hpp>
 #include <catta/fromstring/modbus/sunspec/ValueS16.hpp>
 #include <catta/fromstring/modbus/sunspec/ValueU16.hpp>
 #include <catta/fromstring/modbus/sunspec/ValueU32.hpp>
 #include <catta/fromstring/modbus/sunspec/ValueU64.hpp>
 #include <catta/fromstring/modbus/sunspec/ValueU8.hpp>
-#include <catta/tostring/modbus/sunspec/String.hpp>
+#include <catta/tostring/modbus/sunspec/String16.hpp>
+#include <catta/tostring/modbus/sunspec/String32.hpp>
 #include <catta/tostring/modbus/sunspec/ValueS16.hpp>
 #include <catta/tostring/modbus/sunspec/ValueU16.hpp>
 #include <catta/tostring/modbus/sunspec/ValueU32.hpp>
@@ -257,17 +259,32 @@ class Input::Access<catta::modbus::sunspec::ScaleFactor>
 };
 
 template <>
-class Input::Access<catta::modbus::sunspec::String>
+class Input::Access<catta::modbus::sunspec::String16>
 {
   public:
-    static std::string createName(const catta::modbus::sunspec::String initial) { return catta::tostring::toString(initial); }
-    static const Fl_Menu_Item* createMenu(const catta::modbus::sunspec::String) { return nullptr; }
-    static int createIndex(const catta::modbus::sunspec::String) { return 0; }
-    static catta::modbus::sunspec::String value(const Input& input)
+    static std::string createName(const catta::modbus::sunspec::String16 initial) { return catta::tostring::toString(initial); }
+    static const Fl_Menu_Item* createMenu(const catta::modbus::sunspec::String16) { return nullptr; }
+    static int createIndex(const catta::modbus::sunspec::String16) { return 0; }
+    static catta::modbus::sunspec::String16 value(const Input& input)
     {
-        return catta::fromstring::fromString<catta::modbus::sunspec::String>(input._input.value());
+        return catta::fromstring::fromString<catta::modbus::sunspec::String16>(input._input.value());
     }
-    static void value(Input& input, const catta::modbus::sunspec::String v) { input._input.value(catta::tostring::toString(v).c_str()); }
+    static void value(Input& input, const catta::modbus::sunspec::String16 v) { input._input.value(catta::tostring::toString(v).c_str()); }
+    Access() = delete;
+};
+
+template <>
+class Input::Access<catta::modbus::sunspec::String32>
+{
+  public:
+    static std::string createName(const catta::modbus::sunspec::String32 initial) { return catta::tostring::toString(initial); }
+    static const Fl_Menu_Item* createMenu(const catta::modbus::sunspec::String32) { return nullptr; }
+    static int createIndex(const catta::modbus::sunspec::String32) { return 0; }
+    static catta::modbus::sunspec::String32 value(const Input& input)
+    {
+        return catta::fromstring::fromString<catta::modbus::sunspec::String32>(input._input.value());
+    }
+    static void value(Input& input, const catta::modbus::sunspec::String32 v) { input._input.value(catta::tostring::toString(v).c_str()); }
     Access() = delete;
 };
 

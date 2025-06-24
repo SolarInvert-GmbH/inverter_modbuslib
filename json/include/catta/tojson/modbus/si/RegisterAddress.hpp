@@ -57,162 +57,165 @@ class Serializer<catta::modbus::si::RegisterAddress>
                     _state = COMMON_MODEL + 0;
                     break;
                 case 2:
-                    _state = COMMON_SERIAL_NUMBER + 0;
+                    _state = COMMON_VERSION + 0;
                     break;
                 case 3:
-                    _state = COMMON_DEVICE_ADDRESS + 0;
+                    _state = COMMON_SERIAL_NUMBER + 0;
                     break;
                 case 4:
-                    _state = INVERTER_AMPS + 0;
+                    _state = COMMON_DEVICE_ADDRESS + 0;
                     break;
                 case 5:
-                    _state = INVERTER_AMPS_PHASE_A + 0;
+                    _state = INVERTER_AMPS + 0;
                     break;
                 case 6:
-                    _state = INVERTER_AMPS_PHASE_B + 0;
+                    _state = INVERTER_AMPS_PHASE_A + 0;
                     break;
                 case 7:
-                    _state = INVERTER_AMPS_PHASE_C + 0;
+                    _state = INVERTER_AMPS_PHASE_B + 0;
                     break;
                 case 8:
-                    _state = INVERTER_AMPS_SCALE_FACTOR + 0;
+                    _state = INVERTER_AMPS_PHASE_C + 0;
                     break;
                 case 9:
-                    _state = INVERTER_PHASE_VOLTAGE_A + 0;
+                    _state = INVERTER_AMPS_SCALE_FACTOR + 0;
                     break;
                 case 10:
-                    _state = INVERTER_PHASE_VOLTAGE_B + 0;
+                    _state = INVERTER_PHASE_VOLTAGE_A + 0;
                     break;
                 case 11:
-                    _state = INVERTER_PHASE_VOLTAGE_C + 0;
+                    _state = INVERTER_PHASE_VOLTAGE_B + 0;
                     break;
                 case 12:
-                    _state = INVERTER_PHASE_VOLTAGE_SCALE_FACTOR + 0;
+                    _state = INVERTER_PHASE_VOLTAGE_C + 0;
                     break;
                 case 13:
-                    _state = INVERTER_AC_POWER + 0;
+                    _state = INVERTER_PHASE_VOLTAGE_SCALE_FACTOR + 0;
                     break;
                 case 14:
-                    _state = INVERTER_AC_POWER_SCALE_FACTOR + 0;
+                    _state = INVERTER_AC_POWER + 0;
                     break;
                 case 15:
-                    _state = INVERTER_HERTZ + 0;
+                    _state = INVERTER_AC_POWER_SCALE_FACTOR + 0;
                     break;
                 case 16:
-                    _state = INVERTER_HERTZ_SCALE_FACTOR + 0;
+                    _state = INVERTER_HERTZ + 0;
                     break;
                 case 17:
-                    _state = INVERTER_AC_APPARENT_POWER + 0;
+                    _state = INVERTER_HERTZ_SCALE_FACTOR + 0;
                     break;
                 case 18:
-                    _state = INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 0;
+                    _state = INVERTER_AC_APPARENT_POWER + 0;
                     break;
                 case 19:
-                    _state = INVERTER_AC_REACTIVE_POWER + 0;
+                    _state = INVERTER_AC_APPARENT_POWER_SCALE_FACTOR + 0;
                     break;
                 case 20:
-                    _state = INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 0;
+                    _state = INVERTER_AC_REACTIVE_POWER + 0;
                     break;
                 case 21:
-                    _state = INVERTER_POWER_FACTOR + 0;
+                    _state = INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR + 0;
                     break;
                 case 22:
-                    _state = INVERTER_POWER_FACTOR_SCALE_FACTOR + 0;
+                    _state = INVERTER_POWER_FACTOR + 0;
                     break;
                 case 23:
-                    _state = INVERTER_WATT_HOURS + 0;
+                    _state = INVERTER_POWER_FACTOR_SCALE_FACTOR + 0;
                     break;
                 case 24:
-                    _state = INVERTER_WATT_HOURS_SCALE_FACTOR + 0;
+                    _state = INVERTER_WATT_HOURS + 0;
                     break;
                 case 25:
-                    _state = INVERTER_DC_VOLTAGE + 0;
+                    _state = INVERTER_WATT_HOURS_SCALE_FACTOR + 0;
                     break;
                 case 26:
-                    _state = INVERTER_DC_VOLTAGE_SCALE_FACTOR + 0;
+                    _state = INVERTER_DC_VOLTAGE + 0;
                     break;
                 case 27:
-                    _state = INVERTER_DC_POWER + 0;
+                    _state = INVERTER_DC_VOLTAGE_SCALE_FACTOR + 0;
                     break;
                 case 28:
-                    _state = INVERTER_DC_POWER_SCALE_FACTOR + 0;
+                    _state = INVERTER_DC_POWER + 0;
                     break;
                 case 29:
-                    _state = INVERTER_TEMPERATURE + 0;
+                    _state = INVERTER_DC_POWER_SCALE_FACTOR + 0;
                     break;
                 case 30:
-                    _state = INVERTER_TEMPERATURE_SCALE_FACTOR + 0;
+                    _state = INVERTER_TEMPERATURE + 0;
                     break;
                 case 31:
-                    _state = INVERTER_OPERATING_STATE + 0;
+                    _state = INVERTER_TEMPERATURE_SCALE_FACTOR + 0;
                     break;
                 case 32:
-                    _state = INVERTER_VENDOR_OPERATING_STATE + 0;
+                    _state = INVERTER_OPERATING_STATE + 0;
                     break;
                 case 33:
-                    _state = INVERTER_VENDOR_EVENT_BITFIELD1 + 0;
+                    _state = INVERTER_VENDOR_OPERATING_STATE + 0;
                     break;
                 case 34:
-                    _state = INVERTER_VENDOR_EVENT_BITFIELD2 + 0;
+                    _state = INVERTER_VENDOR_EVENT_BITFIELD1 + 0;
                     break;
                 case 35:
-                    _state = INVERTER_VENDOR_EVENT_BITFIELD3 + 0;
+                    _state = INVERTER_VENDOR_EVENT_BITFIELD2 + 0;
                     break;
                 case 36:
-                    _state = INVERTER_VENDOR_EVENT_BITFIELD4 + 0;
+                    _state = INVERTER_VENDOR_EVENT_BITFIELD3 + 0;
                     break;
                 case 37:
-                    _state = NAMEPLATE_DER_TYPE + 0;
+                    _state = INVERTER_VENDOR_EVENT_BITFIELD4 + 0;
                     break;
                 case 38:
-                    _state = EXTENDED_MESUREMENTS_AC_WATT_HOURS + 0;
+                    _state = NAMEPLATE_DER_TYPE + 0;
                     break;
                 case 39:
-                    _state = EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 0;
+                    _state = EXTENDED_MESUREMENTS_AC_WATT_HOURS + 0;
                     break;
                 case 40:
-                    _state = MPP_STEP_DAC0 + 0;
+                    _state = EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE + 0;
                     break;
                 case 41:
-                    _state = MPP_STEP_DAC1 + 0;
+                    _state = MPP_STEP_DAC0 + 0;
                     break;
                 case 42:
-                    _state = MPP_STEP_DAC2 + 0;
+                    _state = MPP_STEP_DAC1 + 0;
                     break;
                 case 43:
-                    _state = MPP_STEP_DAC3 + 0;
+                    _state = MPP_STEP_DAC2 + 0;
                     break;
                 case 44:
-                    _state = MPP_STEP_UDC0 + 0;
+                    _state = MPP_STEP_DAC3 + 0;
                     break;
                 case 45:
-                    _state = MPP_STEP_UDC1 + 0;
+                    _state = MPP_STEP_UDC0 + 0;
                     break;
                 case 46:
-                    _state = MPP_STEP_UDC2 + 0;
+                    _state = MPP_STEP_UDC1 + 0;
                     break;
                 case 47:
-                    _state = MPP_STEP_UDC3 + 0;
+                    _state = MPP_STEP_UDC2 + 0;
                     break;
                 case 48:
-                    _state = MPP_SAMPLE_DAC0 + 0;
+                    _state = MPP_STEP_UDC3 + 0;
                     break;
                 case 49:
-                    _state = MPP_SAMPLE_DAC1 + 0;
+                    _state = MPP_SAMPLE_DAC0 + 0;
                     break;
                 case 50:
-                    _state = MPP_SAMPLE_DAC2 + 0;
+                    _state = MPP_SAMPLE_DAC1 + 0;
                     break;
                 case 51:
-                    _state = MPP_SAMPLE_DAC3 + 0;
+                    _state = MPP_SAMPLE_DAC2 + 0;
                     break;
                 case 52:
-                    _state = MPP_SAMPLE_UDC0 + 0;
+                    _state = MPP_SAMPLE_DAC3 + 0;
                     break;
                 case 53:
-                    _state = MPP_SAMPLE_UDC1 + 0;
+                    _state = MPP_SAMPLE_UDC0 + 0;
                     break;
                 case 54:
+                    _state = MPP_SAMPLE_UDC1 + 0;
+                    break;
+                case 55:
                     _state = MPP_SAMPLE_UDC2 + 0;
                     break;
                 default:
@@ -283,6 +286,32 @@ class Serializer<catta::modbus::si::RegisterAddress>
                 return next(catta::json::Token::character('e'));
             case COMMON_MODEL + 10:
                 return jump(catta::json::Token::character('l'), TAIL + 0);
+            case COMMON_VERSION + 0:
+                return next(catta::json::Token::character('C'));
+            case COMMON_VERSION + 1:
+                return next(catta::json::Token::character('o'));
+            case COMMON_VERSION + 2:
+                return next(catta::json::Token::character('m'));
+            case COMMON_VERSION + 3:
+                return next(catta::json::Token::character('m'));
+            case COMMON_VERSION + 4:
+                return next(catta::json::Token::character('o'));
+            case COMMON_VERSION + 5:
+                return next(catta::json::Token::character('n'));
+            case COMMON_VERSION + 6:
+                return next(catta::json::Token::character('V'));
+            case COMMON_VERSION + 7:
+                return next(catta::json::Token::character('e'));
+            case COMMON_VERSION + 8:
+                return next(catta::json::Token::character('r'));
+            case COMMON_VERSION + 9:
+                return next(catta::json::Token::character('s'));
+            case COMMON_VERSION + 10:
+                return next(catta::json::Token::character('i'));
+            case COMMON_VERSION + 11:
+                return next(catta::json::Token::character('o'));
+            case COMMON_VERSION + 12:
+                return jump(catta::json::Token::character('n'), TAIL + 0);
             case COMMON_SERIAL_NUMBER + 0:
                 return next(catta::json::Token::character('C'));
             case COMMON_SERIAL_NUMBER + 1:
@@ -2459,7 +2488,8 @@ class Serializer<catta::modbus::si::RegisterAddress>
     static constexpr std::uint16_t START = 0;
     static constexpr std::uint16_t COMMON_MANUFACTURER = START + 1;
     static constexpr std::uint16_t COMMON_MODEL = COMMON_MANUFACTURER + 18;
-    static constexpr std::uint16_t COMMON_SERIAL_NUMBER = COMMON_MODEL + 11;
+    static constexpr std::uint16_t COMMON_VERSION = COMMON_MODEL + 11;
+    static constexpr std::uint16_t COMMON_SERIAL_NUMBER = COMMON_VERSION + 13;
     static constexpr std::uint16_t COMMON_DEVICE_ADDRESS = COMMON_SERIAL_NUMBER + 18;
     static constexpr std::uint16_t INVERTER_AMPS = COMMON_DEVICE_ADDRESS + 19;
     static constexpr std::uint16_t INVERTER_AMPS_PHASE_A = INVERTER_AMPS + 12;

@@ -38,16 +38,17 @@ class Type
     constexpr static std::uint8_t VALUE_16 = 15;
     constexpr static std::uint8_t VALUE_32 = 16;
     constexpr static std::uint8_t VALUE_64 = 17;
-    constexpr static std::uint8_t STRING = 18;
-    constexpr static std::uint8_t EMPTY = 19;
+    constexpr static std::uint8_t STRING16 = 18;
+    constexpr static std::uint8_t STRING32 = 19;
+    constexpr static std::uint8_t EMPTY = 20;
 
   public:
     /**
      * @param[in] value The enum value of the type.
      * @warning This constructor should not be used. Use exception(), factoryValues(), readError(), readOperatingData33(), readOperatingData3e(),
      * switchOffGridRelay(), switchOnGridRelay(), forceIdle(), deactivateIdle(), startConstantVoltage(), endConstantVoltage(), setPowerFactor(),
-     * controlBatteryInvert(), limitBatteryInvert(), writeRegister(), value16(), value32(), value64(), string() or empty(). Explicit constructor.
-     * Converts uint8 to type.
+     * controlBatteryInvert(), limitBatteryInvert(), writeRegister(), value16(), value32(), value64(), string16(), string32() or empty(). Explicit
+     * constructor. Converts uint8 to type.
      */
     [[nodiscard]] constexpr explicit Type(const std::uint8_t value) noexcept : _value(value) {}
     /**
@@ -127,9 +128,13 @@ class Type
      */
     [[nodiscard]] constexpr static Type value64() noexcept { return Type{VALUE_64}; }
     /**
-     * @return Returns the string response.
+     * @return Returns the string16 response.
      */
-    [[nodiscard]] constexpr static Type string() noexcept { return Type{STRING}; }
+    [[nodiscard]] constexpr static Type string16() noexcept { return Type{STRING16}; }
+    /**
+     * @return Returns the string32 response.
+     */
+    [[nodiscard]] constexpr static Type string32() noexcept { return Type{STRING32}; }
     /**
      * @return Returns the invalid type.
      */
@@ -216,9 +221,13 @@ class Type
      */
     [[nodiscard]] constexpr bool isValue64() const noexcept { return _value == VALUE_64; }
     /**
-     * @return Returns @b true if string response is represented, otherwise @b false.
+     * @return Returns @b true if string16 response is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isString() const noexcept { return _value == STRING; }
+    [[nodiscard]] constexpr bool isString16() const noexcept { return _value == STRING16; }
+    /**
+     * @return Returns @b true if string32 response is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isString32() const noexcept { return _value == STRING32; }
     /**
      * @return Returns @b true if invalid type is represented, otherwise @b false.
      */
@@ -244,7 +253,8 @@ class Type
                                                                       "VALUE_16",
                                                                       "VALUE_32",
                                                                       "VALUE_64",
-                                                                      "STRING"};
+                                                                      "STRING16",
+                                                                      "STRING32"};
 
   private:
     std::uint8_t _value;

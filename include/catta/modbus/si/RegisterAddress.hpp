@@ -23,70 +23,71 @@ class RegisterAddress
   private:
     constexpr static std::uint8_t COMMON_MANUFACTURER = 0;
     constexpr static std::uint8_t COMMON_MODEL = 1;
-    constexpr static std::uint8_t COMMON_SERIAL_NUMBER = 2;
-    constexpr static std::uint8_t COMMON_DEVICE_ADDRESS = 3;
-    constexpr static std::uint8_t INVERTER_AMPS = 4;
-    constexpr static std::uint8_t INVERTER_AMPS_PHASE_A = 5;
-    constexpr static std::uint8_t INVERTER_AMPS_PHASE_B = 6;
-    constexpr static std::uint8_t INVERTER_AMPS_PHASE_C = 7;
-    constexpr static std::uint8_t INVERTER_AMPS_SCALE_FACTOR = 8;
-    constexpr static std::uint8_t INVERTER_PHASE_VOLTAGE_A = 9;
-    constexpr static std::uint8_t INVERTER_PHASE_VOLTAGE_B = 10;
-    constexpr static std::uint8_t INVERTER_PHASE_VOLTAGE_C = 11;
-    constexpr static std::uint8_t INVERTER_PHASE_VOLTAGE_SCALE_FACTOR = 12;
-    constexpr static std::uint8_t INVERTER_AC_POWER = 13;
-    constexpr static std::uint8_t INVERTER_AC_POWER_SCALE_FACTOR = 14;
-    constexpr static std::uint8_t INVERTER_HERTZ = 15;
-    constexpr static std::uint8_t INVERTER_HERTZ_SCALE_FACTOR = 16;
-    constexpr static std::uint8_t INVERTER_AC_APPARENT_POWER = 17;
-    constexpr static std::uint8_t INVERTER_AC_APPARENT_POWER_SCALE_FACTOR = 18;
-    constexpr static std::uint8_t INVERTER_AC_REACTIVE_POWER = 19;
-    constexpr static std::uint8_t INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR = 20;
-    constexpr static std::uint8_t INVERTER_POWER_FACTOR = 21;
-    constexpr static std::uint8_t INVERTER_POWER_FACTOR_SCALE_FACTOR = 22;
-    constexpr static std::uint8_t INVERTER_WATT_HOURS = 23;
-    constexpr static std::uint8_t INVERTER_WATT_HOURS_SCALE_FACTOR = 24;
-    constexpr static std::uint8_t INVERTER_DC_VOLTAGE = 25;
-    constexpr static std::uint8_t INVERTER_DC_VOLTAGE_SCALE_FACTOR = 26;
-    constexpr static std::uint8_t INVERTER_DC_POWER = 27;
-    constexpr static std::uint8_t INVERTER_DC_POWER_SCALE_FACTOR = 28;
-    constexpr static std::uint8_t INVERTER_TEMPERATURE = 29;
-    constexpr static std::uint8_t INVERTER_TEMPERATURE_SCALE_FACTOR = 30;
-    constexpr static std::uint8_t INVERTER_OPERATING_STATE = 31;
-    constexpr static std::uint8_t INVERTER_VENDOR_OPERATING_STATE = 32;
-    constexpr static std::uint8_t INVERTER_VENDOR_EVENT_BITFIELD_1 = 33;
-    constexpr static std::uint8_t INVERTER_VENDOR_EVENT_BITFIELD_2 = 34;
-    constexpr static std::uint8_t INVERTER_VENDOR_EVENT_BITFIELD_3 = 35;
-    constexpr static std::uint8_t INVERTER_VENDOR_EVENT_BITFIELD_4 = 36;
-    constexpr static std::uint8_t NAMEPLATE_DER_TYPE = 37;
-    constexpr static std::uint8_t EXTENDED_MESUREMENTS_AC_WATT_HOURS = 38;
-    constexpr static std::uint8_t EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE = 39;
-    constexpr static std::uint8_t MPP_STEP_DAC_0 = 40;
-    constexpr static std::uint8_t MPP_STEP_DAC_1 = 41;
-    constexpr static std::uint8_t MPP_STEP_DAC_2 = 42;
-    constexpr static std::uint8_t MPP_STEP_DAC_3 = 43;
-    constexpr static std::uint8_t MPP_STEP_UDC_0 = 44;
-    constexpr static std::uint8_t MPP_STEP_UDC_1 = 45;
-    constexpr static std::uint8_t MPP_STEP_UDC_2 = 46;
-    constexpr static std::uint8_t MPP_STEP_UDC_3 = 47;
-    constexpr static std::uint8_t MPP_SAMPLE_DAC_0 = 48;
-    constexpr static std::uint8_t MPP_SAMPLE_DAC_1 = 49;
-    constexpr static std::uint8_t MPP_SAMPLE_DAC_2 = 50;
-    constexpr static std::uint8_t MPP_SAMPLE_DAC_3 = 51;
-    constexpr static std::uint8_t MPP_SAMPLE_UDC_0 = 52;
-    constexpr static std::uint8_t MPP_SAMPLE_UDC_1 = 53;
-    constexpr static std::uint8_t MPP_SAMPLE_UDC_2 = 54;
-    constexpr static std::uint8_t MPP_SAMPLE_UDC_3 = 55;
-    constexpr static std::uint8_t EMPTY = 56;
+    constexpr static std::uint8_t COMMON_VERSION = 2;
+    constexpr static std::uint8_t COMMON_SERIAL_NUMBER = 3;
+    constexpr static std::uint8_t COMMON_DEVICE_ADDRESS = 4;
+    constexpr static std::uint8_t INVERTER_AMPS = 5;
+    constexpr static std::uint8_t INVERTER_AMPS_PHASE_A = 6;
+    constexpr static std::uint8_t INVERTER_AMPS_PHASE_B = 7;
+    constexpr static std::uint8_t INVERTER_AMPS_PHASE_C = 8;
+    constexpr static std::uint8_t INVERTER_AMPS_SCALE_FACTOR = 9;
+    constexpr static std::uint8_t INVERTER_PHASE_VOLTAGE_A = 10;
+    constexpr static std::uint8_t INVERTER_PHASE_VOLTAGE_B = 11;
+    constexpr static std::uint8_t INVERTER_PHASE_VOLTAGE_C = 12;
+    constexpr static std::uint8_t INVERTER_PHASE_VOLTAGE_SCALE_FACTOR = 13;
+    constexpr static std::uint8_t INVERTER_AC_POWER = 14;
+    constexpr static std::uint8_t INVERTER_AC_POWER_SCALE_FACTOR = 15;
+    constexpr static std::uint8_t INVERTER_HERTZ = 16;
+    constexpr static std::uint8_t INVERTER_HERTZ_SCALE_FACTOR = 17;
+    constexpr static std::uint8_t INVERTER_AC_APPARENT_POWER = 18;
+    constexpr static std::uint8_t INVERTER_AC_APPARENT_POWER_SCALE_FACTOR = 19;
+    constexpr static std::uint8_t INVERTER_AC_REACTIVE_POWER = 20;
+    constexpr static std::uint8_t INVERTER_AC_REACTIVE_POWER_SCALE_FACTOR = 21;
+    constexpr static std::uint8_t INVERTER_POWER_FACTOR = 22;
+    constexpr static std::uint8_t INVERTER_POWER_FACTOR_SCALE_FACTOR = 23;
+    constexpr static std::uint8_t INVERTER_WATT_HOURS = 24;
+    constexpr static std::uint8_t INVERTER_WATT_HOURS_SCALE_FACTOR = 25;
+    constexpr static std::uint8_t INVERTER_DC_VOLTAGE = 26;
+    constexpr static std::uint8_t INVERTER_DC_VOLTAGE_SCALE_FACTOR = 27;
+    constexpr static std::uint8_t INVERTER_DC_POWER = 28;
+    constexpr static std::uint8_t INVERTER_DC_POWER_SCALE_FACTOR = 29;
+    constexpr static std::uint8_t INVERTER_TEMPERATURE = 30;
+    constexpr static std::uint8_t INVERTER_TEMPERATURE_SCALE_FACTOR = 31;
+    constexpr static std::uint8_t INVERTER_OPERATING_STATE = 32;
+    constexpr static std::uint8_t INVERTER_VENDOR_OPERATING_STATE = 33;
+    constexpr static std::uint8_t INVERTER_VENDOR_EVENT_BITFIELD_1 = 34;
+    constexpr static std::uint8_t INVERTER_VENDOR_EVENT_BITFIELD_2 = 35;
+    constexpr static std::uint8_t INVERTER_VENDOR_EVENT_BITFIELD_3 = 36;
+    constexpr static std::uint8_t INVERTER_VENDOR_EVENT_BITFIELD_4 = 37;
+    constexpr static std::uint8_t NAMEPLATE_DER_TYPE = 38;
+    constexpr static std::uint8_t EXTENDED_MESUREMENTS_AC_WATT_HOURS = 39;
+    constexpr static std::uint8_t EXTENDED_MESUREMENTS_AC_LIFETIME_CHARGE = 40;
+    constexpr static std::uint8_t MPP_STEP_DAC_0 = 41;
+    constexpr static std::uint8_t MPP_STEP_DAC_1 = 42;
+    constexpr static std::uint8_t MPP_STEP_DAC_2 = 43;
+    constexpr static std::uint8_t MPP_STEP_DAC_3 = 44;
+    constexpr static std::uint8_t MPP_STEP_UDC_0 = 45;
+    constexpr static std::uint8_t MPP_STEP_UDC_1 = 46;
+    constexpr static std::uint8_t MPP_STEP_UDC_2 = 47;
+    constexpr static std::uint8_t MPP_STEP_UDC_3 = 48;
+    constexpr static std::uint8_t MPP_SAMPLE_DAC_0 = 49;
+    constexpr static std::uint8_t MPP_SAMPLE_DAC_1 = 50;
+    constexpr static std::uint8_t MPP_SAMPLE_DAC_2 = 51;
+    constexpr static std::uint8_t MPP_SAMPLE_DAC_3 = 52;
+    constexpr static std::uint8_t MPP_SAMPLE_UDC_0 = 53;
+    constexpr static std::uint8_t MPP_SAMPLE_UDC_1 = 54;
+    constexpr static std::uint8_t MPP_SAMPLE_UDC_2 = 55;
+    constexpr static std::uint8_t MPP_SAMPLE_UDC_3 = 56;
+    constexpr static std::uint8_t EMPTY = 57;
 
   public:
     /**
      * @param[in] value The enum value of the register.
-     * @warning This constructor should not be used. Use commonManufacturer(), commonModel(), commonSerialNumber(), commonDeviceAddress(),
-     * inverterAmps(), inverterAmpsPhaseA(), inverterAmpsPhaseB(), inverterAmpsPhaseC(), inverterAmpsScaleFactor(), inverterPhaseVoltageA(),
-     * inverterPhaseVoltageB(), inverterPhaseVoltageC(), inverterPhaseVoltageScaleFactor(), inverterAcPower(), inverterAcPowerScaleFactor(),
-     * inverterHertz(), inverterHertzScaleFactor(), inverterAcApparentPower(), inverterAcApparentPowerScaleFactor(), inverterAcReactivePower(),
-     * inverterAcReactivePowerScaleFactor(), inverterPowerFactor(), inverterPowerFactorScaleFactor(), inverterWattHours(),
+     * @warning This constructor should not be used. Use commonManufacturer(), commonModel(), commonVersion(), commonSerialNumber(),
+     * commonDeviceAddress(), inverterAmps(), inverterAmpsPhaseA(), inverterAmpsPhaseB(), inverterAmpsPhaseC(), inverterAmpsScaleFactor(),
+     * inverterPhaseVoltageA(), inverterPhaseVoltageB(), inverterPhaseVoltageC(), inverterPhaseVoltageScaleFactor(), inverterAcPower(),
+     * inverterAcPowerScaleFactor(), inverterHertz(), inverterHertzScaleFactor(), inverterAcApparentPower(), inverterAcApparentPowerScaleFactor(),
+     * inverterAcReactivePower(), inverterAcReactivePowerScaleFactor(), inverterPowerFactor(), inverterPowerFactorScaleFactor(), inverterWattHours(),
      * inverterWattHoursScaleFactor(), inverterDcVoltage(), inverterDcVoltageScaleFactor(), inverterDcPower(), inverterDcPowerScaleFactor(),
      * inverterTemperature(), inverterTemperatureScaleFactor(), inverterOperatingState(), inverterVendorOperatingState(),
      * inverterVendorEventBitfield1(), inverterVendorEventBitfield2(), inverterVendorEventBitfield3(), inverterVendorEventBitfield4(),
@@ -107,6 +108,10 @@ class RegisterAddress
      * @return Returns the model name from the common model.
      */
     [[nodiscard]] constexpr static RegisterAddress commonModel() noexcept { return RegisterAddress{COMMON_MODEL}; }
+    /**
+     * @return Returns the version from the common model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress commonVersion() noexcept { return RegisterAddress{COMMON_VERSION}; }
     /**
      * @return Returns the serial number from the common model.
      */
@@ -387,6 +392,10 @@ class RegisterAddress
      */
     [[nodiscard]] constexpr bool isCommonModel() const noexcept { return _value == COMMON_MODEL; }
     /**
+     * @return Returns @b true if version from the common model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isCommonVersion() const noexcept { return _value == COMMON_VERSION; }
+    /**
      * @return Returns @b true if serial number from the common model is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isCommonSerialNumber() const noexcept { return _value == COMMON_SERIAL_NUMBER; }
@@ -611,6 +620,7 @@ class RegisterAddress
      */
     constexpr static std::array<std::string_view, EMPTY> enumNames = {"COMMON_MANUFACTURER",
                                                                       "COMMON_MODEL",
+                                                                      "COMMON_VERSION",
                                                                       "COMMON_SERIAL_NUMBER",
                                                                       "COMMON_DEVICE_ADDRESS",
                                                                       "INVERTER_AMPS",
@@ -677,6 +687,8 @@ class RegisterAddress
                 return std::uint16_t(40004);
             case COMMON_MODEL:
                 return std::uint16_t(40020);
+            case COMMON_VERSION:
+                return std::uint16_t(40044);
             case COMMON_SERIAL_NUMBER:
                 return std::uint16_t(40052);
             case COMMON_DEVICE_ADDRESS:
@@ -802,6 +814,8 @@ class RegisterAddress
                 return Type::string32();
             case COMMON_MODEL:
                 return Type::string32();
+            case COMMON_VERSION:
+                return Type::string16();
             case COMMON_SERIAL_NUMBER:
                 return Type::string32();
             case COMMON_DEVICE_ADDRESS:
@@ -928,6 +942,8 @@ class RegisterAddress
                 return Address(COMMON_MANUFACTURER);
             case 40020:
                 return Address(COMMON_MODEL);
+            case 40044:
+                return Address(COMMON_VERSION);
             case 40052:
                 return Address(COMMON_SERIAL_NUMBER);
             case 40068:

@@ -92,7 +92,7 @@ class Parser<catta::modbus::si::response::Response>
         const auto getCount = [this, input, error, jump](const std::uint8_t state)
         {
             const std::uint8_t v = input.value();
-            if (!input.type().isData() || (v != 2 && v != 4 && v != 8 && v != 32)) return error();
+            if (!input.type().isData() || (v != 2 && v != 4 && v != 8 && v != 16 && v != 32)) return error();
             _count = v;
             return jump(state);
         };
@@ -174,15 +174,25 @@ class Parser<catta::modbus::si::response::Response>
             return (static_cast<std::uint64_t>(_data[0]) << 48) | (static_cast<std::uint64_t>(_data[1]) << 32) |
                    (static_cast<std::uint64_t>(_data[2]) << 16) | _data[3];
         };
-        const auto string = [this]()
+        const auto string16 = [this]()
         {
-            catta::modbus::sunspec::String::Raw r = {};
-            for (std::size_t i = 0; i < catta::modbus::sunspec::String::size / 2; i++)
+            catta::modbus::sunspec::String16::Raw r = {};
+            for (std::size_t i = 0; i < catta::modbus::sunspec::String16::size / 2; i++)
             {
                 r[i * 2 + 0] = static_cast<char>(_data[i] >> 8);
                 r[i * 2 + 1] = static_cast<char>(_data[i] >> 0);
             }
-            return catta::modbus::sunspec::String::create(r.data());
+            return catta::modbus::sunspec::String16::create(r.data());
+        };
+        const auto string32 = [this]()
+        {
+            catta::modbus::sunspec::String32::Raw r = {};
+            for (std::size_t i = 0; i < catta::modbus::sunspec::String32::size / 2; i++)
+            {
+                r[i * 2 + 0] = static_cast<char>(_data[i] >> 8);
+                r[i * 2 + 1] = static_cast<char>(_data[i] >> 0);
+            }
+            return catta::modbus::sunspec::String32::create(r.data());
         };
         if (_state != DONE) return Output::empty();
         switch (_function)
@@ -196,8 +206,10 @@ class Parser<catta::modbus::si::response::Response>
                         return Output::value32(v32());
                     case 8:
                         return Output::value64(v64());
+                    case 16:
+                        return Output::string16(string16());
                     case 32:
-                        return Output::string(string());
+                        return Output::string32(string32());
                     default:
                         return Output::empty();
                 }

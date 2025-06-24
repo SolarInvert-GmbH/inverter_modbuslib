@@ -163,13 +163,16 @@ class DummyInverter : public Fl_Double_Window
                         switch (address)
                         {
                             case Address::commonManufacturer():
-                                a[i] = new SiRegister(X, Y, W, H, address, catta::modbus::sunspec::String::create("Manufacturer"));
+                                a[i] = new SiRegister(X, Y, W, H, address, catta::modbus::sunspec::String32::create("Manufacturer"));
                                 break;
                             case Address::commonModel():
-                                a[i] = new SiRegister(X, Y, W, H, address, catta::modbus::sunspec::String::create("Model"));
+                                a[i] = new SiRegister(X, Y, W, H, address, catta::modbus::sunspec::String32::create("Model"));
+                                break;
+                            case Address::commonVersion():
+                                a[i] = new SiRegister(X, Y, W, H, address, catta::modbus::sunspec::String16::create("1234"));
                                 break;
                             default:
-                                a[i] = new SiRegister(X, Y, W, H, address, catta::modbus::sunspec::String::create("SerialNumber"));
+                                a[i] = new SiRegister(X, Y, W, H, address, catta::modbus::sunspec::String32::create("SerialNumber"));
                                 break;
                         }
                 }

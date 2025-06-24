@@ -127,7 +127,7 @@ class Connection : public Fl_Group
         catta::modbus::si::response::Response resultResponse;
         catta::modbus::si::request::Request resultRequest;
 
-        const auto setLable = [](const catta::modbus::sunspec::String::Raw& value, catta::modbus::sunspec::String::Raw& raw, Fl_Box* box)
+        const auto setLable = [](const catta::modbus::sunspec::String32::Raw& value, catta::modbus::sunspec::String32::Raw& raw, Fl_Box* box)
         {
             raw = value;
             box->label(raw.data());
@@ -153,16 +153,16 @@ class Connection : public Fl_Group
             static constexpr bool JUMP = true;
             static constexpr bool DONT_JUMP = false;
             const auto handleSearch = [error, &response, resetConnectionTry, setLable, this](const bool jump,
-                                                                                             catta::modbus::sunspec::String::Raw& raw, Fl_Box* box,
+                                                                                             catta::modbus::sunspec::String32::Raw& raw, Fl_Box* box,
                                                                                              const std::size_t currentOnSuccess, const auto onSuccess)
             {
                 if (error)
                     resetConnectionTry(jump);
                 else if (!response.isEmpty())
                 {
-                    if (response.type().isString())
+                    if (response.type().isString32())
                     {
-                        setLable(response.stringValue().data(), raw, box);
+                        setLable(response.string32Value().data(), raw, box);
                         _current = currentOnSuccess;
                         onSuccess();
                     }
@@ -264,9 +264,9 @@ class Connection : public Fl_Group
     catta::modbus::si::request::Request _request;
     catta::modbus::si::request::Request _requestBackup;
 
-    catta::modbus::sunspec::String::Raw _stringManufacturer;
-    catta::modbus::sunspec::String::Raw _stringModel;
-    catta::modbus::sunspec::String::Raw _stringSerialNumber;
+    catta::modbus::sunspec::String32::Raw _stringManufacturer;
+    catta::modbus::sunspec::String32::Raw _stringModel;
+    catta::modbus::sunspec::String32::Raw _stringSerialNumber;
 
     std::chrono::microseconds _timeout;
     bool _waitForClear;

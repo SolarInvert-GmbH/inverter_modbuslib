@@ -14,7 +14,7 @@ namespace sunspec
  *
  * @author CattaTech - Maik Urbannek
  */
-class String
+class String32
 {
   public:
     /**
@@ -28,11 +28,11 @@ class String
     /**
      * Default constructor. Creates empty string.
      */
-    constexpr String() noexcept : String(Raw{}) {}
+    constexpr String32() noexcept : String32(Raw{}) {}
     /**
      * @return Returns empty string.
      */
-    constexpr static String empty() noexcept { return String{}; }
+    constexpr static String32 empty() noexcept { return String32{}; }
     /**
      *  @return Returns @b true if string is empty, otherwise @b false.
      */
@@ -41,13 +41,13 @@ class String
      * @param[in] string Representing the string. Has not longer than 32 character, otherwise empty is returned.
      * @return Returns string if input is valid, otherwise empty.
      */
-    static constexpr String create(const char* string)
+    static constexpr String32 create(const char* string)
     {
         Raw raw = Raw{};
         for (std::size_t i = 0; i <= size; i++)
         {
             raw[i] = string[i];
-            if (string[i] == '\0') return String(raw);
+            if (string[i] == '\0') return String32(raw);
         }
         return empty();
     }
@@ -56,13 +56,13 @@ class String
      */
     constexpr const Raw& data() const noexcept { return _data; }
     /**
-     * @param[in] other The other String.
-     * @return Returns @b true if the two String objects are the same, otherwise @b false.
+     * @param[in] other The other String32.
+     * @return Returns @b true if the two String32 objects are the same, otherwise @b false.
      */
-    constexpr bool operator==(const String& other) const noexcept = default;
+    constexpr bool operator==(const String32& other) const noexcept = default;
 
   private:
-    constexpr String(const Raw& data) : _data(data) {}
+    constexpr String32(const Raw& data) : _data(data) {}
     std::array<char, size + 1> _data;
 };
 }  // namespace sunspec
