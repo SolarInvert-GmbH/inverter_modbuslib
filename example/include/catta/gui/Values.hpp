@@ -48,8 +48,6 @@ class Values : public Fl_Group
         _acVoltage = new Value(X1, Y + 55 + H_LINE * 0, w, H_LINE, "AcVoltage");
         _acPower = new Value(X0, Y + 55 + H_LINE * 1, w, H_LINE, "AcPower");
         _frequency = new Value(X1, Y + 55 + H_LINE * 1, w, H_LINE, "Frequency");
-        _acApparentPower = new Value(X0, Y + 55 + H_LINE * 2, w, H_LINE, "AcApparentPower");
-        _acReactivePower = new Value(X1, Y + 55 + H_LINE * 2, w, H_LINE, "AcReactivePower");
         _powerFactor = new Value(X0, Y + 55 + H_LINE * 3, w, H_LINE, "PowerFactor");
         _energyProduction = new Value(X1, Y + 55 + H_LINE * 3, w, H_LINE, "EnergyProduction");
         _dcVoltage = new Value(X0, Y + 55 + H_LINE * 4, w, H_LINE, "DcVoltage");
@@ -78,14 +76,6 @@ class Values : public Fl_Group
      * @param[in] text The string for the frequency field.
      */
     void setFrequency(const std::string& text) noexcept { _frequency->set(text); }
-    /**
-     * @param[in] text The string for the ac apparent power field.
-     */
-    void setAcApparentPower(const std::string& text) noexcept { _acApparentPower->set(text); }
-    /**
-     * @param[in] text The string for the _ac reactive power field.
-     */
-    void setAcReactivePower(const std::string& text) noexcept { _acReactivePower->set(text); }
     /**
      * @param[in] text The string for the power factor field.
      */
@@ -118,8 +108,6 @@ class Values : public Fl_Group
     Value* _acVoltage;
     Value* _acPower;
     Value* _frequency;
-    Value* _acApparentPower;
-    Value* _acReactivePower;
     Value* _powerFactor;
     Value* _energyProduction;
     Value* _dcVoltage;
