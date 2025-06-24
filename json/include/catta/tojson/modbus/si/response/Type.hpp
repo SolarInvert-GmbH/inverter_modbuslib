@@ -104,8 +104,11 @@ class Serializer<catta::modbus::si::response::Type>
                 case 17:
                     _state = VALUE64 + 0;
                     break;
+                case 18:
+                    _state = STRING16 + 0;
+                    break;
                 default:
-                    _state = STRING + 0;
+                    _state = STRING32 + 0;
                     break;
             }
             return stay(token);
@@ -616,18 +619,38 @@ class Serializer<catta::modbus::si::response::Type>
                 return next(catta::json::Token::character('6'));
             case VALUE64 + 6:
                 return jump(catta::json::Token::character('4'), TAIL + 0);
-            case STRING + 0:
+            case STRING16 + 0:
                 return next(catta::json::Token::character('s'));
-            case STRING + 1:
+            case STRING16 + 1:
                 return next(catta::json::Token::character('t'));
-            case STRING + 2:
+            case STRING16 + 2:
                 return next(catta::json::Token::character('r'));
-            case STRING + 3:
+            case STRING16 + 3:
                 return next(catta::json::Token::character('i'));
-            case STRING + 4:
+            case STRING16 + 4:
                 return next(catta::json::Token::character('n'));
-            case STRING + 5:
-                return jump(catta::json::Token::character('g'), TAIL + 0);
+            case STRING16 + 5:
+                return next(catta::json::Token::character('g'));
+            case STRING16 + 6:
+                return next(catta::json::Token::character('1'));
+            case STRING16 + 7:
+                return jump(catta::json::Token::character('6'), TAIL + 0);
+            case STRING32 + 0:
+                return next(catta::json::Token::character('s'));
+            case STRING32 + 1:
+                return next(catta::json::Token::character('t'));
+            case STRING32 + 2:
+                return next(catta::json::Token::character('r'));
+            case STRING32 + 3:
+                return next(catta::json::Token::character('i'));
+            case STRING32 + 4:
+                return next(catta::json::Token::character('n'));
+            case STRING32 + 5:
+                return next(catta::json::Token::character('g'));
+            case STRING32 + 6:
+                return next(catta::json::Token::character('3'));
+            case STRING32 + 7:
+                return jump(catta::json::Token::character('2'), TAIL + 0);
             case TAIL + 0:
                 return next(catta::json::Token::closeString());
             case TAIL + 1:
@@ -668,8 +691,9 @@ class Serializer<catta::modbus::si::response::Type>
     static constexpr std::uint16_t VALUE16 = WRITE_REGISTER + 13;
     static constexpr std::uint16_t VALUE32 = VALUE16 + 7;
     static constexpr std::uint16_t VALUE64 = VALUE32 + 7;
-    static constexpr std::uint16_t STRING = VALUE64 + 7;
-    static constexpr std::uint16_t TAIL = STRING + 6;
+    static constexpr std::uint16_t STRING16 = VALUE64 + 7;
+    static constexpr std::uint16_t STRING32 = STRING16 + 8;
+    static constexpr std::uint16_t TAIL = STRING32 + 8;
     static constexpr std::uint16_t DONE = TAIL + 2;
     static constexpr std::uint16_t ERROR_STATE = DONE + 1;
 };
