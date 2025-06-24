@@ -2,6 +2,7 @@
 
 // gui
 #include <catta/gui/Connection.hpp>
+#include <catta/gui/Password.hpp>
 #include <catta/gui/Values.hpp>
 
 // modbus
@@ -32,7 +33,7 @@ class MiniSicc : public Fl_Double_Window
      * @param[in] defaultUartName The default device address of the uart.
      * Constructor.
      */
-    MiniSicc(const char* defaultUartName)
+    MiniSicc(const std::uint64_t id, const char* defaultUartName)
         : Fl_Double_Window(200, 200, WIDTH, HEIGHT, "miniSICC"),
           _run(true),
           _current(CLIENTS),
@@ -51,10 +52,12 @@ class MiniSicc : public Fl_Double_Window
         Fl::scheme("plastic");  // plastic, gleam, oxy
         Fl::foreground(0x00, 0x00, 0x00);
         Fl::background(0x59, 0x6a, 0x79);
+        static constexpr int passwordHeight = 70;
         this->_connection = new Connection<UART>(10, 10, WIDTH - 20, 130, defaultUartName, nullptr, CLIENTS);
-        this->_tabs = new Fl_Tabs(10, 150, WIDTH - 20, HEIGHT - 160);
-        Fl_Group* g0 = new Fl_Group(10, 180, WIDTH - 20, HEIGHT - 185, "Values");
-        this->_values = new Values(15, 190, WIDTH - 30, HEIGHT - 195);
+        this->_passwort = new Password(10, 145, WIDTH - 20, passwordHeight, nullptr, crc(id), nullptr, nullptr);
+        this->_tabs = new Fl_Tabs(10, 150 + passwordHeight, WIDTH - 20, HEIGHT - 160 - passwordHeight);
+        Fl_Group* g0 = new Fl_Group(10, 180 + passwordHeight, WIDTH - 20, HEIGHT - 185 - passwordHeight, "Values");
+        this->_values = new Values(15, 190 + passwordHeight, WIDTH - 30, HEIGHT - 195 - passwordHeight);
         g0->end();
         this->resizable(this->_tabs);
         this->end();
@@ -161,6 +164,7 @@ class MiniSicc : public Fl_Double_Window
     bool _run;
 
     Connection<UART>* _connection;
+    Password* _passwort;
     catta::modbus::ValueCache<CACHE_SIZE> _cache;
     Request _request;
     std::size_t _current;
@@ -422,6 +426,31 @@ class MiniSicc : public Fl_Double_Window
       private:
         MiniSicc& _miniSicc;
     } _sliderCallback;
+    constexpr static std::uint16_t crc(const std::uint64_t input)
+    {
+        const auto next = [](const std::uint8_t byte, const std::uint16_t last)
+        {
+            const auto loop = [byte](const std::uint16_t last, const int i)
+            {
+                const std::uint16_t xorFlag = last & 0x8000;
+                const std::uint16_t shift = static_cast<std::uint16_t>(last << 1);
+                const std::uint16_t minor = (byte & (1 << i)) ? 1 : 0;
+                return xorFlag == 0 ? (shift | minor) : (shift | minor) ^ 0x1021;
+            };
+            std::uint16_t value = last;
+            for (int i = 7; i >= 0; i--) loop(value, i);
+            return value;
+        };
+        std::uint16_t crc = 0xffff;
+        for (uint8_t i = 0; i < 8; i++)
+        {
+            const std::uint8_t data = static_cast<std::uint8_t>(input >> (i * 8));
+            crc = next(data, crc);
+        }
+        crc = next(0x00, crc);
+        crc = next(0x00, crc);
+        return crc;
+    }
 };
 }  // namespace gui
 }  // namespace catta
