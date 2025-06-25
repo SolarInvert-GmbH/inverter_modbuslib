@@ -1,5 +1,8 @@
 #pragma once
 
+// si
+#include <catta/modbus/si/Type.hpp>
+
 // gui
 #include <catta/gui/Value.hpp>
 
@@ -41,18 +44,24 @@ class Values : public Fl_Group
         _slider->callback(slidercb, this);
         _interval = new Fl_Box(X + (W * 4) / 5, Y, W / 5, 50, _invervalText.data());
 
-        const int w = (W - 20) / 2;
+        const int w1 = (W - 10) / 1;
+        const int w2 = (W - 20) / 2;
+        const int w3 = (W - 30) / 3;
         const int X0 = X + 5;
-        const int X1 = X + 10 + w;
-        _acCurrent = new Value(X0, Y + 55 + H_LINE * 0, w, H_LINE, "AcCurrent");
-        _acVoltage = new Value(X1, Y + 55 + H_LINE * 0, w, H_LINE, "AcVoltage");
-        _acPower = new Value(X0, Y + 55 + H_LINE * 1, w, H_LINE, "AcPower");
-        _frequency = new Value(X1, Y + 55 + H_LINE * 1, w, H_LINE, "Frequency");
-        _powerFactor = new Value(X0, Y + 55 + H_LINE * 3, w, H_LINE, "PowerFactor");
-        _energyProduction = new Value(X1, Y + 55 + H_LINE * 3, w, H_LINE, "EnergyProduction");
-        _dcVoltage = new Value(X0, Y + 55 + H_LINE * 4, w, H_LINE, "DcVoltage");
-        _dcPower = new Value(X1, Y + 55 + H_LINE * 4, w, H_LINE, "DcPower");
-        _temperature = new Value(X0, Y + 55 + H_LINE * 5, w, H_LINE, "Temperature");
+        const int X1 = X + 10 + w2;
+        _acCurrent = new Value(X0, Y + 55 + H_LINE * 0, w2, H_LINE, "AcCurrent");
+        _acVoltage = new Value(X1, Y + 55 + H_LINE * 0, w2, H_LINE, "AcVoltage");
+        _acPower = new Value(X0, Y + 55 + H_LINE * 1, w2, H_LINE, "AcPower");
+        _frequency = new Value(X1, Y + 55 + H_LINE * 1, w2, H_LINE, "Frequency");
+        _powerFactor = new Value(X0, Y + 55 + H_LINE * 3, w2, H_LINE, "PowerFactor");
+        _energyProduction = new Value(X1, Y + 55 + H_LINE * 3, w2, H_LINE, "EnergyProduction");
+        _dcVoltage = new Value(X0, Y + 55 + H_LINE * 4, w2, H_LINE, "DcVoltage");
+        _dcPower = new Value(X1, Y + 55 + H_LINE * 4, w2, H_LINE, "DcPower");
+        _temperature = new Value(X0, Y + 55 + H_LINE * 5, w2, H_LINE, "Temperature");
+        _operatingState0 = new Fl_Box(X0 + (w3 + 10) * 0, Y + 55 + H_LINE * 6, w3, H_LINE, "Operating Mode");
+        _operatingState1 = new Fl_Box(X0 + (w3 + 10) * 1, Y + 55 + H_LINE * 6, w3, H_LINE, "State");
+        _operatingState2 = new Fl_Box(X0 + (w3 + 10) * 2, Y + 55 + H_LINE * 6, w3, H_LINE, nullptr);
+        _operatingState3 = new Fl_Box(X0, Y + 55 + H_LINE * 7, w1, H_LINE, nullptr);
         this->end();
         this->show();
     }
@@ -100,6 +109,23 @@ class Values : public Fl_Group
      * @param[in] callback The callback that is executed when the slider is changed.
      */
     void setCallback(const std::function<void(const std::chrono::microseconds)> callback) { _callback = callback; }
+    /**
+     * @param[in] type The type.
+     * @param[in] state The state.
+     */
+    void setOperatingState(const catta::modbus::si::Type type, const std::uint16_t state)
+    {
+        const char* text = type < typeSize && state < stateSize ? TYPE_STATE_MATRIX[type][state] : nullptr;
+        _operatingState3->label(text);
+        if (state < stateSize)
+        {
+            _operatingState2Text[0] = state < 10 ? ' ' : '1';
+            _operatingState2Text[1] = static_cast<char>('0' + state % 10);
+            _operatingState2->label(_operatingState2Text.data());
+        }
+        else
+            _operatingState2->label(nullptr);
+    }
 
   private:
     Fl_Slider* _slider;
@@ -113,6 +139,11 @@ class Values : public Fl_Group
     Value* _dcVoltage;
     Value* _dcPower;
     Value* _temperature;
+    Fl_Box* _operatingState0;
+    Fl_Box* _operatingState1;
+    Fl_Box* _operatingState2;
+    Fl_Box* _operatingState3;
+    std::array<char, 3> _operatingState2Text;
     std::function<void(const std::chrono::microseconds interval)> _callback;
     std::array<char, 4> _invervalText;
     static constexpr int H_LINE = 50;
@@ -132,6 +163,13 @@ class Values : public Fl_Group
             if (values->_callback) values->_callback(s);
         }
     }
+    static constexpr std::size_t typeSize = 3;
+    static constexpr std::size_t stateSize = 12;
+    static constexpr const char* TYPE_STATE_MATRIX[typeSize][stateSize] = {
+        {"SOLAR_0", "SOLAR_1", "SOLAR_2", "SOLAR_3", "SOLAR_4", "SOLAR_5", "SOLAR_6", "SOLAR_7", "SOLAR_8", "SOLAR_9", "SOLAR_10", "SOLAR_11"},
+        {"WIND_0", "WIND_1", "WIND_2", "WIND_3", "WIND_4", "WIND_5", "WIND_6", "WIND_7", "WIND_8", "WIND_9", "WIND_10", "WIND_11"},
+        {"BATTERY_0", "BATTERY_1", "BATTERY_2", "BATTERY_3", "BATTERY_4", "BATTERY_5", "BATTERY_6", "BATTERY_7", "BATTERY_8", "BATTERY_9",
+         "BATTERY_10", "BATTERY_11"}};
 };
 }  // namespace gui
 }  // namespace catta

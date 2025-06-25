@@ -45,6 +45,7 @@ class MiniSicc : public Fl_Double_Window
           _dcVoltageCallback(*this),
           _dcPowerCallback(*this),
           _temperatureCallback(*this),
+          _operatingStateCallback(*this),
           _sliderCallback(*this)
     {
         Fl::scheme("plastic");  // plastic, gleam, oxy
@@ -61,6 +62,7 @@ class MiniSicc : public Fl_Double_Window
         this->end();
         this->callback(close_cb);
         this->show();
+        _cache.setRequest(CACHE_DER_TYPE, REQUEST_DER_TYPE);
         _cache.setRequest(CACHE_AC_CURRENT_SCALE, REQUEST_AC_CURRENT_SCALE);
         _cache.setRequest(CACHE_AC_CURRENT, REQUEST_AC_CURRENT);
         _cache.setRequest(CACHE_AC_POWER_SCALE, REQUEST_AC_POWER_SCALE);
@@ -77,6 +79,7 @@ class MiniSicc : public Fl_Double_Window
         _cache.setRequest(CACHE_DC_POWER, REQUEST_DC_POWER);
         _cache.setRequest(CACHE_TEMPERATURE_SCALE, REQUEST_TEMPERATURE_SCALE);
         _cache.setRequest(CACHE_TEMPERATURE, REQUEST_TEMPERATURE);
+        _cache.setRequest(CACHE_VENDOR_OPERATING_STATE, REQUEST_VENDOR_OPERATING_STATE);
         _cache.setCallback(CACHE_AC_CURRENT, _acCurrentCallback);
         _cache.setCallback(CACHE_AC_POWER, _acPowerCallback);
         _cache.setCallback(CACHE_FREQUENCY, _frequencyCallback);
@@ -85,6 +88,7 @@ class MiniSicc : public Fl_Double_Window
         _cache.setCallback(CACHE_DC_VOLTAGE, _dcVoltageCallback);
         _cache.setCallback(CACHE_DC_POWER, _dcPowerCallback);
         _cache.setCallback(CACHE_TEMPERATURE, _temperatureCallback);
+        _cache.setCallback(CACHE_VENDOR_OPERATING_STATE, _operatingStateCallback);
         _sliderCallback(std::chrono::seconds{1});
         _values->setCallback(_sliderCallback);
     }
@@ -122,7 +126,8 @@ class MiniSicc : public Fl_Double_Window
     static constexpr std::size_t CLIENT_CACHE = 0;
     static constexpr std::size_t CLIENTS = CLIENT_CACHE + 1;
 
-    static constexpr std::size_t CACHE_AC_CURRENT_SCALE = 0;
+    static constexpr std::size_t CACHE_DER_TYPE = 0;
+    static constexpr std::size_t CACHE_AC_CURRENT_SCALE = CACHE_DER_TYPE + 1;
     static constexpr std::size_t CACHE_AC_CURRENT = CACHE_AC_CURRENT_SCALE + 1;
     static constexpr std::size_t CACHE_AC_VOLTAGE_SCALE = CACHE_AC_CURRENT + 1;
     static constexpr std::size_t CACHE_AC_VOLTAGE_A = CACHE_AC_VOLTAGE_SCALE + 1;
@@ -142,7 +147,8 @@ class MiniSicc : public Fl_Double_Window
     static constexpr std::size_t CACHE_DC_POWER = CACHE_DC_POWER_SCALE + 1;
     static constexpr std::size_t CACHE_TEMPERATURE_SCALE = CACHE_DC_POWER + 1;
     static constexpr std::size_t CACHE_TEMPERATURE = CACHE_TEMPERATURE_SCALE + 1;
-    static constexpr std::size_t CACHE_SIZE = CACHE_TEMPERATURE + 1;
+    static constexpr std::size_t CACHE_VENDOR_OPERATING_STATE = CACHE_TEMPERATURE + 1;
+    static constexpr std::size_t CACHE_SIZE = CACHE_VENDOR_OPERATING_STATE + 1;
 
     using Request = catta::modbus::si::request::Request;
     using Response = catta::modbus::si::response::Response;
@@ -169,6 +175,7 @@ class MiniSicc : public Fl_Double_Window
         if (self) self->_run = false;
     }
 
+    static constexpr RegisterAddress REGISTER_DER_TYPE = RegisterAddress::nameplateDerType();
     static constexpr RegisterAddress REGISTER_AC_CURRENT_SCALE = RegisterAddress::inverterAmpsScaleFactor();
     static constexpr RegisterAddress REGISTER_AC_CURRENT = RegisterAddress::inverterAmps();
     static constexpr RegisterAddress REGISTER_AC_VOLTAGE_SCALE = RegisterAddress::inverterPhaseVoltageScaleFactor();
@@ -189,7 +196,9 @@ class MiniSicc : public Fl_Double_Window
     static constexpr RegisterAddress REGISTER_DC_POWER = RegisterAddress::inverterDcPower();
     static constexpr RegisterAddress REGISTER_TEMPERATURE_SCALE = RegisterAddress::inverterTemperatureScaleFactor();
     static constexpr RegisterAddress REGISTER_TEMPERATURE = RegisterAddress::inverterTemperature();
+    static constexpr RegisterAddress REGISTER_VENDOR_OPERATING_STATE = RegisterAddress::inverterVendorOperatingState();
 
+    static constexpr Request REQUEST_DER_TYPE = Request::readRegister(ReadRegister::create(REGISTER_DER_TYPE));
     static constexpr Request REQUEST_AC_CURRENT_SCALE = Request::readRegister(ReadRegister::create(REGISTER_AC_CURRENT_SCALE));
     static constexpr Request REQUEST_AC_CURRENT = Request::readRegister(ReadRegister::create(REGISTER_AC_CURRENT));
     static constexpr Request REQUEST_AC_VOLTAGE_SCALE = Request::readRegister(ReadRegister::create(REGISTER_AC_VOLTAGE_SCALE));
@@ -210,6 +219,7 @@ class MiniSicc : public Fl_Double_Window
     static constexpr Request REQUEST_DC_POWER = Request::readRegister(ReadRegister::create(REGISTER_DC_POWER));
     static constexpr Request REQUEST_TEMPERATURE_SCALE = Request::readRegister(ReadRegister::create(REGISTER_TEMPERATURE_SCALE));
     static constexpr Request REQUEST_TEMPERATURE = Request::readRegister(ReadRegister::create(REGISTER_TEMPERATURE));
+    static constexpr Request REQUEST_VENDOR_OPERATING_STATE = Request::readRegister(ReadRegister::create(REGISTER_VENDOR_OPERATING_STATE));
 
     class AcCurrent
     {
@@ -365,6 +375,30 @@ class MiniSicc : public Fl_Double_Window
     ScaledValueCallback<DcPower> _dcPowerCallback;
     ScaledValueCallback<Temperature> _temperatureCallback;
 
+    class OperatingStateCallback
+    {
+      public:
+        OperatingStateCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()(const Response& r)
+        {
+            const catta::modbus::si::Type type = [this]()
+            {
+                const auto& derType = _miniSicc._cache.getResponse(CACHE_DER_TYPE);
+                if (!derType.type().isValue16()) return catta::modbus::si::Type::empty();
+                const std::uint16_t value = derType.value16Value();
+                if (value == 4) return catta::modbus::si::Type::solar();
+                if (value == 82) return catta::modbus::si::Type::battery();
+                if (value == 5) return catta::modbus::si::Type::wind();
+                return catta::modbus::si::Type::empty();
+            }();
+            const std::uint16_t value = r.type().isValue16() ? r.value16Value() : 0xffff;
+            _miniSicc._values->setOperatingState(type, value);
+        }
+
+      private:
+        MiniSicc& _miniSicc;
+    } _operatingStateCallback;
+
     class SliderCallback
     {
       public:
@@ -379,6 +413,7 @@ class MiniSicc : public Fl_Double_Window
             _miniSicc._cache.setValidTime(CACHE_DC_VOLTAGE, t * 4);
             _miniSicc._cache.setValidTime(CACHE_DC_POWER, t * 4);
             _miniSicc._cache.setValidTime(CACHE_TEMPERATURE, t * 4);
+            _miniSicc._cache.setValidTime(CACHE_VENDOR_OPERATING_STATE, t * 4);
         }
 
       private:
