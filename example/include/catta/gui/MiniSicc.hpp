@@ -229,7 +229,7 @@ class MiniSicc : public Fl_Double_Window
         static constexpr const char* unit = "A";
         static constexpr std::size_t cacheScale = CACHE_AC_CURRENT_SCALE;
         static constexpr RegisterAddress address = REGISTER_AC_CURRENT;
-        static void setValue(Values* values, const std::string& value) { values->setAcCurrent(value); }
+        static void setValue(Values* values, const std::string& value, const char* unit) { values->setAcCurrent(value, unit); }
     };
 
     class AcPower
@@ -238,7 +238,7 @@ class MiniSicc : public Fl_Double_Window
         static constexpr const char* unit = "W";
         static constexpr std::size_t cacheScale = CACHE_AC_POWER_SCALE;
         static constexpr RegisterAddress address = REGISTER_AC_POWER;
-        static void setValue(Values* values, const std::string& value) { values->setAcPower(value); }
+        static void setValue(Values* values, const std::string& value, const char* unit) { values->setAcPower(value, unit); }
     };
 
     class Frequency
@@ -247,16 +247,16 @@ class MiniSicc : public Fl_Double_Window
         static constexpr const char* unit = "Hz";
         static constexpr std::size_t cacheScale = CACHE_FREQUENCY_SCALE;
         static constexpr RegisterAddress address = REGISTER_FREQUENCY;
-        static void setValue(Values* values, const std::string& value) { values->setFrequency(value); }
+        static void setValue(Values* values, const std::string& value, const char* unit) { values->setFrequency(value, unit); }
     };
 
     class PowerFactor
     {
       public:
-        static constexpr const char* unit = "";
+        static constexpr const char* unit = nullptr;
         static constexpr std::size_t cacheScale = CACHE_POWER_FACTOR_SCALE;
         static constexpr RegisterAddress address = REGISTER_POWER_FACTOR;
-        static void setValue(Values* values, const std::string& value) { values->setPowerFactor(value); }
+        static void setValue(Values* values, const std::string& value, const char* unit) { values->setPowerFactor(value, unit); }
     };
 
     class EnergyProduction
@@ -265,7 +265,7 @@ class MiniSicc : public Fl_Double_Window
         static constexpr const char* unit = "Wh";
         static constexpr std::size_t cacheScale = CACHE_ENERGY_PRODUCTION_SCALE;
         static constexpr RegisterAddress address = REGISTER_ENERGY_PRODUCTION;
-        static void setValue(Values* values, const std::string& value) { values->setEnergyProduction(value); }
+        static void setValue(Values* values, const std::string& value, const char* unit) { values->setEnergyProduction(value, unit); }
     };
 
     class DcVoltage
@@ -274,7 +274,7 @@ class MiniSicc : public Fl_Double_Window
         static constexpr const char* unit = "V";
         static constexpr std::size_t cacheScale = CACHE_DC_VOLTAGE_SCALE;
         static constexpr RegisterAddress address = REGISTER_DC_VOLTAGE;
-        static void setValue(Values* values, const std::string& value) { values->setDcVoltage(value); }
+        static void setValue(Values* values, const std::string& value, const char* unit) { values->setDcVoltage(value, unit); }
     };
 
     class DcPower
@@ -283,7 +283,7 @@ class MiniSicc : public Fl_Double_Window
         static constexpr const char* unit = "W";
         static constexpr std::size_t cacheScale = CACHE_DC_POWER_SCALE;
         static constexpr RegisterAddress address = REGISTER_DC_POWER;
-        static void setValue(Values* values, const std::string& value) { values->setDcPower(value); }
+        static void setValue(Values* values, const std::string& value, const char* unit) { values->setDcPower(value, unit); }
     };
 
     class Temperature
@@ -292,7 +292,7 @@ class MiniSicc : public Fl_Double_Window
         static constexpr const char* unit = "°C";
         static constexpr std::size_t cacheScale = CACHE_TEMPERATURE_SCALE;
         static constexpr RegisterAddress address = REGISTER_TEMPERATURE;
-        static void setValue(Values* values, const std::string& value) { values->setTemperature(value); }
+        static void setValue(Values* values, const std::string& value, const char* unit) { values->setTemperature(value, unit); }
     };
 
     template <class T>
@@ -307,7 +307,7 @@ class MiniSicc : public Fl_Double_Window
             if (!scaleResponse.type().isValue16() || scale < -10 || scale > 10)
             {
                 _miniSicc._cache.setInvalid(T::cacheScale);
-                T::setValue(_miniSicc._values, std::string());
+                T::setValue(_miniSicc._values, std::string(), nullptr);
             }
             else
             {
@@ -318,7 +318,7 @@ class MiniSicc : public Fl_Double_Window
                 {
                     case catta::modbus::si::RegisterType::sint16():
                     {
-                        if (!r.type().isValue16()) return T::setValue(_miniSicc._values, std::string());
+                        if (!r.type().isValue16()) return T::setValue(_miniSicc._values, std::string(), nullptr);
                         if (static_cast<std::int16_t>(r.value16Value()) < 0)
                         {
                             minus = true;
@@ -329,19 +329,19 @@ class MiniSicc : public Fl_Double_Window
                         break;
                     }
                     case catta::modbus::si::RegisterType::uint16():
-                        if (!r.type().isValue16()) return T::setValue(_miniSicc._values, std::string());
+                        if (!r.type().isValue16()) return T::setValue(_miniSicc._values, std::string(), nullptr);
                         t = r.value16Value();
                         break;
                     case catta::modbus::si::RegisterType::uint32():
-                        if (!r.type().isValue32()) return T::setValue(_miniSicc._values, std::string());
+                        if (!r.type().isValue32()) return T::setValue(_miniSicc._values, std::string(), nullptr);
                         t = r.value32Value();
                         break;
                     case catta::modbus::si::RegisterType::uint64():
-                        if (!r.type().isValue64()) return T::setValue(_miniSicc._values, std::string());
+                        if (!r.type().isValue64()) return T::setValue(_miniSicc._values, std::string(), nullptr);
                         t = r.value64Value();
                         break;
                     default:
-                        return T::setValue(_miniSicc._values, std::string());
+                        return T::setValue(_miniSicc._values, std::string(), nullptr);
                 }
                 const std::string scaledNumber = [scale, minus, t]()
                 {
@@ -360,7 +360,7 @@ class MiniSicc : public Fl_Double_Window
                     for (std::uint64_t i = factor / 10; i > 0; i = i / 10) result += static_cast<char>('0' + (t / i) % 10);
                     return result;
                 }();
-                T::setValue(_miniSicc._values, scaledNumber + ' ' + T::unit);
+                T::setValue(_miniSicc._values, scaledNumber, T::unit);
             }
         }
 

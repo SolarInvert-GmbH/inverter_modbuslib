@@ -75,39 +75,39 @@ class Values : public Fl_Group
     /**
      * @param[in] text The string for the ac current field.
      */
-    void setAcCurrent(const std::string& text) noexcept { _acCurrent->set(text); }
+    void setAcCurrent(const std::string& value, const char* unit) noexcept { _acCurrent->set(value, unit); }
     /**
      * @param[in] text The string for the ac voltage field.
      */
-    void setAcVoltage(const std::string& text) noexcept { _acVoltage->set(text); }
+    void setAcVoltage(const std::string& value, const char* unit) noexcept { _acVoltage->set(value, unit); }
     /**
      * @param[in] text The string for the ac power field.
      */
-    void setAcPower(const std::string& text) noexcept { _acPower->set(text); }
+    void setAcPower(const std::string& value, const char* unit) noexcept { _acPower->set(value, unit); }
     /**
      * @param[in] text The string for the frequency field.
      */
-    void setFrequency(const std::string& text) noexcept { _frequency->set(text); }
+    void setFrequency(const std::string& value, const char* unit) noexcept { _frequency->set(value, unit); }
     /**
      * @param[in] text The string for the power factor field.
      */
-    void setPowerFactor(const std::string& text) noexcept { _powerFactor->set(text); }
+    void setPowerFactor(const std::string& value, const char* unit) noexcept { _powerFactor->set(value, unit); }
     /**
      * @param[in] text The string for the energy production field.
      */
-    void setEnergyProduction(const std::string& text) noexcept { _energyProduction->set(text); }
+    void setEnergyProduction(const std::string& value, const char* unit) noexcept { _energyProduction->set(value, unit); }
     /**
      * @param[in] text The string for the dc voltage field.
      */
-    void setDcVoltage(const std::string& text) noexcept { _dcVoltage->set(text); }
+    void setDcVoltage(const std::string& value, const char* unit) noexcept { _dcVoltage->set(value, unit); }
     /**
      * @param[in] text The string for the dc power field.
      */
-    void setDcPower(const std::string& text) noexcept { _dcPower->set(text); }
+    void setDcPower(const std::string& value, const char* unit) noexcept { _dcPower->set(value, unit); }
     /**
      * @param[in] text The string for the temperature field.
      */
-    void setTemperature(const std::string& text) noexcept { _temperature->set(text); }
+    void setTemperature(const std::string& value, const char* unit) noexcept { _temperature->set(value, unit); }
     /**
      * @param[in] callback The callback that is executed when the slider is changed.
      */
