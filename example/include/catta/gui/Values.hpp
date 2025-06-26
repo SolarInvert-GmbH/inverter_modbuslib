@@ -55,7 +55,6 @@ class Values : public Fl_Group
         _acVoltage = new Value(X1, Y + H_LINE * 1, w3, H_LINE, "AcVoltage");
         _acPower = new Value(X2, Y + H_LINE * 1, w3, H_LINE, "AcPower");
         _frequency = new Value(X0, Y + H_LINE * 2, w3, H_LINE, "Frequency");
-        _powerFactor = new Value(X1, Y + H_LINE * 2, w3, H_LINE, "PowerFactor");
         _energyProduction = new Value(X2, Y + H_LINE * 2, w3, H_LINE, "EnergyProduction");
         _dcVoltage = new Value(X0, Y + H_LINE * 3, w3, H_LINE, "DcVoltage");
         _dcPower = new Value(X1, Y + H_LINE * 3, w3, H_LINE, "DcPower");
@@ -64,6 +63,8 @@ class Values : public Fl_Group
         _operatingState1 = new Fl_Box(X1, Y + H_LINE * 4, w3, H_LINE, "State");
         _operatingState2 = new Fl_Box(X2, Y + H_LINE * 4, w3, H_LINE, nullptr);
         _operatingState3 = new Fl_Box(X0, Y + H_LINE * 5, w1, H_LINE, nullptr);
+        _powerFactor = new Value(X0, Y + H_LINE * 6, w3, H_LINE, "PowerFactor");
+        lock();
         this->end();
         this->show();
     }
@@ -128,6 +129,18 @@ class Values : public Fl_Group
         else
             _operatingState2->label(nullptr);
     }
+    /**
+     * Show locked stuff.
+     */
+    void lock() { _powerFactor->hide(); }
+    /**
+     * Hide locked stuff.
+     */
+    void unlock() { _powerFactor->show(); }
+    /**
+     * Triggers the slider callback.
+     */
+    void triggerSliderCallback() { slidercb(nullptr, this); }
 
   private:
     Fl_Slider* _slider;

@@ -46,14 +46,16 @@ class MiniSicc : public Fl_Double_Window
           _dcPowerCallback(*this),
           _temperatureCallback(*this),
           _operatingStateCallback(*this),
-          _sliderCallback(*this)
+          _sliderCallback(*this),
+          _unlock(*this),
+          _lock(*this)
     {
         Fl::scheme("plastic");  // plastic, gleam, oxy
         Fl::foreground(0x00, 0x00, 0x00);
         Fl::background(0x59, 0x6a, 0x79);
         static constexpr int passwordHeight = 70;
         this->_connection = new Connection<UART>(10, 10, WIDTH - 20, 130, defaultUartName, nullptr, CLIENTS);
-        this->_passwort = new Password(10, 145, WIDTH - 20, passwordHeight, nullptr, crc(id), nullptr, nullptr);
+        this->_passwort = new Password(10, 145, WIDTH - 20, passwordHeight, nullptr, crc(id), _unlock, _lock);
         this->_tabs = new Fl_Tabs(10, 150 + passwordHeight, WIDTH - 20, HEIGHT - 160 - passwordHeight);
         Fl_Group* g0 = new Fl_Group(10, 180 + passwordHeight, WIDTH - 20, HEIGHT - 185 - passwordHeight, "Values");
         this->_values = new Values(15, 190 + passwordHeight, WIDTH - 30, HEIGHT - 195 - passwordHeight);
@@ -89,8 +91,8 @@ class MiniSicc : public Fl_Double_Window
         _cache.setCallback(CACHE_DC_POWER, _dcPowerCallback);
         _cache.setCallback(CACHE_TEMPERATURE, _temperatureCallback);
         _cache.setCallback(CACHE_VENDOR_OPERATING_STATE, _operatingStateCallback);
-        _sliderCallback(std::chrono::seconds{1});
         _values->setCallback(_sliderCallback);
+        _lock();
     }
     /**
      * Runs mini SICC window. Blocks until the window is closed.
@@ -405,20 +407,51 @@ class MiniSicc : public Fl_Double_Window
         SliderCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
         void operator()(const std::chrono::microseconds t)
         {
-            _miniSicc._cache.setValidTime(CACHE_AC_CURRENT, t * 4);
-            _miniSicc._cache.setValidTime(CACHE_AC_POWER, t * 4);
-            _miniSicc._cache.setValidTime(CACHE_FREQUENCY, t * 4);
-            _miniSicc._cache.setValidTime(CACHE_POWER_FACTOR, t * 4);
-            _miniSicc._cache.setValidTime(CACHE_ENERGY_PRODUCTION, t * 4);
-            _miniSicc._cache.setValidTime(CACHE_DC_VOLTAGE, t * 4);
-            _miniSicc._cache.setValidTime(CACHE_DC_POWER, t * 4);
-            _miniSicc._cache.setValidTime(CACHE_TEMPERATURE, t * 4);
-            _miniSicc._cache.setValidTime(CACHE_VENDOR_OPERATING_STATE, t * 4);
+            const std::chrono::microseconds time = t * 4;
+            const std::chrono::microseconds never = std::chrono::microseconds::max();
+            const std::chrono::microseconds lockedTime = _miniSicc._passwort->isLocked() ? never : time;
+            _miniSicc._cache.setValidTime(CACHE_AC_CURRENT, time);
+            _miniSicc._cache.setValidTime(CACHE_AC_POWER, time);
+            _miniSicc._cache.setValidTime(CACHE_FREQUENCY, time);
+            _miniSicc._cache.setValidTime(CACHE_POWER_FACTOR, lockedTime);
+            _miniSicc._cache.setValidTime(CACHE_ENERGY_PRODUCTION, time);
+            _miniSicc._cache.setValidTime(CACHE_DC_VOLTAGE, time);
+            _miniSicc._cache.setValidTime(CACHE_DC_POWER, time);
+            _miniSicc._cache.setValidTime(CACHE_TEMPERATURE, time);
+            _miniSicc._cache.setValidTime(CACHE_VENDOR_OPERATING_STATE, time);
         }
 
       private:
         MiniSicc& _miniSicc;
     } _sliderCallback;
+    class Unlock
+    {
+      public:
+        Unlock(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()()
+        {
+            _miniSicc._values->unlock();
+            _miniSicc._values->triggerSliderCallback();
+        }
+
+      private:
+        MiniSicc& _miniSicc;
+
+    } _unlock;
+    class Lock
+    {
+      public:
+        Lock(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()()
+        {
+            _miniSicc._values->lock();
+            _miniSicc._values->triggerSliderCallback();
+        }
+
+      private:
+        MiniSicc& _miniSicc;
+
+    } _lock;
     constexpr static std::uint16_t crc(const std::uint64_t input)
     {
         const auto next = [](const std::uint8_t byte, const std::uint16_t last)

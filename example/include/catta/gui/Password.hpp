@@ -69,7 +69,7 @@ class Password : public Fl_Group
         this->_unlocked->hide();
         this->_defaultColor = this->color2();
         this->_input = new Fl_Input(GAP * 3 + W_ELEMENT * 2, GAP, W_ELEMENT, H_LINE, "password");
-        this->_button = new Fl_Button(GAP * 4 + W_ELEMENT * 3, GAP, W_ELEMENT, H_LINE, BUTTON_UNLOCK);
+        this->_button = new Fl_Button(GAP * 4 + W_ELEMENT * 3, GAP, W_ELEMENT, H_LINE, BUTTON_LOCK);
         this->_button->callback(buttoncb, this);
         this->box(FL_UP_BOX);
         this->end();
@@ -86,6 +86,10 @@ class Password : public Fl_Group
         if (_input) delete _input;
         if (_button) delete _button;
     }
+    /**
+     * @return Returns @b true if password is given, otherwiese @b false.
+     */
+    bool isLocked() const { return _locked; }
 
   private:
     std::uint32_t _clientId;
@@ -120,13 +124,13 @@ class Password : public Fl_Group
                 }();
                 if (std::to_string(password->blackMagic()) == clean)
                 {
+                    password->_locked = false;
                     if (password->_onUnlock) password->_onUnlock();
                     password->_button->label(BUTTON_UNLOCK);
                     password->_input->hide();
                     password->_input->value("");
                     password->color(fl_rgb_color(0xc0, 0x00, 0x00));
                     password->_unlocked->show();
-                    password->_locked = false;
                 }
                 else
                 {
@@ -135,12 +139,12 @@ class Password : public Fl_Group
             }
             else
             {
+                password->_locked = true;
                 if (password->_onLock) password->_onLock();
                 password->_button->label(BUTTON_LOCK);
                 password->_input->show();
                 password->color(password->_defaultColor);
                 password->_unlocked->hide();
-                password->_locked = true;
             }
         }
     }
