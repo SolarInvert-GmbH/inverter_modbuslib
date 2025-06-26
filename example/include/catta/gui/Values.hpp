@@ -45,23 +45,25 @@ class Values : public Fl_Group
         _interval = new Fl_Box(X + (W * 4) / 5, Y, W / 5, 50, _invervalText.data());
 
         const int w1 = (W - 10) / 1;
-        const int w2 = (W - 20) / 2;
+        // const int w2 = (W - 20) / 2;
         const int w3 = (W - 30) / 3;
         const int X0 = X + 5;
-        const int X1 = X + 10 + w2;
-        _acCurrent = new Value(X0, Y + 55 + H_LINE * 0, w2, H_LINE, "AcCurrent");
-        _acVoltage = new Value(X1, Y + 55 + H_LINE * 0, w2, H_LINE, "AcVoltage");
-        _acPower = new Value(X0, Y + 55 + H_LINE * 1, w2, H_LINE, "AcPower");
-        _frequency = new Value(X1, Y + 55 + H_LINE * 1, w2, H_LINE, "Frequency");
-        _powerFactor = new Value(X0, Y + 55 + H_LINE * 3, w2, H_LINE, "PowerFactor");
-        _energyProduction = new Value(X1, Y + 55 + H_LINE * 3, w2, H_LINE, "EnergyProduction");
-        _dcVoltage = new Value(X0, Y + 55 + H_LINE * 4, w2, H_LINE, "DcVoltage");
-        _dcPower = new Value(X1, Y + 55 + H_LINE * 4, w2, H_LINE, "DcPower");
-        _temperature = new Value(X0, Y + 55 + H_LINE * 5, w2, H_LINE, "Temperature");
-        _operatingState0 = new Fl_Box(X0 + (w3 + 10) * 0, Y + 55 + H_LINE * 6, w3, H_LINE, "Operating Mode");
-        _operatingState1 = new Fl_Box(X0 + (w3 + 10) * 1, Y + 55 + H_LINE * 6, w3, H_LINE, "State");
-        _operatingState2 = new Fl_Box(X0 + (w3 + 10) * 2, Y + 55 + H_LINE * 6, w3, H_LINE, nullptr);
-        _operatingState3 = new Fl_Box(X0, Y + 55 + H_LINE * 7, w1, H_LINE, nullptr);
+        const int X1 = X + 10 + w3;
+        const int X2 = X + 15 + w3 * 2;
+        static constexpr int H_LINE = 45;
+        _acCurrent = new Value(X0, Y + H_LINE * 1, w3, H_LINE, "AcCurrent");
+        _acVoltage = new Value(X1, Y + H_LINE * 1, w3, H_LINE, "AcVoltage");
+        _acPower = new Value(X2, Y + H_LINE * 1, w3, H_LINE, "AcPower");
+        _frequency = new Value(X0, Y + H_LINE * 2, w3, H_LINE, "Frequency");
+        _powerFactor = new Value(X1, Y + H_LINE * 2, w3, H_LINE, "PowerFactor");
+        _energyProduction = new Value(X2, Y + H_LINE * 2, w3, H_LINE, "EnergyProduction");
+        _dcVoltage = new Value(X0, Y + H_LINE * 3, w3, H_LINE, "DcVoltage");
+        _dcPower = new Value(X1, Y + H_LINE * 3, w3, H_LINE, "DcPower");
+        _temperature = new Value(X2, Y + H_LINE * 3, w3, H_LINE, "Temperature");
+        _operatingState0 = new Fl_Box(X0, Y + H_LINE * 4, w3, H_LINE, "Operating Mode");
+        _operatingState1 = new Fl_Box(X1, Y + H_LINE * 4, w3, H_LINE, "State");
+        _operatingState2 = new Fl_Box(X2, Y + H_LINE * 4, w3, H_LINE, nullptr);
+        _operatingState3 = new Fl_Box(X0, Y + H_LINE * 5, w1, H_LINE, nullptr);
         this->end();
         this->show();
     }
@@ -146,8 +148,6 @@ class Values : public Fl_Group
     std::array<char, 3> _operatingState2Text;
     std::function<void(const std::chrono::microseconds interval)> _callback;
     std::array<char, 4> _invervalText;
-    static constexpr int H_LINE = 50;
-    static constexpr int W_VALUE = 50;
 
     static void slidercb(Fl_Widget*, void* object)
     {
