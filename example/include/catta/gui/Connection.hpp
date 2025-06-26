@@ -21,8 +21,8 @@
 #include <catta/tomodbus/modbus/si/request/Request.hpp>
 
 // tofromstring
-#include <catta/fromstring/Hexadecimal.hpp>
-#include <catta/tostring/Hexadecimal.hpp>
+#include <catta/fromstring/Decimal.hpp>
+#include <catta/tostring/Decimal.hpp>
 
 // std
 #include <chrono>
@@ -142,7 +142,7 @@ class Connection : public Fl_Group
                 if (_autoSearch->value() == 1 && jump)  // auto case
                 {
                     _id++;
-                    _modbusId->value(catta::tostring::toString(catta::Hexadecimal(_id)).c_str());
+                    _modbusId->value(catta::tostring::toString(catta::Decimal(_id)).c_str());
                 }
                 _request = REQUEST_MANUFACTURER;
                 _modbus = {requestTimeout, dataTimeout, stayInError, waitForIdle};
@@ -315,12 +315,16 @@ class Connection : public Fl_Group
             if (!(connection->_uart.isEmpty()) && connection->_uart.error().isEmpty())
             {
                 const auto getChoice = [connection]()
-                { return std::uint8_t(catta::fromstring::fromString<catta::Hexadecimal<std::uint8_t>>(connection->_modbusId->value())); };
+                {
+                    const std::uint8_t v = std::uint8_t(catta::fromstring::fromString<catta::Decimal<std::uint8_t>>(connection->_modbusId->value()));
+                    if (v > 100) return std::uint8_t(100);
+                    return v;
+                };
                 connection->_button0->deactivate();
                 connection->_button1->activate();
                 connection->_current = connection->_clients + UART_CONNECTED;
                 connection->_id = getChoice();
-                connection->_modbusId->value(catta::tostring::toString(catta::Hexadecimal(connection->_id)).c_str());
+                connection->_modbusId->value(catta::tostring::toString(catta::Decimal(connection->_id)).c_str());
                 connection->_modbusId->deactivate();
                 connection->_autoSearch->deactivate();
                 connection->_request = REQUEST_MANUFACTURER;
