@@ -246,10 +246,10 @@ class Connection : public Fl_Group
     std::size_t _current;
     std::size_t _clients;
 
-    static constexpr std::chrono::microseconds requestTimeout = std::chrono::milliseconds{500};
-    static constexpr std::chrono::microseconds dataTimeout = std::chrono::milliseconds{500};  // should b mush smaller
-    static constexpr std::chrono::microseconds stayInError = std::chrono::seconds{5};
-    static constexpr std::chrono::microseconds waitForIdle = std::chrono::microseconds{1};
+    static constexpr std::chrono::microseconds requestTimeout = std::chrono::milliseconds{100};
+    static constexpr std::chrono::microseconds dataTimeout = std::chrono::milliseconds{50};
+    static constexpr std::chrono::microseconds stayInError = std::chrono::seconds{250};
+    static constexpr std::chrono::microseconds waitForIdle = std::chrono::microseconds{100};
 
     catta::modbus::MasterUart _modbus;
 
