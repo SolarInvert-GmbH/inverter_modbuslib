@@ -3,6 +3,7 @@
 // gui
 #include <catta/gui/Connection.hpp>
 #include <catta/gui/Password.hpp>
+#include <catta/gui/Static.hpp>
 #include <catta/gui/Values.hpp>
 
 // modbus
@@ -46,6 +47,8 @@ class MiniSicc : public Fl_Double_Window
           _dcPowerCallback(*this),
           _temperatureCallback(*this),
           _operatingStateCallback(*this),
+          _factoryValuesCallback(*this),
+          _softwareVersionCallback(*this),
           _sliderCallback(*this),
           _unlock(*this),
           _lock(*this)
@@ -60,11 +63,17 @@ class MiniSicc : public Fl_Double_Window
         Fl_Group* g0 = new Fl_Group(10, 180 + passwordHeight, WIDTH - 20, HEIGHT - 185 - passwordHeight, "Values");
         this->_values = new Values(15, 190 + passwordHeight, WIDTH - 30, HEIGHT - 195 - passwordHeight);
         g0->end();
+        Fl_Group* g1 = new Fl_Group(10, 180 + passwordHeight, WIDTH - 20, HEIGHT - 185 - passwordHeight, "Statices");
+        this->_static = new Static(15, 190 + passwordHeight, WIDTH - 30, HEIGHT - 195 - passwordHeight);
+        g1->end();
+
         this->resizable(this->_tabs);
         this->end();
         this->callback(close_cb);
         this->show();
         _cache.setRequest(CACHE_DER_TYPE, REQUEST_DER_TYPE);
+        _cache.setRequest(CACHE_FACTORY_VALUES, REQUEST_FACTORY_VALUES);
+        _cache.setRequest(CACHE_SOFTWARE_VERSION, REQUEST_SOFTWARE_VERSION);
         _cache.setRequest(CACHE_AC_CURRENT_SCALE, REQUEST_AC_CURRENT_SCALE);
         _cache.setRequest(CACHE_AC_CURRENT, REQUEST_AC_CURRENT);
         _cache.setRequest(CACHE_AC_POWER_SCALE, REQUEST_AC_POWER_SCALE);
@@ -91,6 +100,8 @@ class MiniSicc : public Fl_Double_Window
         _cache.setCallback(CACHE_DC_POWER, _dcPowerCallback);
         _cache.setCallback(CACHE_TEMPERATURE, _temperatureCallback);
         _cache.setCallback(CACHE_VENDOR_OPERATING_STATE, _operatingStateCallback);
+        _cache.setCallback(CACHE_FACTORY_VALUES, _factoryValuesCallback);
+        _cache.setCallback(CACHE_SOFTWARE_VERSION, _softwareVersionCallback);
         _values->setCallback(_sliderCallback);
         _lock();
     }
@@ -129,7 +140,9 @@ class MiniSicc : public Fl_Double_Window
     static constexpr std::size_t CLIENTS = CLIENT_CACHE + 1;
 
     static constexpr std::size_t CACHE_DER_TYPE = 0;
-    static constexpr std::size_t CACHE_AC_CURRENT_SCALE = CACHE_DER_TYPE + 1;
+    static constexpr std::size_t CACHE_FACTORY_VALUES = CACHE_DER_TYPE + 1;
+    static constexpr std::size_t CACHE_SOFTWARE_VERSION = CACHE_FACTORY_VALUES + 1;
+    static constexpr std::size_t CACHE_AC_CURRENT_SCALE = CACHE_SOFTWARE_VERSION + 1;
     static constexpr std::size_t CACHE_AC_CURRENT = CACHE_AC_CURRENT_SCALE + 1;
     static constexpr std::size_t CACHE_AC_VOLTAGE_SCALE = CACHE_AC_CURRENT + 1;
     static constexpr std::size_t CACHE_AC_VOLTAGE_A = CACHE_AC_VOLTAGE_SCALE + 1;
@@ -167,6 +180,7 @@ class MiniSicc : public Fl_Double_Window
 
     Fl_Tabs* _tabs;
     Values* _values;
+    Static* _static;
 
     static constexpr int WIDTH = 600;
     static constexpr int HEIGHT = 800;
@@ -178,6 +192,7 @@ class MiniSicc : public Fl_Double_Window
     }
 
     static constexpr RegisterAddress REGISTER_DER_TYPE = RegisterAddress::nameplateDerType();
+    static constexpr RegisterAddress REGISTER_SOFTWARE_VERSION = RegisterAddress::commonVersion();
     static constexpr RegisterAddress REGISTER_AC_CURRENT_SCALE = RegisterAddress::inverterAmpsScaleFactor();
     static constexpr RegisterAddress REGISTER_AC_CURRENT = RegisterAddress::inverterAmps();
     static constexpr RegisterAddress REGISTER_AC_VOLTAGE_SCALE = RegisterAddress::inverterPhaseVoltageScaleFactor();
@@ -201,6 +216,8 @@ class MiniSicc : public Fl_Double_Window
     static constexpr RegisterAddress REGISTER_VENDOR_OPERATING_STATE = RegisterAddress::inverterVendorOperatingState();
 
     static constexpr Request REQUEST_DER_TYPE = Request::readRegister(ReadRegister::create(REGISTER_DER_TYPE));
+    static constexpr Request REQUEST_FACTORY_VALUES = Request::factoryValues();
+    static constexpr Request REQUEST_SOFTWARE_VERSION = Request::readRegister(ReadRegister::create(REGISTER_SOFTWARE_VERSION));
     static constexpr Request REQUEST_AC_CURRENT_SCALE = Request::readRegister(ReadRegister::create(REGISTER_AC_CURRENT_SCALE));
     static constexpr Request REQUEST_AC_CURRENT = Request::readRegister(ReadRegister::create(REGISTER_AC_CURRENT));
     static constexpr Request REQUEST_AC_VOLTAGE_SCALE = Request::readRegister(ReadRegister::create(REGISTER_AC_VOLTAGE_SCALE));
@@ -401,6 +418,53 @@ class MiniSicc : public Fl_Double_Window
         MiniSicc& _miniSicc;
     } _operatingStateCallback;
 
+    class FactoryValuesCallback
+    {
+      public:
+        FactoryValuesCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()(const Response& r)
+        {
+            std::string date;
+            std::string bom;
+            if (r.type().isFactoryValues())
+            {
+                const std::uint8_t day = r.factoryValuesValue().productionDate().day().value();
+                const std::uint8_t month = r.factoryValuesValue().productionDate().month().value();
+                const std::uint16_t year = r.factoryValuesValue().productionDate().year().value() + 2000;
+                date = "__.__.____";
+                const auto set = [&date](const std::size_t i, const auto v, const auto f) { date[i] = static_cast<char>('0' + (v / f) % 10); };
+                set(0, day, 10);
+                set(1, day, 1);
+                set(3, month, 10);
+                set(4, month, 1);
+                set(6, year, 1000);
+                set(7, year, 100);
+                set(8, year, 10);
+                set(9, year, 1);
+                bom = std::to_string(r.factoryValuesValue().hardwareVersion().value());
+            }
+            _miniSicc._static->setBom(bom);
+            _miniSicc._static->setDate(date);
+        }
+
+      private:
+        MiniSicc& _miniSicc;
+    } _factoryValuesCallback;
+
+    class SoftwareVersionCallback
+    {
+      public:
+        SoftwareVersionCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()(const Response& r)
+        {
+            const std::string version = r.type().isString16() ? r.string16Value().data().data() : "";
+            _miniSicc._static->setVersion(version);
+        }
+
+      private:
+        MiniSicc& _miniSicc;
+    } _softwareVersionCallback;
+
     class SliderCallback
     {
       public:
@@ -431,6 +495,7 @@ class MiniSicc : public Fl_Double_Window
         void operator()()
         {
             _miniSicc._values->unlock();
+            _miniSicc._static->unlock();
             _miniSicc._values->triggerSliderCallback();
         }
 
@@ -445,6 +510,7 @@ class MiniSicc : public Fl_Double_Window
         void operator()()
         {
             _miniSicc._values->lock();
+            _miniSicc._static->lock();
             _miniSicc._values->triggerSliderCallback();
         }
 
