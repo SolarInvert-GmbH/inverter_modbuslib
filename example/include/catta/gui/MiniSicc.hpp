@@ -1,10 +1,13 @@
 #pragma once
 
 // gui
+#include <catta/gui/Battery.hpp>
 #include <catta/gui/Connection.hpp>
 #include <catta/gui/Password.hpp>
+#include <catta/gui/Solar.hpp>
 #include <catta/gui/Static.hpp>
 #include <catta/gui/Values.hpp>
+#include <catta/gui/Wind.hpp>
 
 // modbus
 #include <catta/modbus/ValueCache.hpp>
@@ -47,6 +50,7 @@ class MiniSicc : public Fl_Double_Window
           _dcPowerCallback(*this),
           _temperatureCallback(*this),
           _operatingStateCallback(*this),
+          _derTypeCallbackCallback(*this),
           _factoryValuesCallback(*this),
           _softwareVersionCallback(*this),
           _sliderCallback(*this),
@@ -59,18 +63,37 @@ class MiniSicc : public Fl_Double_Window
         static constexpr int passwordHeight = 70;
         this->_connection = new Connection<UART>(10, 10, WIDTH - 20, 130, defaultUartName, nullptr, CLIENTS);
         this->_passwort = new Password(10, 145, WIDTH - 20, passwordHeight, nullptr, crc(id), _unlock, _lock);
+        const int Xtab = 10;
+        const int Ytab = 180 + passwordHeight;
+        const int Wtab = WIDTH - 20;
+        const int Htab = HEIGHT - 185 - passwordHeight;
+        const int Xcontent = Xtab + 5;
+        const int Ycontent = Ytab + 10;
+        const int Wcontent = Wtab - 10;
+        const int Hcontent = Htab - 10;
         this->_tabs = new Fl_Tabs(10, 150 + passwordHeight, WIDTH - 20, HEIGHT - 160 - passwordHeight);
-        Fl_Group* g0 = new Fl_Group(10, 180 + passwordHeight, WIDTH - 20, HEIGHT - 185 - passwordHeight, "Values");
-        this->_values = new Values(15, 190 + passwordHeight, WIDTH - 30, HEIGHT - 195 - passwordHeight);
-        g0->end();
-        Fl_Group* g1 = new Fl_Group(10, 180 + passwordHeight, WIDTH - 20, HEIGHT - 185 - passwordHeight, "Statices");
-        this->_static = new Static(15, 190 + passwordHeight, WIDTH - 30, HEIGHT - 195 - passwordHeight);
-        g1->end();
 
+        _tab0 = new Fl_Group(Xtab, Ytab, Wtab, Htab, "Values");
+        this->_values = new Values(Xcontent, Ycontent, Wcontent, Hcontent);
+        _tab0->end();
+        _tab1 = new Fl_Group(Xtab, Ytab, Wtab, Htab, "Statices");
+        this->_static = new Static(Xcontent, Ycontent, Wcontent, Hcontent);
+        _tab1->end();
+        // _tabs->end();
         this->resizable(this->_tabs);
         this->end();
         this->callback(close_cb);
         this->show();
+        _tab2 = new Fl_Group(Xtab, Ytab, Wtab, Htab, "Battery");
+        this->_battery = new Battery(Xcontent, Ycontent, Wcontent, Hcontent);
+        _tab2->end();
+        _tab3 = new Fl_Group(Xtab, Ytab, Wtab, Htab, "Solar");
+        this->_solar = new Solar(Xcontent, Ycontent, Wcontent, Hcontent);
+        _tab3->end();
+        _tab4 = new Fl_Group(Xtab, Ytab, Wtab, Htab, "Wind");
+        this->_wind = new Wind(Xcontent, Ycontent, Wcontent, Hcontent);
+        _tab4->end();
+
         _cache.setRequest(CACHE_DER_TYPE, REQUEST_DER_TYPE);
         _cache.setRequest(CACHE_FACTORY_VALUES, REQUEST_FACTORY_VALUES);
         _cache.setRequest(CACHE_SOFTWARE_VERSION, REQUEST_SOFTWARE_VERSION);
@@ -100,6 +123,7 @@ class MiniSicc : public Fl_Double_Window
         _cache.setCallback(CACHE_DC_POWER, _dcPowerCallback);
         _cache.setCallback(CACHE_TEMPERATURE, _temperatureCallback);
         _cache.setCallback(CACHE_VENDOR_OPERATING_STATE, _operatingStateCallback);
+        _cache.setCallback(CACHE_DER_TYPE, _derTypeCallbackCallback);
         _cache.setCallback(CACHE_FACTORY_VALUES, _factoryValuesCallback);
         _cache.setCallback(CACHE_SOFTWARE_VERSION, _softwareVersionCallback);
         _values->setCallback(_sliderCallback);
@@ -181,6 +205,14 @@ class MiniSicc : public Fl_Double_Window
     Fl_Tabs* _tabs;
     Values* _values;
     Static* _static;
+    Battery* _battery;
+    Solar* _solar;
+    Wind* _wind;
+    Fl_Group* _tab0;
+    Fl_Group* _tab1;
+    Fl_Group* _tab2;
+    Fl_Group* _tab3;
+    Fl_Group* _tab4;
 
     static constexpr int WIDTH = 600;
     static constexpr int HEIGHT = 800;
@@ -400,16 +432,7 @@ class MiniSicc : public Fl_Double_Window
         OperatingStateCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
         void operator()(const Response& r)
         {
-            const catta::modbus::si::Type type = [this]()
-            {
-                const auto& derType = _miniSicc._cache.getResponse(CACHE_DER_TYPE);
-                if (!derType.type().isValue16()) return catta::modbus::si::Type::empty();
-                const std::uint16_t value = derType.value16Value();
-                if (value == 4) return catta::modbus::si::Type::solar();
-                if (value == 82) return catta::modbus::si::Type::battery();
-                if (value == 5) return catta::modbus::si::Type::wind();
-                return catta::modbus::si::Type::empty();
-            }();
+            const catta::modbus::si::Type type = _miniSicc.getType();
             const std::uint16_t value = r.type().isValue16() ? r.value16Value() : 0xffff;
             _miniSicc._values->setOperatingState(type, value);
         }
@@ -417,6 +440,16 @@ class MiniSicc : public Fl_Double_Window
       private:
         MiniSicc& _miniSicc;
     } _operatingStateCallback;
+
+    class DerTypeCallback
+    {
+      public:
+        DerTypeCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()(const Response&) { _miniSicc.handleProtectedTabs(); }
+
+      private:
+        MiniSicc& _miniSicc;
+    } _derTypeCallbackCallback;
 
     class FactoryValuesCallback
     {
@@ -497,6 +530,7 @@ class MiniSicc : public Fl_Double_Window
             _miniSicc._values->unlock();
             _miniSicc._static->unlock();
             _miniSicc._values->triggerSliderCallback();
+            _miniSicc.handleProtectedTabs();
         }
 
       private:
@@ -512,6 +546,7 @@ class MiniSicc : public Fl_Double_Window
             _miniSicc._values->lock();
             _miniSicc._static->lock();
             _miniSicc._values->triggerSliderCallback();
+            _miniSicc.handleProtectedTabs();
         }
 
       private:
@@ -542,6 +577,33 @@ class MiniSicc : public Fl_Double_Window
         crc = next(0x00, crc);
         crc = next(0x00, crc);
         return crc;
+    }
+    const catta::modbus::si::Type getType() const
+    {
+        const auto& derType = _cache.getResponse(CACHE_DER_TYPE);
+        if (!derType.type().isValue16()) return catta::modbus::si::Type::empty();
+        const std::uint16_t value = derType.value16Value();
+        if (value == 4) return catta::modbus::si::Type::solar();
+        if (value == 82) return catta::modbus::si::Type::battery();
+        if (value == 5) return catta::modbus::si::Type::wind();
+        return catta::modbus::si::Type::empty();
+    };
+    void handleProtectedTabs()
+    {
+        const catta::modbus::si::Type type = getType();
+        const bool isLocked = _passwort->isLocked();
+        if (!isLocked && type.isBattery())
+            _tabs->add(_tab2);
+        else
+            _tabs->remove(_tab2);
+        if (!isLocked && type.isSolar())
+            _tabs->add(_tab3);
+        else
+            _tabs->remove(_tab3);
+        if (!isLocked && type.isWind())
+            _tabs->add(_tab4);
+        else
+            _tabs->remove(_tab4);
     }
 };
 }  // namespace gui
