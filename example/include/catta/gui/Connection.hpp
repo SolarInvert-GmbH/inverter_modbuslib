@@ -205,6 +205,7 @@ class Connection : public Fl_Group
                 setLable({}, _stringModel, _model);
                 setLable({}, _stringSerialNumber, _serialNumber);
                 clearModbusHandling();
+                _current = _clients + UART_NOT_CONNECTED;
             }
         }
 
