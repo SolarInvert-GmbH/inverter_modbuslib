@@ -79,11 +79,6 @@ class MiniSicc : public Fl_Double_Window
         _tab1 = new Fl_Group(Xtab, Ytab, Wtab, Htab, "Statices");
         this->_static = new Static(Xcontent, Ycontent, Wcontent, Hcontent);
         _tab1->end();
-        // _tabs->end();
-        this->resizable(this->_tabs);
-        this->end();
-        this->callback(close_cb);
-        this->show();
         _tab2 = new Fl_Group(Xtab, Ytab, Wtab, Htab, "Battery");
         this->_battery = new Battery(Xcontent, Ycontent, Wcontent, Hcontent);
         _tab2->end();
@@ -93,6 +88,10 @@ class MiniSicc : public Fl_Double_Window
         _tab4 = new Fl_Group(Xtab, Ytab, Wtab, Htab, "Wind");
         this->_wind = new Wind(Xcontent, Ycontent, Wcontent, Hcontent);
         _tab4->end();
+        this->resizable(this->_tabs);
+        this->end();
+        this->callback(close_cb);
+        this->show();
 
         _cache.setRequest(CACHE_DER_TYPE, REQUEST_DER_TYPE);
         _cache.setRequest(CACHE_FACTORY_VALUES, REQUEST_FACTORY_VALUES);
@@ -151,6 +150,13 @@ class MiniSicc : public Fl_Double_Window
                     _request = cacheRequest;
                     somethingHappend = true;
                 }
+                const Request batteryRequest =
+                    _battery->work(_request.isEmpty() && isInIdle && _current == CLIENT_BATTERY, receivedResponse, receivedRequest);
+                if (!batteryRequest.isEmpty())
+                {
+                    _request = batteryRequest;
+                    somethingHappend = true;
+                }
                 if (_current < CLIENTS && current >= CLIENTS)
                     for (std::size_t i = 0; i < CACHE_SIZE; i++) _cache.setInvalid(i);
                 _current = current;
@@ -161,7 +167,8 @@ class MiniSicc : public Fl_Double_Window
 
   private:
     static constexpr std::size_t CLIENT_CACHE = 0;
-    static constexpr std::size_t CLIENTS = CLIENT_CACHE + 1;
+    static constexpr std::size_t CLIENT_BATTERY = CLIENT_CACHE + 1;
+    static constexpr std::size_t CLIENTS = CLIENT_BATTERY + 1;
 
     static constexpr std::size_t CACHE_DER_TYPE = 0;
     static constexpr std::size_t CACHE_FACTORY_VALUES = CACHE_DER_TYPE + 1;
