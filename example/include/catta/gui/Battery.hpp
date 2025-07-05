@@ -33,8 +33,8 @@ class Battery : public Fl_Group
         : Fl_Group(X, Y, W, H, nullptr), _toRegister(*this), _fromRegister(*this), _lastAllIdle(false)
     {
         using Address = catta::modbus::si::RegisterAddress;
-        static constexpr std::array<Address, 4> address = {Address::mppSampleDac0(), Address::mppSampleDac1(), Address::mppSampleDac2(),
-                                                           Address::mppSampleDac3()};
+        static constexpr std::array<Address, 4> address = {Address::siControlMppStepDac0(), Address::siControlMppStepDac1(),
+                                                           Address::siControlMppStepDac2(), Address::siControlMppStepDac3()};
         _x = new Curve<4>(X + 0, Y + 35, W, 35, FL_INT_INPUT, 0.0, 256.0, 1.0, address, address, _toRegister, _fromRegister);
         _write = new Fl_Button(X + 5, Y + 100, W - 10, 35, "write");
         _write->hide();

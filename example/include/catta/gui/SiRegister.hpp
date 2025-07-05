@@ -86,6 +86,7 @@ class SiRegister : public Fl_Group
         if (!address.isWritable()) this->_writeActionChoice.hide();
         this->_readActionChoice.menu(readMenu);
         this->_readActionChoice.callback(SiRegister::readcb, this);
+        if (!address.isReadable()) this->_readActionChoice.hide();
         this->_writeActionChoice.box(FL_UP_BOX);
         this->_nameBox.box(FL_UP_BOX);
         this->_addressBox.box(FL_UP_BOX);

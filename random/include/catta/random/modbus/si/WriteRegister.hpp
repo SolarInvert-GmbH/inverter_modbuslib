@@ -22,7 +22,26 @@ class catta::random::Create<catta::modbus::si::WriteRegister>
     {
         using A = catta::modbus::si::RegisterAddress;
         using T = catta::modbus::si::RegisterType;
-        static constexpr std::array<A, 1> a = {A::commonDeviceAddress()};
+        static constexpr std::size_t N = []()
+        {
+            std::size_t result = 0;
+            for (std::uint8_t i = 0; i < A::empty(); i++)
+                if (A(i).isWritable()) result++;
+            return result;
+        }();
+        static constexpr std::array<A, N> a = []()
+        {
+            std::array<A, N> result;
+            std::size_t r = 0;
+            const auto set = [&r, &result](const A v)
+            {
+                result[r] = v;
+                r++;
+            };
+            for (std::uint8_t i = 0; i < A::empty(); i++)
+                if (A(i).isWritable()) set(A(i));
+            return result;
+        }();
         const auto address = a[random.interval(std::size_t(0), a.size() - 1)];
         switch (address.type())
         {

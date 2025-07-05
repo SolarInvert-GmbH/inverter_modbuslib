@@ -17,6 +17,28 @@ class catta::random::Create<catta::modbus::si::ReadRegister>
     catta::modbus::si::ReadRegister _value;
     static catta::modbus::si::ReadRegister create(Random& random)
     {
-        return catta::modbus::si::ReadRegister::create(random.create<catta::modbus::si::RegisterAddress>());
+        using A = catta::modbus::si::RegisterAddress;
+        static constexpr std::size_t N = []()
+        {
+            std::size_t result = 0;
+            for (std::uint8_t i = 0; i < A::empty(); i++)
+                if (A(i).isReadable()) result++;
+            return result;
+        }();
+        static constexpr std::array<A, N> a = []()
+        {
+            std::array<A, N> result;
+            std::size_t r = 0;
+            const auto set = [&r, &result](const A v)
+            {
+                result[r] = v;
+                r++;
+            };
+            for (std::uint8_t i = 0; i < A::empty(); i++)
+                if (A(i).isReadable()) set(A(i));
+            return result;
+        }();
+        const auto address = a[random.interval(std::size_t(0), a.size() - 1)];
+        return catta::modbus::si::ReadRegister::create(address);
     }
 };
