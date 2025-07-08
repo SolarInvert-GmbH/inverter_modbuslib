@@ -68,77 +68,124 @@ class RegisterAddress
     constexpr static std::uint8_t SI_CONTROL_VOLTAGE_DC_START_READ = 44;
     constexpr static std::uint8_t SI_CONTROL_BATTARY_BI_MODE_READ = 45;
     constexpr static std::uint8_t SI_CONTROL_BATTARY_SAFTY_MODE_READ = 46;
-    constexpr static std::uint8_t SI_CONTROL_TRACKING_SELECTION = 47;
-    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_DAC_0 = 48;
-    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_DAC_1 = 49;
-    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_DAC_2 = 50;
-    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_DAC_3 = 51;
-    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_UDC_0 = 52;
-    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_UDC_1 = 53;
-    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_UDC_2 = 54;
-    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_UDC_3 = 55;
-    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_DAC_0 = 56;
-    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_DAC_1 = 57;
-    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_DAC_2 = 58;
-    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_DAC_3 = 59;
-    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_UDC_0 = 60;
-    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_UDC_1 = 61;
-    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_UDC_2 = 62;
-    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_UDC_3 = 63;
-    constexpr static std::uint8_t SI_CONTROL_FILTER_WIND_CURVE = 64;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_00 = 65;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_01 = 66;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_02 = 67;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_03 = 68;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_04 = 69;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_05 = 70;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_06 = 71;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_07 = 72;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_08 = 73;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_09 = 74;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_10 = 75;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_11 = 76;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_12 = 77;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_13 = 78;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_14 = 79;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_15 = 80;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_00_READ = 81;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_01_READ = 82;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_02_READ = 83;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_03_READ = 84;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_04_READ = 85;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_05_READ = 86;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_06_READ = 87;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_07_READ = 88;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_08_READ = 89;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_09_READ = 90;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_10_READ = 91;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_11_READ = 92;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_12_READ = 93;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_13_READ = 94;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_14_READ = 95;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_15_READ = 96;
-    constexpr static std::uint8_t SI_CONTROL_SOLAR_BATTERY_FILTER_STEP = 97;
-    constexpr static std::uint8_t SI_CONTROL_VOLTAGE_DC_START_WRITE = 98;
-    constexpr static std::uint8_t SI_CONTROL_BATTARY_BI_MODE_WRITE = 99;
-    constexpr static std::uint8_t SI_CONTROL_BATTARY_SAFTY_MODE_WRITE = 100;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_00_WRITE = 101;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_01_WRITE = 102;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_02_WRITE = 103;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_03_WRITE = 104;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_04_WRITE = 105;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_05_WRITE = 106;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_06_WRITE = 107;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_07_WRITE = 108;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_08_WRITE = 109;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_09_WRITE = 110;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_10_WRITE = 111;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_11_WRITE = 112;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_12_WRITE = 113;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_13_WRITE = 114;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_14_WRITE = 115;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_15_WRITE = 116;
-    constexpr static std::uint8_t EMPTY = 117;
+    constexpr static std::uint8_t SI_CONTROL_BATTARY_CV_MODE_READ = 47;
+    constexpr static std::uint8_t SI_CONTROL_DC_LOW_READ = 48;
+    constexpr static std::uint8_t SI_CONTROL_DC_HIGH_READ = 49;
+    constexpr static std::uint8_t SI_CONTROL_TRACKING_SELECTION = 50;
+    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_DAC_0 = 51;
+    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_DAC_1 = 52;
+    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_DAC_2 = 53;
+    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_DAC_3 = 54;
+    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_UDC_0 = 55;
+    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_UDC_1 = 56;
+    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_UDC_2 = 57;
+    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_UDC_3 = 58;
+    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_DAC_0 = 59;
+    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_DAC_1 = 60;
+    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_DAC_2 = 61;
+    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_DAC_3 = 62;
+    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_UDC_0 = 63;
+    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_UDC_1 = 64;
+    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_UDC_2 = 65;
+    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_UDC_3 = 66;
+    constexpr static std::uint8_t SI_CONTROL_REDUCTION = 67;
+    constexpr static std::uint8_t SI_CONTROL_FILTER_WIND_CURVE = 68;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_00 = 69;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_01 = 70;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_02 = 71;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_03 = 72;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_04 = 73;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_05 = 74;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_06 = 75;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_07 = 76;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_08 = 77;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_09 = 78;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_10 = 79;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_11 = 80;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_12 = 81;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_13 = 82;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_14 = 83;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_15 = 84;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_00_READ = 85;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_01_READ = 86;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_02_READ = 87;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_03_READ = 88;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_04_READ = 89;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_05_READ = 90;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_06_READ = 91;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_07_READ = 92;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_08_READ = 93;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_09_READ = 94;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_10_READ = 95;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_11_READ = 96;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_12_READ = 97;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_13_READ = 98;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_14_READ = 99;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_15_READ = 100;
+    constexpr static std::uint8_t SI_CONTROL_SOLAR_BATTERY_FILTER_STEP = 101;
+    constexpr static std::uint8_t SI_CONTROL_POWER_LIMIT_SAFTY_MODE = 102;
+    constexpr static std::uint8_t SI_CONTROL_VOLTAGE_DC_START_WRITE = 103;
+    constexpr static std::uint8_t SI_CONTROL_BATTARY_BI_MODE_WRITE = 104;
+    constexpr static std::uint8_t SI_CONTROL_BATTARY_SAFTY_MODE_WRITE = 105;
+    constexpr static std::uint8_t SI_CONTROL_BATTARY_CV_MODE_WRITE = 106;
+    constexpr static std::uint8_t SI_CONTROL_DC_LOW_WRITE = 107;
+    constexpr static std::uint8_t SI_CONTROL_DC_HIGH_WRITE = 108;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_00_WRITE = 109;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_01_WRITE = 110;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_02_WRITE = 111;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_03_WRITE = 112;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_04_WRITE = 113;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_05_WRITE = 114;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_06_WRITE = 115;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_07_WRITE = 116;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_08_WRITE = 117;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_09_WRITE = 118;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_10_WRITE = 119;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_11_WRITE = 120;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_12_WRITE = 121;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_13_WRITE = 122;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_14_WRITE = 123;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_15_WRITE = 124;
+    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_Y_0_WRITE = 125;
+    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_Y_1_WRITE = 126;
+    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_Y_2_WRITE = 127;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_0_READ = 128;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_1_READ = 129;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_2_READ = 130;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_3_READ = 131;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_4_READ = 132;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_5_READ = 133;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_6_READ = 134;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_7_READ = 135;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_8_READ = 136;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_9_READ = 137;
+    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_X_0 = 138;
+    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_X_1 = 139;
+    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_X_2 = 140;
+    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_Y_0_READ = 141;
+    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_Y_1_READ = 142;
+    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_Y_2_READ = 143;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_0 = 144;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_1 = 145;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_2 = 146;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_3 = 147;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_4 = 148;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_5 = 149;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_6 = 150;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_7 = 151;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_8 = 152;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_9 = 153;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_0_WRITE = 154;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_1_WRITE = 155;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_2_WRITE = 156;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_3_WRITE = 157;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_4_WRITE = 158;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_5_WRITE = 159;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_6_WRITE = 160;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_7_WRITE = 161;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_8_WRITE = 162;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_9_WRITE = 163;
+    constexpr static std::uint8_t EMPTY = 164;
 
   public:
     /**
@@ -153,23 +200,32 @@ class RegisterAddress
      * inverterVendorEventBitfield1(), inverterVendorEventBitfield2(), inverterVendorEventBitfield3(), inverterVendorEventBitfield4(),
      * nameplateDerType(), basicSettingsMaxPower(), extendedMesurementsAcWattHours(), extendedMesurementsAcLifetimeCharge(),
      * storageNominalChargePower(), siControlModus(), siControlVoltageDcStartRead(), siControlBattaryBiModeRead(), siControlBattarySaftyModeRead(),
-     * siControlTrackingSelection(), siControlMppStepDac0(), siControlMppStepDac1(), siControlMppStepDac2(), siControlMppStepDac3(),
-     * siControlMppStepUdc0(), siControlMppStepUdc1(), siControlMppStepUdc2(), siControlMppStepUdc3(), siControlMppSampleDac0(),
-     * siControlMppSampleDac1(), siControlMppSampleDac2(), siControlMppSampleDac3(), siControlMppSampleUdc0(), siControlMppSampleUdc1(),
-     * siControlMppSampleUdc2(), siControlMppSampleUdc3(), siControlFilterWindCurve(), siControlWindCurveX00(), siControlWindCurveX01(),
-     * siControlWindCurveX02(), siControlWindCurveX03(), siControlWindCurveX04(), siControlWindCurveX05(), siControlWindCurveX06(),
-     * siControlWindCurveX07(), siControlWindCurveX08(), siControlWindCurveX09(), siControlWindCurveX10(), siControlWindCurveX11(),
-     * siControlWindCurveX12(), siControlWindCurveX13(), siControlWindCurveX14(), siControlWindCurveX15(), siControlWindCurveY00Read(),
-     * siControlWindCurveY01Read(), siControlWindCurveY02Read(), siControlWindCurveY03Read(), siControlWindCurveY04Read(),
-     * siControlWindCurveY05Read(), siControlWindCurveY06Read(), siControlWindCurveY07Read(), siControlWindCurveY08Read(),
-     * siControlWindCurveY09Read(), siControlWindCurveY10Read(), siControlWindCurveY11Read(), siControlWindCurveY12Read(),
-     * siControlWindCurveY13Read(), siControlWindCurveY14Read(), siControlWindCurveY15Read(), siControlSolarBatteryFilterStep(),
-     * siControlVoltageDcStartWrite(), siControlBattaryBiModeWrite(), siControlBattarySaftyModeWrite(), siControlWindCurveY00Write(),
-     * siControlWindCurveY01Write(), siControlWindCurveY02Write(), siControlWindCurveY03Write(), siControlWindCurveY04Write(),
-     * siControlWindCurveY05Write(), siControlWindCurveY06Write(), siControlWindCurveY07Write(), siControlWindCurveY08Write(),
-     * siControlWindCurveY09Write(), siControlWindCurveY10Write(), siControlWindCurveY11Write(), siControlWindCurveY12Write(),
-     * siControlWindCurveY13Write(), siControlWindCurveY14Write(), siControlWindCurveY15Write() or empty(). Explicit constructor. Converts uint8 to
-     * register.
+     * siControlBattaryCvModeRead(), siControlDcLowRead(), siControlDcHighRead(), siControlTrackingSelection(), siControlMppStepDac0(),
+     * siControlMppStepDac1(), siControlMppStepDac2(), siControlMppStepDac3(), siControlMppStepUdc0(), siControlMppStepUdc1(), siControlMppStepUdc2(),
+     * siControlMppStepUdc3(), siControlMppSampleDac0(), siControlMppSampleDac1(), siControlMppSampleDac2(), siControlMppSampleDac3(),
+     * siControlMppSampleUdc0(), siControlMppSampleUdc1(), siControlMppSampleUdc2(), siControlMppSampleUdc3(), siControlReduction(),
+     * siControlFilterWindCurve(), siControlWindCurveX00(), siControlWindCurveX01(), siControlWindCurveX02(), siControlWindCurveX03(),
+     * siControlWindCurveX04(), siControlWindCurveX05(), siControlWindCurveX06(), siControlWindCurveX07(), siControlWindCurveX08(),
+     * siControlWindCurveX09(), siControlWindCurveX10(), siControlWindCurveX11(), siControlWindCurveX12(), siControlWindCurveX13(),
+     * siControlWindCurveX14(), siControlWindCurveX15(), siControlWindCurveY00Read(), siControlWindCurveY01Read(), siControlWindCurveY02Read(),
+     * siControlWindCurveY03Read(), siControlWindCurveY04Read(), siControlWindCurveY05Read(), siControlWindCurveY06Read(),
+     * siControlWindCurveY07Read(), siControlWindCurveY08Read(), siControlWindCurveY09Read(), siControlWindCurveY10Read(),
+     * siControlWindCurveY11Read(), siControlWindCurveY12Read(), siControlWindCurveY13Read(), siControlWindCurveY14Read(),
+     * siControlWindCurveY15Read(), siControlSolarBatteryFilterStep(), siControlPowerLimitSaftyMode(), siControlVoltageDcStartWrite(),
+     * siControlBattaryBiModeWrite(), siControlBattarySaftyModeWrite(), siControlBattaryCvModeWrite(), siControlDcLowWrite(), siControlDcHighWrite(),
+     * siControlWindCurveY00Write(), siControlWindCurveY01Write(), siControlWindCurveY02Write(), siControlWindCurveY03Write(),
+     * siControlWindCurveY04Write(), siControlWindCurveY05Write(), siControlWindCurveY06Write(), siControlWindCurveY07Write(),
+     * siControlWindCurveY08Write(), siControlWindCurveY09Write(), siControlWindCurveY10Write(), siControlWindCurveY11Write(),
+     * siControlWindCurveY12Write(), siControlWindCurveY13Write(), siControlWindCurveY14Write(), siControlWindCurveY15Write(),
+     * siControlConstantVoltageY0Write(), siControlConstantVoltageY1Write(), siControlConstantVoltageY2Write(), siControlDacCurveY0Read(),
+     * siControlDacCurveY1Read(), siControlDacCurveY2Read(), siControlDacCurveY3Read(), siControlDacCurveY4Read(), siControlDacCurveY5Read(),
+     * siControlDacCurveY6Read(), siControlDacCurveY7Read(), siControlDacCurveY8Read(), siControlDacCurveY9Read(), siControlConstantVoltageX0(),
+     * siControlConstantVoltageX1(), siControlConstantVoltageX2(), siControlConstantVoltageY0Read(), siControlConstantVoltageY1Read(),
+     * siControlConstantVoltageY2Read(), siControlDacCurveX0(), siControlDacCurveX1(), siControlDacCurveX2(), siControlDacCurveX3(),
+     * siControlDacCurveX4(), siControlDacCurveX5(), siControlDacCurveX6(), siControlDacCurveX7(), siControlDacCurveX8(), siControlDacCurveX9(),
+     * siControlDacCurveY0Write(), siControlDacCurveY1Write(), siControlDacCurveY2Write(), siControlDacCurveY3Write(), siControlDacCurveY4Write(),
+     * siControlDacCurveY5Write(), siControlDacCurveY6Write(), siControlDacCurveY7Write(), siControlDacCurveY8Write(), siControlDacCurveY9Write() or
+     * empty(). Explicit constructor. Converts uint8 to register.
      */
     [[nodiscard]] constexpr explicit RegisterAddress(const std::uint8_t value) noexcept : _value(value) {}
     /**
@@ -413,6 +469,18 @@ class RegisterAddress
         return RegisterAddress{SI_CONTROL_BATTARY_SAFTY_MODE_READ};
     }
     /**
+     * @return Returns the battery voltage setpoint in cv mode from the safty control model (read).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlBattaryCvModeRead() noexcept { return RegisterAddress{SI_CONTROL_BATTARY_CV_MODE_READ}; }
+    /**
+     * @return Returns the low voltage for relay off from the safty control model (read).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDcLowRead() noexcept { return RegisterAddress{SI_CONTROL_DC_LOW_READ}; }
+    /**
+     * @return Returns the high voltage for relay off from the safty control model (read).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDcHighRead() noexcept { return RegisterAddress{SI_CONTROL_DC_HIGH_READ}; }
+    /**
      * @return Returns the strategy switch for behavior in safety mode from the safty control model.
      */
     [[nodiscard]] constexpr static RegisterAddress siControlTrackingSelection() noexcept { return RegisterAddress{SI_CONTROL_TRACKING_SELECTION}; }
@@ -480,6 +548,10 @@ class RegisterAddress
      * @return Returns the mpp sample udc 3 from the si control model.
      */
     [[nodiscard]] constexpr static RegisterAddress siControlMppSampleUdc3() noexcept { return RegisterAddress{SI_CONTROL_MPP_SAMPLE_UDC_3}; }
+    /**
+     * @return Returns the reduction from the si control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlReduction() noexcept { return RegisterAddress{SI_CONTROL_REDUCTION}; }
     /**
      * @return Returns the filter wind curve from the si control model.
      */
@@ -620,6 +692,13 @@ class RegisterAddress
         return RegisterAddress{SI_CONTROL_SOLAR_BATTERY_FILTER_STEP};
     }
     /**
+     * @return Returns the power limit for safty mode from the si control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlPowerLimitSaftyMode() noexcept
+    {
+        return RegisterAddress{SI_CONTROL_POWER_LIMIT_SAFTY_MODE};
+    }
+    /**
      * @return Returns the start voltage from the si control model (write).
      */
     [[nodiscard]] constexpr static RegisterAddress siControlVoltageDcStartWrite() noexcept
@@ -640,6 +719,21 @@ class RegisterAddress
     {
         return RegisterAddress{SI_CONTROL_BATTARY_SAFTY_MODE_WRITE};
     }
+    /**
+     * @return Returns the battery voltage setpoint in bi mode from the cv control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlBattaryCvModeWrite() noexcept
+    {
+        return RegisterAddress{SI_CONTROL_BATTARY_CV_MODE_WRITE};
+    }
+    /**
+     * @return Returns the dc low from the cv control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDcLowWrite() noexcept { return RegisterAddress{SI_CONTROL_DC_LOW_WRITE}; }
+    /**
+     * @return Returns the dc high from the cv control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDcHighWrite() noexcept { return RegisterAddress{SI_CONTROL_DC_HIGH_WRITE}; }
     /**
      * @return Returns the wind curve y 00 from the si control model (write).
      */
@@ -704,6 +798,180 @@ class RegisterAddress
      * @return Returns the wind curve y 15 from the si control model (write).
      */
     [[nodiscard]] constexpr static RegisterAddress siControlWindCurveY15Write() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_Y_15_WRITE}; }
+    /**
+     * @return Returns the constant voltage y 0 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlConstantVoltageY0Write() noexcept
+    {
+        return RegisterAddress{SI_CONTROL_CONSTANT_VOLTAGE_Y_0_WRITE};
+    }
+    /**
+     * @return Returns the constant voltage y 1 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlConstantVoltageY1Write() noexcept
+    {
+        return RegisterAddress{SI_CONTROL_CONSTANT_VOLTAGE_Y_1_WRITE};
+    }
+    /**
+     * @return Returns the constant voltage y 2 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlConstantVoltageY2Write() noexcept
+    {
+        return RegisterAddress{SI_CONTROL_CONSTANT_VOLTAGE_Y_2_WRITE};
+    }
+    /**
+     * @return Returns the dac curve y 0 from the si control model (read).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY0Read() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_0_READ}; }
+    /**
+     * @return Returns the dac curve y 1 from the si control model (read).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY1Read() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_1_READ}; }
+    /**
+     * @return Returns the dac curve y 2 from the si control model (read).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY2Read() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_2_READ}; }
+    /**
+     * @return Returns the dac curve y 3 from the si control model (read).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY3Read() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_3_READ}; }
+    /**
+     * @return Returns the dac curve y 4 from the si control model (read).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY4Read() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_4_READ}; }
+    /**
+     * @return Returns the dac curve y 5 from the si control model (read).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY5Read() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_5_READ}; }
+    /**
+     * @return Returns the dac curve y 6 from the si control model (read).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY6Read() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_6_READ}; }
+    /**
+     * @return Returns the dac curve y 7 from the si control model (read).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY7Read() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_7_READ}; }
+    /**
+     * @return Returns the dac curve y 8 from the si control model (read).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY8Read() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_8_READ}; }
+    /**
+     * @return Returns the dac curve y 9 from the si control model (read).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY9Read() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_9_READ}; }
+    /**
+     * @return Returns the constant voltage x 0 from the si control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlConstantVoltageX0() noexcept { return RegisterAddress{SI_CONTROL_CONSTANT_VOLTAGE_X_0}; }
+    /**
+     * @return Returns the constant voltage x 1 from the si control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlConstantVoltageX1() noexcept { return RegisterAddress{SI_CONTROL_CONSTANT_VOLTAGE_X_1}; }
+    /**
+     * @return Returns the constant voltage x 2 from the si control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlConstantVoltageX2() noexcept { return RegisterAddress{SI_CONTROL_CONSTANT_VOLTAGE_X_2}; }
+    /**
+     * @return Returns the constant voltage y 0 from the si control model (read).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlConstantVoltageY0Read() noexcept
+    {
+        return RegisterAddress{SI_CONTROL_CONSTANT_VOLTAGE_Y_0_READ};
+    }
+    /**
+     * @return Returns the constant voltage y 1 from the si control model (read).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlConstantVoltageY1Read() noexcept
+    {
+        return RegisterAddress{SI_CONTROL_CONSTANT_VOLTAGE_Y_1_READ};
+    }
+    /**
+     * @return Returns the constant voltage y 2 from the si control model (read).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlConstantVoltageY2Read() noexcept
+    {
+        return RegisterAddress{SI_CONTROL_CONSTANT_VOLTAGE_Y_2_READ};
+    }
+    /**
+     * @return Returns the dac curve x 0 from the si control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveX0() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_X_0}; }
+    /**
+     * @return Returns the dac curve x 1 from the si control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveX1() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_X_1}; }
+    /**
+     * @return Returns the dac curve x 2 from the si control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveX2() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_X_2}; }
+    /**
+     * @return Returns the dac curve x 3 from the si control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveX3() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_X_3}; }
+    /**
+     * @return Returns the dac curve x 4 from the si control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveX4() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_X_4}; }
+    /**
+     * @return Returns the dac curve x 5 from the si control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveX5() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_X_5}; }
+    /**
+     * @return Returns the dac curve x 6 from the si control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveX6() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_X_6}; }
+    /**
+     * @return Returns the dac curve x 7 from the si control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveX7() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_X_7}; }
+    /**
+     * @return Returns the dac curve x 8 from the si control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveX8() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_X_8}; }
+    /**
+     * @return Returns the dac curve x 9 from the si control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveX9() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_X_9}; }
+    /**
+     * @return Returns the dac curve y 0 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY0Write() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_0_WRITE}; }
+    /**
+     * @return Returns the dac curve y 1 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY1Write() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_1_WRITE}; }
+    /**
+     * @return Returns the dac curve y 2 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY2Write() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_2_WRITE}; }
+    /**
+     * @return Returns the dac curve y 3 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY3Write() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_3_WRITE}; }
+    /**
+     * @return Returns the dac curve y 4 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY4Write() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_4_WRITE}; }
+    /**
+     * @return Returns the dac curve y 5 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY5Write() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_5_WRITE}; }
+    /**
+     * @return Returns the dac curve y 6 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY6Write() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_6_WRITE}; }
+    /**
+     * @return Returns the dac curve y 7 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY7Write() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_7_WRITE}; }
+    /**
+     * @return Returns the dac curve y 8 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY8Write() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_8_WRITE}; }
+    /**
+     * @return Returns the dac curve y 9 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY9Write() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_9_WRITE}; }
     /**
      * @return Returns the invalid register.
      */
@@ -906,6 +1174,18 @@ class RegisterAddress
      */
     [[nodiscard]] constexpr bool isSiControlBattarySaftyModeRead() const noexcept { return _value == SI_CONTROL_BATTARY_SAFTY_MODE_READ; }
     /**
+     * @return Returns @b true if battery voltage setpoint in cv mode from the safty control model (read) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlBattaryCvModeRead() const noexcept { return _value == SI_CONTROL_BATTARY_CV_MODE_READ; }
+    /**
+     * @return Returns @b true if low voltage for relay off from the safty control model (read) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDcLowRead() const noexcept { return _value == SI_CONTROL_DC_LOW_READ; }
+    /**
+     * @return Returns @b true if high voltage for relay off from the safty control model (read) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDcHighRead() const noexcept { return _value == SI_CONTROL_DC_HIGH_READ; }
+    /**
      * @return Returns @b true if strategy switch for behavior in safety mode from the safty control model is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isSiControlTrackingSelection() const noexcept { return _value == SI_CONTROL_TRACKING_SELECTION; }
@@ -973,6 +1253,10 @@ class RegisterAddress
      * @return Returns @b true if mpp sample udc 3 from the si control model is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isSiControlMppSampleUdc3() const noexcept { return _value == SI_CONTROL_MPP_SAMPLE_UDC_3; }
+    /**
+     * @return Returns @b true if reduction from the si control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlReduction() const noexcept { return _value == SI_CONTROL_REDUCTION; }
     /**
      * @return Returns @b true if filter wind curve from the si control model is represented, otherwise @b false.
      */
@@ -1110,6 +1394,10 @@ class RegisterAddress
      */
     [[nodiscard]] constexpr bool isSiControlSolarBatteryFilterStep() const noexcept { return _value == SI_CONTROL_SOLAR_BATTERY_FILTER_STEP; }
     /**
+     * @return Returns @b true if power limit for safty mode from the si control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlPowerLimitSaftyMode() const noexcept { return _value == SI_CONTROL_POWER_LIMIT_SAFTY_MODE; }
+    /**
      * @return Returns @b true if start voltage from the si control model (write) is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isSiControlVoltageDcStartWrite() const noexcept { return _value == SI_CONTROL_VOLTAGE_DC_START_WRITE; }
@@ -1121,6 +1409,18 @@ class RegisterAddress
      * @return Returns @b true if battery voltage setpoint in bi mode from the safty control model (write) is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isSiControlBattarySaftyModeWrite() const noexcept { return _value == SI_CONTROL_BATTARY_SAFTY_MODE_WRITE; }
+    /**
+     * @return Returns @b true if battery voltage setpoint in bi mode from the cv control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlBattaryCvModeWrite() const noexcept { return _value == SI_CONTROL_BATTARY_CV_MODE_WRITE; }
+    /**
+     * @return Returns @b true if dc low from the cv control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDcLowWrite() const noexcept { return _value == SI_CONTROL_DC_LOW_WRITE; }
+    /**
+     * @return Returns @b true if dc high from the cv control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDcHighWrite() const noexcept { return _value == SI_CONTROL_DC_HIGH_WRITE; }
     /**
      * @return Returns @b true if wind curve y 00 from the si control model (write) is represented, otherwise @b false.
      */
@@ -1186,6 +1486,162 @@ class RegisterAddress
      */
     [[nodiscard]] constexpr bool isSiControlWindCurveY15Write() const noexcept { return _value == SI_CONTROL_WIND_CURVE_Y_15_WRITE; }
     /**
+     * @return Returns @b true if constant voltage y 0 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlConstantVoltageY0Write() const noexcept { return _value == SI_CONTROL_CONSTANT_VOLTAGE_Y_0_WRITE; }
+    /**
+     * @return Returns @b true if constant voltage y 1 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlConstantVoltageY1Write() const noexcept { return _value == SI_CONTROL_CONSTANT_VOLTAGE_Y_1_WRITE; }
+    /**
+     * @return Returns @b true if constant voltage y 2 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlConstantVoltageY2Write() const noexcept { return _value == SI_CONTROL_CONSTANT_VOLTAGE_Y_2_WRITE; }
+    /**
+     * @return Returns @b true if dac curve y 0 from the si control model (read) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY0Read() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_0_READ; }
+    /**
+     * @return Returns @b true if dac curve y 1 from the si control model (read) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY1Read() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_1_READ; }
+    /**
+     * @return Returns @b true if dac curve y 2 from the si control model (read) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY2Read() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_2_READ; }
+    /**
+     * @return Returns @b true if dac curve y 3 from the si control model (read) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY3Read() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_3_READ; }
+    /**
+     * @return Returns @b true if dac curve y 4 from the si control model (read) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY4Read() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_4_READ; }
+    /**
+     * @return Returns @b true if dac curve y 5 from the si control model (read) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY5Read() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_5_READ; }
+    /**
+     * @return Returns @b true if dac curve y 6 from the si control model (read) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY6Read() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_6_READ; }
+    /**
+     * @return Returns @b true if dac curve y 7 from the si control model (read) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY7Read() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_7_READ; }
+    /**
+     * @return Returns @b true if dac curve y 8 from the si control model (read) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY8Read() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_8_READ; }
+    /**
+     * @return Returns @b true if dac curve y 9 from the si control model (read) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY9Read() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_9_READ; }
+    /**
+     * @return Returns @b true if constant voltage x 0 from the si control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlConstantVoltageX0() const noexcept { return _value == SI_CONTROL_CONSTANT_VOLTAGE_X_0; }
+    /**
+     * @return Returns @b true if constant voltage x 1 from the si control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlConstantVoltageX1() const noexcept { return _value == SI_CONTROL_CONSTANT_VOLTAGE_X_1; }
+    /**
+     * @return Returns @b true if constant voltage x 2 from the si control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlConstantVoltageX2() const noexcept { return _value == SI_CONTROL_CONSTANT_VOLTAGE_X_2; }
+    /**
+     * @return Returns @b true if constant voltage y 0 from the si control model (read) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlConstantVoltageY0Read() const noexcept { return _value == SI_CONTROL_CONSTANT_VOLTAGE_Y_0_READ; }
+    /**
+     * @return Returns @b true if constant voltage y 1 from the si control model (read) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlConstantVoltageY1Read() const noexcept { return _value == SI_CONTROL_CONSTANT_VOLTAGE_Y_1_READ; }
+    /**
+     * @return Returns @b true if constant voltage y 2 from the si control model (read) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlConstantVoltageY2Read() const noexcept { return _value == SI_CONTROL_CONSTANT_VOLTAGE_Y_2_READ; }
+    /**
+     * @return Returns @b true if dac curve x 0 from the si control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveX0() const noexcept { return _value == SI_CONTROL_DAC_CURVE_X_0; }
+    /**
+     * @return Returns @b true if dac curve x 1 from the si control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveX1() const noexcept { return _value == SI_CONTROL_DAC_CURVE_X_1; }
+    /**
+     * @return Returns @b true if dac curve x 2 from the si control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveX2() const noexcept { return _value == SI_CONTROL_DAC_CURVE_X_2; }
+    /**
+     * @return Returns @b true if dac curve x 3 from the si control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveX3() const noexcept { return _value == SI_CONTROL_DAC_CURVE_X_3; }
+    /**
+     * @return Returns @b true if dac curve x 4 from the si control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveX4() const noexcept { return _value == SI_CONTROL_DAC_CURVE_X_4; }
+    /**
+     * @return Returns @b true if dac curve x 5 from the si control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveX5() const noexcept { return _value == SI_CONTROL_DAC_CURVE_X_5; }
+    /**
+     * @return Returns @b true if dac curve x 6 from the si control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveX6() const noexcept { return _value == SI_CONTROL_DAC_CURVE_X_6; }
+    /**
+     * @return Returns @b true if dac curve x 7 from the si control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveX7() const noexcept { return _value == SI_CONTROL_DAC_CURVE_X_7; }
+    /**
+     * @return Returns @b true if dac curve x 8 from the si control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveX8() const noexcept { return _value == SI_CONTROL_DAC_CURVE_X_8; }
+    /**
+     * @return Returns @b true if dac curve x 9 from the si control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveX9() const noexcept { return _value == SI_CONTROL_DAC_CURVE_X_9; }
+    /**
+     * @return Returns @b true if dac curve y 0 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY0Write() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_0_WRITE; }
+    /**
+     * @return Returns @b true if dac curve y 1 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY1Write() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_1_WRITE; }
+    /**
+     * @return Returns @b true if dac curve y 2 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY2Write() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_2_WRITE; }
+    /**
+     * @return Returns @b true if dac curve y 3 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY3Write() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_3_WRITE; }
+    /**
+     * @return Returns @b true if dac curve y 4 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY4Write() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_4_WRITE; }
+    /**
+     * @return Returns @b true if dac curve y 5 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY5Write() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_5_WRITE; }
+    /**
+     * @return Returns @b true if dac curve y 6 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY6Write() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_6_WRITE; }
+    /**
+     * @return Returns @b true if dac curve y 7 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY7Write() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_7_WRITE; }
+    /**
+     * @return Returns @b true if dac curve y 8 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY8Write() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_8_WRITE; }
+    /**
+     * @return Returns @b true if dac curve y 9 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlDacCurveY9Write() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_9_WRITE; }
+    /**
      * @return Returns @b true if invalid register is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isEmpty() const noexcept { return _value >= EMPTY; }
@@ -1239,6 +1695,9 @@ class RegisterAddress
                                                                       "SI_CONTROL_VOLTAGE_DC_START_READ",
                                                                       "SI_CONTROL_BATTARY_BI_MODE_READ",
                                                                       "SI_CONTROL_BATTARY_SAFTY_MODE_READ",
+                                                                      "SI_CONTROL_BATTARY_CV_MODE_READ",
+                                                                      "SI_CONTROL_DC_LOW_READ",
+                                                                      "SI_CONTROL_DC_HIGH_READ",
                                                                       "SI_CONTROL_TRACKING_SELECTION",
                                                                       "SI_CONTROL_MPP_STEP_DAC_0",
                                                                       "SI_CONTROL_MPP_STEP_DAC_1",
@@ -1256,6 +1715,7 @@ class RegisterAddress
                                                                       "SI_CONTROL_MPP_SAMPLE_UDC_1",
                                                                       "SI_CONTROL_MPP_SAMPLE_UDC_2",
                                                                       "SI_CONTROL_MPP_SAMPLE_UDC_3",
+                                                                      "SI_CONTROL_REDUCTION",
                                                                       "SI_CONTROL_FILTER_WIND_CURVE",
                                                                       "SI_CONTROL_WIND_CURVE_X_00",
                                                                       "SI_CONTROL_WIND_CURVE_X_01",
@@ -1290,9 +1750,13 @@ class RegisterAddress
                                                                       "SI_CONTROL_WIND_CURVE_Y_14_READ",
                                                                       "SI_CONTROL_WIND_CURVE_Y_15_READ",
                                                                       "SI_CONTROL_SOLAR_BATTERY_FILTER_STEP",
+                                                                      "SI_CONTROL_POWER_LIMIT_SAFTY_MODE",
                                                                       "SI_CONTROL_VOLTAGE_DC_START_WRITE",
                                                                       "SI_CONTROL_BATTARY_BI_MODE_WRITE",
                                                                       "SI_CONTROL_BATTARY_SAFTY_MODE_WRITE",
+                                                                      "SI_CONTROL_BATTARY_CV_MODE_WRITE",
+                                                                      "SI_CONTROL_DC_LOW_WRITE",
+                                                                      "SI_CONTROL_DC_HIGH_WRITE",
                                                                       "SI_CONTROL_WIND_CURVE_Y_00_WRITE",
                                                                       "SI_CONTROL_WIND_CURVE_Y_01_WRITE",
                                                                       "SI_CONTROL_WIND_CURVE_Y_02_WRITE",
@@ -1308,7 +1772,46 @@ class RegisterAddress
                                                                       "SI_CONTROL_WIND_CURVE_Y_12_WRITE",
                                                                       "SI_CONTROL_WIND_CURVE_Y_13_WRITE",
                                                                       "SI_CONTROL_WIND_CURVE_Y_14_WRITE",
-                                                                      "SI_CONTROL_WIND_CURVE_Y_15_WRITE"};
+                                                                      "SI_CONTROL_WIND_CURVE_Y_15_WRITE",
+                                                                      "SI_CONTROL_CONSTANT_VOLTAGE_Y_0_WRITE",
+                                                                      "SI_CONTROL_CONSTANT_VOLTAGE_Y_1_WRITE",
+                                                                      "SI_CONTROL_CONSTANT_VOLTAGE_Y_2_WRITE",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_0_READ",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_1_READ",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_2_READ",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_3_READ",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_4_READ",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_5_READ",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_6_READ",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_7_READ",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_8_READ",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_9_READ",
+                                                                      "SI_CONTROL_CONSTANT_VOLTAGE_X_0",
+                                                                      "SI_CONTROL_CONSTANT_VOLTAGE_X_1",
+                                                                      "SI_CONTROL_CONSTANT_VOLTAGE_X_2",
+                                                                      "SI_CONTROL_CONSTANT_VOLTAGE_Y_0_READ",
+                                                                      "SI_CONTROL_CONSTANT_VOLTAGE_Y_1_READ",
+                                                                      "SI_CONTROL_CONSTANT_VOLTAGE_Y_2_READ",
+                                                                      "SI_CONTROL_DAC_CURVE_X_0",
+                                                                      "SI_CONTROL_DAC_CURVE_X_1",
+                                                                      "SI_CONTROL_DAC_CURVE_X_2",
+                                                                      "SI_CONTROL_DAC_CURVE_X_3",
+                                                                      "SI_CONTROL_DAC_CURVE_X_4",
+                                                                      "SI_CONTROL_DAC_CURVE_X_5",
+                                                                      "SI_CONTROL_DAC_CURVE_X_6",
+                                                                      "SI_CONTROL_DAC_CURVE_X_7",
+                                                                      "SI_CONTROL_DAC_CURVE_X_8",
+                                                                      "SI_CONTROL_DAC_CURVE_X_9",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_0_WRITE",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_1_WRITE",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_2_WRITE",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_3_WRITE",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_4_WRITE",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_5_WRITE",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_6_WRITE",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_7_WRITE",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_8_WRITE",
+                                                                      "SI_CONTROL_DAC_CURVE_Y_9_WRITE"};
 
     /**
      *@return Returns the address of the register.
@@ -1411,6 +1914,12 @@ class RegisterAddress
                 return std::uint16_t(40294);
             case SI_CONTROL_BATTARY_SAFTY_MODE_READ:
                 return std::uint16_t(40295);
+            case SI_CONTROL_BATTARY_CV_MODE_READ:
+                return std::uint16_t(40296);
+            case SI_CONTROL_DC_LOW_READ:
+                return std::uint16_t(40297);
+            case SI_CONTROL_DC_HIGH_READ:
+                return std::uint16_t(40298);
             case SI_CONTROL_TRACKING_SELECTION:
                 return std::uint16_t(40331);
             case SI_CONTROL_MPP_STEP_DAC_0:
@@ -1445,6 +1954,8 @@ class RegisterAddress
                 return std::uint16_t(40354);
             case SI_CONTROL_MPP_SAMPLE_UDC_3:
                 return std::uint16_t(40355);
+            case SI_CONTROL_REDUCTION:
+                return std::uint16_t(40356);
             case SI_CONTROL_FILTER_WIND_CURVE:
                 return std::uint16_t(40360);
             case SI_CONTROL_WIND_CURVE_X_00:
@@ -1513,12 +2024,20 @@ class RegisterAddress
                 return std::uint16_t(40392);
             case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP:
                 return std::uint16_t(40394);
+            case SI_CONTROL_POWER_LIMIT_SAFTY_MODE:
+                return std::uint16_t(40399);
             case SI_CONTROL_VOLTAGE_DC_START_WRITE:
                 return std::uint16_t(40403);
             case SI_CONTROL_BATTARY_BI_MODE_WRITE:
                 return std::uint16_t(40404);
             case SI_CONTROL_BATTARY_SAFTY_MODE_WRITE:
                 return std::uint16_t(40405);
+            case SI_CONTROL_BATTARY_CV_MODE_WRITE:
+                return std::uint16_t(40406);
+            case SI_CONTROL_DC_LOW_WRITE:
+                return std::uint16_t(40407);
+            case SI_CONTROL_DC_HIGH_WRITE:
+                return std::uint16_t(40408);
             case SI_CONTROL_WIND_CURVE_Y_00_WRITE:
                 return std::uint16_t(40410);
             case SI_CONTROL_WIND_CURVE_Y_01_WRITE:
@@ -1551,6 +2070,84 @@ class RegisterAddress
                 return std::uint16_t(40424);
             case SI_CONTROL_WIND_CURVE_Y_15_WRITE:
                 return std::uint16_t(40425);
+            case SI_CONTROL_CONSTANT_VOLTAGE_Y_0_WRITE:
+                return std::uint16_t(40430);
+            case SI_CONTROL_CONSTANT_VOLTAGE_Y_1_WRITE:
+                return std::uint16_t(40431);
+            case SI_CONTROL_CONSTANT_VOLTAGE_Y_2_WRITE:
+                return std::uint16_t(40432);
+            case SI_CONTROL_DAC_CURVE_Y_0_READ:
+                return std::uint16_t(40433);
+            case SI_CONTROL_DAC_CURVE_Y_1_READ:
+                return std::uint16_t(40434);
+            case SI_CONTROL_DAC_CURVE_Y_2_READ:
+                return std::uint16_t(40435);
+            case SI_CONTROL_DAC_CURVE_Y_3_READ:
+                return std::uint16_t(40436);
+            case SI_CONTROL_DAC_CURVE_Y_4_READ:
+                return std::uint16_t(40437);
+            case SI_CONTROL_DAC_CURVE_Y_5_READ:
+                return std::uint16_t(40438);
+            case SI_CONTROL_DAC_CURVE_Y_6_READ:
+                return std::uint16_t(40439);
+            case SI_CONTROL_DAC_CURVE_Y_7_READ:
+                return std::uint16_t(40440);
+            case SI_CONTROL_DAC_CURVE_Y_8_READ:
+                return std::uint16_t(40441);
+            case SI_CONTROL_DAC_CURVE_Y_9_READ:
+                return std::uint16_t(40442);
+            case SI_CONTROL_CONSTANT_VOLTAGE_X_0:
+                return std::uint16_t(40451);
+            case SI_CONTROL_CONSTANT_VOLTAGE_X_1:
+                return std::uint16_t(40452);
+            case SI_CONTROL_CONSTANT_VOLTAGE_X_2:
+                return std::uint16_t(40453);
+            case SI_CONTROL_CONSTANT_VOLTAGE_Y_0_READ:
+                return std::uint16_t(40454);
+            case SI_CONTROL_CONSTANT_VOLTAGE_Y_1_READ:
+                return std::uint16_t(40455);
+            case SI_CONTROL_CONSTANT_VOLTAGE_Y_2_READ:
+                return std::uint16_t(40456);
+            case SI_CONTROL_DAC_CURVE_X_0:
+                return std::uint16_t(40457);
+            case SI_CONTROL_DAC_CURVE_X_1:
+                return std::uint16_t(40458);
+            case SI_CONTROL_DAC_CURVE_X_2:
+                return std::uint16_t(40459);
+            case SI_CONTROL_DAC_CURVE_X_3:
+                return std::uint16_t(40460);
+            case SI_CONTROL_DAC_CURVE_X_4:
+                return std::uint16_t(40461);
+            case SI_CONTROL_DAC_CURVE_X_5:
+                return std::uint16_t(40462);
+            case SI_CONTROL_DAC_CURVE_X_6:
+                return std::uint16_t(40463);
+            case SI_CONTROL_DAC_CURVE_X_7:
+                return std::uint16_t(40464);
+            case SI_CONTROL_DAC_CURVE_X_8:
+                return std::uint16_t(40465);
+            case SI_CONTROL_DAC_CURVE_X_9:
+                return std::uint16_t(40466);
+            case SI_CONTROL_DAC_CURVE_Y_0_WRITE:
+                return std::uint16_t(40467);
+            case SI_CONTROL_DAC_CURVE_Y_1_WRITE:
+                return std::uint16_t(40468);
+            case SI_CONTROL_DAC_CURVE_Y_2_WRITE:
+                return std::uint16_t(40469);
+            case SI_CONTROL_DAC_CURVE_Y_3_WRITE:
+                return std::uint16_t(40470);
+            case SI_CONTROL_DAC_CURVE_Y_4_WRITE:
+                return std::uint16_t(40471);
+            case SI_CONTROL_DAC_CURVE_Y_5_WRITE:
+                return std::uint16_t(40472);
+            case SI_CONTROL_DAC_CURVE_Y_6_WRITE:
+                return std::uint16_t(40473);
+            case SI_CONTROL_DAC_CURVE_Y_7_WRITE:
+                return std::uint16_t(40474);
+            case SI_CONTROL_DAC_CURVE_Y_8_WRITE:
+                return std::uint16_t(40475);
+            case SI_CONTROL_DAC_CURVE_Y_9_WRITE:
+                return std::uint16_t(40476);
             default:
                 return std::uint16_t(0);
         }
@@ -1658,6 +2255,12 @@ class RegisterAddress
                 return Type::uint16();
             case SI_CONTROL_BATTARY_SAFTY_MODE_READ:
                 return Type::uint16();
+            case SI_CONTROL_BATTARY_CV_MODE_READ:
+                return Type::uint16();
+            case SI_CONTROL_DC_LOW_READ:
+                return Type::uint16();
+            case SI_CONTROL_DC_HIGH_READ:
+                return Type::uint16();
             case SI_CONTROL_TRACKING_SELECTION:
                 return Type::uint16();
             case SI_CONTROL_MPP_STEP_DAC_0:
@@ -1691,6 +2294,8 @@ class RegisterAddress
             case SI_CONTROL_MPP_SAMPLE_UDC_2:
                 return Type::uint16();
             case SI_CONTROL_MPP_SAMPLE_UDC_3:
+                return Type::uint16();
+            case SI_CONTROL_REDUCTION:
                 return Type::uint16();
             case SI_CONTROL_FILTER_WIND_CURVE:
                 return Type::uint16();
@@ -1760,11 +2365,19 @@ class RegisterAddress
                 return Type::uint16();
             case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP:
                 return Type::uint16();
+            case SI_CONTROL_POWER_LIMIT_SAFTY_MODE:
+                return Type::uint16();
             case SI_CONTROL_VOLTAGE_DC_START_WRITE:
                 return Type::uint16();
             case SI_CONTROL_BATTARY_BI_MODE_WRITE:
                 return Type::uint16();
             case SI_CONTROL_BATTARY_SAFTY_MODE_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_BATTARY_CV_MODE_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_DC_LOW_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_DC_HIGH_WRITE:
                 return Type::uint16();
             case SI_CONTROL_WIND_CURVE_Y_00_WRITE:
                 return Type::uint16();
@@ -1797,6 +2410,84 @@ class RegisterAddress
             case SI_CONTROL_WIND_CURVE_Y_14_WRITE:
                 return Type::uint16();
             case SI_CONTROL_WIND_CURVE_Y_15_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_CONSTANT_VOLTAGE_Y_0_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_CONSTANT_VOLTAGE_Y_1_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_CONSTANT_VOLTAGE_Y_2_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_0_READ:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_1_READ:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_2_READ:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_3_READ:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_4_READ:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_5_READ:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_6_READ:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_7_READ:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_8_READ:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_9_READ:
+                return Type::uint16();
+            case SI_CONTROL_CONSTANT_VOLTAGE_X_0:
+                return Type::uint16();
+            case SI_CONTROL_CONSTANT_VOLTAGE_X_1:
+                return Type::uint16();
+            case SI_CONTROL_CONSTANT_VOLTAGE_X_2:
+                return Type::uint16();
+            case SI_CONTROL_CONSTANT_VOLTAGE_Y_0_READ:
+                return Type::uint16();
+            case SI_CONTROL_CONSTANT_VOLTAGE_Y_1_READ:
+                return Type::uint16();
+            case SI_CONTROL_CONSTANT_VOLTAGE_Y_2_READ:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_X_0:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_X_1:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_X_2:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_X_3:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_X_4:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_X_5:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_X_6:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_X_7:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_X_8:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_X_9:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_0_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_1_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_2_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_3_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_4_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_5_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_6_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_7_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_8_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_DAC_CURVE_Y_9_WRITE:
                 return Type::uint16();
             default:
                 return Type::empty();
@@ -1906,6 +2597,12 @@ class RegisterAddress
                 return Address(SI_CONTROL_BATTARY_BI_MODE_READ);
             case 40295:
                 return Address(SI_CONTROL_BATTARY_SAFTY_MODE_READ);
+            case 40296:
+                return Address(SI_CONTROL_BATTARY_CV_MODE_READ);
+            case 40297:
+                return Address(SI_CONTROL_DC_LOW_READ);
+            case 40298:
+                return Address(SI_CONTROL_DC_HIGH_READ);
             case 40331:
                 return Address(SI_CONTROL_TRACKING_SELECTION);
             case 40340:
@@ -1940,6 +2637,8 @@ class RegisterAddress
                 return Address(SI_CONTROL_MPP_SAMPLE_UDC_2);
             case 40355:
                 return Address(SI_CONTROL_MPP_SAMPLE_UDC_3);
+            case 40356:
+                return Address(SI_CONTROL_REDUCTION);
             case 40360:
                 return Address(SI_CONTROL_FILTER_WIND_CURVE);
             case 40361:
@@ -2008,12 +2707,20 @@ class RegisterAddress
                 return Address(SI_CONTROL_WIND_CURVE_Y_15_READ);
             case 40394:
                 return Address(SI_CONTROL_SOLAR_BATTERY_FILTER_STEP);
+            case 40399:
+                return Address(SI_CONTROL_POWER_LIMIT_SAFTY_MODE);
             case 40403:
                 return Address(SI_CONTROL_VOLTAGE_DC_START_WRITE);
             case 40404:
                 return Address(SI_CONTROL_BATTARY_BI_MODE_WRITE);
             case 40405:
                 return Address(SI_CONTROL_BATTARY_SAFTY_MODE_WRITE);
+            case 40406:
+                return Address(SI_CONTROL_BATTARY_CV_MODE_WRITE);
+            case 40407:
+                return Address(SI_CONTROL_DC_LOW_WRITE);
+            case 40408:
+                return Address(SI_CONTROL_DC_HIGH_WRITE);
             case 40410:
                 return Address(SI_CONTROL_WIND_CURVE_Y_00_WRITE);
             case 40411:
@@ -2046,6 +2753,7 @@ class RegisterAddress
                 return Address(SI_CONTROL_WIND_CURVE_Y_14_WRITE);
             case 40425:
                 return Address(SI_CONTROL_WIND_CURVE_Y_15_WRITE);
+
             default:
                 return Address();
         }
@@ -2061,6 +2769,9 @@ class RegisterAddress
             case SI_CONTROL_VOLTAGE_DC_START_WRITE:
             case SI_CONTROL_BATTARY_BI_MODE_WRITE:
             case SI_CONTROL_BATTARY_SAFTY_MODE_WRITE:
+            case SI_CONTROL_BATTARY_CV_MODE_WRITE:
+            case SI_CONTROL_DC_LOW_WRITE:
+            case SI_CONTROL_DC_HIGH_WRITE:
             case SI_CONTROL_WIND_CURVE_Y_00_WRITE:
             case SI_CONTROL_WIND_CURVE_Y_01_WRITE:
             case SI_CONTROL_WIND_CURVE_Y_02_WRITE:
@@ -2077,6 +2788,19 @@ class RegisterAddress
             case SI_CONTROL_WIND_CURVE_Y_13_WRITE:
             case SI_CONTROL_WIND_CURVE_Y_14_WRITE:
             case SI_CONTROL_WIND_CURVE_Y_15_WRITE:
+            case SI_CONTROL_CONSTANT_VOLTAGE_Y_0_WRITE:
+            case SI_CONTROL_CONSTANT_VOLTAGE_Y_1_WRITE:
+            case SI_CONTROL_CONSTANT_VOLTAGE_Y_2_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_0_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_1_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_2_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_3_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_4_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_5_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_6_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_7_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_8_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_9_WRITE:
                 return false;
             default:
                 return true;
@@ -2111,6 +2835,7 @@ class RegisterAddress
             case SI_CONTROL_MPP_SAMPLE_UDC_1:
             case SI_CONTROL_MPP_SAMPLE_UDC_2:
             case SI_CONTROL_MPP_SAMPLE_UDC_3:
+            case SI_CONTROL_REDUCTION:
             case SI_CONTROL_FILTER_WIND_CURVE:
             case SI_CONTROL_WIND_CURVE_X_00:
             case SI_CONTROL_WIND_CURVE_X_01:
@@ -2129,9 +2854,13 @@ class RegisterAddress
             case SI_CONTROL_WIND_CURVE_X_14:
             case SI_CONTROL_WIND_CURVE_X_15:
             case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP:
+            case SI_CONTROL_POWER_LIMIT_SAFTY_MODE:
             case SI_CONTROL_VOLTAGE_DC_START_WRITE:
             case SI_CONTROL_BATTARY_BI_MODE_WRITE:
             case SI_CONTROL_BATTARY_SAFTY_MODE_WRITE:
+            case SI_CONTROL_BATTARY_CV_MODE_WRITE:
+            case SI_CONTROL_DC_LOW_WRITE:
+            case SI_CONTROL_DC_HIGH_WRITE:
             case SI_CONTROL_WIND_CURVE_Y_00_WRITE:
             case SI_CONTROL_WIND_CURVE_Y_01_WRITE:
             case SI_CONTROL_WIND_CURVE_Y_02_WRITE:
@@ -2148,6 +2877,32 @@ class RegisterAddress
             case SI_CONTROL_WIND_CURVE_Y_13_WRITE:
             case SI_CONTROL_WIND_CURVE_Y_14_WRITE:
             case SI_CONTROL_WIND_CURVE_Y_15_WRITE:
+            case SI_CONTROL_CONSTANT_VOLTAGE_Y_0_WRITE:
+            case SI_CONTROL_CONSTANT_VOLTAGE_Y_1_WRITE:
+            case SI_CONTROL_CONSTANT_VOLTAGE_Y_2_WRITE:
+            case SI_CONTROL_CONSTANT_VOLTAGE_X_0:
+            case SI_CONTROL_CONSTANT_VOLTAGE_X_1:
+            case SI_CONTROL_CONSTANT_VOLTAGE_X_2:
+            case SI_CONTROL_DAC_CURVE_X_0:
+            case SI_CONTROL_DAC_CURVE_X_1:
+            case SI_CONTROL_DAC_CURVE_X_2:
+            case SI_CONTROL_DAC_CURVE_X_3:
+            case SI_CONTROL_DAC_CURVE_X_4:
+            case SI_CONTROL_DAC_CURVE_X_5:
+            case SI_CONTROL_DAC_CURVE_X_6:
+            case SI_CONTROL_DAC_CURVE_X_7:
+            case SI_CONTROL_DAC_CURVE_X_8:
+            case SI_CONTROL_DAC_CURVE_X_9:
+            case SI_CONTROL_DAC_CURVE_Y_0_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_1_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_2_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_3_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_4_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_5_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_6_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_7_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_8_WRITE:
+            case SI_CONTROL_DAC_CURVE_Y_9_WRITE:
                 return true;
             default:
                 return false;
