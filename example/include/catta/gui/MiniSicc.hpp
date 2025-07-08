@@ -439,9 +439,8 @@ class MiniSicc : public Fl_Double_Window
         OperatingStateCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
         void operator()(const Response& r)
         {
-            const catta::modbus::si::Type type = _miniSicc.getType();
             const std::uint16_t value = r.type().isValue16() ? r.value16Value() : 0xffff;
-            _miniSicc._values->setOperatingState(type, value);
+            _miniSicc._values->setOperatingState(value);
         }
 
       private:

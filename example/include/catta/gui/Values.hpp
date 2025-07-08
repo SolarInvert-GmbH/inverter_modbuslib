@@ -125,9 +125,9 @@ class Values : public Fl_Group
      * @param[in] type The type.
      * @param[in] state The state.
      */
-    void setOperatingState(const catta::modbus::si::Type type, const std::uint16_t state)
+    void setOperatingState(const std::uint16_t state)
     {
-        const char* text = type < typeSize && state < stateSize ? TYPE_STATE_MATRIX[type][state] : nullptr;
+        const char* text = state < stateSize ? TYPE_STATE_MATRIX[state] : nullptr;
         _operatingState3->label(text);
         if (state < stateSize)
         {
@@ -185,13 +185,19 @@ class Values : public Fl_Group
             if (values->_callback) values->_callback(s);
         }
     }
-    static constexpr std::size_t typeSize = 3;
     static constexpr std::size_t stateSize = 12;
-    static constexpr const char* TYPE_STATE_MATRIX[typeSize][stateSize] = {
-        {"SOLAR_0", "SOLAR_1", "SOLAR_2", "SOLAR_3", "SOLAR_4", "SOLAR_5", "SOLAR_6", "SOLAR_7", "SOLAR_8", "SOLAR_9", "SOLAR_10", "SOLAR_11"},
-        {"WIND_0", "WIND_1", "WIND_2", "WIND_3", "WIND_4", "WIND_5", "WIND_6", "WIND_7", "WIND_8", "WIND_9", "WIND_10", "WIND_11"},
-        {"BATTERY_0", "BATTERY_1", "BATTERY_2", "BATTERY_3", "BATTERY_4", "BATTERY_5", "BATTERY_6", "BATTERY_7", "BATTERY_8", "BATTERY_9",
-         "BATTERY_10", "BATTERY_11"}};
+    static constexpr const char* TYPE_STATE_MATRIX[stateSize] = {"Starting up",
+                                                                 "Going to Umin",
+                                                                 "Trap State One",
+                                                                 "MPP",
+                                                                 "Sweep",
+                                                                 "Constant Voltage",
+                                                                 "Low Sun (Constant Voltage)",
+                                                                 "WIND Characteristic curve",
+                                                                 "Trap State Two",
+                                                                 "BAT Mode",
+                                                                 "BAT Safety Mode",
+                                                                 "FRT"};
 };
 }  // namespace gui
 }  // namespace catta
