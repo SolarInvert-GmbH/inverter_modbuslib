@@ -51,6 +51,7 @@ class MiniSicc : public Fl_Double_Window
           _temperatureCallback(*this),
           _operatingStateCallback(*this),
           _derTypeCallbackCallback(*this),
+          _reductionCallback(*this),
           _factoryValuesCallback(*this),
           _softwareVersionCallback(*this),
           _sliderCallback(*this),
@@ -94,6 +95,7 @@ class MiniSicc : public Fl_Double_Window
         this->show();
 
         _cache.setRequest(CACHE_DER_TYPE, REQUEST_DER_TYPE);
+        _cache.setRequest(CACHE_REDUCTION, REQUEST_REDUCTION);
         _cache.setRequest(CACHE_FACTORY_VALUES, REQUEST_FACTORY_VALUES);
         _cache.setRequest(CACHE_SOFTWARE_VERSION, REQUEST_SOFTWARE_VERSION);
         _cache.setRequest(CACHE_AC_CURRENT_SCALE, REQUEST_AC_CURRENT_SCALE);
@@ -124,6 +126,7 @@ class MiniSicc : public Fl_Double_Window
         _cache.setCallback(CACHE_VENDOR_OPERATING_STATE, _operatingStateCallback);
         _cache.setCallback(CACHE_DER_TYPE, _derTypeCallbackCallback);
         _cache.setCallback(CACHE_FACTORY_VALUES, _factoryValuesCallback);
+        _cache.setCallback(CACHE_REDUCTION, _reductionCallback);
         _cache.setCallback(CACHE_SOFTWARE_VERSION, _softwareVersionCallback);
         _values->setCallback(_sliderCallback);
         _lock();
@@ -171,7 +174,8 @@ class MiniSicc : public Fl_Double_Window
     static constexpr std::size_t CLIENTS = CLIENT_BATTERY + 1;
 
     static constexpr std::size_t CACHE_DER_TYPE = 0;
-    static constexpr std::size_t CACHE_FACTORY_VALUES = CACHE_DER_TYPE + 1;
+    static constexpr std::size_t CACHE_REDUCTION = CACHE_DER_TYPE + 1;
+    static constexpr std::size_t CACHE_FACTORY_VALUES = CACHE_REDUCTION + 1;
     static constexpr std::size_t CACHE_SOFTWARE_VERSION = CACHE_FACTORY_VALUES + 1;
     static constexpr std::size_t CACHE_AC_CURRENT_SCALE = CACHE_SOFTWARE_VERSION + 1;
     static constexpr std::size_t CACHE_AC_CURRENT = CACHE_AC_CURRENT_SCALE + 1;
@@ -231,6 +235,7 @@ class MiniSicc : public Fl_Double_Window
     }
 
     static constexpr RegisterAddress REGISTER_DER_TYPE = RegisterAddress::nameplateDerType();
+    static constexpr RegisterAddress REGISTER_REDUCTION = RegisterAddress::siControlReduction();
     static constexpr RegisterAddress REGISTER_SOFTWARE_VERSION = RegisterAddress::commonVersion();
     static constexpr RegisterAddress REGISTER_AC_CURRENT_SCALE = RegisterAddress::inverterAmpsScaleFactor();
     static constexpr RegisterAddress REGISTER_AC_CURRENT = RegisterAddress::inverterAmps();
@@ -255,6 +260,7 @@ class MiniSicc : public Fl_Double_Window
     static constexpr RegisterAddress REGISTER_VENDOR_OPERATING_STATE = RegisterAddress::inverterVendorOperatingState();
 
     static constexpr Request REQUEST_DER_TYPE = Request::readRegister(ReadRegister::create(REGISTER_DER_TYPE));
+    static constexpr Request REQUEST_REDUCTION = Request::readRegister(ReadRegister::create(REGISTER_REDUCTION));
     static constexpr Request REQUEST_FACTORY_VALUES = Request::factoryValues();
     static constexpr Request REQUEST_SOFTWARE_VERSION = Request::readRegister(ReadRegister::create(REGISTER_SOFTWARE_VERSION));
     static constexpr Request REQUEST_AC_CURRENT_SCALE = Request::readRegister(ReadRegister::create(REGISTER_AC_CURRENT_SCALE));
@@ -456,6 +462,42 @@ class MiniSicc : public Fl_Double_Window
       private:
         MiniSicc& _miniSicc;
     } _derTypeCallbackCallback;
+
+    class ReductionCallback
+    {
+      public:
+        ReductionCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()(const Response& r)
+        {
+            if (!r.type().isValue16())
+                _miniSicc._static->setReduction("");
+            else
+            {
+                const std::uint16_t v = r.value16Value();
+                bool started = false;
+                std::string date = "    %";
+                const auto set = [v, &date, &started](const std::size_t index, const std::uint16_t factor)
+                {
+                    const char c = static_cast<char>('0' + (v / factor) % 10);
+                    if (c == '0' && !started)
+                        date[index] = ' ';
+                    else
+                    {
+                        started = true;
+                        date[index] = c;
+                    }
+                };
+                set(0, 100);
+                set(1, 10);
+                started = true;
+                set(2, 1);
+                _miniSicc._static->setReduction(date);
+            }
+        }
+
+      private:
+        MiniSicc& _miniSicc;
+    } _reductionCallback;
 
     class FactoryValuesCallback
     {
