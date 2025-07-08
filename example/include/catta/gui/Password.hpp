@@ -45,6 +45,7 @@ class Password : public Fl_Group
           _onLock{onLock},
           _locked(true)
     {
+        _text = {};
         std::size_t index = 0;
         const auto addCharacter = [this, &index](const char c)
         {

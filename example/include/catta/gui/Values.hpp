@@ -34,7 +34,7 @@ class Values : public Fl_Group
      * @param[in] H The height of the widget.
      * Constructor.
      */
-    Values(const int X, const int Y, const int W, const int H) : Fl_Group(X, Y, W, H, nullptr), _invervalText{' ', '1', 's'}
+    Values(const int X, const int Y, const int W, const int H) : Fl_Group(X, Y, W, H, nullptr), _operatingState2Text{}, _invervalText{' ', '1', 's'}
     {
         _slider = new Fl_Slider(X + W / 5, Y + 15, (W * 3) / 5, 20, "Refreshinterval");
         _slider->align(FL_ALIGN_TOP);
@@ -44,12 +44,12 @@ class Values : public Fl_Group
         _slider->callback(slidercb, this);
         _interval = new Fl_Box(X + (W * 4) / 5, Y, W / 5, 50, _invervalText.data());
 
-        const int w1 = (W - 10) / 1;
-        // const int w2 = (W - 20) / 2;
+        const int gap = 5;
         const int w3 = (W - 30) / 3;
-        const int X0 = X + 5;
-        const int X1 = X + 10 + w3;
-        const int X2 = X + 15 + w3 * 2;
+        const int X0 = X + gap;
+        const int X1 = X0 + gap + w3;
+        const int X2 = X1 + gap + w3;
+
         static constexpr int H_LINE = 45;
         _acCurrent = new Value(X0, Y + H_LINE * 1, w3, H_LINE, "AcCurrent");
         _acVoltage = new Value(X1, Y + H_LINE * 1, w3, H_LINE, "AcVoltage");
@@ -59,11 +59,10 @@ class Values : public Fl_Group
         _dcVoltage = new Value(X0, Y + H_LINE * 3, w3, H_LINE, "DcVoltage");
         _dcPower = new Value(X1, Y + H_LINE * 3, w3, H_LINE, "DcPower");
         _temperature = new Value(X2, Y + H_LINE * 3, w3, H_LINE, "Temperature");
-        _operatingState0 = new Fl_Box(X0, Y + H_LINE * 4, w3, H_LINE, "Operating Mode");
-        _operatingState1 = new Fl_Box(X1, Y + H_LINE * 4, w3, H_LINE, "State");
-        _operatingState2 = new Fl_Box(X2, Y + H_LINE * 4, w3, H_LINE, nullptr);
-        _operatingState3 = new Fl_Box(X0, Y + H_LINE * 5, w1, H_LINE, nullptr);
-        _powerFactor = new Value(X0, Y + H_LINE * 6, w3, H_LINE, "PowerFactor");
+        _operatingState = new Value(X0, Y + H_LINE * 4, w3, H_LINE, "Operating Mode");
+        _operatingStateText = new Fl_Box(X1, Y + H_LINE * 4, w3, H_LINE, nullptr);
+        _operatingStateText->align(FL_ALIGN_CENTER | FL_ALIGN_INSIDE);
+        _powerFactor = new Value(X0, Y + H_LINE * 4, w3, H_LINE, "PowerFactor");
         lock();
         this->end();
         this->show();
@@ -128,15 +127,15 @@ class Values : public Fl_Group
     void setOperatingState(const std::uint16_t state)
     {
         const char* text = state < stateSize ? TYPE_STATE_MATRIX[state] : nullptr;
-        _operatingState3->label(text);
+        _operatingStateText->label(text);
         if (state < stateSize)
         {
             _operatingState2Text[0] = state < 10 ? ' ' : '1';
             _operatingState2Text[1] = static_cast<char>('0' + state % 10);
-            _operatingState2->label(_operatingState2Text.data());
+            _operatingState->set(_operatingState2Text.data(), nullptr);
         }
         else
-            _operatingState2->label(nullptr);
+            _operatingState->set("", nullptr);
     }
     /**
      * Show locked stuff.
@@ -163,10 +162,8 @@ class Values : public Fl_Group
     Value* _dcVoltage;
     Value* _dcPower;
     Value* _temperature;
-    Fl_Box* _operatingState0;
-    Fl_Box* _operatingState1;
-    Fl_Box* _operatingState2;
-    Fl_Box* _operatingState3;
+    Value* _operatingState;
+    Fl_Box* _operatingStateText;
     std::array<char, 3> _operatingState2Text;
     std::function<void(const std::chrono::microseconds interval)> _callback;
     std::array<char, 4> _invervalText;
