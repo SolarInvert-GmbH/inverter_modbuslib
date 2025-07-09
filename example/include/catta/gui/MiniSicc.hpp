@@ -496,7 +496,7 @@ class MiniSicc : public Fl_Double_Window
             if (!r.type().isValue16())
                 return _miniSicc._values->setPmax("", nullptr);
             else
-                _miniSicc._values->setPmax(std::to_string(r.value16Value()), "W");
+                _miniSicc._values->setPmax(std::to_string(r.value16Value() / 10) + "." + std::to_string(r.value16Value() % 10), "W");
         }
 
       private:
@@ -572,7 +572,19 @@ class MiniSicc : public Fl_Double_Window
             if (!r.type().isValue16())
                 return _miniSicc._values->setCosphi("", nullptr);
             else
-                _miniSicc._values->setCosphi(std::to_string(r.value16Value()), nullptr);
+            {
+                const std::uint16_t v = r.value16Value();
+                const std::string head = std::to_string(v / 1000);
+                const std::string tail = [v]()
+                {
+                    std::string s = ".000";
+                    s[1] = static_cast<char>('0' + (v / 100) % 10);
+                    s[2] = static_cast<char>('0' + (v / 10) % 10);
+                    s[3] = static_cast<char>('0' + (v / 1) % 10);
+                    return s;
+                }();
+                _miniSicc._values->setCosphi(head + tail, nullptr);
+            }
         }
 
       private:
@@ -770,6 +782,8 @@ class MiniSicc : public Fl_Double_Window
             _miniSicc._cache.setValidTime(CACHE_NIGHT_SHUTDOWN, time);
             _miniSicc._cache.setValidTime(CACHE_START_COUNTDOWN, time);
             _miniSicc._cache.setValidTime(CACHE_UPTIME, time);
+            _miniSicc._cache.setValidTime(CACHE_COSPHI, time);
+            _miniSicc._cache.setValidTime(CACHE_DAC, time);
             _miniSicc._cache.setValidTime(CACHE_VENDOR_OPERATING_STATE, time);
         }
 
