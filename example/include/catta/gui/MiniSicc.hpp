@@ -2,6 +2,7 @@
 
 // gui
 #include <catta/gui/Battery.hpp>
+#include <catta/gui/Commands.hpp>
 #include <catta/gui/Connection.hpp>
 #include <catta/gui/Password.hpp>
 #include <catta/gui/Solar.hpp>
@@ -97,6 +98,9 @@ class MiniSicc : public Fl_Double_Window
         _tab4 = new Fl_Group(Xtab, Ytab, Wtab, Htab, "Wind");
         this->_wind = new Wind(Xcontent, Ycontent, Wcontent, Hcontent);
         _tab4->end();
+        _tab5 = new Fl_Group(Xtab, Ytab, Wtab, Htab, "Commands");
+        this->_commands = new Commands(Xcontent, Ycontent, Wcontent, Hcontent);
+        _tab5->end();
         this->resizable(this->_tabs);
         this->end();
         this->callback(close_cb);
@@ -184,6 +188,13 @@ class MiniSicc : public Fl_Double_Window
                     _request = batteryRequest;
                     somethingHappend = true;
                 }
+                const Request commandsRequest =
+                    _commands->work(_request.isEmpty() && isInIdle && _current == CLIENT_COMMANDS, receivedResponse, receivedRequest);
+                if (!commandsRequest.isEmpty())
+                {
+                    _request = commandsRequest;
+                    somethingHappend = true;
+                }
                 if (_current < CLIENTS && current >= CLIENTS)
                     for (std::size_t i = 0; i < CACHE_SIZE; i++) _cache.setInvalid(i);
                 _current = current;
@@ -195,7 +206,8 @@ class MiniSicc : public Fl_Double_Window
   private:
     static constexpr std::size_t CLIENT_CACHE = 0;
     static constexpr std::size_t CLIENT_BATTERY = CLIENT_CACHE + 1;
-    static constexpr std::size_t CLIENTS = CLIENT_BATTERY + 1;
+    static constexpr std::size_t CLIENT_COMMANDS = CLIENT_BATTERY + 1;
+    static constexpr std::size_t CLIENTS = CLIENT_COMMANDS + 1;
 
     static constexpr std::size_t CACHE_DER_TYPE = 0;
     static constexpr std::size_t CACHE_REDUCTION = CACHE_DER_TYPE + 1;
@@ -251,11 +263,13 @@ class MiniSicc : public Fl_Double_Window
     Battery* _battery;
     Solar* _solar;
     Wind* _wind;
+    Commands* _commands;
     Fl_Group* _tab0;
     Fl_Group* _tab1;
     Fl_Group* _tab2;
     Fl_Group* _tab3;
     Fl_Group* _tab4;
+    Fl_Group* _tab5;
 
     static constexpr int WIDTH = 600;
     static constexpr int HEIGHT = 800;
