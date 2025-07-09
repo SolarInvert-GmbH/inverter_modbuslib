@@ -14,6 +14,7 @@
 // std
 #include <array>
 #include <functional>
+#include <optional>
 #include <string>
 
 namespace catta
@@ -45,24 +46,34 @@ class Values : public Fl_Group
         _interval = new Fl_Box(X + (W * 4) / 5, Y, W / 5, 50, _invervalText.data());
 
         const int gap = 5;
-        const int w3 = (W - 30) / 3;
-        const int X0 = X + gap;
-        const int X1 = X0 + gap + w3;
-        const int X2 = X1 + gap + w3;
+        const int w3 = (W - gap * 6) / 3;
+        const int w4 = (W - gap * 8) / 4;
+        const int X30 = X + gap;
+        const int X31 = X30 + gap + w3;
+        const int X32 = X31 + gap + w3;
+        const int X40 = X + gap;
+        const int X41 = X40 + gap + w4;
+        const int X42 = X41 + gap + w4;
+        const int X43 = X42 + gap + w4;
 
         static constexpr int H_LINE = 45;
-        _acCurrent = new Value(X0, Y + H_LINE * 1, w3, H_LINE, "AcCurrent");
-        _acVoltage = new Value(X1, Y + H_LINE * 1, w3, H_LINE, "AcVoltage");
-        _acPower = new Value(X2, Y + H_LINE * 1, w3, H_LINE, "AcPower");
-        _frequency = new Value(X0, Y + H_LINE * 2, w3, H_LINE, "Frequency");
-        _energyProduction = new Value(X2, Y + H_LINE * 2, w3, H_LINE, "EnergyProduction");
-        _dcVoltage = new Value(X0, Y + H_LINE * 3, w3, H_LINE, "DcVoltage");
-        _dcPower = new Value(X1, Y + H_LINE * 3, w3, H_LINE, "DcPower");
-        _temperature = new Value(X2, Y + H_LINE * 3, w3, H_LINE, "Temperature");
-        _operatingState = new Value(X0, Y + H_LINE * 4, w3, H_LINE, "Operating Mode");
-        _operatingStateText = new Fl_Box(X1, Y + H_LINE * 4, w3, H_LINE, nullptr);
+        _acCurrent = new Value(X30, Y + H_LINE * 1, w3, H_LINE, "AcCurrent");
+        _acVoltage = new Value(X31, Y + H_LINE * 1, w3, H_LINE, "AcVoltage");
+        _acPower = new Value(X32, Y + H_LINE * 1, w3, H_LINE, "AcPower");
+        _frequency = new Value(X30, Y + H_LINE * 2, w3, H_LINE, "Frequency");
+        _energyProduction = new Value(X32, Y + H_LINE * 2, w3, H_LINE, "EnergyProduction");
+        _dcVoltage = new Value(X30, Y + H_LINE * 3, w3, H_LINE, "DcVoltage");
+        _dcPower = new Value(X31, Y + H_LINE * 3, w3, H_LINE, "DcPower");
+        _temperature = new Value(X32, Y + H_LINE * 3, w3, H_LINE, "Temperature");
+        _operatingState = new Value(X30, Y + H_LINE * 4, w3, H_LINE, "Operating Mode");
+        _operatingStateText = new Fl_Box(X31, Y + H_LINE * 4, w3, H_LINE, nullptr);
         _operatingStateText->align(FL_ALIGN_CENTER | FL_ALIGN_INSIDE);
-        _powerFactor = new Value(X0, Y + H_LINE * 4, w3, H_LINE, "PowerFactor");
+        _powerFactor = new Value(X30, Y + H_LINE * 5, w3, H_LINE, "PowerFactor");
+
+        _uacOk = new Led(X40, Y + H_LINE * 6, w4, H_LINE, "UAC OK");
+        _freqOk = new Led(X41, Y + H_LINE * 6, w4, H_LINE, "FREQ OK");
+        _wrWorking = new Led(X42, Y + H_LINE * 6, w4, H_LINE, "WR WORKING");
+        _pmaxActive = new Led(X43, Y + H_LINE * 6, w4, H_LINE, "PMAX Active");
         lock();
         this->end();
         this->show();
@@ -138,19 +149,86 @@ class Values : public Fl_Group
             _operatingState->set("", nullptr);
     }
     /**
+     * @param[in] uacOk The uacOk.
+     * @param[in] freqOk The freqOk.
+     * @param[in] wrWorking The wrWorking.
+     * @param[in] pmaxActive The pmaxActive.
+     */
+    void setLed(const std::optional<bool> uacOk, const std::optional<bool> freqOk, const std::optional<bool> wrWorking,
+                const std::optional<bool> pmaxActive)
+    {
+        _uacOk->set(uacOk);
+        _freqOk->set(freqOk);
+        _wrWorking->set(wrWorking);
+        _pmaxActive->set(pmaxActive);
+    }
+    /**
      * Show locked stuff.
      */
-    void lock() { _powerFactor->hide(); }
+    void lock()
+    {
+        _powerFactor->hide();
+        _uacOk->hide();
+        _freqOk->hide();
+        _wrWorking->hide();
+        _pmaxActive->hide();
+    }
     /**
      * Hide locked stuff.
      */
-    void unlock() { _powerFactor->show(); }
+    void unlock()
+    {
+        _powerFactor->show();
+        _uacOk->show();
+        _freqOk->show();
+        _wrWorking->show();
+        _pmaxActive->show();
+    }
     /**
      * Triggers the slider callback.
      */
     void triggerSliderCallback() { slidercb(nullptr, this); }
 
   private:
+    class Led : public Fl_Group
+    {
+      public:
+        Led(const int X, const int Y, const int W, const int H, const char* label) : Fl_Group(X, Y, W, H, nullptr)
+        {
+            const int gap = 5;
+            const int aLed = 12;
+            const int YL = Y + (H - aLed) / 2;
+            const int wLabel = W - gap * 3 - aLed;
+            _label = new Fl_Box(X, Y, wLabel, H);
+            _label->label(label);
+            _label->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
+            _led = new Fl_Box(X + wLabel + gap, YL, aLed, aLed, nullptr);
+            _led->box(FL_UP_BOX);
+            this->end();
+        }
+        ~Led()
+        {
+            if (_label) delete _label;
+            if (_led) delete _led;
+        }
+        void set(const std::optional<bool> value) noexcept
+        {
+            _value = value;
+            if (value)
+            {
+                _led->show();
+                _led->color(value.value() ? FL_GREEN : FL_GRAY);
+                _led->redraw();
+            }
+            else
+                _led->hide();
+        }
+
+      private:
+        Fl_Box* _label;
+        Fl_Box* _led;
+        std::optional<bool> _value;
+    };
     Fl_Slider* _slider;
     Fl_Box* _interval;
     Value* _acCurrent;
@@ -164,6 +242,10 @@ class Values : public Fl_Group
     Value* _temperature;
     Value* _operatingState;
     Fl_Box* _operatingStateText;
+    Led* _uacOk;
+    Led* _freqOk;
+    Led* _wrWorking;
+    Led* _pmaxActive;
     std::array<char, 3> _operatingState2Text;
     std::function<void(const std::chrono::microseconds interval)> _callback;
     std::array<char, 4> _invervalText;

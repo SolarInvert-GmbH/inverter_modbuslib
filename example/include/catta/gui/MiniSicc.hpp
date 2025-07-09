@@ -49,6 +49,7 @@ class MiniSicc : public Fl_Double_Window
           _dcVoltageCallback(*this),
           _dcPowerCallback(*this),
           _temperatureCallback(*this),
+          _event3Callback(*this),
           _operatingStateCallback(*this),
           _derTypeCallbackCallback(*this),
           _reductionCallback(*this),
@@ -106,6 +107,7 @@ class MiniSicc : public Fl_Double_Window
         _cache.setRequest(CACHE_FREQUENCY, REQUEST_FREQUENCY);
         _cache.setRequest(CACHE_POWER_FACTOR_SCALE, REQUEST_POWER_FACTOR_SCALE);
         _cache.setRequest(CACHE_POWER_FACTOR, REQUEST_POWER_FACTOR);
+        _cache.setRequest(CACHE_EVENTS_3, REQUEST_EVENTS_3);
         _cache.setRequest(CACHE_ENERGY_PRODUCTION_SCALE, REQUEST_ENERGY_PRODUCTION_SCALE);
         _cache.setRequest(CACHE_ENERGY_PRODUCTION, REQUEST_ENERGY_PRODUCTION);
         _cache.setRequest(CACHE_DC_VOLTAGE_SCALE, REQUEST_DC_VOLTAGE_SCALE);
@@ -119,6 +121,7 @@ class MiniSicc : public Fl_Double_Window
         _cache.setCallback(CACHE_AC_POWER, _acPowerCallback);
         _cache.setCallback(CACHE_FREQUENCY, _frequencyCallback);
         _cache.setCallback(CACHE_POWER_FACTOR, _powerFactorCallback);
+        _cache.setCallback(CACHE_EVENTS_3, _event3Callback);
         _cache.setCallback(CACHE_ENERGY_PRODUCTION, _energyProductionCallback);
         _cache.setCallback(CACHE_DC_VOLTAGE, _dcVoltageCallback);
         _cache.setCallback(CACHE_DC_POWER, _dcPowerCallback);
@@ -189,7 +192,8 @@ class MiniSicc : public Fl_Double_Window
     static constexpr std::size_t CACHE_FREQUENCY = CACHE_FREQUENCY_SCALE + 1;
     static constexpr std::size_t CACHE_POWER_FACTOR_SCALE = CACHE_FREQUENCY + 1;
     static constexpr std::size_t CACHE_POWER_FACTOR = CACHE_POWER_FACTOR_SCALE + 1;
-    static constexpr std::size_t CACHE_ENERGY_PRODUCTION_SCALE = CACHE_POWER_FACTOR + 1;
+    static constexpr std::size_t CACHE_EVENTS_3 = CACHE_POWER_FACTOR + 1;
+    static constexpr std::size_t CACHE_ENERGY_PRODUCTION_SCALE = CACHE_EVENTS_3 + 1;
     static constexpr std::size_t CACHE_ENERGY_PRODUCTION = CACHE_ENERGY_PRODUCTION_SCALE + 1;
     static constexpr std::size_t CACHE_DC_VOLTAGE_SCALE = CACHE_ENERGY_PRODUCTION + 1;
     static constexpr std::size_t CACHE_DC_VOLTAGE = CACHE_DC_VOLTAGE_SCALE + 1;
@@ -249,6 +253,7 @@ class MiniSicc : public Fl_Double_Window
     static constexpr RegisterAddress REGISTER_FREQUENCY = RegisterAddress::inverterHertz();
     static constexpr RegisterAddress REGISTER_POWER_FACTOR_SCALE = RegisterAddress::inverterPowerFactorScaleFactor();
     static constexpr RegisterAddress REGISTER_POWER_FACTOR = RegisterAddress::inverterPowerFactor();
+    static constexpr RegisterAddress REGISTER_EVENT_3 = RegisterAddress::inverterVendorEventBitfield3();
     static constexpr RegisterAddress REGISTER_ENERGY_PRODUCTION_SCALE = RegisterAddress::inverterWattHoursScaleFactor();
     static constexpr RegisterAddress REGISTER_ENERGY_PRODUCTION = RegisterAddress::inverterWattHours();
     static constexpr RegisterAddress REGISTER_DC_VOLTAGE_SCALE = RegisterAddress::inverterPhaseVoltageScaleFactor();
@@ -275,6 +280,7 @@ class MiniSicc : public Fl_Double_Window
     static constexpr Request REQUEST_FREQUENCY = Request::readRegister(ReadRegister::create(REGISTER_FREQUENCY));
     static constexpr Request REQUEST_POWER_FACTOR_SCALE = Request::readRegister(ReadRegister::create(REGISTER_POWER_FACTOR_SCALE));
     static constexpr Request REQUEST_POWER_FACTOR = Request::readRegister(ReadRegister::create(REGISTER_POWER_FACTOR));
+    static constexpr Request REQUEST_EVENTS_3 = Request::readRegister(ReadRegister::create(REGISTER_EVENT_3));
     static constexpr Request REQUEST_ENERGY_PRODUCTION_SCALE = Request::readRegister(ReadRegister::create(REGISTER_ENERGY_PRODUCTION_SCALE));
     static constexpr Request REQUEST_ENERGY_PRODUCTION = Request::readRegister(ReadRegister::create(REGISTER_ENERGY_PRODUCTION));
     static constexpr Request REQUEST_DC_VOLTAGE_SCALE = Request::readRegister(ReadRegister::create(REGISTER_DC_VOLTAGE_SCALE));
@@ -439,6 +445,30 @@ class MiniSicc : public Fl_Double_Window
     ScaledValueCallback<DcPower> _dcPowerCallback;
     ScaledValueCallback<Temperature> _temperatureCallback;
 
+    class Event3Callback
+    {
+      public:
+        Event3Callback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()(const Response& r)
+        {
+            static constexpr std::optional<bool> empty = std::optional<bool>{};
+            if (!r.type().isValue32())
+                _miniSicc._values->setLed(empty, empty, empty, empty);
+            else
+            {
+                const std::uint32_t v = r.value32Value();
+                static constexpr std::uint32_t UAC_OK = 0x02;
+                static constexpr std::uint32_t FREQ_OK = 0x08;
+                static constexpr std::uint32_t WR_WORKING = 0x10;
+                static constexpr std::uint32_t PMAX_ACTIVE = 0x40;
+                _miniSicc._values->setLed(v & UAC_OK, v & FREQ_OK, v & WR_WORKING, v & PMAX_ACTIVE);
+            }
+        }
+
+      private:
+        MiniSicc& _miniSicc;
+    } _event3Callback;
+
     class OperatingStateCallback
     {
       public:
@@ -559,6 +589,7 @@ class MiniSicc : public Fl_Double_Window
             _miniSicc._cache.setValidTime(CACHE_AC_POWER, time);
             _miniSicc._cache.setValidTime(CACHE_FREQUENCY, time);
             _miniSicc._cache.setValidTime(CACHE_POWER_FACTOR, lockedTime);
+            _miniSicc._cache.setValidTime(CACHE_EVENTS_3, lockedTime);
             _miniSicc._cache.setValidTime(CACHE_ENERGY_PRODUCTION, time);
             _miniSicc._cache.setValidTime(CACHE_DC_VOLTAGE, time);
             _miniSicc._cache.setValidTime(CACHE_DC_POWER, time);
