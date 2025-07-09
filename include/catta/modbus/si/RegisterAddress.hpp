@@ -72,120 +72,126 @@ class RegisterAddress
     constexpr static std::uint8_t SI_CONTROL_DC_LOW_READ = 48;
     constexpr static std::uint8_t SI_CONTROL_DC_HIGH_READ = 49;
     constexpr static std::uint8_t SI_CONTROL_TRACKING_SELECTION = 50;
-    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_DAC_0 = 51;
-    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_DAC_1 = 52;
-    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_DAC_2 = 53;
-    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_DAC_3 = 54;
-    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_UDC_0 = 55;
-    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_UDC_1 = 56;
-    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_UDC_2 = 57;
-    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_UDC_3 = 58;
-    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_DAC_0 = 59;
-    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_DAC_1 = 60;
-    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_DAC_2 = 61;
-    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_DAC_3 = 62;
-    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_UDC_0 = 63;
-    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_UDC_1 = 64;
-    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_UDC_2 = 65;
-    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_UDC_3 = 66;
-    constexpr static std::uint8_t SI_CONTROL_REDUCTION = 67;
-    constexpr static std::uint8_t SI_CONTROL_FILTER_WIND_CURVE = 68;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_00 = 69;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_01 = 70;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_02 = 71;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_03 = 72;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_04 = 73;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_05 = 74;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_06 = 75;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_07 = 76;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_08 = 77;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_09 = 78;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_10 = 79;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_11 = 80;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_12 = 81;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_13 = 82;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_14 = 83;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_15 = 84;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_00_READ = 85;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_01_READ = 86;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_02_READ = 87;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_03_READ = 88;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_04_READ = 89;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_05_READ = 90;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_06_READ = 91;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_07_READ = 92;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_08_READ = 93;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_09_READ = 94;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_10_READ = 95;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_11_READ = 96;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_12_READ = 97;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_13_READ = 98;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_14_READ = 99;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_15_READ = 100;
-    constexpr static std::uint8_t SI_CONTROL_SOLAR_BATTERY_FILTER_STEP = 101;
-    constexpr static std::uint8_t SI_CONTROL_POWER_LIMIT_SAFTY_MODE = 102;
-    constexpr static std::uint8_t SI_CONTROL_VOLTAGE_DC_START_WRITE = 103;
-    constexpr static std::uint8_t SI_CONTROL_BATTARY_BI_MODE_WRITE = 104;
-    constexpr static std::uint8_t SI_CONTROL_BATTARY_SAFTY_MODE_WRITE = 105;
-    constexpr static std::uint8_t SI_CONTROL_BATTARY_CV_MODE_WRITE = 106;
-    constexpr static std::uint8_t SI_CONTROL_DC_LOW_WRITE = 107;
-    constexpr static std::uint8_t SI_CONTROL_DC_HIGH_WRITE = 108;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_00_WRITE = 109;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_01_WRITE = 110;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_02_WRITE = 111;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_03_WRITE = 112;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_04_WRITE = 113;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_05_WRITE = 114;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_06_WRITE = 115;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_07_WRITE = 116;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_08_WRITE = 117;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_09_WRITE = 118;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_10_WRITE = 119;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_11_WRITE = 120;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_12_WRITE = 121;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_13_WRITE = 122;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_14_WRITE = 123;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_15_WRITE = 124;
-    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_Y_0_WRITE = 125;
-    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_Y_1_WRITE = 126;
-    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_Y_2_WRITE = 127;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_0_READ = 128;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_1_READ = 129;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_2_READ = 130;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_3_READ = 131;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_4_READ = 132;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_5_READ = 133;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_6_READ = 134;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_7_READ = 135;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_8_READ = 136;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_9_READ = 137;
-    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_X_0 = 138;
-    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_X_1 = 139;
-    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_X_2 = 140;
-    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_Y_0_READ = 141;
-    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_Y_1_READ = 142;
-    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_Y_2_READ = 143;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_0 = 144;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_1 = 145;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_2 = 146;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_3 = 147;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_4 = 148;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_5 = 149;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_6 = 150;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_7 = 151;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_8 = 152;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_9 = 153;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_0_WRITE = 154;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_1_WRITE = 155;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_2_WRITE = 156;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_3_WRITE = 157;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_4_WRITE = 158;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_5_WRITE = 159;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_6_WRITE = 160;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_7_WRITE = 161;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_8_WRITE = 162;
-    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_9_WRITE = 163;
-    constexpr static std::uint8_t EMPTY = 164;
+    constexpr static std::uint8_t SI_CONTROL_START_COUNTDOWN = 51;
+    constexpr static std::uint8_t SI_CONTROL_NIGHT_SHUTDOWN = 52;
+    constexpr static std::uint8_t SI_CONTROL_PMAX = 53;
+    constexpr static std::uint8_t SI_CONTROL_COSPHI = 54;
+    constexpr static std::uint8_t SI_CONTROL_UPTIME = 55;
+    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_DAC_0 = 56;
+    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_DAC_1 = 57;
+    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_DAC_2 = 58;
+    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_DAC_3 = 59;
+    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_UDC_0 = 60;
+    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_UDC_1 = 61;
+    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_UDC_2 = 62;
+    constexpr static std::uint8_t SI_CONTROL_MPP_STEP_UDC_3 = 63;
+    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_DAC_0 = 64;
+    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_DAC_1 = 65;
+    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_DAC_2 = 66;
+    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_DAC_3 = 67;
+    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_UDC_0 = 68;
+    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_UDC_1 = 69;
+    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_UDC_2 = 70;
+    constexpr static std::uint8_t SI_CONTROL_MPP_SAMPLE_UDC_3 = 71;
+    constexpr static std::uint8_t SI_CONTROL_REDUCTION = 72;
+    constexpr static std::uint8_t SI_CONTROL_SINEDUTY = 73;
+    constexpr static std::uint8_t SI_CONTROL_FILTER_WIND_CURVE = 74;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_00 = 75;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_01 = 76;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_02 = 77;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_03 = 78;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_04 = 79;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_05 = 80;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_06 = 81;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_07 = 82;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_08 = 83;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_09 = 84;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_10 = 85;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_11 = 86;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_12 = 87;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_13 = 88;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_14 = 89;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_15 = 90;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_00_READ = 91;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_01_READ = 92;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_02_READ = 93;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_03_READ = 94;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_04_READ = 95;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_05_READ = 96;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_06_READ = 97;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_07_READ = 98;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_08_READ = 99;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_09_READ = 100;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_10_READ = 101;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_11_READ = 102;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_12_READ = 103;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_13_READ = 104;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_14_READ = 105;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_15_READ = 106;
+    constexpr static std::uint8_t SI_CONTROL_SOLAR_BATTERY_FILTER_STEP = 107;
+    constexpr static std::uint8_t SI_CONTROL_POWER_LIMIT_SAFTY_MODE = 108;
+    constexpr static std::uint8_t SI_CONTROL_VOLTAGE_DC_START_WRITE = 109;
+    constexpr static std::uint8_t SI_CONTROL_BATTARY_BI_MODE_WRITE = 110;
+    constexpr static std::uint8_t SI_CONTROL_BATTARY_SAFTY_MODE_WRITE = 111;
+    constexpr static std::uint8_t SI_CONTROL_BATTARY_CV_MODE_WRITE = 112;
+    constexpr static std::uint8_t SI_CONTROL_DC_LOW_WRITE = 113;
+    constexpr static std::uint8_t SI_CONTROL_DC_HIGH_WRITE = 114;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_00_WRITE = 115;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_01_WRITE = 116;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_02_WRITE = 117;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_03_WRITE = 118;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_04_WRITE = 119;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_05_WRITE = 120;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_06_WRITE = 121;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_07_WRITE = 122;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_08_WRITE = 123;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_09_WRITE = 124;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_10_WRITE = 125;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_11_WRITE = 126;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_12_WRITE = 127;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_13_WRITE = 128;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_14_WRITE = 129;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_15_WRITE = 130;
+    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_Y_0_WRITE = 131;
+    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_Y_1_WRITE = 132;
+    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_Y_2_WRITE = 133;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_0_READ = 134;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_1_READ = 135;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_2_READ = 136;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_3_READ = 137;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_4_READ = 138;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_5_READ = 139;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_6_READ = 140;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_7_READ = 141;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_8_READ = 142;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_9_READ = 143;
+    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_X_0 = 144;
+    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_X_1 = 145;
+    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_X_2 = 146;
+    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_Y_0_READ = 147;
+    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_Y_1_READ = 148;
+    constexpr static std::uint8_t SI_CONTROL_CONSTANT_VOLTAGE_Y_2_READ = 149;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_0 = 150;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_1 = 151;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_2 = 152;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_3 = 153;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_4 = 154;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_5 = 155;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_6 = 156;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_7 = 157;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_8 = 158;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_X_9 = 159;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_0_WRITE = 160;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_1_WRITE = 161;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_2_WRITE = 162;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_3_WRITE = 163;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_4_WRITE = 164;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_5_WRITE = 165;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_6_WRITE = 166;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_7_WRITE = 167;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_8_WRITE = 168;
+    constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_9_WRITE = 169;
+    constexpr static std::uint8_t EMPTY = 170;
 
   public:
     /**
@@ -200,10 +206,11 @@ class RegisterAddress
      * inverterVendorEventBitfield1(), inverterVendorEventBitfield2(), inverterVendorEventBitfield3(), inverterVendorEventBitfield4(),
      * nameplateDerType(), basicSettingsMaxPower(), extendedMesurementsAcWattHours(), extendedMesurementsAcLifetimeCharge(),
      * storageNominalChargePower(), siControlModus(), siControlVoltageDcStartRead(), siControlBattaryBiModeRead(), siControlBattarySaftyModeRead(),
-     * siControlBattaryCvModeRead(), siControlDcLowRead(), siControlDcHighRead(), siControlTrackingSelection(), siControlMppStepDac0(),
-     * siControlMppStepDac1(), siControlMppStepDac2(), siControlMppStepDac3(), siControlMppStepUdc0(), siControlMppStepUdc1(), siControlMppStepUdc2(),
-     * siControlMppStepUdc3(), siControlMppSampleDac0(), siControlMppSampleDac1(), siControlMppSampleDac2(), siControlMppSampleDac3(),
-     * siControlMppSampleUdc0(), siControlMppSampleUdc1(), siControlMppSampleUdc2(), siControlMppSampleUdc3(), siControlReduction(),
+     * siControlBattaryCvModeRead(), siControlDcLowRead(), siControlDcHighRead(), siControlTrackingSelection(), siControlStartCountdown(),
+     * siControlNightShutdown(), siControlPmax(), siControlCosphi(), siControlUptime(), siControlMppStepDac0(), siControlMppStepDac1(),
+     * siControlMppStepDac2(), siControlMppStepDac3(), siControlMppStepUdc0(), siControlMppStepUdc1(), siControlMppStepUdc2(), siControlMppStepUdc3(),
+     * siControlMppSampleDac0(), siControlMppSampleDac1(), siControlMppSampleDac2(), siControlMppSampleDac3(), siControlMppSampleUdc0(),
+     * siControlMppSampleUdc1(), siControlMppSampleUdc2(), siControlMppSampleUdc3(), siControlReduction(), siControlSineduty(),
      * siControlFilterWindCurve(), siControlWindCurveX00(), siControlWindCurveX01(), siControlWindCurveX02(), siControlWindCurveX03(),
      * siControlWindCurveX04(), siControlWindCurveX05(), siControlWindCurveX06(), siControlWindCurveX07(), siControlWindCurveX08(),
      * siControlWindCurveX09(), siControlWindCurveX10(), siControlWindCurveX11(), siControlWindCurveX12(), siControlWindCurveX13(),
@@ -485,6 +492,26 @@ class RegisterAddress
      */
     [[nodiscard]] constexpr static RegisterAddress siControlTrackingSelection() noexcept { return RegisterAddress{SI_CONTROL_TRACKING_SELECTION}; }
     /**
+     * @return Returns the start countdown from the safty control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlStartCountdown() noexcept { return RegisterAddress{SI_CONTROL_START_COUNTDOWN}; }
+    /**
+     * @return Returns the night shutdown from the safty control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlNightShutdown() noexcept { return RegisterAddress{SI_CONTROL_NIGHT_SHUTDOWN}; }
+    /**
+     * @return Returns the pmax from the safty control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlPmax() noexcept { return RegisterAddress{SI_CONTROL_PMAX}; }
+    /**
+     * @return Returns the cosphi from the safty control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlCosphi() noexcept { return RegisterAddress{SI_CONTROL_COSPHI}; }
+    /**
+     * @return Returns the uptime from the safty control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlUptime() noexcept { return RegisterAddress{SI_CONTROL_UPTIME}; }
+    /**
      * @return Returns the mpp step dac 0 from the si control model.
      */
     [[nodiscard]] constexpr static RegisterAddress siControlMppStepDac0() noexcept { return RegisterAddress{SI_CONTROL_MPP_STEP_DAC_0}; }
@@ -552,6 +579,10 @@ class RegisterAddress
      * @return Returns the reduction from the si control model.
      */
     [[nodiscard]] constexpr static RegisterAddress siControlReduction() noexcept { return RegisterAddress{SI_CONTROL_REDUCTION}; }
+    /**
+     * @return Returns the sineduty from the si control model.
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlSineduty() noexcept { return RegisterAddress{SI_CONTROL_SINEDUTY}; }
     /**
      * @return Returns the filter wind curve from the si control model.
      */
@@ -1190,6 +1221,26 @@ class RegisterAddress
      */
     [[nodiscard]] constexpr bool isSiControlTrackingSelection() const noexcept { return _value == SI_CONTROL_TRACKING_SELECTION; }
     /**
+     * @return Returns @b true if start countdown from the safty control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlStartCountdown() const noexcept { return _value == SI_CONTROL_START_COUNTDOWN; }
+    /**
+     * @return Returns @b true if night shutdown from the safty control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlNightShutdown() const noexcept { return _value == SI_CONTROL_NIGHT_SHUTDOWN; }
+    /**
+     * @return Returns @b true if pmax from the safty control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlPmax() const noexcept { return _value == SI_CONTROL_PMAX; }
+    /**
+     * @return Returns @b true if cosphi from the safty control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlCosphi() const noexcept { return _value == SI_CONTROL_COSPHI; }
+    /**
+     * @return Returns @b true if uptime from the safty control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlUptime() const noexcept { return _value == SI_CONTROL_UPTIME; }
+    /**
      * @return Returns @b true if mpp step dac 0 from the si control model is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isSiControlMppStepDac0() const noexcept { return _value == SI_CONTROL_MPP_STEP_DAC_0; }
@@ -1257,6 +1308,10 @@ class RegisterAddress
      * @return Returns @b true if reduction from the si control model is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isSiControlReduction() const noexcept { return _value == SI_CONTROL_REDUCTION; }
+    /**
+     * @return Returns @b true if sineduty from the si control model is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlSineduty() const noexcept { return _value == SI_CONTROL_SINEDUTY; }
     /**
      * @return Returns @b true if filter wind curve from the si control model is represented, otherwise @b false.
      */
@@ -1699,6 +1754,11 @@ class RegisterAddress
                                                                       "SI_CONTROL_DC_LOW_READ",
                                                                       "SI_CONTROL_DC_HIGH_READ",
                                                                       "SI_CONTROL_TRACKING_SELECTION",
+                                                                      "SI_CONTROL_START_COUNTDOWN",
+                                                                      "SI_CONTROL_NIGHT_SHUTDOWN",
+                                                                      "SI_CONTROL_PMAX",
+                                                                      "SI_CONTROL_COSPHI",
+                                                                      "SI_CONTROL_UPTIME",
                                                                       "SI_CONTROL_MPP_STEP_DAC_0",
                                                                       "SI_CONTROL_MPP_STEP_DAC_1",
                                                                       "SI_CONTROL_MPP_STEP_DAC_2",
@@ -1716,6 +1776,7 @@ class RegisterAddress
                                                                       "SI_CONTROL_MPP_SAMPLE_UDC_2",
                                                                       "SI_CONTROL_MPP_SAMPLE_UDC_3",
                                                                       "SI_CONTROL_REDUCTION",
+                                                                      "SI_CONTROL_SINEDUTY",
                                                                       "SI_CONTROL_FILTER_WIND_CURVE",
                                                                       "SI_CONTROL_WIND_CURVE_X_00",
                                                                       "SI_CONTROL_WIND_CURVE_X_01",
@@ -1922,6 +1983,16 @@ class RegisterAddress
                 return std::uint16_t(40298);
             case SI_CONTROL_TRACKING_SELECTION:
                 return std::uint16_t(40331);
+            case SI_CONTROL_START_COUNTDOWN:
+                return std::uint16_t(40334);
+            case SI_CONTROL_NIGHT_SHUTDOWN:
+                return std::uint16_t(40335);
+            case SI_CONTROL_PMAX:
+                return std::uint16_t(40336);
+            case SI_CONTROL_COSPHI:
+                return std::uint16_t(40337);
+            case SI_CONTROL_UPTIME:
+                return std::uint16_t(40338);
             case SI_CONTROL_MPP_STEP_DAC_0:
                 return std::uint16_t(40340);
             case SI_CONTROL_MPP_STEP_DAC_1:
@@ -1956,6 +2027,8 @@ class RegisterAddress
                 return std::uint16_t(40355);
             case SI_CONTROL_REDUCTION:
                 return std::uint16_t(40356);
+            case SI_CONTROL_SINEDUTY:
+                return std::uint16_t(40357);
             case SI_CONTROL_FILTER_WIND_CURVE:
                 return std::uint16_t(40360);
             case SI_CONTROL_WIND_CURVE_X_00:
@@ -2263,6 +2336,16 @@ class RegisterAddress
                 return Type::uint16();
             case SI_CONTROL_TRACKING_SELECTION:
                 return Type::uint16();
+            case SI_CONTROL_START_COUNTDOWN:
+                return Type::uint16();
+            case SI_CONTROL_NIGHT_SHUTDOWN:
+                return Type::uint16();
+            case SI_CONTROL_PMAX:
+                return Type::uint16();
+            case SI_CONTROL_COSPHI:
+                return Type::uint16();
+            case SI_CONTROL_UPTIME:
+                return Type::uint32();
             case SI_CONTROL_MPP_STEP_DAC_0:
                 return Type::uint16();
             case SI_CONTROL_MPP_STEP_DAC_1:
@@ -2296,6 +2379,8 @@ class RegisterAddress
             case SI_CONTROL_MPP_SAMPLE_UDC_3:
                 return Type::uint16();
             case SI_CONTROL_REDUCTION:
+                return Type::uint16();
+            case SI_CONTROL_SINEDUTY:
                 return Type::uint16();
             case SI_CONTROL_FILTER_WIND_CURVE:
                 return Type::uint16();
@@ -2605,6 +2690,16 @@ class RegisterAddress
                 return Address(SI_CONTROL_DC_HIGH_READ);
             case 40331:
                 return Address(SI_CONTROL_TRACKING_SELECTION);
+            case 40334:
+                return Address(SI_CONTROL_START_COUNTDOWN);
+            case 40335:
+                return Address(SI_CONTROL_NIGHT_SHUTDOWN);
+            case 40336:
+                return Address(SI_CONTROL_PMAX);
+            case 40337:
+                return Address(SI_CONTROL_COSPHI);
+            case 40338:
+                return Address(SI_CONTROL_UPTIME);
             case 40340:
                 return Address(SI_CONTROL_MPP_STEP_DAC_0);
             case 40341:
@@ -2639,6 +2734,8 @@ class RegisterAddress
                 return Address(SI_CONTROL_MPP_SAMPLE_UDC_3);
             case 40356:
                 return Address(SI_CONTROL_REDUCTION);
+            case 40357:
+                return Address(SI_CONTROL_SINEDUTY);
             case 40360:
                 return Address(SI_CONTROL_FILTER_WIND_CURVE);
             case 40361:
@@ -2914,6 +3011,7 @@ class RegisterAddress
             case SI_CONTROL_MPP_SAMPLE_UDC_2:
             case SI_CONTROL_MPP_SAMPLE_UDC_3:
             case SI_CONTROL_REDUCTION:
+            case SI_CONTROL_SINEDUTY:
             case SI_CONTROL_FILTER_WIND_CURVE:
             case SI_CONTROL_WIND_CURVE_X_00:
             case SI_CONTROL_WIND_CURVE_X_01:
