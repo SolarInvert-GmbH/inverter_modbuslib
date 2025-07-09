@@ -70,6 +70,7 @@ class Values : public Fl_Group
         _operatingStateText->align(FL_ALIGN_CENTER | FL_ALIGN_INSIDE);
         _powerFactor = new Value(X30, Y + H_LINE * 5, w3, H_LINE, "PowerFactor");
 
+        _relayOn = new Led(X43, Y + H_LINE * 5, w4, H_LINE, "RELAY ON");
         _uacOk = new Led(X40, Y + H_LINE * 6, w4, H_LINE, "UAC OK");
         _freqOk = new Led(X41, Y + H_LINE * 6, w4, H_LINE, "FREQ OK");
         _wrWorking = new Led(X42, Y + H_LINE * 6, w4, H_LINE, "WR WORKING");
@@ -149,13 +150,17 @@ class Values : public Fl_Group
             _operatingState->set("", nullptr);
     }
     /**
+     * @param[in] relayOn The relayOn.
+     */
+    void setLed1(const std::optional<bool> relayOn) { _relayOn->set(relayOn); }
+    /**
      * @param[in] uacOk The uacOk.
      * @param[in] freqOk The freqOk.
      * @param[in] wrWorking The wrWorking.
      * @param[in] pmaxActive The pmaxActive.
      */
-    void setLed(const std::optional<bool> uacOk, const std::optional<bool> freqOk, const std::optional<bool> wrWorking,
-                const std::optional<bool> pmaxActive)
+    void setLed3(const std::optional<bool> uacOk, const std::optional<bool> freqOk, const std::optional<bool> wrWorking,
+                 const std::optional<bool> pmaxActive)
     {
         _uacOk->set(uacOk);
         _freqOk->set(freqOk);
@@ -168,6 +173,7 @@ class Values : public Fl_Group
     void lock()
     {
         _powerFactor->hide();
+        _relayOn->hide();
         _uacOk->hide();
         _freqOk->hide();
         _wrWorking->hide();
@@ -179,6 +185,7 @@ class Values : public Fl_Group
     void unlock()
     {
         _powerFactor->show();
+        _relayOn->show();
         _uacOk->show();
         _freqOk->show();
         _wrWorking->show();
@@ -242,6 +249,7 @@ class Values : public Fl_Group
     Value* _temperature;
     Value* _operatingState;
     Fl_Box* _operatingStateText;
+    Led* _relayOn;
     Led* _uacOk;
     Led* _freqOk;
     Led* _wrWorking;
