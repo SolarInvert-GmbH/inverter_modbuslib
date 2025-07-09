@@ -49,6 +49,12 @@ class MiniSicc : public Fl_Double_Window
           _dcVoltageCallback(*this),
           _dcPowerCallback(*this),
           _temperatureCallback(*this),
+          _pmaxCallback(*this),
+          _nightShutdownCallback(*this),
+          _startCountdownCallback(*this),
+          _uptimeCallback(*this),
+          _cosphiCallback(*this),
+          _dacCallback(*this),
           _event1Callback(*this),
           _event3Callback(*this),
           _operatingStateCallback(*this),
@@ -108,6 +114,8 @@ class MiniSicc : public Fl_Double_Window
         _cache.setRequest(CACHE_FREQUENCY, REQUEST_FREQUENCY);
         _cache.setRequest(CACHE_POWER_FACTOR_SCALE, REQUEST_POWER_FACTOR_SCALE);
         _cache.setRequest(CACHE_POWER_FACTOR, REQUEST_POWER_FACTOR);
+        _cache.setRequest(CACHE_COSPHI, REQUEST_COSPHI);
+        _cache.setRequest(CACHE_DAC, REQUEST_DAC);
         _cache.setRequest(CACHE_EVENTS_1, REQUEST_EVENTS_1);
         _cache.setRequest(CACHE_EVENTS_3, REQUEST_EVENTS_3);
         _cache.setRequest(CACHE_ENERGY_PRODUCTION_SCALE, REQUEST_ENERGY_PRODUCTION_SCALE);
@@ -118,17 +126,27 @@ class MiniSicc : public Fl_Double_Window
         _cache.setRequest(CACHE_DC_POWER, REQUEST_DC_POWER);
         _cache.setRequest(CACHE_TEMPERATURE_SCALE, REQUEST_TEMPERATURE_SCALE);
         _cache.setRequest(CACHE_TEMPERATURE, REQUEST_TEMPERATURE);
+        _cache.setRequest(CACHE_PMAX, REQUEST_PMAX);
+        _cache.setRequest(CACHE_NIGHT_SHUTDOWN, REQUEST_NIGHT_SHUTDOWN);
+        _cache.setRequest(CACHE_START_COUNTDOWN, REQUEST_START_COUNTDOWN);
+        _cache.setRequest(CACHE_UPTIME, REQUEST_UPTIME);
         _cache.setRequest(CACHE_VENDOR_OPERATING_STATE, REQUEST_VENDOR_OPERATING_STATE);
         _cache.setCallback(CACHE_AC_CURRENT, _acCurrentCallback);
         _cache.setCallback(CACHE_AC_POWER, _acPowerCallback);
         _cache.setCallback(CACHE_FREQUENCY, _frequencyCallback);
         _cache.setCallback(CACHE_POWER_FACTOR, _powerFactorCallback);
+        _cache.setCallback(CACHE_COSPHI, _cosphiCallback);
+        _cache.setCallback(CACHE_DAC, _dacCallback);
         _cache.setCallback(CACHE_EVENTS_1, _event1Callback);
         _cache.setCallback(CACHE_EVENTS_3, _event3Callback);
         _cache.setCallback(CACHE_ENERGY_PRODUCTION, _energyProductionCallback);
         _cache.setCallback(CACHE_DC_VOLTAGE, _dcVoltageCallback);
         _cache.setCallback(CACHE_DC_POWER, _dcPowerCallback);
         _cache.setCallback(CACHE_TEMPERATURE, _temperatureCallback);
+        _cache.setCallback(CACHE_PMAX, _pmaxCallback);
+        _cache.setCallback(CACHE_NIGHT_SHUTDOWN, _nightShutdownCallback);
+        _cache.setCallback(CACHE_START_COUNTDOWN, _startCountdownCallback);
+        _cache.setCallback(CACHE_UPTIME, _uptimeCallback);
         _cache.setCallback(CACHE_VENDOR_OPERATING_STATE, _operatingStateCallback);
         _cache.setCallback(CACHE_DER_TYPE, _derTypeCallbackCallback);
         _cache.setCallback(CACHE_FACTORY_VALUES, _factoryValuesCallback);
@@ -195,7 +213,9 @@ class MiniSicc : public Fl_Double_Window
     static constexpr std::size_t CACHE_FREQUENCY = CACHE_FREQUENCY_SCALE + 1;
     static constexpr std::size_t CACHE_POWER_FACTOR_SCALE = CACHE_FREQUENCY + 1;
     static constexpr std::size_t CACHE_POWER_FACTOR = CACHE_POWER_FACTOR_SCALE + 1;
-    static constexpr std::size_t CACHE_EVENTS_1 = CACHE_POWER_FACTOR + 1;
+    static constexpr std::size_t CACHE_COSPHI = CACHE_POWER_FACTOR + 1;
+    static constexpr std::size_t CACHE_DAC = CACHE_COSPHI + 1;
+    static constexpr std::size_t CACHE_EVENTS_1 = CACHE_DAC + 1;
     static constexpr std::size_t CACHE_EVENTS_3 = CACHE_EVENTS_1 + 1;
     static constexpr std::size_t CACHE_ENERGY_PRODUCTION_SCALE = CACHE_EVENTS_3 + 1;
     static constexpr std::size_t CACHE_ENERGY_PRODUCTION = CACHE_ENERGY_PRODUCTION_SCALE + 1;
@@ -205,7 +225,11 @@ class MiniSicc : public Fl_Double_Window
     static constexpr std::size_t CACHE_DC_POWER = CACHE_DC_POWER_SCALE + 1;
     static constexpr std::size_t CACHE_TEMPERATURE_SCALE = CACHE_DC_POWER + 1;
     static constexpr std::size_t CACHE_TEMPERATURE = CACHE_TEMPERATURE_SCALE + 1;
-    static constexpr std::size_t CACHE_VENDOR_OPERATING_STATE = CACHE_TEMPERATURE + 1;
+    static constexpr std::size_t CACHE_PMAX = CACHE_TEMPERATURE + 1;
+    static constexpr std::size_t CACHE_NIGHT_SHUTDOWN = CACHE_PMAX + 1;
+    static constexpr std::size_t CACHE_START_COUNTDOWN = CACHE_NIGHT_SHUTDOWN + 1;
+    static constexpr std::size_t CACHE_UPTIME = CACHE_START_COUNTDOWN + 1;
+    static constexpr std::size_t CACHE_VENDOR_OPERATING_STATE = CACHE_UPTIME + 1;
     static constexpr std::size_t CACHE_SIZE = CACHE_VENDOR_OPERATING_STATE + 1;
 
     using Request = catta::modbus::si::request::Request;
@@ -257,6 +281,8 @@ class MiniSicc : public Fl_Double_Window
     static constexpr RegisterAddress REGISTER_FREQUENCY = RegisterAddress::inverterHertz();
     static constexpr RegisterAddress REGISTER_POWER_FACTOR_SCALE = RegisterAddress::inverterPowerFactorScaleFactor();
     static constexpr RegisterAddress REGISTER_POWER_FACTOR = RegisterAddress::inverterPowerFactor();
+    static constexpr RegisterAddress REGISTER_COSPHI = RegisterAddress::siControlCosphi();
+    static constexpr RegisterAddress REGISTER_DAC = RegisterAddress::siControlSineduty();
     static constexpr RegisterAddress REGISTER_EVENT_1 = RegisterAddress::inverterVendorEventBitfield1();
     static constexpr RegisterAddress REGISTER_EVENT_3 = RegisterAddress::inverterVendorEventBitfield3();
     static constexpr RegisterAddress REGISTER_ENERGY_PRODUCTION_SCALE = RegisterAddress::inverterWattHoursScaleFactor();
@@ -267,6 +293,10 @@ class MiniSicc : public Fl_Double_Window
     static constexpr RegisterAddress REGISTER_DC_POWER = RegisterAddress::inverterDcPower();
     static constexpr RegisterAddress REGISTER_TEMPERATURE_SCALE = RegisterAddress::inverterTemperatureScaleFactor();
     static constexpr RegisterAddress REGISTER_TEMPERATURE = RegisterAddress::inverterTemperature();
+    static constexpr RegisterAddress REGISTER_PMAX = RegisterAddress::siControlPmax();
+    static constexpr RegisterAddress REGISTER_NIGHT_SHUTDOWN = RegisterAddress::siControlNightShutdown();
+    static constexpr RegisterAddress REGISTER_START_COUNTDOWN = RegisterAddress::siControlStartCountdown();
+    static constexpr RegisterAddress REGISTER_UPTIME = RegisterAddress::siControlUptime();
     static constexpr RegisterAddress REGISTER_VENDOR_OPERATING_STATE = RegisterAddress::inverterVendorOperatingState();
 
     static constexpr Request REQUEST_DER_TYPE = Request::readRegister(ReadRegister::create(REGISTER_DER_TYPE));
@@ -285,6 +315,8 @@ class MiniSicc : public Fl_Double_Window
     static constexpr Request REQUEST_FREQUENCY = Request::readRegister(ReadRegister::create(REGISTER_FREQUENCY));
     static constexpr Request REQUEST_POWER_FACTOR_SCALE = Request::readRegister(ReadRegister::create(REGISTER_POWER_FACTOR_SCALE));
     static constexpr Request REQUEST_POWER_FACTOR = Request::readRegister(ReadRegister::create(REGISTER_POWER_FACTOR));
+    static constexpr Request REQUEST_COSPHI = Request::readRegister(ReadRegister::create(REGISTER_COSPHI));
+    static constexpr Request REQUEST_DAC = Request::readRegister(ReadRegister::create(REGISTER_DAC));
     static constexpr Request REQUEST_EVENTS_1 = Request::readRegister(ReadRegister::create(REGISTER_EVENT_1));
     static constexpr Request REQUEST_EVENTS_3 = Request::readRegister(ReadRegister::create(REGISTER_EVENT_3));
     static constexpr Request REQUEST_ENERGY_PRODUCTION_SCALE = Request::readRegister(ReadRegister::create(REGISTER_ENERGY_PRODUCTION_SCALE));
@@ -295,6 +327,10 @@ class MiniSicc : public Fl_Double_Window
     static constexpr Request REQUEST_DC_POWER = Request::readRegister(ReadRegister::create(REGISTER_DC_POWER));
     static constexpr Request REQUEST_TEMPERATURE_SCALE = Request::readRegister(ReadRegister::create(REGISTER_TEMPERATURE_SCALE));
     static constexpr Request REQUEST_TEMPERATURE = Request::readRegister(ReadRegister::create(REGISTER_TEMPERATURE));
+    static constexpr Request REQUEST_PMAX = Request::readRegister(ReadRegister::create(REGISTER_PMAX));
+    static constexpr Request REQUEST_NIGHT_SHUTDOWN = Request::readRegister(ReadRegister::create(REGISTER_NIGHT_SHUTDOWN));
+    static constexpr Request REQUEST_START_COUNTDOWN = Request::readRegister(ReadRegister::create(REGISTER_START_COUNTDOWN));
+    static constexpr Request REQUEST_UPTIME = Request::readRegister(ReadRegister::create(REGISTER_UPTIME));
     static constexpr Request REQUEST_VENDOR_OPERATING_STATE = Request::readRegister(ReadRegister::create(REGISTER_VENDOR_OPERATING_STATE));
 
     class AcCurrent
@@ -450,6 +486,114 @@ class MiniSicc : public Fl_Double_Window
     ScaledValueCallback<DcVoltage> _dcVoltageCallback;
     ScaledValueCallback<DcPower> _dcPowerCallback;
     ScaledValueCallback<Temperature> _temperatureCallback;
+
+    class PmaxCallback
+    {
+      public:
+        PmaxCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()(const Response& r)
+        {
+            if (!r.type().isValue16())
+                return _miniSicc._values->setPmax("", nullptr);
+            else
+                _miniSicc._values->setPmax(std::to_string(r.value16Value()), "W");
+        }
+
+      private:
+        MiniSicc& _miniSicc;
+    } _pmaxCallback;
+
+    class NightShutdownCallback
+    {
+      public:
+        NightShutdownCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()(const Response& r)
+        {
+            if (!r.type().isValue16())
+                return _miniSicc._values->setTnightoff("", nullptr);
+            else
+                _miniSicc._values->setTnightoff(std::to_string(r.value16Value()), "s");
+        }
+
+      private:
+        MiniSicc& _miniSicc;
+    } _nightShutdownCallback;
+
+    class StartCountdownCallback
+    {
+      public:
+        StartCountdownCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()(const Response& r)
+        {
+            if (!r.type().isValue16())
+                return _miniSicc._values->setStartdelay("", nullptr);
+            else
+                _miniSicc._values->setStartdelay(std::to_string(r.value16Value()), "s");
+        }
+
+      private:
+        MiniSicc& _miniSicc;
+    } _startCountdownCallback;
+
+    class UptimeCallback
+    {
+      public:
+        UptimeCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()(const Response& r)
+        {
+            if (!r.type().isValue32())
+                return _miniSicc._values->setTime("");
+            else
+            {
+                std::string t = "__h:__m:__s";
+                const std::uint32_t v = r.value32Value();
+                const auto set = [&t, v](const std::size_t index, const std::uint32_t factor, const std::uint32_t mod)
+                { t[index] = static_cast<char>('0' + ((v % mod) / factor) % 10); };
+                set(0, 36000, 360000);
+                set(1, 3600, 360000);
+                set(4, 600, 3600);
+                set(5, 60, 3600);
+                set(8, 10, 60);
+                set(9, 1, 60);
+                _miniSicc._values->setTime(t);
+            }
+        }
+
+      private:
+        MiniSicc& _miniSicc;
+    } _uptimeCallback;
+
+    class CosphiCallback
+    {
+      public:
+        CosphiCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()(const Response& r)
+        {
+            if (!r.type().isValue16())
+                return _miniSicc._values->setCosphi("", nullptr);
+            else
+                _miniSicc._values->setCosphi(std::to_string(r.value16Value()), nullptr);
+        }
+
+      private:
+        MiniSicc& _miniSicc;
+    } _cosphiCallback;
+
+    class DacCallback
+    {
+      public:
+        DacCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()(const Response& r)
+        {
+            if (!r.type().isValue16())
+                return _miniSicc._values->setDac("", nullptr);
+            else
+                _miniSicc._values->setDac(std::to_string(r.value16Value()), nullptr);
+        }
+
+      private:
+        MiniSicc& _miniSicc;
+    } _dacCallback;
 
     class Event1Callback
     {
@@ -622,6 +766,10 @@ class MiniSicc : public Fl_Double_Window
             _miniSicc._cache.setValidTime(CACHE_DC_VOLTAGE, time);
             _miniSicc._cache.setValidTime(CACHE_DC_POWER, time);
             _miniSicc._cache.setValidTime(CACHE_TEMPERATURE, time);
+            _miniSicc._cache.setValidTime(CACHE_PMAX, time);
+            _miniSicc._cache.setValidTime(CACHE_NIGHT_SHUTDOWN, time);
+            _miniSicc._cache.setValidTime(CACHE_START_COUNTDOWN, time);
+            _miniSicc._cache.setValidTime(CACHE_UPTIME, time);
             _miniSicc._cache.setValidTime(CACHE_VENDOR_OPERATING_STATE, time);
         }
 

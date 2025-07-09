@@ -65,16 +65,24 @@ class Values : public Fl_Group
         _dcVoltage = new Value(X30, Y + H_LINE * 3, w3, H_LINE, "DcVoltage");
         _dcPower = new Value(X31, Y + H_LINE * 3, w3, H_LINE, "DcPower");
         _temperature = new Value(X32, Y + H_LINE * 3, w3, H_LINE, "Temperature");
-        _operatingState = new Value(X30, Y + H_LINE * 4, w3, H_LINE, "Operating Mode");
-        _operatingStateText = new Fl_Box(X31, Y + H_LINE * 4, w3, H_LINE, nullptr);
-        _operatingStateText->align(FL_ALIGN_CENTER | FL_ALIGN_INSIDE);
-        _powerFactor = new Value(X30, Y + H_LINE * 5, w3, H_LINE, "PowerFactor");
-
-        _relayOn = new Led(X43, Y + H_LINE * 5, w4, H_LINE, "RELAY ON");
-        _uacOk = new Led(X40, Y + H_LINE * 6, w4, H_LINE, "UAC OK");
-        _freqOk = new Led(X41, Y + H_LINE * 6, w4, H_LINE, "FREQ OK");
-        _wrWorking = new Led(X42, Y + H_LINE * 6, w4, H_LINE, "WR WORKING");
-        _pmaxActive = new Led(X43, Y + H_LINE * 6, w4, H_LINE, "PMAX Active");
+        _operatingState = new Value(X31, Y + H_LINE * 4, w3, H_LINE, "Operating Mode");
+        _operatingStateText = new Fl_Box(X32, Y + H_LINE * 4, w3, H_LINE, nullptr);
+        _operatingStateText->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
+        _pMax = new Value(X31, Y + H_LINE * 2, w3, H_LINE, "PMAX");
+        _timeLabel = new Fl_Box(X30, Y + H_LINE * 5, (w3 * 2) / 5, H_LINE, "Time");
+        _timeLabel->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
+        _time = new Fl_Box(X30 + (w3 * 2) / 5, Y + H_LINE * 5, (w3 * 5) / 10, H_LINE, _timeValue.c_str());
+        _time->align(FL_ALIGN_RIGHT | FL_ALIGN_INSIDE);
+        _tnightoff = new Value(X31, Y + H_LINE * 5, w3, H_LINE, "Tnightoff");
+        _startdelay = new Value(X32, Y + H_LINE * 5, w3, H_LINE, "Startdelay");
+        _powerFactor = new Value(X30, Y + H_LINE * 7, w3, H_LINE, "PowerFactor");
+        _cosphi = new Value(X31, Y + H_LINE * 7, w3, H_LINE, "cosPHI");
+        _dac = new Value(X32, Y + H_LINE * 7, w3, H_LINE, "DAC");
+        _relayOn = new Led(X40, Y + H_LINE * 8, w4, H_LINE, "RELAY ON");
+        _uacOk = new Led(X41, Y + H_LINE * 8, w4, H_LINE, "UAC OK");
+        _freqOk = new Led(X42, Y + H_LINE * 8, w4, H_LINE, "FREQ OK");
+        _wrWorking = new Led(X43, Y + H_LINE * 8, w4, H_LINE, "WR WORKING");
+        _pmaxActive = new Led(X40, Y + H_LINE * 9, w4, H_LINE, "PMAX Active");
         lock();
         this->end();
         this->show();
@@ -150,6 +158,39 @@ class Values : public Fl_Group
             _operatingState->set("", nullptr);
     }
     /**
+     * @param[in] value The string for the pmax field.
+     * @param[in] unit The unit for the pmax field.
+     */
+    void setPmax(const std::string& value, const char* unit) noexcept { _pMax->set(value, unit); }
+    /**
+     * @param[in] value The string for the time field.
+     */
+    void setTime(const std::string& value) noexcept
+    {
+        _timeValue = value;
+        _time->label(_timeValue.c_str());
+    }
+    /**
+     * @param[in] value The string for the tnightoff field.
+     * @param[in] unit The unit for the tnightoff field.
+     */
+    void setTnightoff(const std::string& value, const char* unit) noexcept { _tnightoff->set(value, unit); }
+    /**
+     * @param[in] value The string for the startdelay field.
+     * @param[in] unit The unit for the startdelay field.
+     */
+    void setStartdelay(const std::string& value, const char* unit) noexcept { _startdelay->set(value, unit); }
+    /**
+     * @param[in] value The string for the cosphi field.
+     * @param[in] unit The unit for the cosphi field.
+     */
+    void setCosphi(const std::string& value, const char* unit) noexcept { _cosphi->set(value, unit); }
+    /**
+     * @param[in] value The string for the dac field.
+     * @param[in] unit The unit for the dac field.
+     */
+    void setDac(const std::string& value, const char* unit) noexcept { _dac->set(value, unit); }
+    /**
      * @param[in] relayOn The relayOn.
      */
     void setLed1(const std::optional<bool> relayOn) { _relayOn->set(relayOn); }
@@ -173,6 +214,8 @@ class Values : public Fl_Group
     void lock()
     {
         _powerFactor->hide();
+        _cosphi->hide();
+        _dac->hide();
         _relayOn->hide();
         _uacOk->hide();
         _freqOk->hide();
@@ -185,6 +228,8 @@ class Values : public Fl_Group
     void unlock()
     {
         _powerFactor->show();
+        _cosphi->show();
+        _dac->show();
         _relayOn->show();
         _uacOk->show();
         _freqOk->show();
@@ -248,7 +293,15 @@ class Values : public Fl_Group
     Value* _dcPower;
     Value* _temperature;
     Value* _operatingState;
+    Value* _pMax;
+    Fl_Box* _timeLabel;
+    Fl_Box* _time;
+    std::string _timeValue;
+    Value* _tnightoff;
+    Value* _startdelay;
     Fl_Box* _operatingStateText;
+    Value* _cosphi;
+    Value* _dac;
     Led* _relayOn;
     Led* _uacOk;
     Led* _freqOk;
