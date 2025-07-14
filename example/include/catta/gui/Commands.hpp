@@ -34,23 +34,39 @@ class Commands : public Fl_Group
      */
     Commands(const int X, const int Y, const int W, const int H) : Fl_Group(X, Y, W, H, nullptr)
     {
+        static constexpr int GAP = 5;
         static constexpr int H_LINE = 45;
-        _flipPwmControl = new FlipButton(X + 20, Y + H_LINE * 1, 100, H_LINE);
-        _flipMode = new FlipButton(X + 20, Y + H_LINE * 2, 100, H_LINE);
-        _flipInverterControl = new FlipButton(X + 20, Y + H_LINE * 3, 100, H_LINE);
+        static constexpr int W_LABEL = 130;
+        static constexpr int W_FLIP = 100;
+        static constexpr int W_SPINNER = 100;
+        static constexpr int W_SEND = 100;
+        static const int X0 = X + 20;
+        static const int X1 = X0 + W_LABEL + GAP;
+        static const int X2 = X1 + W_FLIP + GAP;
+        static const int X3 = X2 + W_SPINNER + GAP;
+        _labelPwmControl = new Fl_Box(X0, Y + H_LINE * 1, W_LABEL, H_LINE, "PWM Control");
+        _labelPwmControl->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
+        _labelMode = new Fl_Box(X0, Y + H_LINE * 2, W_LABEL, H_LINE, "Mode");
+        _labelMode->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
+        _labelInverterControl = new Fl_Box(X0, Y + H_LINE * 3, W_LABEL, H_LINE, "Inverter Control");
+        _labelInverterControl->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
 
-        _spinner = new Fl_Spinner(X + 125, Y + H_LINE * 2, 100, H_LINE, nullptr);
+        _flipPwmControl = new FlipButton(X1, Y + H_LINE * 1, W_FLIP, H_LINE);
+        _flipMode = new FlipButton(X1, Y + H_LINE * 2, W_FLIP, H_LINE);
+        _flipInverterControl = new FlipButton(X1, Y + H_LINE * 3, W_FLIP, H_LINE);
+
+        _spinner = new Fl_Spinner(X2, Y + H_LINE * 2, W_SPINNER, H_LINE, nullptr);
         _spinner->type(FL_FLOAT_INPUT);
         _spinner->minimum(0.1);
         _spinner->maximum(6553.5);
         _spinner->step(0.1);
         _spinner->value(24.0);
 
-        _sendPwmControl = new Fl_Button(X + 230, Y + H_LINE * 1, 100, H_LINE, "Send");
+        _sendPwmControl = new Fl_Button(X3, Y + H_LINE * 1, W_SEND, H_LINE, "Send");
         _sendPwmControl->callback(sendPwmControlCb, this);
-        _sendMode = new Fl_Button(X + 230, Y + H_LINE * 2, 100, H_LINE, "Send");
+        _sendMode = new Fl_Button(X3, Y + H_LINE * 2, W_SEND, H_LINE, "Send");
         _sendMode->callback(sendModeCb, this);
-        _sendInverterControl = new Fl_Button(X + 230, Y + H_LINE * 3, 100, H_LINE, "Send");
+        _sendInverterControl = new Fl_Button(X3, Y + H_LINE * 3, W_SEND, H_LINE, "Send");
         _sendInverterControl->callback(sendInverterControlCb, this);
 
         this->end();
@@ -107,6 +123,9 @@ class Commands : public Fl_Group
         Fl_Button* _on;
         Fl_Button* _off;
     };
+    Fl_Box* _labelPwmControl;
+    Fl_Box* _labelMode;
+    Fl_Box* _labelInverterControl;
     FlipButton* _flipPwmControl;
     FlipButton* _flipMode;
     FlipButton* _flipInverterControl;
