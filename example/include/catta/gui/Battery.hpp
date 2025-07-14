@@ -3,6 +3,10 @@
 // gui
 #include <catta/gui/Curve.hpp>
 
+// si
+#include <catta/modbus/si/request/Request.hpp>
+#include <catta/modbus/si/response/Response.hpp>
+
 // fltk
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Group.H>
@@ -40,7 +44,6 @@ class Battery : public Fl_Group
         _write->hide();
         _write->callback(writecb, this);
         this->end();
-        // this->hide();
     }
     /**
      * Destructor.
