@@ -195,6 +195,12 @@ class MiniSicc : public Fl_Double_Window
                     _request = solarRequest;
                     somethingHappend = true;
                 }
+                const Request windRequest = _wind->work(_request.isEmpty() && isInIdle && _current == CLIENT_WIND, receivedResponse, receivedRequest);
+                if (!windRequest.isEmpty())
+                {
+                    _request = windRequest;
+                    somethingHappend = true;
+                }
                 const Request commandsRequest =
                     _commands->work(_request.isEmpty() && isInIdle && _current == CLIENT_COMMANDS, receivedResponse, receivedRequest);
                 if (!commandsRequest.isEmpty())
@@ -214,7 +220,8 @@ class MiniSicc : public Fl_Double_Window
     static constexpr std::size_t CLIENT_CACHE = 0;
     static constexpr std::size_t CLIENT_BATTERY = CLIENT_CACHE + 1;
     static constexpr std::size_t CLIENT_SOLAR = CLIENT_BATTERY + 1;
-    static constexpr std::size_t CLIENT_COMMANDS = CLIENT_SOLAR + 1;
+    static constexpr std::size_t CLIENT_WIND = CLIENT_SOLAR + 1;
+    static constexpr std::size_t CLIENT_COMMANDS = CLIENT_WIND + 1;
     static constexpr std::size_t CLIENTS = CLIENT_COMMANDS + 1;
 
     static constexpr std::size_t CACHE_DER_TYPE = 0;

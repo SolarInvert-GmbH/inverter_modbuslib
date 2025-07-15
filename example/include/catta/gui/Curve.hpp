@@ -55,7 +55,7 @@ class Curve : public Fl_Group
     {
         static_assert(N > 0);
         const int n = static_cast<int>(N);
-        const int gap = 10;
+        const int gap = 1;
         const int w = (W - (n + 1) * gap) / n;
         int x = X + gap;
         for (std::size_t i = 0; i < N; i++)
