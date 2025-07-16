@@ -2868,9 +2868,9 @@ class RegisterAddress
             case 40399:
                 return Address(SI_CONTROL_POWER_LIMIT_SAFTY_MODE);
             case 40401:
-                return Address(SI_CONTROL_U_MAX_WRITE);
-            case 40402:
                 return Address(SI_CONTROL_U_MIN_WRITE);
+            case 40402:
+                return Address(SI_CONTROL_U_MAX_WRITE);
             case 40403:
                 return Address(SI_CONTROL_VOLTAGE_DC_START_WRITE);
             case 40404:
