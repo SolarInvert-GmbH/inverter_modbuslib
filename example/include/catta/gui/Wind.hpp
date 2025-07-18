@@ -31,7 +31,7 @@ class Wind : public Fl_Group
      */
     Wind(const int X, const int Y, const int W, const int H) : Fl_Group(X, Y, W, H, nullptr)
     {
-        static constexpr std::array<const char*, ROBIN_SIZE + 1> LABEL = {"U_Sol_CV", "U_DC_START", "U_DC_HIGH", "P_MAX",   "Z_PT1WINDUSOL",
+        static constexpr std::array<const char*, ROBIN_SIZE + 1> LABEL = {"U_SOL_CV", "U_DC_START", "U_DC_HIGH", "P_MAX",   "Z_PT1WINDUSOL",
                                                                           "X 00…07",  "X 08…15",    "Y 00…07",   "Y 08…15", "WIND_CURVE"};
         static constexpr int GAP = 5;
         static constexpr int H_LINE = 45;

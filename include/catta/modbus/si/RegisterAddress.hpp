@@ -3060,8 +3060,8 @@ class RegisterAddress
             case BASIC_SETTINGS_MAX_POWER:
             case STORAGE_NOMINAL_CHARGE_POWER:
             case SI_CONTROL_MODUS:
-            case SI_CONTROL_U_MIN_READ:
-            case SI_CONTROL_U_MAX_READ:
+            case SI_CONTROL_U_MIN_WRITE:
+            case SI_CONTROL_U_MAX_WRITE:
             case SI_CONTROL_TRACKING_SELECTION:
             case SI_CONTROL_MPP_STEP_DAC_0:
             case SI_CONTROL_MPP_STEP_DAC_1:
