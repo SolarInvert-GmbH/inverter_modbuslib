@@ -1,7 +1,7 @@
 #pragma once
 
 // gui
-#include <catta/gui/Write.hpp>
+#include <catta/gui/WriteSingle.hpp>
 
 // si
 #include <catta/modbus/si/request/Request.hpp>
@@ -40,10 +40,9 @@ class Solar : public Fl_Group
         static constexpr int H_LINE = 45;
         static constexpr int W_LABEL = 100;
         static constexpr int W_WRITE = 100;
-        static constexpr int W_SEND = 100;
+        static constexpr int W_SEND = 30;
         static const int X0 = X + 20;
         static const int X1 = X0 + W_LABEL + GAP;
-        static const int X2 = X1 + W_WRITE + GAP * 4;
         static constexpr auto uSolCvReadAddress = catta::modbus::si::RegisterAddress::siControlBattaryCvModeRead();
         static constexpr auto uSolCvWriteAddress = catta::modbus::si::RegisterAddress::siControlBattaryCvModeWrite();
         static constexpr auto sBioOffAddress = catta::modbus::si::RegisterAddress::siControlTrackingSelection();
@@ -52,16 +51,12 @@ class Solar : public Fl_Group
         {
             _label[i] = new Fl_Box(X0, Y + H_LINE * int(i + 1), W_LABEL, H_LINE, LABEL[i]);
             _label[i]->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
-            _button[i] = new Fl_Button(X2, Y + H_LINE * int(i + 1), W_SEND, H_LINE, "Send");
-            _button[i]->hide();
         }
-        _write[U_SOL_CV] = new Write(X1, Y + H_LINE * 1, W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uSolCvReadAddress, uSolCvWriteAddress,
-                                     _toRegisterUsolCv, _fromRegisterUsolCv);
-        _button[U_SOL_CV]->callback(uSolCvCb, this);
+        _write[U_SOL_CV] = new WriteSingle(X1, Y + H_LINE * 1, W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uSolCvReadAddress,
+                                           uSolCvWriteAddress, _toRegisterUsolCv, _fromRegisterUsolCv, W_SEND, "V");
 
-        _write[S_BIO_OFF] = new Write(X1, Y + H_LINE * 2, W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.0, 2.0, 1.0, sBioOffAddress, sBioOffAddress,
-                                      _toRegisterSbioOff, _fromRegisterSbioOff);
-        _button[S_BIO_OFF]->callback(sBioOffCb, this);
+        _write[S_BIO_OFF] = new WriteSingle(X1, Y + H_LINE * 2, W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.0, 2.0, 1.0, sBioOffAddress, sBioOffAddress,
+                                            _toRegisterSbioOff, _fromRegisterSbioOff, W_SEND, "");
         this->end();
     }
     /**
@@ -88,10 +83,6 @@ class Solar : public Fl_Group
                 send = r;
                 newRoundRobin = (j + 1) % _write.size();
             }
-            if (_write[j]->getState() == Write::STATE_IDLE && _write[j]->isChanged())
-                _button[j]->show();
-            else
-                _button[j]->hide();
         }
         _roundRobin = newRoundRobin;
         return send;
@@ -102,8 +93,7 @@ class Solar : public Fl_Group
     static constexpr std::size_t S_BIO_OFF = U_SOL_CV + 1;
     static constexpr std::size_t SIZE = S_BIO_OFF + 1;
     std::array<Fl_Box*, SIZE> _label;
-    std::array<Write*, SIZE> _write;
-    std::array<Fl_Button*, SIZE> _button;
+    std::array<WriteSingle*, SIZE> _write;
     std::size_t _roundRobin;
     class ToRegisterUsolCv
     {
@@ -134,18 +124,6 @@ class Solar : public Fl_Group
 
       private:
     } _fromRegisterSbioOff;
-
-    static void uSolCvCb(Fl_Widget*, void* object)
-    {
-        Solar* solar = static_cast<Solar*>(object);
-        if (solar) solar->_write[U_SOL_CV]->write();
-    }
-
-    static void sBioOffCb(Fl_Widget*, void* object)
-    {
-        Solar* solar = static_cast<Solar*>(object);
-        if (solar) solar->_write[S_BIO_OFF]->write();
-    }
 };
 }  // namespace gui
 }  // namespace catta

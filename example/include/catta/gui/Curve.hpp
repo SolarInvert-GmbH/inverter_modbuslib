@@ -1,6 +1,7 @@
 #pragma once
 
 // gui
+#include <catta/gui/SendButton.hpp>
 #include <catta/gui/Write.hpp>
 
 // si
@@ -9,15 +10,10 @@
 
 // fltk
 #include <FL/Fl_Box.H>
-#include <FL/Fl_Button.H>
 #include <FL/Fl_Group.H>
-#include <FL/Fl_Spinner.H>
 
 // std
 #include <array>
-#include <cstdint>
-#include <string>
-#include <tuple>
 
 namespace catta
 {
@@ -45,24 +41,27 @@ class Curve : public Fl_Group
      * @param[in] writeAddress The address to write the value.
      * @param[in] toRegister The callback to compute the register value from the widget value.
      * @param[in] fromRegister The callback to compute the widget value from the register value.
+     * @param[in] W_SEND The width of the send button.
+     * @param[in] unit The unit.
      * Constructor.
      */
     Curve(const int X, const int Y, const int W, const int H, const std::uint8_t spinnerType, const double minimum, const double maximum,
           const double step, const std::array<catta::modbus::si::RegisterAddress, N>& readAddress,
           const std::array<catta::modbus::si::RegisterAddress, N>& writeAddress, const std::function<std::uint16_t(const double)>& toRegister,
-          const std::function<double(const std::uint16_t)>& fromRegister)
-        : Fl_Group(X, Y, W, H, nullptr), _roundRobin(0)
+          const std::function<double(const std::uint16_t)>& fromRegister, const int W_SEND, const char* unit)
+        : Fl_Group(X, Y, W, H, nullptr), _sendCallback(*this), _roundRobin(0)
     {
         static_assert(N > 0);
         const int n = static_cast<int>(N);
         const int gap = 1;
-        const int w = (W - (n + 1) * gap) / n;
+        const int w = (W - n * gap - W_SEND) / n;
         int x = X + gap;
         for (std::size_t i = 0; i < N; i++)
         {
             _writes[i] = new Write(x, Y, w, H, spinnerType, minimum, maximum, step, readAddress[i], writeAddress[i], toRegister, fromRegister);
             x += w + gap;
         }
+        _sendButton = new SendButton<SendCallback>(x, Y, W_SEND, H, unit, _sendCallback);
         this->end();
         this->show();
     }
@@ -90,39 +89,45 @@ class Curve : public Fl_Group
             }
         }
         _roundRobin = newRoundRobin;
+        const bool allIdleAndAtLeastOneDiffernt = [this]()
+        {
+            bool different = false;
+            for (std::size_t i = 0; i < N; i++)
+            {
+                if (_writes[i]->getState() != Write::STATE_IDLE) return false;
+                if (_writes[i]->isChanged()) different = true;
+            }
+            return different;
+        }();
+        _sendButton->setButtonMode(allIdleAndAtLeastOneDiffernt);
+
         return send;
     }
-    /**
-     * @return Returns @b true when all curve points are ready for writing and at least one point is different from received values, otherwise @b
-     * false.
-     */
-    bool allIdleAndAtLeastOneDiffernt() const
-    {
-        bool different = false;
-        for (std::size_t i = 0; i < N; i++)
-        {
-            if (_writes[i]->getState() != Write::STATE_IDLE) return false;
-            if (_writes[i]->isChanged()) different = true;
-        }
-        return different;
-    }
-    /**
-     * Triggers the write. Use only when @see allIdleAndAtLeastOneDiffernt() is @b true.
-     */
-    void write()
-    {
-        for (auto e : _writes) e->write();
-    }
+
     /**
      * Destructor.
      */
     ~Curve()
     {
         for (std::size_t i = 0; i < N; i++) delete (_writes[i]);
+        delete _sendButton;
     }
 
   private:
+    class SendCallback
+    {
+      public:
+        SendCallback(Curve& curve) : _curve(curve) {}
+        void operator()()
+        {
+            for (auto e : _curve._writes) e->write();
+        }
+
+      private:
+        Curve& _curve;
+    } _sendCallback;
     std::array<Write*, N> _writes;
+    SendButton<SendCallback>* _sendButton;
     std::size_t _roundRobin;
 };
 }  // namespace gui

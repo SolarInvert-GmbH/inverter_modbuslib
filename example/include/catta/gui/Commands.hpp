@@ -39,7 +39,7 @@ class Commands : public Fl_Group
         static constexpr int W_LABEL = 130;
         static constexpr int W_FLIP = 100;
         static constexpr int W_SPINNER = 100;
-        static constexpr int W_SEND = 100;
+        static constexpr int W_SEND = 30;
         static const int X0 = X + 20;
         static const int X1 = X0 + W_LABEL + GAP;
         static const int X2 = X1 + W_FLIP + GAP;
@@ -62,11 +62,11 @@ class Commands : public Fl_Group
         _spinner->step(0.1);
         _spinner->value(24.0);
 
-        _sendPwmControl = new Fl_Button(X3, Y + H_LINE * 1, W_SEND, H_LINE, "Send");
+        _sendPwmControl = new Fl_Button(X3, Y + H_LINE * 1, W_SEND, H_LINE, "@+5>");
         _sendPwmControl->callback(sendPwmControlCb, this);
-        _sendMode = new Fl_Button(X3, Y + H_LINE * 2, W_SEND, H_LINE, "Send");
+        _sendMode = new Fl_Button(X3, Y + H_LINE * 2, W_SEND, H_LINE, "@+5>");
         _sendMode->callback(sendModeCb, this);
-        _sendInverterControl = new Fl_Button(X3, Y + H_LINE * 3, W_SEND, H_LINE, "Send");
+        _sendInverterControl = new Fl_Button(X3, Y + H_LINE * 3, W_SEND, H_LINE, "@+5>");
         _sendInverterControl->callback(sendInverterControlCb, this);
 
         this->end();
