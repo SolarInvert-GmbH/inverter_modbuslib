@@ -188,19 +188,15 @@ class Battery : public Fl_Group
     static constexpr std::size_t U_MIN = 0;
     static constexpr std::size_t U_MAX = U_MIN + 1;
     static constexpr std::size_t P_MAX = U_MAX + 1;
-
     static constexpr std::size_t U_SOLCV = P_MAX + 1;
     static constexpr std::size_t U_DCLOW = U_SOLCV + 1;
     static constexpr std::size_t U_DCHIGH = U_DCLOW + 1;
-
     static constexpr std::size_t MODUS = U_DCHIGH + 1;
     static constexpr std::size_t S_BIOFF = MODUS + 1;
     static constexpr std::size_t U_DCSTART = S_BIOFF + 1;
-
     static constexpr std::size_t Z_USOLBATFILT = U_DCSTART + 1;
     static constexpr std::size_t U_SOLBATERR = Z_USOLBATFILT + 1;
     static constexpr std::size_t U_SOLBAT = U_SOLBATERR + 1;
-
     static constexpr std::size_t P_MAXERR = U_SOLBAT + 1;
     static constexpr std::size_t P_MAX_CHARGE = P_MAXERR + 1;
     static constexpr std::size_t SIZE = P_MAX_CHARGE + 1;

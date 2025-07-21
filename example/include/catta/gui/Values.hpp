@@ -17,6 +17,7 @@
 // std
 #include <array>
 #include <functional>
+#include <iostream>
 #include <optional>
 #include <string>
 
@@ -48,45 +49,27 @@ class Values : public Fl_Group
         _slider->callback(slidercb, this);
         _interval = new Fl_Box(X + (W * 4) / 5, Y, W / 5, 50, _invervalText.data());
 
-        const int gap = 5;
-        const int w3 = (W - gap * 6) / 3;
-        const int w4 = (W - gap * 8) / 4;
-        const int X30 = X + gap;
-        const int X31 = X30 + gap + w3;
-        const int X32 = X31 + gap + w3;
-        const int X40 = X + gap;
-        const int X41 = X40 + gap + w4;
-        const int X42 = X41 + gap + w4;
-        const int X43 = X42 + gap + w4;
+        static constexpr int GAP = 5;
+        static constexpr int H_LINE = 65;
 
-        static constexpr int H_LINE = 45;
-        _acCurrent = new Value(X30, Y + H_LINE * 1, w3, H_LINE, "AcCurrent");
-        _acVoltage = new Value(X31, Y + H_LINE * 1, w3, H_LINE, "AcVoltage");
-        _acPower = new Value(X32, Y + H_LINE * 1, w3, H_LINE, "AcPower");
-        _frequency = new Value(X30, Y + H_LINE * 2, w3, H_LINE, "Frequency");
-        _energyProduction = new Value(X32, Y + H_LINE * 2, w3, H_LINE, "EnergyProduction");
-        _dcVoltage = new Value(X30, Y + H_LINE * 3, w3, H_LINE, "DcVoltage");
-        _dcPower = new Value(X31, Y + H_LINE * 3, w3, H_LINE, "DcPower");
-        _temperature = new Value(X32, Y + H_LINE * 3, w3, H_LINE, "Temperature");
-        _operatingState = new Value(X31, Y + H_LINE * 4, w3, H_LINE, "Operating Mode");
-        _operatingStateText = new Fl_Box(X32, Y + H_LINE * 4, w3, H_LINE, nullptr);
-        _operatingStateText->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
-        _pMax = new Value(X31, Y + H_LINE * 2, w3, H_LINE, "PMAX");
-        _timeLabel = new Fl_Box(X30, Y + H_LINE * 5, (w3 * 2) / 5, H_LINE, "Time");
-        _timeLabel->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
-        _time = new Fl_Box(X30 + (w3 * 2) / 5, Y + H_LINE * 5, (w3 * 5) / 10, H_LINE, _timeValue.c_str());
-        _time->align(FL_ALIGN_RIGHT | FL_ALIGN_INSIDE);
-        _tnightoff = new Value(X31, Y + H_LINE * 5, w3, H_LINE, "Tnightoff");
-        _startdelay = new Value(X32, Y + H_LINE * 5, w3, H_LINE, "Startdelay");
-        _powerFactor = new Value(X30, Y + H_LINE * 7, w3, H_LINE, "PowerFactor");
-        _cosphi = new Value(X31, Y + H_LINE * 7, w3, H_LINE, "cosPHI");
-        _dac = new Value(X32, Y + H_LINE * 7, w3, H_LINE, "DAC");
-        _relayOn = new Led(X40, Y + H_LINE * 8, w4, H_LINE, "RELAY ON");
-        _uacOk = new Led(X41, Y + H_LINE * 8, w4, H_LINE, "UAC OK");
-        _freqOk = new Led(X42, Y + H_LINE * 8, w4, H_LINE, "FREQ OK");
-        _wrWorking = new Led(X43, Y + H_LINE * 8, w4, H_LINE, "WR WORKING");
-        _pmaxActive = new Led(X40, Y + H_LINE * 9, w4, H_LINE, "PMAX Active");
-        _saveCsv = new Fl_Button(X40, Y + H_LINE * 10, w4, H_LINE, BUTTON_CSV_IDLE);
+        static const int PER_LINE = 4;
+        const int W_WRITE = (W - (PER_LINE + 1) * GAP) / PER_LINE;
+
+        static const int W_UNIT = 30;
+
+        for (std::size_t i = 0; i < VALUE_SIZE; i++)
+        {
+            _value[i] = new Value(X + GAP + (int(i) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(i) / PER_LINE + 1), W_WRITE, H_LINE,
+                                  VALUE_LABEL[i], W_UNIT);
+        }
+
+        for (std::size_t i = 0; i < LED_SIZE; i++)
+        {
+            _led[i] = new Led(X + GAP + (int(i) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(i + VALUE_SIZE + PER_LINE - 1) / PER_LINE + 1),
+                              W_WRITE, H_LINE, LED_LABEL[i]);
+        }
+        _saveCsv = new Fl_Button(X + GAP + (int(7) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(7 + VALUE_SIZE + PER_LINE - 1) / PER_LINE + 1),
+                                 W_WRITE, 45, BUTTON_CSV_IDLE);
         _saveCsv->callback(savecb, this);
         lock();
         this->end();
@@ -100,47 +83,47 @@ class Values : public Fl_Group
      * @param[in] value The string for the ac current field.
      * @param[in] unit The unit for the ac current field.
      */
-    void setAcCurrent(const std::string& value, const char* unit) noexcept { _acCurrent->set(value, unit); }
+    void setAcCurrent(const std::string& value, const char* unit) noexcept { _value[AC_CURRENT]->set(value, unit); }
     /**
      * @param[in] value The string for the ac voltage field.
      * @param[in] unit The unit for the ac voltage field.
      */
-    void setAcVoltage(const std::string& value, const char* unit) noexcept { _acVoltage->set(value, unit); }
+    void setAcVoltage(const std::string& value, const char* unit) noexcept { _value[AC_VOLTAGE]->set(value, unit); }
     /**
      * @param[in] value The string for the ac power field.
      * @param[in] unit The unit for the ac power field.
      */
-    void setAcPower(const std::string& value, const char* unit) noexcept { _acPower->set(value, unit); }
+    void setAcPower(const std::string& value, const char* unit) noexcept { _value[AC_POWER]->set(value, unit); }
     /**
      * @param[in] value The string for the frequency field.
      * @param[in] unit The unit for the frequency field.
      */
-    void setFrequency(const std::string& value, const char* unit) noexcept { _frequency->set(value, unit); }
+    void setFrequency(const std::string& value, const char* unit) noexcept { _value[FREQUENCY]->set(value, unit); }
     /**
      * @param[in] value The string for the power factor field.
      * @param[in] unit The unit for the power factor field.
      */
-    void setPowerFactor(const std::string& value, const char* unit) noexcept { _powerFactor->set(value, unit); }
+    void setPowerFactor(const std::string& value, const char* unit) noexcept { _value[POWER_FACTOR]->set(value, unit); }
     /**
      * @param[in] value The string for the energy production field.
      * @param[in] unit The unit for the energy production field.
      */
-    void setEnergyProduction(const std::string& value, const char* unit) noexcept { _energyProduction->set(value, unit); }
+    void setEnergyProduction(const std::string& value, const char* unit) noexcept { _value[ENERGY_PRODUCTION]->set(value, unit); }
     /**
      * @param[in] value The string for the dc voltage field.
      * @param[in] unit The unit for the dc voltage field.
      */
-    void setDcVoltage(const std::string& value, const char* unit) noexcept { _dcVoltage->set(value, unit); }
+    void setDcVoltage(const std::string& value, const char* unit) noexcept { _value[DC_VOLTAGE]->set(value, unit); }
     /**
      * @param[in] value The string for the dc power field.
      * @param[in] unit The unit for the dc power field.
      */
-    void setDcPower(const std::string& value, const char* unit) noexcept { _dcPower->set(value, unit); }
+    void setDcPower(const std::string& value, const char* unit) noexcept { _value[DC_POWER]->set(value, unit); }
     /**
      * @param[in] value The string for the temperature field.
      * @param[in] unit The unit for the temperature field.
      */
-    void setTemperature(const std::string& value, const char* unit) noexcept { _temperature->set(value, unit); }
+    void setTemperature(const std::string& value, const char* unit) noexcept { _value[TEMPERATURE]->set(value, unit); }
     /**
      * @param[in] callback The callback that is executed when the slider is changed.
      */
@@ -151,54 +134,50 @@ class Values : public Fl_Group
      */
     void setOperatingState(const std::uint16_t state)
     {
-        const char* text = state < stateSize ? TYPE_STATE_MATRIX[state] : nullptr;
-        _operatingStateText->label(text);
+        const std::string text = state < stateSize ? std::string(TYPE_STATE_MATRIX[state]) : std::string();
+        _value[OPERATING_STATE_TEXT]->set(text, nullptr);
         if (state < stateSize)
         {
             _operatingState2Text[0] = state < 10 ? ' ' : '1';
             _operatingState2Text[1] = static_cast<char>('0' + state % 10);
-            _operatingState->set(_operatingState2Text.data(), nullptr);
+            _value[OPERATING_STATE]->set(_operatingState2Text.data(), nullptr);
         }
         else
-            _operatingState->set("", nullptr);
+            _value[OPERATING_STATE]->set("", nullptr);
     }
     /**
      * @param[in] value The string for the pmax field.
      * @param[in] unit The unit for the pmax field.
      */
-    void setPmax(const std::string& value, const char* unit) noexcept { _pMax->set(value, unit); }
+    void setPmax(const std::string& value, const char* unit) noexcept { _value[P_MAX]->set(value, unit); }
     /**
      * @param[in] value The string for the time field.
      */
-    void setTime(const std::string& value) noexcept
-    {
-        _timeValue = value;
-        _time->label(_timeValue.c_str());
-    }
+    void setTime(const std::string& value) noexcept { _value[TIME]->set(value, nullptr); }
     /**
      * @param[in] value The string for the tnightoff field.
      * @param[in] unit The unit for the tnightoff field.
      */
-    void setTnightoff(const std::string& value, const char* unit) noexcept { _tnightoff->set(value, unit); }
+    void setTnightoff(const std::string& value, const char* unit) noexcept { _value[TNIGHTOFF]->set(value, unit); }
     /**
      * @param[in] value The string for the startdelay field.
      * @param[in] unit The unit for the startdelay field.
      */
-    void setStartdelay(const std::string& value, const char* unit) noexcept { _startdelay->set(value, unit); }
+    void setStartdelay(const std::string& value, const char* unit) noexcept { _value[STARTDELAY]->set(value, unit); }
     /**
      * @param[in] value The string for the cosphi field.
      * @param[in] unit The unit for the cosphi field.
      */
-    void setCosphi(const std::string& value, const char* unit) noexcept { _cosphi->set(value, unit); }
+    void setCosphi(const std::string& value, const char* unit) noexcept { _value[COSPHI]->set(value, unit); }
     /**
      * @param[in] value The string for the dac field.
      * @param[in] unit The unit for the dac field.
      */
-    void setDac(const std::string& value, const char* unit) noexcept { _dac->set(value, unit); }
+    void setDac(const std::string& value, const char* unit) noexcept { _value[DAC]->set(value, unit); }
     /**
      * @param[in] relayOn The relayOn.
      */
-    void setLed1(const std::optional<bool> relayOn) { _relayOn->set(relayOn); }
+    void setLed1(const std::optional<bool> relayOn) { _led[RELAY_ON]->set(relayOn); }
     /**
      * @param[in] uacOk The uacOk.
      * @param[in] freqOk The freqOk.
@@ -208,38 +187,30 @@ class Values : public Fl_Group
     void setLed3(const std::optional<bool> uacOk, const std::optional<bool> freqOk, const std::optional<bool> wrWorking,
                  const std::optional<bool> pmaxActive)
     {
-        _uacOk->set(uacOk);
-        _freqOk->set(freqOk);
-        _wrWorking->set(wrWorking);
-        _pmaxActive->set(pmaxActive);
+        _led[UAC_OK]->set(uacOk);
+        _led[FREQ_OK]->set(freqOk);
+        _led[WR_WORKING]->set(wrWorking);
+        _led[PMAX_ACTIVE]->set(pmaxActive);
     }
     /**
      * Show locked stuff.
      */
     void lock()
     {
-        _powerFactor->hide();
-        _cosphi->hide();
-        _dac->hide();
-        _relayOn->hide();
-        _uacOk->hide();
-        _freqOk->hide();
-        _wrWorking->hide();
-        _pmaxActive->hide();
+        _value[POWER_FACTOR]->hide();
+        _value[COSPHI]->hide();
+        _value[DAC]->hide();
+        for (std::size_t i = 0; i < LED_SIZE; i++) _led[i]->hide();
     }
     /**
      * Hide locked stuff.
      */
     void unlock()
     {
-        _powerFactor->show();
-        _cosphi->show();
-        _dac->show();
-        _relayOn->show();
-        _uacOk->show();
-        _freqOk->show();
-        _wrWorking->show();
-        _pmaxActive->show();
+        _value[POWER_FACTOR]->show();
+        _value[COSPHI]->show();
+        _value[DAC]->show();
+        for (std::size_t i = 0; i < LED_SIZE; i++) _led[i]->show();
     }
     /**
      * Triggers the slider callback.
@@ -252,14 +223,13 @@ class Values : public Fl_Group
     {
         if (_lastCsv != std::chrono::microseconds::zero() && _lastCsv + _sliderValue < now)
         {
-            const auto v = [](Value* value) { return value->get(); };
-            const auto b = [](Fl_Box* value) { return value->label() ? std::string(value->label()) + ';' : std::string() + ';'; };
-            const auto l = [](Led* value) { return value->get(); };
-
-            const std::string line = v(_acCurrent) + v(_acVoltage) + v(_acPower) + v(_frequency) + v(_energyProduction) + v(_dcVoltage) +
-                                     v(_dcPower) + v(_temperature) + v(_operatingState) + b(_operatingStateText) + v(_pMax) + b(_time) +
-                                     v(_tnightoff) + v(_startdelay) + v(_powerFactor) + v(_cosphi) + v(_dac) + l(_relayOn) + l(_uacOk) + l(_freqOk) +
-                                     l(_wrWorking) + l(_pmaxActive);
+            const std::string line = [this]()
+            {
+                std::string s;
+                for (std::size_t i = 0; i < VALUE_SIZE; i++) s += _value[i]->get();
+                for (std::size_t i = 0; i < LED_SIZE; i++) s += _led[i]->get();
+                return s;
+            }();
             _csvLogging.line(line);
             _lastCsv = now;
         }
@@ -314,30 +284,36 @@ class Values : public Fl_Group
     };
     Fl_Slider* _slider;
     Fl_Box* _interval;
-    Value* _acCurrent;
-    Value* _acVoltage;
-    Value* _acPower;
-    Value* _frequency;
-    Value* _powerFactor;
-    Value* _energyProduction;
-    Value* _dcVoltage;
-    Value* _dcPower;
-    Value* _temperature;
-    Value* _operatingState;
-    Value* _pMax;
-    Fl_Box* _timeLabel;
-    Fl_Box* _time;
-    std::string _timeValue;
-    Value* _tnightoff;
-    Value* _startdelay;
-    Fl_Box* _operatingStateText;
-    Value* _cosphi;
-    Value* _dac;
-    Led* _relayOn;
-    Led* _uacOk;
-    Led* _freqOk;
-    Led* _wrWorking;
-    Led* _pmaxActive;
+
+    static constexpr std::size_t AC_CURRENT = 0;
+    static constexpr std::size_t AC_VOLTAGE = AC_CURRENT + 1;
+    static constexpr std::size_t AC_POWER = AC_VOLTAGE + 1;
+    static constexpr std::size_t FREQUENCY = AC_POWER + 1;
+    static constexpr std::size_t P_MAX = FREQUENCY + 1;
+    static constexpr std::size_t ENERGY_PRODUCTION = P_MAX + 1;
+    static constexpr std::size_t DC_VOLTAGE = ENERGY_PRODUCTION + 1;
+    static constexpr std::size_t DC_POWER = DC_VOLTAGE + 1;
+    static constexpr std::size_t TEMPERATURE = DC_POWER + 1;
+    static constexpr std::size_t OPERATING_STATE = TEMPERATURE + 1;
+    static constexpr std::size_t OPERATING_STATE_TEXT = OPERATING_STATE + 1;
+    static constexpr std::size_t TIME = OPERATING_STATE_TEXT + 1;
+    static constexpr std::size_t TNIGHTOFF = TIME + 1;
+    static constexpr std::size_t STARTDELAY = TNIGHTOFF + 1;
+    static constexpr std::size_t POWER_FACTOR = STARTDELAY + 1;
+    static constexpr std::size_t COSPHI = POWER_FACTOR + 1;
+    static constexpr std::size_t DAC = COSPHI + 1;
+    static constexpr std::size_t VALUE_SIZE = DAC + 1;
+
+    std::array<Value*, VALUE_SIZE> _value;
+
+    static constexpr std::size_t RELAY_ON = 0;
+    static constexpr std::size_t UAC_OK = RELAY_ON + 1;
+    static constexpr std::size_t FREQ_OK = UAC_OK + 1;
+    static constexpr std::size_t WR_WORKING = FREQ_OK + 1;
+    static constexpr std::size_t PMAX_ACTIVE = WR_WORKING + 1;
+    static constexpr std::size_t LED_SIZE = PMAX_ACTIVE + 1;
+
+    std::array<Led*, LED_SIZE> _led;
     Fl_Button* _saveCsv;
     std::array<char, 3> _operatingState2Text;
     std::function<void(const std::chrono::microseconds interval)> _callback;
@@ -345,6 +321,13 @@ class Values : public Fl_Group
     std::chrono::microseconds _lastCsv;
     std::chrono::microseconds _sliderValue;
     catta::gui::CsvLogging _csvLogging;
+
+    static constexpr std::array<const char*, VALUE_SIZE> VALUE_LABEL = std::array<const char*, VALUE_SIZE>{
+        "AcCurrent",      "AcVoltage",      "AcPower", "Frequency", "Pmax",       "EnergyProduction", "DcVoltage", "DcPower", "Temperature",
+        "Operating Mode", "Operating Mode", "Time",    "Tnightoff", "Startdelay", "PowerFactor",      "cosPHI",    "DAC"};
+
+    static constexpr std::array<const char*, LED_SIZE> LED_LABEL =
+        std::array<const char*, LED_SIZE>{"RELAY ON", "UAC OK", "FREQ OK", "WR WORKING", "PMAX Active"};
 
     static void slidercb(Fl_Widget*, void* object)
     {
@@ -375,9 +358,13 @@ class Values : public Fl_Group
             chooser.options(Fl_Native_File_Chooser::SAVEAS_CONFIRM);
             if (chooser.show() == 0)  // blocking call/ no boackground communication
             {
-                const std::string header =
-                    "acCurrent;;acVoltage;;acPower;;frequency;;energyProduction;;dcVoltage;;dcPower;;temperature;;operatingState;;;pMax;;time;"
-                    "tnightoff;;startdelay;;powerFactor;;cosphi;;dac;;relayOn;uacOk;freqOk;wrWorking;pmaxActive;";
+                const std::string header = []()
+                {
+                    std::string s;
+                    for (std::size_t i = 0; i < VALUE_SIZE; i++) s += std::string(VALUE_LABEL[i]) + ";;";
+                    for (std::size_t i = 0; i < LED_SIZE; i++) s += std::string(LED_LABEL[i]) + ";";
+                    return s;
+                }();
                 values->_csvLogging.start(std::string(chooser.filename()), header);
                 values->_lastCsv = std::chrono::microseconds{1};
                 values->_saveCsv->label(BUTTON_CSV_RUNNING);
