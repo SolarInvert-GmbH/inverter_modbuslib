@@ -174,7 +174,11 @@ class Connection : public Fl_Group
             if (_current < _clients)
             {
                 if (error)
+                {
+                    resultRequest = _requestBackup;
+                    _requestBackup = {};
                     setNextClient();
+                }
                 else if (!response.isEmpty())
                 {
                     resultResponse = response;
