@@ -59,6 +59,14 @@ class Value : public Fl_Group
         _value->label(_textValue.c_str());
         _unit->label(unit);
     }
+    /**
+     * @return Returns value if visible, otherwise empty.
+     */
+    std::string get() const noexcept
+    {
+        const auto safe = [](const char* s) { return s == nullptr ? std::string() : std::string(s); };
+        return this->visible() ? safe(_value->label()) + ';' + safe(_unit->label()) + ';' : std::string();
+    }
 
   private:
     std::string _textValue;

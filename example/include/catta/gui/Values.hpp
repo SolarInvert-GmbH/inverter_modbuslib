@@ -4,11 +4,14 @@
 #include <catta/modbus/si/Type.hpp>
 
 // gui
+#include <catta/gui/CsvLogging.hpp>
 #include <catta/gui/Value.hpp>
 
 // fltk
 #include <FL/Fl_Box.H>
+#include <FL/Fl_Button.H>
 #include <FL/Fl_Group.H>
+#include <FL/Fl_Native_File_Chooser.H>
 #include <FL/Fl_Slider.H>
 
 // std
@@ -83,6 +86,8 @@ class Values : public Fl_Group
         _freqOk = new Led(X42, Y + H_LINE * 8, w4, H_LINE, "FREQ OK");
         _wrWorking = new Led(X43, Y + H_LINE * 8, w4, H_LINE, "WR WORKING");
         _pmaxActive = new Led(X40, Y + H_LINE * 9, w4, H_LINE, "PMAX Active");
+        _saveCsv = new Fl_Button(X40, Y + H_LINE * 10, w4, H_LINE, BUTTON_CSV_IDLE);
+        _saveCsv->callback(savecb, this);
         lock();
         this->end();
         this->show();
@@ -240,6 +245,25 @@ class Values : public Fl_Group
      * Triggers the slider callback.
      */
     void triggerSliderCallback() { slidercb(nullptr, this); }
+    /**
+     * @param[in] now The current time.
+     */
+    void work(const std::chrono::microseconds now)
+    {
+        if (_lastCsv != std::chrono::microseconds::zero() && _lastCsv + _sliderValue < now)
+        {
+            const auto v = [](Value* value) { return value->get(); };
+            const auto b = [](Fl_Box* value) { return value->label() ? std::string(value->label()) + ';' : std::string() + ';'; };
+            const auto l = [](Led* value) { return value->get(); };
+
+            const std::string line = v(_acCurrent) + v(_acVoltage) + v(_acPower) + v(_frequency) + v(_energyProduction) + v(_dcVoltage) +
+                                     v(_dcPower) + v(_temperature) + v(_operatingState) + b(_operatingStateText) + v(_pMax) + b(_time) +
+                                     v(_tnightoff) + v(_startdelay) + v(_powerFactor) + v(_cosphi) + v(_dac) + l(_relayOn) + l(_uacOk) + l(_freqOk) +
+                                     l(_wrWorking) + l(_pmaxActive);
+            _csvLogging.line(line);
+            _lastCsv = now;
+        }
+    }
 
   private:
     class Led : public Fl_Group
@@ -275,6 +299,13 @@ class Values : public Fl_Group
             else
                 _led->hide();
         }
+        std::string get() const noexcept
+        {
+            if (!this->visible()) return std::string();
+            if (!_value) return std::string(";");
+            if (!_value.value()) return std::string("0;");
+            return std::string("1;");
+        }
 
       private:
         Fl_Box* _label;
@@ -307,9 +338,13 @@ class Values : public Fl_Group
     Led* _freqOk;
     Led* _wrWorking;
     Led* _pmaxActive;
+    Fl_Button* _saveCsv;
     std::array<char, 3> _operatingState2Text;
     std::function<void(const std::chrono::microseconds interval)> _callback;
     std::array<char, 4> _invervalText;
+    std::chrono::microseconds _lastCsv;
+    std::chrono::microseconds _sliderValue;
+    catta::gui::CsvLogging _csvLogging;
 
     static void slidercb(Fl_Widget*, void* object)
     {
@@ -322,9 +357,39 @@ class Values : public Fl_Group
             values->_invervalText[1] = static_cast<char>('0' + (i) % 10);
             values->_interval->label(values->_invervalText.data());
             const std::chrono::seconds s = std::chrono::seconds{i};
+            values->_sliderValue = s;
             if (values->_callback) values->_callback(s);
         }
     }
+
+    static void savecb(Fl_Widget*, void* object)
+    {
+        Values* values = static_cast<Values*>(object);
+        if (!values) return;
+        if (values->_lastCsv == std::chrono::microseconds::zero())
+        {
+            Fl_Native_File_Chooser chooser;
+            chooser.title("Choose csv logging file");
+            chooser.type(Fl_Native_File_Chooser::BROWSE_SAVE_FILE);
+            chooser.filter("CSV\t*.csv\n");
+            chooser.options(Fl_Native_File_Chooser::SAVEAS_CONFIRM);
+            if (chooser.show() == 0)  // blocking call/ no boackground communication
+            {
+                const std::string header =
+                    "acCurrent;;acVoltage;;acPower;;frequency;;energyProduction;;dcVoltage;;dcPower;;temperature;;operatingState;;;pMax;;time;"
+                    "tnightoff;;startdelay;;powerFactor;;cosphi;;dac;;relayOn;uacOk;freqOk;wrWorking;pmaxActive;";
+                values->_csvLogging.start(std::string(chooser.filename()), header);
+                values->_lastCsv = std::chrono::microseconds{1};
+                values->_saveCsv->label(BUTTON_CSV_RUNNING);
+            }
+        }
+        else
+        {
+            values->_lastCsv = std::chrono::microseconds{0};
+            values->_saveCsv->label(BUTTON_CSV_IDLE);
+        }
+    }
+
     static constexpr std::size_t stateSize = 12;
     static constexpr const char* TYPE_STATE_MATRIX[stateSize] = {"Starting up",
                                                                  "Going to Umin",
@@ -338,6 +403,8 @@ class Values : public Fl_Group
                                                                  "BAT Mode",
                                                                  "BAT Safety Mode",
                                                                  "FRT"};
+    static constexpr const char* BUTTON_CSV_IDLE = "Start csv Logging";
+    static constexpr const char* BUTTON_CSV_RUNNING = "End csv Logging";
 };
 }  // namespace gui
 }  // namespace catta
