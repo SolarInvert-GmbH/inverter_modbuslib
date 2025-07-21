@@ -35,18 +35,10 @@ class Wind : public Fl_Group
         static constexpr std::array<const char*, ROBIN_SIZE + 1> LABEL = {"U_SOL_CV", "U_DC_START", "U_DC_HIGH", "P_MAX",   "Z_PT1WINDUSOL",
                                                                           "X 00…07",  "X 08…15",    "Y 00…07",   "Y 08…15", "WIND_CURVE"};
         static constexpr int GAP = 5;
-        static constexpr int H_LINE = 45;
-        static const int W_REST = 20 + GAP * 5;
-        static const int W2 = W / 2 - W_REST;
-        static const int W_LABEL = W2 / 2;
-        static const int W_WRITE = W2 / 2;
+        static constexpr int H_LINE = 65;
+        static const int PER_LINE = 4;
+        const int W_WRITE = (W - (PER_LINE + 1) * GAP) / PER_LINE;
         static const int W_SEND = 30;
-        static const int X0 = X + 20;
-        static const int X1 = X0 + W_LABEL + GAP;
-        // static const int X2 = X1 + W_WRITE + GAP * 4;
-        static const int X3 = X1 + W_WRITE + GAP * 4;
-        static const int X4 = X3 + W_LABEL + GAP;
-        // static const int X5 = X4 + W_WRITE + GAP * 4;
         using Address = catta::modbus::si::RegisterAddress;
         static constexpr auto uSolCvReadAddress = Address::siControlBattaryCvModeRead();
         static constexpr auto uSolCvWriteAddress = Address::siControlBattaryCvModeWrite();
@@ -91,40 +83,34 @@ class Wind : public Fl_Group
         for (std::size_t i = 0; i < SIZE; i++)
         {
             cbArray[i] = std::tuple<std::size_t, Wind*>{i, this};
-            _label[i] = new Fl_Box(i % 2 == 0 ? X0 : X3, Y + H_LINE * int(i / 2 + 1), W_LABEL, H_LINE, LABEL[i]);
-            _label[i]->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
         }
-        _write[U_SOL_CV] = new WriteSingle(U_SOL_CV % 2 == 0 ? X1 : X4, Y + H_LINE * (int(U_SOL_CV) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01,
-                                           655.00, 0.01, uSolCvReadAddress, uSolCvWriteAddress, _toRegisterCenti, _fromRegisterCenti, W_SEND, "V");
+        _write[U_SOL_CV] = new WriteSingle(X + GAP + (int(U_SOL_CV) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_SOL_CV) / PER_LINE), W_WRITE,
+                                           H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uSolCvReadAddress, uSolCvWriteAddress, _toRegisterCenti,
+                                           _fromRegisterCenti, W_SEND, "V", LABEL[U_SOL_CV]);
 
-        _write[U_DC_START] =
-            new WriteSingle(U_DC_START % 2 == 0 ? X1 : X4, Y + H_LINE * (int(U_DC_START) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00,
-                            0.01, dcStartReadAddress, dcStartWriteAddress, _toRegisterCenti, _fromRegisterCenti, W_SEND, "V");
+        _write[U_DC_START] = new WriteSingle(X + GAP + (int(U_DC_START) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_DC_START) / PER_LINE),
+                                             W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, dcStartReadAddress, dcStartWriteAddress,
+                                             _toRegisterCenti, _fromRegisterCenti, W_SEND, "V", LABEL[U_DC_START]);
 
-        _write[U_DC_HIGH] =
-            new WriteSingle(U_DC_HIGH % 2 == 0 ? X1 : X4, Y + H_LINE * (int(U_DC_HIGH) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01,
-                            dcHighReadAddress, dcHighWriteAddress, _toRegisterCenti, _fromRegisterCenti, W_SEND, "V");
+        _write[U_DC_HIGH] = new WriteSingle(X + GAP + (int(U_DC_HIGH) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_DC_HIGH) / PER_LINE),
+                                            W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, dcHighReadAddress, dcHighWriteAddress,
+                                            _toRegisterCenti, _fromRegisterCenti, W_SEND, "V", LABEL[U_DC_HIGH]);
 
-        _write[P_MAX] = new WriteSingle(P_MAX % 2 == 0 ? X1 : X4, Y + H_LINE * (int(P_MAX) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0,
-                                        0.1, pMaxAddress, pMaxAddress, _toRegisterDeci, _fromRegisterDeci, W_SEND, "W");
+        _write[P_MAX] = new WriteSingle(X + GAP + (int(P_MAX) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(P_MAX) / PER_LINE), W_WRITE, H_LINE,
+                                        FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, pMaxAddress, pMaxAddress, _toRegisterDeci, _fromRegisterDeci, W_SEND, "W",
+                                        LABEL[P_MAX]);
 
         _write[Z_PT1WINDUSOL] =
-            new WriteSingle(Z_PT1WINDUSOL % 2 == 0 ? X1 : X4, Y + H_LINE * (int(Z_PT1WINDUSOL) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.1, 25.5,
-                            0.1, zPt1WindUsolAddress, zPt1WindUsolAddress, _toRegisterDeci, _fromRegisterDeci, W_SEND, "s");
-        _label[ROBIN_SIZE] = new Fl_Box(X, Y + H_LINE * 4, W, H_LINE, LABEL[ROBIN_SIZE]);
+            new WriteSingle(X + GAP + (int(Z_PT1WINDUSOL) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(Z_PT1WINDUSOL) / PER_LINE), W_WRITE,
+                            H_LINE, FL_FLOAT_INPUT, 0.1, 25.5, 0.1, zPt1WindUsolAddress, zPt1WindUsolAddress, _toRegisterDeci, _fromRegisterDeci,
+                            W_SEND, "s", LABEL[Z_PT1WINDUSOL]);
         for (std::size_t i = 0; i < CURVES; i++)
         {
             cbArray[i + SIZE] = std::tuple<std::size_t, Wind*>{i + SIZE, this};
-            const int y = Y + H_LINE * (int(i) + 5);
-            const int W_LABEL_CURVE = (W_LABEL * 7) / 10;
-            const int W_SEND_CURVE = (W_SEND * 5) / 10;
-            const int W_CURVE = W - W_LABEL_CURVE - W_SEND_CURVE;
-            const int X0 = X;
-            const int X1 = X0 + W_LABEL_CURVE;
-            _label[SIZE + i] = new Fl_Box(X0, y, W_LABEL_CURVE, H_LINE, LABEL[SIZE + i]);
-            _label[SIZE + i]->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
-            _curve[i] = new Curve<8>(X1, y, W_CURVE, H_LINE, FL_INT_INPUT, 0.0, 256.0, 1.0, curveAddressRead[i], curveAddressWrite[i], _toRegister256,
-                                     _fromRegister256, 30, "V");
+            const int y = Y + H_LINE * (int(i + SIZE / PER_LINE) + 2);
+            const int W_CURVE = W - 2 * GAP;
+            _curve[i] = new Curve<8>(X + GAP, y, W_CURVE, H_LINE, FL_INT_INPUT, 0.0, 256.0, 1.0, curveAddressRead[i], curveAddressWrite[i],
+                                     _toRegister256, _fromRegister256, 30, "V", LABEL[SIZE + i]);
         }
         this->end();
     }
@@ -174,7 +160,6 @@ class Wind : public Fl_Group
 
     static constexpr std::size_t ROBIN_SIZE = SIZE + CURVES;
 
-    std::array<Fl_Box*, ROBIN_SIZE + 1> _label;
     std::array<WriteSingle*, SIZE> _write;
     std::array<Curve<8>*, CURVES> _curve;
     std::size_t _roundRobin;

@@ -37,26 +37,21 @@ class Solar : public Fl_Group
     {
         static constexpr std::array<const char*, SIZE> LABEL = {"U_Sol_CV", "S_Bio_Off"};
         static constexpr int GAP = 5;
-        static constexpr int H_LINE = 45;
-        static constexpr int W_LABEL = 100;
-        static constexpr int W_WRITE = 100;
-        static constexpr int W_SEND = 30;
-        static const int X0 = X + 20;
-        static const int X1 = X0 + W_LABEL + GAP;
+        static constexpr int H_LINE = 65;
+        static const int PER_LINE = 4;
+        const int W_WRITE = (W - (PER_LINE + 1) * GAP) / PER_LINE;
+        static const int W_SEND = 30;
         static constexpr auto uSolCvReadAddress = catta::modbus::si::RegisterAddress::siControlBattaryCvModeRead();
         static constexpr auto uSolCvWriteAddress = catta::modbus::si::RegisterAddress::siControlBattaryCvModeWrite();
         static constexpr auto sBioOffAddress = catta::modbus::si::RegisterAddress::siControlTrackingSelection();
 
-        for (std::size_t i = 0; i < SIZE; i++)
-        {
-            _label[i] = new Fl_Box(X0, Y + H_LINE * int(i + 1), W_LABEL, H_LINE, LABEL[i]);
-            _label[i]->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
-        }
-        _write[U_SOL_CV] = new WriteSingle(X1, Y + H_LINE * 1, W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uSolCvReadAddress,
-                                           uSolCvWriteAddress, _toRegisterUsolCv, _fromRegisterUsolCv, W_SEND, "V");
+        _write[U_SOL_CV] = new WriteSingle(X + GAP + (int(U_SOL_CV) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_SOL_CV) / PER_LINE), W_WRITE,
+                                           H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uSolCvReadAddress, uSolCvWriteAddress, _toRegisterUsolCv,
+                                           _fromRegisterUsolCv, W_SEND, "V", LABEL[U_SOL_CV]);
 
-        _write[S_BIO_OFF] = new WriteSingle(X1, Y + H_LINE * 2, W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.0, 2.0, 1.0, sBioOffAddress, sBioOffAddress,
-                                            _toRegisterSbioOff, _fromRegisterSbioOff, W_SEND, "");
+        _write[S_BIO_OFF] = new WriteSingle(X + GAP + (int(S_BIO_OFF) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(S_BIO_OFF) / PER_LINE),
+                                            W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.0, 2.0, 1.0, sBioOffAddress, sBioOffAddress, _toRegisterSbioOff,
+                                            _fromRegisterSbioOff, W_SEND, "", LABEL[S_BIO_OFF]);
         this->end();
     }
     /**
@@ -92,7 +87,6 @@ class Solar : public Fl_Group
     static constexpr std::size_t U_SOL_CV = 0;
     static constexpr std::size_t S_BIO_OFF = U_SOL_CV + 1;
     static constexpr std::size_t SIZE = S_BIO_OFF + 1;
-    std::array<Fl_Box*, SIZE> _label;
     std::array<WriteSingle*, SIZE> _write;
     std::size_t _roundRobin;
     class ToRegisterUsolCv

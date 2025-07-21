@@ -43,12 +43,13 @@ class Curve : public Fl_Group
      * @param[in] fromRegister The callback to compute the widget value from the register value.
      * @param[in] W_SEND The width of the send button.
      * @param[in] unit The unit.
+     * @param[in] label The name of the curve.
      * Constructor.
      */
     Curve(const int X, const int Y, const int W, const int H, const std::uint8_t spinnerType, const double minimum, const double maximum,
           const double step, const std::array<catta::modbus::si::RegisterAddress, N>& readAddress,
           const std::array<catta::modbus::si::RegisterAddress, N>& writeAddress, const std::function<std::uint16_t(const double)>& toRegister,
-          const std::function<double(const std::uint16_t)>& fromRegister, const int W_SEND, const char* unit)
+          const std::function<double(const std::uint16_t)>& fromRegister, const int W_SEND, const char* unit, const char* label)
         : Fl_Group(X, Y, W, H, nullptr), _sendCallback(*this), _roundRobin(0)
     {
         static_assert(N > 0);
@@ -56,12 +57,19 @@ class Curve : public Fl_Group
         const int gap = 1;
         const int w = (W - n * gap - W_SEND) / n;
         int x = X + gap;
+        const int H20 = (H * 3) / 10;
+        const int H21 = (H * 7) / 10;
+        const int Y20 = Y;
+        const int Y21 = Y20 + H20;
+        _label = new Fl_Box(X, Y20, w, H20, label);
+        _label->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
+        _label->labelsize(12);
         for (std::size_t i = 0; i < N; i++)
         {
-            _writes[i] = new Write(x, Y, w, H, spinnerType, minimum, maximum, step, readAddress[i], writeAddress[i], toRegister, fromRegister);
+            _writes[i] = new Write(x, Y21, w, H21, spinnerType, minimum, maximum, step, readAddress[i], writeAddress[i], toRegister, fromRegister);
             x += w + gap;
         }
-        _sendButton = new SendButton<SendCallback>(x, Y, W_SEND, H, unit, _sendCallback);
+        _sendButton = new SendButton<SendCallback>(x, Y21, W_SEND, H21, unit, _sendCallback);
         this->end();
         this->show();
     }
@@ -128,6 +136,7 @@ class Curve : public Fl_Group
     } _sendCallback;
     std::array<Write*, N> _writes;
     SendButton<SendCallback>* _sendButton;
+    Fl_Box* _label;
     std::size_t _roundRobin;
 };
 }  // namespace gui

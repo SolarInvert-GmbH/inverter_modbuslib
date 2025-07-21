@@ -36,16 +36,11 @@ class Battery : public Fl_Group
             "U_MIN",         "U_MAX",     "P_MAX",     "U_SOL_CV",     "U_DC_LOW", "U_DC_HIGH", "MODUS", "S_BIOFF", "U_DC_START", "Z_U_SOL_BAT_FILT",
             "U_SOL_BAT_ERR", "U_SOL_BAT", "P_MAX_ERR", "P_MAX_CHARGE", "CV_X",     "CV_Y",      "CURVE"};
         static constexpr int GAP = 5;
-        static constexpr int H_LINE = 45;
-        static const int W_REST = 20 + GAP * 5;
-        static const int W2 = W / 2 - W_REST;
-        static const int W_LABEL = W2 / 2;
-        static const int W_WRITE = W2 / 2;
+        static constexpr int H_LINE = 65;
+
+        static const int PER_LINE = 4;
+        const int W_WRITE = (W - (PER_LINE + 1) * GAP) / PER_LINE;
         static const int W_SEND = 30;
-        static const int X0 = X + 20;
-        static const int X1 = X0 + W_LABEL + GAP;
-        static const int X2 = X1 + W_WRITE + GAP * 4;
-        static const int X3 = X2 + W_LABEL + GAP;
         using Address = catta::modbus::si::RegisterAddress;
 
         static constexpr auto uMinReadAddress = Address::siControlUMinRead();
@@ -91,60 +86,61 @@ class Battery : public Fl_Group
         for (std::size_t i = 0; i < SIZE; i++)
         {
             cbArray[i] = std::tuple<std::size_t, Battery*>{i, this};
-            _label[i] = new Fl_Box(i % 2 == 0 ? X0 : X2, Y + H_LINE * int(i / 2 + 1), W_LABEL, H_LINE, LABEL[i]);
-            _label[i]->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
         }
-        _write[U_MIN] = new WriteSingle(U_MIN % 2 == 0 ? X1 : X3, Y + H_LINE * (int(U_MIN) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00,
-                                        0.01, uMinReadAddress, uMinWriteAddress, _toRegisterCenti, _fromRegisterCenti, W_SEND, "V");
-        _write[U_MAX] = new WriteSingle(U_MAX % 2 == 0 ? X1 : X3, Y + H_LINE * (int(U_MAX) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00,
-                                        0.01, uMaxReadAddress, uMaxWriteAddress, _toRegisterCenti, _fromRegisterCenti, W_SEND, "V");
-        _write[P_MAX] = new WriteSingle(P_MAX % 2 == 0 ? X1 : X3, Y + H_LINE * (int(P_MAX) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0,
-                                        0.1, pMaxAddress, pMaxAddress, _toRegisterDeci, _fromRegisterDeci, W_SEND, "W");
+        _write[U_MIN] = new WriteSingle(X + GAP + (int(U_MIN) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_MIN) / PER_LINE), W_WRITE, H_LINE,
+                                        FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uMinReadAddress, uMinWriteAddress, _toRegisterCenti, _fromRegisterCenti,
+                                        W_SEND, "V", LABEL[U_MIN]);
+        _write[U_MAX] = new WriteSingle(X + GAP + (int(U_MAX) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_MAX) / PER_LINE), W_WRITE, H_LINE,
+                                        FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uMaxReadAddress, uMaxWriteAddress, _toRegisterCenti, _fromRegisterCenti,
+                                        W_SEND, "V", LABEL[U_MAX]);
+        _write[P_MAX] = new WriteSingle(X + GAP + (int(P_MAX) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(P_MAX) / PER_LINE), W_WRITE, H_LINE,
+                                        FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, pMaxAddress, pMaxAddress, _toRegisterDeci, _fromRegisterDeci, W_SEND, "W",
+                                        LABEL[P_MAX]);
 
-        _write[U_SOLCV] = new WriteSingle(U_SOLCV % 2 == 0 ? X1 : X3, Y + H_LINE * (int(U_SOLCV) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01,
-                                          655.00, 0.01, uSolCvReadAddress, uSolCvWriteAddress, _toRegisterCenti, _fromRegisterCenti, W_SEND, "V");
-        _write[U_DCLOW] = new WriteSingle(U_DCLOW % 2 == 0 ? X1 : X3, Y + H_LINE * (int(U_DCLOW) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01,
-                                          655.00, 0.01, dcLowReadAddress, dcLowWriteAddress, _toRegisterCenti, _fromRegisterCenti, W_SEND, "V");
-        _write[U_DCHIGH] = new WriteSingle(U_DCHIGH % 2 == 0 ? X1 : X3, Y + H_LINE * (int(U_DCHIGH) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01,
-                                           655.00, 0.01, dcHighReadAddress, dcHighWriteAddress, _toRegisterCenti, _fromRegisterCenti, W_SEND, "V");
+        _write[U_SOLCV] = new WriteSingle(X + GAP + (int(U_SOLCV) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_SOLCV) / PER_LINE), W_WRITE,
+                                          H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uSolCvReadAddress, uSolCvWriteAddress, _toRegisterCenti,
+                                          _fromRegisterCenti, W_SEND, "V", LABEL[U_SOLCV]);
+        _write[U_DCLOW] = new WriteSingle(X + GAP + (int(U_DCLOW) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_DCLOW) / PER_LINE), W_WRITE,
+                                          H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, dcLowReadAddress, dcLowWriteAddress, _toRegisterCenti,
+                                          _fromRegisterCenti, W_SEND, "V", LABEL[U_DCLOW]);
+        _write[U_DCHIGH] = new WriteSingle(X + GAP + (int(U_DCHIGH) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_DCHIGH) / PER_LINE), W_WRITE,
+                                           H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, dcHighReadAddress, dcHighWriteAddress, _toRegisterCenti,
+                                           _fromRegisterCenti, W_SEND, "V", LABEL[U_DCHIGH]);
 
-        _write[MODUS] = new WriteSingle(MODUS % 2 == 0 ? X1 : X3, Y + H_LINE * (int(MODUS) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.0, 255.0,
-                                        1.00, modusAddress, modusAddress, _toRegister256, _fromRegister256, W_SEND, "");
-        _write[S_BIOFF] = new WriteSingle(S_BIOFF % 2 == 0 ? X1 : X3, Y + H_LINE * (int(S_BIOFF) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.0, 2.0,
-                                          1.0, sBioOffAddress, sBioOffAddress, _toRegister256, _fromRegister256, W_SEND, "");
-        _write[U_DCSTART] =
-            new WriteSingle(U_DCSTART % 2 == 0 ? X1 : X3, Y + H_LINE * (int(U_DCSTART) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01,
-                            dcStartReadAddress, dcStartWriteAddress, _toRegisterCenti, _fromRegisterCenti, W_SEND, "V");
+        _write[MODUS] =
+            new WriteSingle(X + GAP + (int(MODUS) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(MODUS) / PER_LINE), W_WRITE, H_LINE,
+                            FL_FLOAT_INPUT, 0.0, 255.0, 1.00, modusAddress, modusAddress, _toRegister256, _fromRegister256, W_SEND, "", LABEL[MODUS]);
+        _write[S_BIOFF] = new WriteSingle(X + GAP + (int(S_BIOFF) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(S_BIOFF) / PER_LINE), W_WRITE,
+                                          H_LINE, FL_FLOAT_INPUT, 0.0, 2.0, 1.0, sBioOffAddress, sBioOffAddress, _toRegister256, _fromRegister256,
+                                          W_SEND, "", LABEL[S_BIOFF]);
+        _write[U_DCSTART] = new WriteSingle(X + GAP + (int(U_DCSTART) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_DCSTART) / PER_LINE),
+                                            W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, dcStartReadAddress, dcStartWriteAddress,
+                                            _toRegisterCenti, _fromRegisterCenti, W_SEND, "V", LABEL[U_DCSTART]);
 
-        _write[Z_USOLBATFILT] =
-            new WriteSingle(Z_USOLBATFILT % 2 == 0 ? X1 : X3, Y + H_LINE * (int(Z_USOLBATFILT) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.0, 255.0,
-                            1.00, zUsolBatFil, zUsolBatFil, _toRegister256, _fromRegister256, W_SEND, "");
-        _write[U_SOLBATERR] =
-            new WriteSingle(U_SOLBATERR % 2 == 0 ? X1 : X3, Y + H_LINE * (int(U_SOLBATERR) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00,
-                            0.01, uSolBatErrRead, uSolBatErrWrite, _toRegisterCenti, _fromRegisterCenti, W_SEND, "V");
-        _write[U_SOLBAT] = new WriteSingle(U_SOLBAT % 2 == 0 ? X1 : X3, Y + H_LINE * (int(U_SOLBAT) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01,
-                                           655.00, 0.01, uSolBatRead, uSolBatWrite, _toRegisterCenti, _fromRegisterCenti, W_SEND, "V");
+        _write[Z_USOLBATFILT] = new WriteSingle(X + GAP + (int(Z_USOLBATFILT) % PER_LINE) * (GAP + W_WRITE),
+                                                Y + H_LINE * (int(Z_USOLBATFILT) / PER_LINE), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.0, 255.0, 1.00,
+                                                zUsolBatFil, zUsolBatFil, _toRegister256, _fromRegister256, W_SEND, "", LABEL[Z_USOLBATFILT]);
+        _write[U_SOLBATERR] = new WriteSingle(X + GAP + (int(U_SOLBATERR) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_SOLBATERR) / PER_LINE),
+                                              W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uSolBatErrRead, uSolBatErrWrite, _toRegisterCenti,
+                                              _fromRegisterCenti, W_SEND, "V", LABEL[U_SOLBATERR]);
+        _write[U_SOLBAT] = new WriteSingle(X + GAP + (int(U_SOLBAT) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_SOLBAT) / PER_LINE), W_WRITE,
+                                           H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uSolBatRead, uSolBatWrite, _toRegisterCenti,
+                                           _fromRegisterCenti, W_SEND, "V", LABEL[U_SOLBAT]);
 
-        _write[P_MAXERR] = new WriteSingle(P_MAXERR % 2 == 0 ? X1 : X3, Y + H_LINE * (int(P_MAXERR) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01,
-                                           655.00, 0.01, pMaxErr, pMaxErr, _toRegisterCenti, _fromRegisterCenti, W_SEND, "W");
-        _write[P_MAX_CHARGE] =
-            new WriteSingle(P_MAX_CHARGE % 2 == 0 ? X1 : X3, Y + H_LINE * (int(P_MAX_CHARGE) / 2 + 1), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00,
-                            0.01, pMaxCharge, pMaxCharge, _toRegisterCenti, _fromRegisterCenti, W_SEND, "W");
+        _write[P_MAXERR] =
+            new WriteSingle(X + GAP + (int(P_MAXERR) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(P_MAXERR) / PER_LINE), W_WRITE, H_LINE,
+                            FL_FLOAT_INPUT, 0.01, 655.00, 0.01, pMaxErr, pMaxErr, _toRegisterCenti, _fromRegisterCenti, W_SEND, "W", LABEL[P_MAXERR]);
+        _write[P_MAX_CHARGE] = new WriteSingle(X + GAP + (int(P_MAX_CHARGE) % PER_LINE) * (GAP + W_WRITE),
+                                               Y + H_LINE * (int(P_MAX_CHARGE) / PER_LINE), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01,
+                                               pMaxCharge, pMaxCharge, _toRegisterCenti, _fromRegisterCenti, W_SEND, "W", LABEL[P_MAX_CHARGE]);
 
-        _label[ROBIN_SIZE] = new Fl_Box(X, Y + H_LINE * 8, W, H_LINE, LABEL[ROBIN_SIZE]);
         for (std::size_t i = 0; i < CURVES; i++)
         {
             cbArray[i + SIZE] = std::tuple<std::size_t, Battery*>{i + SIZE, this};
-            const int y = Y + H_LINE * (int(i) + 9);
-            const int W_LABEL_CURVE = (W_LABEL * 7) / 10;
-            const int W_SEND_CURVE = (W_SEND * 5) / 10;
-            const int W_CURVE = W - W_LABEL_CURVE - W_SEND_CURVE;
-            const int X0 = X;
-            const int X1 = X0 + W_LABEL_CURVE;
-            _label[SIZE + i] = new Fl_Box(X0, y, W_LABEL_CURVE, H_LINE, LABEL[SIZE + i]);
-            _label[SIZE + i]->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
-            _cvCurve[i] = new Curve<3>(X1, y, W_CURVE, H_LINE, FL_INT_INPUT, 0.0, 256.0, 1.0, curveAddressRead[i], curveAddressWrite[i],
-                                       _toRegister256, _fromRegister256, 30, "V");
+            const int y = Y + H_LINE * (int(i + SIZE / PER_LINE) + 1);
+            const int W_CURVE = W - 2 * GAP;
+            _cvCurve[i] = new Curve<3>(X + GAP, y, W_CURVE, H_LINE, FL_INT_INPUT, 0.0, 256.0, 1.0, curveAddressRead[i], curveAddressWrite[i],
+                                       _toRegister256, _fromRegister256, 30, "V", LABEL[i + SIZE]);
         }
         this->end();
     }
@@ -205,7 +201,6 @@ class Battery : public Fl_Group
 
     static constexpr std::size_t ROBIN_SIZE = SIZE + CURVES;
 
-    std::array<Fl_Box*, ROBIN_SIZE + 1> _label;
     std::array<WriteSingle*, SIZE> _write;
     std::array<Curve<3>*, CURVES> _cvCurve;
     std::size_t _roundRobin;
