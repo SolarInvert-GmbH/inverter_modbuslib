@@ -74,14 +74,23 @@ class WriteSingle : public Fl_Group
      * @param canTakeRequest Wether there is space to send request.
      * @param response The received response.
      * @param request The corresponding request to received response.
+     * @param[in] now The current time.
      * @return Returns the request to send.
      */
     catta::modbus::si::request::Request work(const bool canTakeRequest, const catta::modbus::si::response::Response& response,
-                                             const catta::modbus::si::request::Request& request)
+                                             const catta::modbus::si::request::Request& request, const std::chrono::microseconds now)
     {
         const bool value = _write->getState() == Write::STATE_IDLE && _write->isChanged();
         _sendButton->setButtonMode(value);
-        return _write->work(canTakeRequest, response, request);
+        return _write->work(canTakeRequest, response, request, now);
+    }
+    /**
+     * Better hide.
+     */
+    void stop()
+    {
+        _write->stop();
+        _sendButton->setButtonMode(false);
     }
 
   private:

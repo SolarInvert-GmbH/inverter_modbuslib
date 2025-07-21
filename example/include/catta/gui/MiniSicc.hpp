@@ -182,20 +182,21 @@ class MiniSicc : public Fl_Double_Window
                     somethingHappend = true;
                 }
                 const Request batteryRequest =
-                    _battery->work(_request.isEmpty() && isInIdle && _current == CLIENT_BATTERY, receivedResponse, receivedRequest);
+                    _battery->work(_request.isEmpty() && isInIdle && _current == CLIENT_BATTERY, receivedResponse, receivedRequest, now);
                 if (!batteryRequest.isEmpty())
                 {
                     _request = batteryRequest;
                     somethingHappend = true;
                 }
                 const Request solarRequest =
-                    _solar->work(_request.isEmpty() && isInIdle && _current == CLIENT_SOLAR, receivedResponse, receivedRequest);
+                    _solar->work(_request.isEmpty() && isInIdle && _current == CLIENT_SOLAR, receivedResponse, receivedRequest, now);
                 if (!solarRequest.isEmpty())
                 {
                     _request = solarRequest;
                     somethingHappend = true;
                 }
-                const Request windRequest = _wind->work(_request.isEmpty() && isInIdle && _current == CLIENT_WIND, receivedResponse, receivedRequest);
+                const Request windRequest =
+                    _wind->work(_request.isEmpty() && isInIdle && _current == CLIENT_WIND, receivedResponse, receivedRequest, now);
                 if (!windRequest.isEmpty())
                 {
                     _request = windRequest;
@@ -894,15 +895,24 @@ class MiniSicc : public Fl_Double_Window
         if (!isLocked && type.isBattery())
             _tabs->add(_tab2);
         else
+        {
             _tabs->remove(_tab2);
+            _battery->stop();
+        }
         if (!isLocked && type.isSolar())
             _tabs->add(_tab3);
         else
+        {
             _tabs->remove(_tab3);
+            _solar->stop();
+        }
         if (!isLocked && type.isWind())
             _tabs->add(_tab4);
         else
+        {
             _tabs->remove(_tab4);
+            _wind->stop();
+        }
     }
 };
 }  // namespace gui

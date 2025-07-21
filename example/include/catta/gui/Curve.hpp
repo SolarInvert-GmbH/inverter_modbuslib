@@ -78,10 +78,11 @@ class Curve : public Fl_Group
      * @param canTakeRequest Wether there is space to send request.
      * @param response The received response.
      * @param request The corresponding request to received response.
+     * @param[in] now The current time.
      * @return Returns the request to send.
      */
     catta::modbus::si::request::Request work(const bool canTakeRequest, const catta::modbus::si::response::Response& response,
-                                             const catta::modbus::si::request::Request& request)
+                                             const catta::modbus::si::request::Request& request, const std::chrono::microseconds now)
     {
         catta::modbus::si::request::Request send;
         std::size_t newRoundRobin = _roundRobin;
@@ -89,7 +90,7 @@ class Curve : public Fl_Group
         {
             std::size_t j = (_roundRobin + i) % N;
 
-            const catta::modbus::si::request::Request r = _writes[j]->work(canTakeRequest && send.isEmpty(), response, request);
+            const catta::modbus::si::request::Request r = _writes[j]->work(canTakeRequest && send.isEmpty(), response, request, now);
             if (!r.isEmpty())
             {
                 send = r;
@@ -119,6 +120,14 @@ class Curve : public Fl_Group
     {
         for (std::size_t i = 0; i < N; i++) delete (_writes[i]);
         delete _sendButton;
+    }
+    /**
+     * Better hide.
+     */
+    void stop()
+    {
+        for (std::size_t i = 0; i < _writes.size(); i++) _writes[i]->stop();
+        _sendButton->setButtonMode(false);
     }
 
   private:

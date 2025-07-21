@@ -152,18 +152,20 @@ class Battery : public Fl_Group
      * @param canTakeRequest Wether there is space to send request.
      * @param response The received response.
      * @param request The corresponding request to received response.
+     * @param[in] now The current time.
      * @return Returns the request to send.
      */
     catta::modbus::si::request::Request work(const bool canTakeRequest, const catta::modbus::si::response::Response& response,
-                                             const catta::modbus::si::request::Request& request)
+                                             const catta::modbus::si::request::Request& request, const std::chrono::microseconds now)
     {
         catta::modbus::si::request::Request send;
         std::size_t newRoundRobin = _roundRobin;
         for (std::size_t i = 0; i < ROBIN_SIZE; i++)
         {
             std::size_t j = (_roundRobin + i) % ROBIN_SIZE;
-            const catta::modbus::si::request::Request r = j < SIZE ? _write[j]->work(canTakeRequest && send.isEmpty(), response, request)
-                                                                   : _cvCurve[j - SIZE]->work(canTakeRequest && send.isEmpty(), response, request);
+            const catta::modbus::si::request::Request r = j < SIZE
+                                                              ? _write[j]->work(canTakeRequest && send.isEmpty(), response, request, now)
+                                                              : _cvCurve[j - SIZE]->work(canTakeRequest && send.isEmpty(), response, request, now);
             if (!r.isEmpty())
             {
                 send = r;
@@ -172,6 +174,14 @@ class Battery : public Fl_Group
         }
         _roundRobin = newRoundRobin;
         return send;
+    }
+    /**
+     * Better hide.
+     */
+    void stop()
+    {
+        for (std::size_t i = 0; i < _write.size(); i++) _write[i]->stop();
+        for (std::size_t i = 0; i < _cvCurve.size(); i++) _cvCurve[i]->stop();
     }
 
   private:

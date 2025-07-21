@@ -9,6 +9,7 @@
 #include <FL/Fl_Spinner.H>
 
 // std
+#include <chrono>
 #include <cstdint>
 #include <functional>
 
@@ -45,9 +46,13 @@ class Write
      */
     static constexpr std::uint8_t STATE_WRITE = STATE_IDLE + 1;
     /**
+     * Waiting state.
+     */
+    static constexpr std::uint8_t STATE_WAIT = STATE_WRITE + 1;
+    /**
      * Empty state.
      */
-    static constexpr std::uint8_t STATE_EMPTY = STATE_WRITE + 1;
+    static constexpr std::uint8_t STATE_EMPTY = STATE_WAIT + 1;
     /**
      * @param[in] X The x coordinate of the widget.
      * @param[in] Y The y coordinate of the widget.
@@ -114,10 +119,11 @@ class Write
      * @param canTakeRequest Wether there is space to send request.
      * @param response The received response.
      * @param request The corresponding request to received response.
+     * @param[in] now The current time.
      * @return Returns the request to send.
      */
     catta::modbus::si::request::Request work(const bool canTakeRequest, const catta::modbus::si::response::Response& response,
-                                             const catta::modbus::si::request::Request& request)
+                                             const catta::modbus::si::request::Request& request, const std::chrono::microseconds now)
     {
         catta::modbus::si::request::Request result;
         switch (_state)
@@ -145,20 +151,25 @@ class Write
             case STATE_WRITE:
                 if (!_sent.isEmpty() && request == _sent)
                 {
+                    const auto handle = [this, now](const std::chrono::microseconds wait, const Fl_Color color)
+                    {
+                        setColor(color);
+                        _state = STATE_WAIT;
+                        _wait = now + wait;
+                    };
                     if (response.type().isWriteRegister())
-                    {
-                        _state = STATE_READING;
-                        setReadRequest();
-                    }
+                        handle(WAIT_SUCCESS, COLOR_WAITING);
                     else
-                    {
-                        setColor(COLOR_ERROR);
-                        _state = STATE_READING;
-                        setReadRequest();
-                    }
+                        handle(WAIT_FAILURE, COLOR_ERROR);
                 }
                 break;
-
+            case STATE_WAIT:
+                if (now > _wait)
+                {
+                    _state = STATE_READING;
+                    setReadRequest();
+                }
+                break;
             default:
                 if (canTakeRequest)
                 {
@@ -202,6 +213,7 @@ class Write
     catta::modbus::si::request::Request _request;
     catta::modbus::si::request::Request _sent;
     double _value;
+    std::chrono::microseconds _wait;
 
     static void callback_spinner(Fl_Widget*, void* o)
     {
@@ -218,7 +230,10 @@ class Write
     static constexpr Fl_Color COLOR_IDLE = rgb(0x00, 0xb3, 0x00);
     static constexpr Fl_Color COLOR_CHANGED = rgb(0x33, 0x77, 0xff);
     static constexpr Fl_Color COLOR_SENDING = rgb(0xff, 0x80, 0x00);
+    static constexpr Fl_Color COLOR_WAITING = rgb(0xff, 0xee, 0x00);
     static constexpr Fl_Color COLOR_ERROR = rgb(0xe6, 0x00, 0x26);
+    static constexpr std::chrono::microseconds WAIT_SUCCESS = std::chrono::seconds{2};
+    static constexpr std::chrono::microseconds WAIT_FAILURE = std::chrono::seconds{5};
 
     void setReadRequest() { _request = catta::modbus::si::request::Request::readRegister(catta::modbus::si::ReadRegister::create(_readAddress)); }
     void setWriteRequest()
