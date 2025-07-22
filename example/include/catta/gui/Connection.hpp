@@ -74,6 +74,7 @@ class Connection : public Fl_Group
           _sendToken{},
           _receiveToken{},
           _request{},
+          _requestBackup{},
           _stringManufacturer{},
           _stringModel{},
           _stringSerialNumber{},

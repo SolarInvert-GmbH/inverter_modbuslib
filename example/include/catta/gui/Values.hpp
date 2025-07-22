@@ -17,7 +17,6 @@
 // std
 #include <array>
 #include <functional>
-#include <iostream>
 #include <optional>
 #include <string>
 
@@ -39,7 +38,12 @@ class Values : public Fl_Group
      * @param[in] H The height of the widget.
      * Constructor.
      */
-    Values(const int X, const int Y, const int W, const int H) : Fl_Group(X, Y, W, H, nullptr), _operatingState2Text{}, _invervalText{' ', '1', 's'}
+    Values(const int X, const int Y, const int W, const int H)
+        : Fl_Group(X, Y, W, H, nullptr),
+          _operatingState2Text{},
+          _invervalText{' ', '1', 's'},
+          _acVoltages{std::tuple<std::string, const char*>{"", nullptr}, std::tuple<std::string, const char*>{"", nullptr},
+                      std::tuple<std::string, const char*>{"", nullptr}}
     {
         _slider = new Fl_Slider(X + W / 5, Y + 15, (W * 3) / 5, 20, "Refreshinterval");
         _slider->align(FL_ALIGN_TOP);
@@ -85,11 +89,6 @@ class Values : public Fl_Group
      */
     void setAcCurrent(const std::string& value, const char* unit) noexcept { _value[AC_CURRENT]->set(value, unit); }
     /**
-     * @param[in] value The string for the ac voltage field.
-     * @param[in] unit The unit for the ac voltage field.
-     */
-    void setAcVoltage(const std::string& value, const char* unit) noexcept { _value[AC_VOLTAGE]->set(value, unit); }
-    /**
      * @param[in] value The string for the ac power field.
      * @param[in] unit The unit for the ac power field.
      */
@@ -114,6 +113,21 @@ class Values : public Fl_Group
      * @param[in] unit The unit for the dc voltage field.
      */
     void setDcVoltage(const std::string& value, const char* unit) noexcept { _value[DC_VOLTAGE]->set(value, unit); }
+    /**
+     * @param[in] value The string for the ac voltage a field.
+     * @param[in] unit The unit for the ac voltage a field.
+     */
+    void setAcVoltageA(const std::string& value, const char* unit) noexcept { setAcVoltage(0, value, unit); }
+    /**
+     * @param[in] value The string for the ac voltage b field.
+     * @param[in] unit The unit for the ac voltage b field.
+     */
+    void setAcVoltageB(const std::string& value, const char* unit) noexcept { setAcVoltage(1, value, unit); }
+    /**
+     * @param[in] value The string for the ac voltage b field.
+     * @param[in] unit The unit for the ac voltage b field.
+     */
+    void setAcVoltageC(const std::string& value, const char* unit) noexcept { setAcVoltage(2, value, unit); }
     /**
      * @param[in] value The string for the dc power field.
      * @param[in] unit The unit for the dc power field.
@@ -321,6 +335,7 @@ class Values : public Fl_Group
     std::chrono::microseconds _lastCsv;
     std::chrono::microseconds _sliderValue;
     catta::gui::CsvLogging _csvLogging;
+    std::array<std::tuple<std::string, const char*>, 3> _acVoltages;
 
     static constexpr std::array<const char*, VALUE_SIZE> VALUE_LABEL = std::array<const char*, VALUE_SIZE>{
         "AcCurrent",      "AcVoltage",      "AcPower", "Frequency", "Pmax",       "EnergyProduction", "DcVoltage", "DcPower", "Temperature",
@@ -392,6 +407,31 @@ class Values : public Fl_Group
                                                                  "FRT"};
     static constexpr const char* BUTTON_CSV_IDLE = "Start csv Logging";
     static constexpr const char* BUTTON_CSV_RUNNING = "End csv Logging";
+    void setAcVoltage(const std::size_t i, const std::string& value, const char* unit)
+    {
+        _acVoltages[i] = std::tuple<std::string, const char*>{value, unit};
+        const std::size_t bestIndex = [this]() -> std::size_t
+        {
+            const auto isNoneZero = [this](const std::size_t i)
+            {
+                const std::string& s = std::get<0>(_acVoltages[i]);
+                for (const char c : s)
+                    if (c >= '1' && c <= '9') return true;
+                return false;
+            };
+            const auto isNoneEmpty = [this](const std::size_t i)
+            {
+                const std::string& s = std::get<0>(_acVoltages[i]);
+                return !s.empty();
+            };
+            for (std::size_t i = 0; i < _acVoltages.size(); i++)
+                if (isNoneZero(i)) return i;
+            for (std::size_t i = 0; i < _acVoltages.size(); i++)
+                if (isNoneEmpty(i)) return i;
+            return 0;
+        }();
+        _value[AC_VOLTAGE]->set(std::get<0>(_acVoltages[bestIndex]), std::get<1>(_acVoltages[bestIndex]));
+    }
 };
 }  // namespace gui
 }  // namespace catta

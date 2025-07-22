@@ -44,6 +44,9 @@ class MiniSicc : public Fl_Double_Window
           _current(CLIENTS),
           _acCurrentCallback(*this),
           _acPowerCallback(*this),
+          _acVoltageACallback(*this),
+          _acVoltageBCallback(*this),
+          _acVoltageCCallback(*this),
           _frequencyCallback(*this),
           _powerFactorCallback(*this),
           _energyProductionCallback(*this),
@@ -114,6 +117,10 @@ class MiniSicc : public Fl_Double_Window
         _cache.setRequest(CACHE_AC_CURRENT, REQUEST_AC_CURRENT);
         _cache.setRequest(CACHE_AC_POWER_SCALE, REQUEST_AC_POWER_SCALE);
         _cache.setRequest(CACHE_AC_POWER, REQUEST_AC_POWER);
+        _cache.setRequest(CACHE_AC_VOLTAGE_SCALE, REQUEST_AC_VOLTAGE_SCALE);
+        _cache.setRequest(CACHE_AC_VOLTAGE_A, REQUEST_AC_VOLTAGE_A);
+        _cache.setRequest(CACHE_AC_VOLTAGE_B, REQUEST_AC_VOLTAGE_B);
+        _cache.setRequest(CACHE_AC_VOLTAGE_C, REQUEST_AC_VOLTAGE_C);
         _cache.setRequest(CACHE_FREQUENCY_SCALE, REQUEST_FREQUENCY_SCALE);
         _cache.setRequest(CACHE_FREQUENCY, REQUEST_FREQUENCY);
         _cache.setRequest(CACHE_POWER_FACTOR_SCALE, REQUEST_POWER_FACTOR_SCALE);
@@ -137,6 +144,9 @@ class MiniSicc : public Fl_Double_Window
         _cache.setRequest(CACHE_VENDOR_OPERATING_STATE, REQUEST_VENDOR_OPERATING_STATE);
         _cache.setCallback(CACHE_AC_CURRENT, _acCurrentCallback);
         _cache.setCallback(CACHE_AC_POWER, _acPowerCallback);
+        _cache.setCallback(CACHE_AC_VOLTAGE_A, _acVoltageACallback);
+        _cache.setCallback(CACHE_AC_VOLTAGE_B, _acVoltageBCallback);
+        _cache.setCallback(CACHE_AC_VOLTAGE_C, _acVoltageCCallback);
         _cache.setCallback(CACHE_FREQUENCY, _frequencyCallback);
         _cache.setCallback(CACHE_POWER_FACTOR, _powerFactorCallback);
         _cache.setCallback(CACHE_COSPHI, _cosphiCallback);
@@ -318,8 +328,8 @@ class MiniSicc : public Fl_Double_Window
     static constexpr RegisterAddress REGISTER_EVENT_3 = RegisterAddress::inverterVendorEventBitfield3();
     static constexpr RegisterAddress REGISTER_ENERGY_PRODUCTION_SCALE = RegisterAddress::inverterWattHoursScaleFactor();
     static constexpr RegisterAddress REGISTER_ENERGY_PRODUCTION = RegisterAddress::inverterWattHours();
-    static constexpr RegisterAddress REGISTER_DC_VOLTAGE_SCALE = RegisterAddress::inverterPhaseVoltageScaleFactor();
-    static constexpr RegisterAddress REGISTER_DC_VOLTAGE = RegisterAddress::inverterPhaseVoltageA();
+    static constexpr RegisterAddress REGISTER_DC_VOLTAGE_SCALE = RegisterAddress::inverterDcPowerScaleFactor();
+    static constexpr RegisterAddress REGISTER_DC_VOLTAGE = RegisterAddress::inverterDcVoltage();
     static constexpr RegisterAddress REGISTER_DC_POWER_SCALE = RegisterAddress::inverterDcPowerScaleFactor();
     static constexpr RegisterAddress REGISTER_DC_POWER = RegisterAddress::inverterDcPower();
     static constexpr RegisterAddress REGISTER_TEMPERATURE_SCALE = RegisterAddress::inverterTemperatureScaleFactor();
@@ -436,6 +446,33 @@ class MiniSicc : public Fl_Double_Window
         static void setValue(Values* values, const std::string& value, const char* unit) { values->setTemperature(value, unit); }
     };
 
+    class AcVoltageA
+    {
+      public:
+        static constexpr const char* unit = "V";
+        static constexpr std::size_t cacheScale = CACHE_AC_VOLTAGE_SCALE;
+        static constexpr RegisterAddress address = REGISTER_AC_VOLTAGE_A;
+        static void setValue(Values* values, const std::string& value, const char* unit) { values->setAcVoltageA(value, unit); }
+    };
+
+    class AcVoltageB
+    {
+      public:
+        static constexpr const char* unit = "V";
+        static constexpr std::size_t cacheScale = CACHE_AC_VOLTAGE_SCALE;
+        static constexpr RegisterAddress address = REGISTER_AC_VOLTAGE_B;
+        static void setValue(Values* values, const std::string& value, const char* unit) { values->setAcVoltageB(value, unit); }
+    };
+
+    class AcVoltageC
+    {
+      public:
+        static constexpr const char* unit = "V";
+        static constexpr std::size_t cacheScale = CACHE_AC_VOLTAGE_SCALE;
+        static constexpr RegisterAddress address = REGISTER_AC_VOLTAGE_B;
+        static void setValue(Values* values, const std::string& value, const char* unit) { values->setAcVoltageC(value, unit); }
+    };
+
     template <class T>
     class ScaledValueCallback
     {
@@ -511,6 +548,9 @@ class MiniSicc : public Fl_Double_Window
 
     ScaledValueCallback<AcCurrent> _acCurrentCallback;
     ScaledValueCallback<AcPower> _acPowerCallback;
+    ScaledValueCallback<AcVoltageA> _acVoltageACallback;
+    ScaledValueCallback<AcVoltageB> _acVoltageBCallback;
+    ScaledValueCallback<AcVoltageC> _acVoltageCCallback;
     ScaledValueCallback<Frequency> _frequencyCallback;
     ScaledValueCallback<PowerFactor> _powerFactorCallback;
     ScaledValueCallback<EnergyProduction> _energyProductionCallback;
@@ -801,6 +841,9 @@ class MiniSicc : public Fl_Double_Window
             const std::chrono::microseconds lockedTime = _miniSicc._passwort->isLocked() ? never : time;
             _miniSicc._cache.setValidTime(CACHE_AC_CURRENT, time);
             _miniSicc._cache.setValidTime(CACHE_AC_POWER, time);
+            _miniSicc._cache.setValidTime(CACHE_AC_VOLTAGE_A, time);
+            _miniSicc._cache.setValidTime(CACHE_AC_VOLTAGE_B, time);
+            _miniSicc._cache.setValidTime(CACHE_AC_VOLTAGE_C, time);
             _miniSicc._cache.setValidTime(CACHE_FREQUENCY, time);
             _miniSicc._cache.setValidTime(CACHE_POWER_FACTOR, lockedTime);
             _miniSicc._cache.setValidTime(CACHE_EVENTS_1, lockedTime);
