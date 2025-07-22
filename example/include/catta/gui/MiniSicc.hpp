@@ -759,23 +759,23 @@ class MiniSicc : public Fl_Double_Window
             {
                 const std::uint16_t v = r.value16Value();
                 bool started = false;
-                std::string date = "    %";
-                const auto set = [v, &date, &started](const std::size_t index, const std::uint16_t factor)
+                std::string s = "   ";
+                const auto set = [v, &s, &started](const std::size_t index, const std::uint16_t factor)
                 {
                     const char c = static_cast<char>('0' + (v / factor) % 10);
                     if (c == '0' && !started)
-                        date[index] = ' ';
+                        s[index] = ' ';
                     else
                     {
                         started = true;
-                        date[index] = c;
+                        s[index] = c;
                     }
                 };
                 set(0, 100);
                 set(1, 10);
                 started = true;
                 set(2, 1);
-                _miniSicc._static->setReduction(date);
+                _miniSicc._static->setReduction(s);
             }
         }
 

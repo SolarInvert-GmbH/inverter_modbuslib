@@ -31,17 +31,21 @@ class Static : public Fl_Group
      */
     Static(const int X, const int Y, const int W, const int H) : Fl_Group(X, Y, W, H, nullptr)
     {
-        const int gap = 10;
-        const int w2 = W / 2 - gap;
-        const int wLabel = (w2 * 4) / 9;
-        const int wGap = (w2 * 1) / 9;
-        const int wValue = (w2 * 4) / 9;
-        const int h = 50;
-        _reduction = new Element(X + gap + (gap + w2) * 0, Y + h * 1, wLabel, wGap, wValue, h, "Reduction");
-        _modulePower = new Element(X + gap + (gap + w2) * 1, Y + h * 1, wLabel, wGap, wValue, h, "Module Power");
-        _date = new Element(X + gap + (gap + w2) * 0, Y + h * 2, wLabel, wGap, wValue, h, "Production Date");
-        _version = new Element(X + gap + (gap + w2) * 1, Y + h * 2, wLabel, wGap, wValue, h, "SW-Version");
-        _bom = new Element(X + gap + (gap + w2) * 0, Y + h * 4, wLabel, wGap, wValue, h, "BOM");
+        static constexpr int GAP = 5;
+        static constexpr int H_LINE = 65;
+
+        static const int PER_LINE = 4;
+        const int W_WRITE = (W - (PER_LINE + 1) * GAP) / PER_LINE;
+
+        static const int W_UNIT = 30;
+
+        static constexpr std::array<const char*, SIZE> VALUE_LABEL =
+            std::array<const char*, SIZE>{"SW-Version", "Production Date", "Reduction", "Module Power", "BOM"};
+        for (std::size_t i = 0; i < SIZE; i++)
+        {
+            _value[i] = new Value(X + GAP + (int(i) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(i) / PER_LINE + 1), W_WRITE, H_LINE,
+                                  VALUE_LABEL[i], W_UNIT);
+        }
         lock();
         this->end();
         this->show();
@@ -51,84 +55,47 @@ class Static : public Fl_Group
      */
     ~Static()
     {
-        if (_version) delete _version;
-        if (_date) delete _date;
-        if (_bom) delete _bom;
-        if (_reduction) delete _reduction;
-        if (_modulePower) delete _modulePower;
+        for (const auto e : _value)
+            if (e) delete e;
     }
     /**
      * @param[in] text The string for the version field.
      */
-    void setVersion(const std::string& text) noexcept { _version->set(text); }
+    void setVersion(const std::string& text) noexcept { _value[SW_VERSION]->set(text, nullptr); }
     /**
      * @param[in] text The string for the date field.
      */
-    void setDate(const std::string& text) noexcept { _date->set(text); }
+    void setDate(const std::string& text) noexcept { _value[DATE]->set(text, nullptr); }
     /**
      * @param[in] text The string for the bom field.
      */
-    void setBom(const std::string& text) noexcept { _bom->set(text); }
+    void setBom(const std::string& text) noexcept { _value[BOM]->set(text, nullptr); }
     /**
      * @param[in] text The string for the reduction field.
      */
-    void setReduction(const std::string& text) noexcept { _reduction->set(text); }
+    void setReduction(const std::string& text) noexcept { _value[REDUCTION]->set(text, "%"); }
     /**
      * @param[in] text The string for the module power field.
      */
-    void setModulePower(const std::string& text) noexcept { _modulePower->set(text); }
+    void setModulePower(const std::string& text) noexcept { _value[MODULE_POWER]->set(text, "W"); }
     /**
      * Show locked stuff.
      */
-    void lock() { _bom->hide(); }
+    void lock() { _value[BOM]->hide(); }
     /**
      * Hide locked stuff.
      */
-    void unlock() { _bom->show(); }
+    void unlock() { _value[BOM]->show(); }
 
   private:
-    class Element
-    {
-      public:
-        Element(const int X, const int Y, const int W_LABEL, const int W_GAP, const int W_VALUE, const int H, const char* label) : _string{}
-        {
-            _label = new Fl_Box(X, Y, W_LABEL, H, label);
-            _label->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
-            _value = new Fl_Box(X + W_LABEL + W_GAP, Y, W_VALUE, H, nullptr);
-            _value->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
-        }
-        void show()
-        {
-            _label->show();
-            _value->show();
-        }
-        void hide()
-        {
-            _label->hide();
-            _value->hide();
-        }
-        void set(const std::string s)
-        {
-            _string = s;
-            _value->label(_string.c_str());
-        }
-        ~Element()
-        {
-            if (_label) delete _label;
-            if (_value) delete _value;
-        }
+    static constexpr std::size_t SW_VERSION = 0;
+    static constexpr std::size_t DATE = SW_VERSION + 1;
+    static constexpr std::size_t REDUCTION = DATE + 1;
+    static constexpr std::size_t MODULE_POWER = REDUCTION + 1;
+    static constexpr std::size_t BOM = MODULE_POWER + 1;
+    static constexpr std::size_t SIZE = BOM + 1;
 
-      private:
-        std::string _string;
-        Fl_Box* _label;
-        Fl_Box* _value;
-    };
-
-    Element* _version;
-    Element* _date;
-    Element* _bom;
-    Element* _reduction;
-    Element* _modulePower;
+    std::array<catta::gui::Value*, SIZE> _value;
 };
 }  // namespace gui
 }  // namespace catta
