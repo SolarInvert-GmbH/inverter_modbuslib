@@ -65,6 +65,7 @@ class MiniSicc : public Fl_Double_Window
           _derTypeCallbackCallback(*this),
           _reductionCallback(*this),
           _factoryValuesCallback(*this),
+          _readOperatingData3eCallback(*this),
           _softwareVersionCallback(*this),
           _sliderCallback(*this),
           _unlock(*this),
@@ -112,6 +113,7 @@ class MiniSicc : public Fl_Double_Window
         _cache.setRequest(CACHE_DER_TYPE, REQUEST_DER_TYPE);
         _cache.setRequest(CACHE_REDUCTION, REQUEST_REDUCTION);
         _cache.setRequest(CACHE_FACTORY_VALUES, REQUEST_FACTORY_VALUES);
+        _cache.setRequest(CACHE_READ_OPERATING_DATA_3E, REQUEST_READ_OPERATING_DATA_3E);
         _cache.setRequest(CACHE_SOFTWARE_VERSION, REQUEST_SOFTWARE_VERSION);
         _cache.setRequest(CACHE_AC_CURRENT_SCALE, REQUEST_AC_CURRENT_SCALE);
         _cache.setRequest(CACHE_AC_CURRENT, REQUEST_AC_CURRENT);
@@ -164,6 +166,7 @@ class MiniSicc : public Fl_Double_Window
         _cache.setCallback(CACHE_VENDOR_OPERATING_STATE, _operatingStateCallback);
         _cache.setCallback(CACHE_DER_TYPE, _derTypeCallbackCallback);
         _cache.setCallback(CACHE_FACTORY_VALUES, _factoryValuesCallback);
+        _cache.setCallback(CACHE_READ_OPERATING_DATA_3E, _readOperatingData3eCallback);
         _cache.setCallback(CACHE_REDUCTION, _reductionCallback);
         _cache.setCallback(CACHE_SOFTWARE_VERSION, _softwareVersionCallback);
         _values->setCallback(_sliderCallback);
@@ -239,7 +242,8 @@ class MiniSicc : public Fl_Double_Window
     static constexpr std::size_t CACHE_DER_TYPE = 0;
     static constexpr std::size_t CACHE_REDUCTION = CACHE_DER_TYPE + 1;
     static constexpr std::size_t CACHE_FACTORY_VALUES = CACHE_REDUCTION + 1;
-    static constexpr std::size_t CACHE_SOFTWARE_VERSION = CACHE_FACTORY_VALUES + 1;
+    static constexpr std::size_t CACHE_READ_OPERATING_DATA_3E = CACHE_FACTORY_VALUES + 1;
+    static constexpr std::size_t CACHE_SOFTWARE_VERSION = CACHE_READ_OPERATING_DATA_3E + 1;
     static constexpr std::size_t CACHE_AC_CURRENT_SCALE = CACHE_SOFTWARE_VERSION + 1;
     static constexpr std::size_t CACHE_AC_CURRENT = CACHE_AC_CURRENT_SCALE + 1;
     static constexpr std::size_t CACHE_AC_VOLTAGE_SCALE = CACHE_AC_CURRENT + 1;
@@ -343,6 +347,7 @@ class MiniSicc : public Fl_Double_Window
     static constexpr Request REQUEST_DER_TYPE = Request::readRegister(ReadRegister::create(REGISTER_DER_TYPE));
     static constexpr Request REQUEST_REDUCTION = Request::readRegister(ReadRegister::create(REGISTER_REDUCTION));
     static constexpr Request REQUEST_FACTORY_VALUES = Request::factoryValues();
+    static constexpr Request REQUEST_READ_OPERATING_DATA_3E = Request::readOperatingData3e();
     static constexpr Request REQUEST_SOFTWARE_VERSION = Request::readRegister(ReadRegister::create(REGISTER_SOFTWARE_VERSION));
     static constexpr Request REQUEST_AC_CURRENT_SCALE = Request::readRegister(ReadRegister::create(REGISTER_AC_CURRENT_SCALE));
     static constexpr Request REQUEST_AC_CURRENT = Request::readRegister(ReadRegister::create(REGISTER_AC_CURRENT));
@@ -815,6 +820,21 @@ class MiniSicc : public Fl_Double_Window
       private:
         MiniSicc& _miniSicc;
     } _factoryValuesCallback;
+
+    class ReadOperatingData3eCallback
+    {
+      public:
+        ReadOperatingData3eCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()(const Response& r)
+        {
+            const std::string power =
+                r.type().isReadOperatingData3e() ? std::to_string(r.readOperatingData3eValue().nominalPower().value()) : std::string();
+            _miniSicc._static->setModulePower(power);
+        }
+
+      private:
+        MiniSicc& _miniSicc;
+    } _readOperatingData3eCallback;
 
     class SoftwareVersionCallback
     {
