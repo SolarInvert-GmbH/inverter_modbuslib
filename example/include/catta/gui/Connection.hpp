@@ -421,6 +421,13 @@ class Connection : public Fl_Group
         if (!_sendByte && _receiveToken.isEmpty())
         {
             const auto [modbusState, recevieTokenLocal, sendByteLocal, sendHandled] = _modbus.work(now, _receivedByte, _sendToken, id);
+            if (modbusState > catta::modbus::MasterUartState::receive())
+            {
+                clearModbusHandling();
+                setTimeout();
+                _waitForClear = true;
+                failed = true;
+            }
             if (sendHandled) _sendToken = {};
             _receivedByte = {};
             _sendByte = sendByteLocal;
@@ -450,6 +457,7 @@ class Connection : public Fl_Group
             if (_parser.state().isDone())
             {
                 response = _parser.data();
+                if (response.isEmpty()) failed = true;
                 _parser = {};
                 clearTimeout();
             }
