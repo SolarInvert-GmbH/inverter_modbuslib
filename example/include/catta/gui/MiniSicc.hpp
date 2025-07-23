@@ -828,7 +828,7 @@ class MiniSicc : public Fl_Double_Window
         void operator()(const Response& r)
         {
             const std::string power =
-                r.type().isReadOperatingData3e() ? std::to_string(r.readOperatingData3eValue().nominalPower().value()) : std::string();
+                r.type().isReadOperatingData3e() ? std::to_string(r.readOperatingData3eValue().nominalPower().value() * 100) : std::string();
             _miniSicc._static->setModulePower(power);
         }
 
