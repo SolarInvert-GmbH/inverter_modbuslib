@@ -925,10 +925,11 @@ class MiniSicc : public Fl_Double_Window
                 const std::uint16_t xorFlag = last & 0x8000;
                 const std::uint16_t shift = static_cast<std::uint16_t>(last << 1);
                 const std::uint16_t minor = (byte & (1 << i)) ? 1 : 0;
-                return xorFlag == 0 ? (shift | minor) : (shift | minor) ^ 0x1021;
+                const std::uint16_t sum = shift + minor;
+                return static_cast<std::uint16_t>(xorFlag == 0 ? sum : sum ^ 0x1021);
             };
             std::uint16_t value = last;
-            for (int i = 7; i >= 0; i--) loop(value, i);
+            for (int i = 7; i >= 0; i--) value = loop(value, i);
             return value;
         };
         std::uint16_t crc = 0xffff;
