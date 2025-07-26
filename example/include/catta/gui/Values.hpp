@@ -299,15 +299,15 @@ class Values : public Fl_Group
     Fl_Slider* _slider;
     Fl_Box* _interval;
 
-    static constexpr std::size_t AC_CURRENT = 0;
+    static constexpr std::size_t AC_POWER = 0;
+    static constexpr std::size_t AC_CURRENT = AC_POWER + 1;
     static constexpr std::size_t AC_VOLTAGE = AC_CURRENT + 1;
-    static constexpr std::size_t AC_POWER = AC_VOLTAGE + 1;
-    static constexpr std::size_t FREQUENCY = AC_POWER + 1;
+    static constexpr std::size_t FREQUENCY = AC_VOLTAGE + 1;
     static constexpr std::size_t P_MAX = FREQUENCY + 1;
-    static constexpr std::size_t ENERGY_PRODUCTION = P_MAX + 1;
-    static constexpr std::size_t DC_VOLTAGE = ENERGY_PRODUCTION + 1;
-    static constexpr std::size_t DC_POWER = DC_VOLTAGE + 1;
-    static constexpr std::size_t TEMPERATURE = DC_POWER + 1;
+    static constexpr std::size_t DC_POWER = P_MAX + 1;
+    static constexpr std::size_t DC_VOLTAGE = DC_POWER + 1;
+    static constexpr std::size_t ENERGY_PRODUCTION = DC_VOLTAGE + 1;
+    static constexpr std::size_t TEMPERATURE = ENERGY_PRODUCTION + 1;
     static constexpr std::size_t OPERATING_STATE = TEMPERATURE + 1;
     static constexpr std::size_t OPERATING_STATE_TEXT = OPERATING_STATE + 1;
     static constexpr std::size_t TIME = OPERATING_STATE_TEXT + 1;
@@ -338,8 +338,8 @@ class Values : public Fl_Group
     std::array<std::tuple<std::string, const char*>, 3> _acVoltages;
 
     static constexpr std::array<const char*, VALUE_SIZE> VALUE_LABEL = std::array<const char*, VALUE_SIZE>{
-        "AcCurrent",      "AcVoltage",      "AcPower", "Frequency", "Pmax",       "EnergyProduction", "DcVoltage", "DcPower", "Temperature",
-        "Operating Mode", "Operating Mode", "Time",    "Tnightoff", "Startdelay", "PowerFactor",      "cosPHI",    "DAC"};
+        "AC Power", "AC Current", "AC Voltage", "Frequency", "PMAX",       "DC Power",    "DC Voltage", "Energy", "Temp",
+        "Opestate", "Opestate",   "Time",       "Tnightoff", "Startdelay", "PowerFactor", "cosPHI",     "DAC"};
 
     static constexpr std::array<const char*, LED_SIZE> LED_LABEL =
         std::array<const char*, LED_SIZE>{"RELAY ON", "UAC OK", "FREQ OK", "WR WORKING", "PMAX Active"};
