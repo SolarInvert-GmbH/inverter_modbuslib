@@ -35,19 +35,13 @@ class Solar : public Fl_Group
      */
     Solar(const int X, const int Y, const int W, const int H) : Fl_Group(X, Y, W, H, nullptr), _roundRobin(0)
     {
-        static constexpr std::array<const char*, SIZE> LABEL = {"U_Sol_CV", "S_Bio_Off"};
+        static constexpr std::array<const char*, SIZE> LABEL = {"Tracking Concept"};
         static constexpr int GAP = 5;
         static constexpr int H_LINE = 65;
         static const int PER_LINE = 4;
         const int W_WRITE = (W - (PER_LINE + 1) * GAP) / PER_LINE;
         static const int W_SEND = 30;
-        static constexpr auto uSolCvReadAddress = catta::modbus::si::RegisterAddress::siControlBattaryCvModeRead();
-        static constexpr auto uSolCvWriteAddress = catta::modbus::si::RegisterAddress::siControlBattaryCvModeWrite();
         static constexpr auto sBioOffAddress = catta::modbus::si::RegisterAddress::siControlTrackingSelection();
-
-        _write[U_SOL_CV] = new WriteSingle(X + GAP + (int(U_SOL_CV) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_SOL_CV) / PER_LINE), W_WRITE,
-                                           H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uSolCvReadAddress, uSolCvWriteAddress, _toRegisterUsolCv,
-                                           _fromRegisterUsolCv, W_SEND, "V", LABEL[U_SOL_CV]);
 
         _write[S_BIO_OFF] = new WriteSingle(X + GAP + (int(S_BIO_OFF) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(S_BIO_OFF) / PER_LINE),
                                             W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.0, 2.0, 1.0, sBioOffAddress, sBioOffAddress, _toRegisterSbioOff,
@@ -92,25 +86,10 @@ class Solar : public Fl_Group
     }
 
   private:
-    static constexpr std::size_t U_SOL_CV = 0;
-    static constexpr std::size_t S_BIO_OFF = U_SOL_CV + 1;
+    static constexpr std::size_t S_BIO_OFF = 0;
     static constexpr std::size_t SIZE = S_BIO_OFF + 1;
     std::array<WriteSingle*, SIZE> _write;
     std::size_t _roundRobin;
-    class ToRegisterUsolCv
-    {
-      public:
-        std::uint16_t operator()(const double input) { return static_cast<std::uint16_t>(input * 100.0); }
-
-      private:
-    } _toRegisterUsolCv;
-    class FromRegisterUsolCv
-    {
-      public:
-        double operator()(const std::uint16_t input) { return static_cast<double>(input) / 100.0; }
-
-      private:
-    } _fromRegisterUsolCv;
 
     class ToRegisterSbioOff
     {
