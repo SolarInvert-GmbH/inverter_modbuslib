@@ -32,25 +32,9 @@ class Battery : public Fl_Group
      */
     Battery(const int X, const int Y, const int W, const int H) : Fl_Group(X, Y, W, H, nullptr)
     {
-        static constexpr std::array<const char*, ROBIN_SIZE + 1> LABEL = {"U_MIN",
-                                                                          "U_MAX",
-                                                                          "P_MAX",
-                                                                          "U_SOL_CV",
-                                                                          "U_DC_LOW",
-                                                                          "U_DC_HIGH",
-                                                                          "MODUS",
-                                                                          "S_BIOFF",
-                                                                          "U_DC_START",
-                                                                          "Z_U_SOL_BAT_FILT",
-                                                                          "U_SOL_BAT_ERR",
-                                                                          "U_SOL_BAT",
-                                                                          "P_MAX_ERR",
-                                                                          "P_MAX_CHARGE",
-                                                                          "CONSTANT_VOLTAGE_X",
-                                                                          "CONSTANT_VOLTAGE_Y",
-                                                                          "DAC_X",
-                                                                          "COM_Y",
-                                                                          "CURVE"};
+        static constexpr std::array<const char*, ROBIN_SIZE + 1> LABEL = {
+            "UDCLOW",  "UDCSTART", "MODUS",      "PMAX",    "UMIN_ext",           "Z_usolbatfilt",      "usolbaterr", "USOLBAT", "UMAX_ext",
+            "S_BIOFF", "pmaxerr",  "PMAXcharge", "UDCHIGH", "CONSTANT_VOLTAGE_X", "CONSTANT_VOLTAGE_Y", "DAC_X",      "COM_Y",   "CURVE"};
         static constexpr int GAP = 5;
         static constexpr int H_LINE = 65;
 
@@ -65,8 +49,6 @@ class Battery : public Fl_Group
         static constexpr auto uMaxWriteAddress = Address::siControlUMaxWrite();
         static constexpr auto pMaxAddress = Address::basicSettingsMaxPower();
 
-        static constexpr auto uSolCvReadAddress = Address::siControlBattaryCvModeRead();
-        static constexpr auto uSolCvWriteAddress = Address::siControlBattaryCvModeWrite();
         static constexpr auto dcLowReadAddress = Address::siControlDcLowRead();
         static constexpr auto dcLowWriteAddress = Address::siControlDcLowWrite();
         static constexpr auto dcHighReadAddress = Address::siControlDcHighRead();
@@ -123,36 +105,22 @@ class Battery : public Fl_Group
         {
             cbArray[i] = std::tuple<std::size_t, Battery*>{i, this};
         }
-        _write[U_MIN] = new WriteSingle(X + GAP + (int(U_MIN) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_MIN) / PER_LINE), W_WRITE, H_LINE,
-                                        FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uMinReadAddress, uMinWriteAddress, _toRegisterCenti, _fromRegisterCenti,
-                                        W_SEND, "V", LABEL[U_MIN]);
-        _write[U_MAX] = new WriteSingle(X + GAP + (int(U_MAX) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_MAX) / PER_LINE), W_WRITE, H_LINE,
-                                        FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uMaxReadAddress, uMaxWriteAddress, _toRegisterCenti, _fromRegisterCenti,
-                                        W_SEND, "V", LABEL[U_MAX]);
+        _write[U_DCLOW] = new WriteSingle(X + GAP + (int(U_DCLOW) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_DCLOW) / PER_LINE), W_WRITE,
+                                          H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, dcLowReadAddress, dcLowWriteAddress, _toRegisterCenti,
+                                          _fromRegisterCenti, W_SEND, "V", LABEL[U_DCLOW]);
+        _write[U_DCSTART] = new WriteSingle(X + GAP + (int(U_DCSTART) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_DCSTART) / PER_LINE),
+                                            W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, dcStartReadAddress, dcStartWriteAddress,
+                                            _toRegisterCenti, _fromRegisterCenti, W_SEND, "V", LABEL[U_DCSTART]);
+        _write[MODUS] =
+            new WriteSingle(X + GAP + (int(MODUS) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(MODUS) / PER_LINE), W_WRITE, H_LINE,
+                            FL_FLOAT_INPUT, 0.0, 255.0, 1.00, modusAddress, modusAddress, _toRegister256, _fromRegister256, W_SEND, "", LABEL[MODUS]);
         _write[P_MAX] = new WriteSingle(X + GAP + (int(P_MAX) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(P_MAX) / PER_LINE), W_WRITE, H_LINE,
                                         FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, pMaxAddress, pMaxAddress, _toRegisterDeci, _fromRegisterDeci, W_SEND, "W",
                                         LABEL[P_MAX]);
 
-        _write[U_SOLCV] = new WriteSingle(X + GAP + (int(U_SOLCV) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_SOLCV) / PER_LINE), W_WRITE,
-                                          H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uSolCvReadAddress, uSolCvWriteAddress, _toRegisterCenti,
-                                          _fromRegisterCenti, W_SEND, "V", LABEL[U_SOLCV]);
-        _write[U_DCLOW] = new WriteSingle(X + GAP + (int(U_DCLOW) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_DCLOW) / PER_LINE), W_WRITE,
-                                          H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, dcLowReadAddress, dcLowWriteAddress, _toRegisterCenti,
-                                          _fromRegisterCenti, W_SEND, "V", LABEL[U_DCLOW]);
-        _write[U_DCHIGH] = new WriteSingle(X + GAP + (int(U_DCHIGH) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_DCHIGH) / PER_LINE), W_WRITE,
-                                           H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, dcHighReadAddress, dcHighWriteAddress, _toRegisterCenti,
-                                           _fromRegisterCenti, W_SEND, "V", LABEL[U_DCHIGH]);
-
-        _write[MODUS] =
-            new WriteSingle(X + GAP + (int(MODUS) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(MODUS) / PER_LINE), W_WRITE, H_LINE,
-                            FL_FLOAT_INPUT, 0.0, 255.0, 1.00, modusAddress, modusAddress, _toRegister256, _fromRegister256, W_SEND, "", LABEL[MODUS]);
-        _write[S_BIOFF] = new WriteSingle(X + GAP + (int(S_BIOFF) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(S_BIOFF) / PER_LINE), W_WRITE,
-                                          H_LINE, FL_FLOAT_INPUT, 0.0, 2.0, 1.0, sBioOffAddress, sBioOffAddress, _toRegister256, _fromRegister256,
-                                          W_SEND, "", LABEL[S_BIOFF]);
-        _write[U_DCSTART] = new WriteSingle(X + GAP + (int(U_DCSTART) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_DCSTART) / PER_LINE),
-                                            W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, dcStartReadAddress, dcStartWriteAddress,
-                                            _toRegisterCenti, _fromRegisterCenti, W_SEND, "V", LABEL[U_DCSTART]);
-
+        _write[U_MIN] = new WriteSingle(X + GAP + (int(U_MIN) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_MIN) / PER_LINE), W_WRITE, H_LINE,
+                                        FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uMinReadAddress, uMinWriteAddress, _toRegisterCenti, _fromRegisterCenti,
+                                        W_SEND, "V", LABEL[U_MIN]);
         _write[Z_USOLBATFILT] = new WriteSingle(X + GAP + (int(Z_USOLBATFILT) % PER_LINE) * (GAP + W_WRITE),
                                                 Y + H_LINE * (int(Z_USOLBATFILT) / PER_LINE), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.0, 255.0, 1.00,
                                                 zUsolBatFil, zUsolBatFil, _toRegister256, _fromRegister256, W_SEND, "", LABEL[Z_USOLBATFILT]);
@@ -163,12 +131,22 @@ class Battery : public Fl_Group
                                            H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uSolBatRead, uSolBatWrite, _toRegisterCenti,
                                            _fromRegisterCenti, W_SEND, "V", LABEL[U_SOLBAT]);
 
+        _write[U_MAX] = new WriteSingle(X + GAP + (int(U_MAX) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_MAX) / PER_LINE), W_WRITE, H_LINE,
+                                        FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uMaxReadAddress, uMaxWriteAddress, _toRegisterCenti, _fromRegisterCenti,
+                                        W_SEND, "V", LABEL[U_MAX]);
+        _write[S_BIOFF] = new WriteSingle(X + GAP + (int(S_BIOFF) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(S_BIOFF) / PER_LINE), W_WRITE,
+                                          H_LINE, FL_FLOAT_INPUT, 0.0, 2.0, 1.0, sBioOffAddress, sBioOffAddress, _toRegister256, _fromRegister256,
+                                          W_SEND, "", LABEL[S_BIOFF]);
         _write[P_MAXERR] =
             new WriteSingle(X + GAP + (int(P_MAXERR) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(P_MAXERR) / PER_LINE), W_WRITE, H_LINE,
                             FL_FLOAT_INPUT, 0.01, 655.00, 0.01, pMaxErr, pMaxErr, _toRegisterCenti, _fromRegisterCenti, W_SEND, "W", LABEL[P_MAXERR]);
         _write[P_MAX_CHARGE] = new WriteSingle(X + GAP + (int(P_MAX_CHARGE) % PER_LINE) * (GAP + W_WRITE),
                                                Y + H_LINE * (int(P_MAX_CHARGE) / PER_LINE), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01,
                                                pMaxCharge, pMaxCharge, _toRegisterCenti, _fromRegisterCenti, W_SEND, "W", LABEL[P_MAX_CHARGE]);
+
+        _write[U_DCHIGH] = new WriteSingle(X + GAP + (int(U_DCHIGH) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_DCHIGH) / PER_LINE), W_WRITE,
+                                           H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, dcHighReadAddress, dcHighWriteAddress, _toRegisterCenti,
+                                           _fromRegisterCenti, W_SEND, "V", LABEL[U_DCHIGH]);
 
         static const int PER_LINE_CURVE_3 = 2;
         const int W_WRITE_CURVE_3 = (W - (PER_LINE_CURVE_3 + 1) * GAP) / PER_LINE_CURVE_3;
@@ -236,21 +214,20 @@ class Battery : public Fl_Group
     }
 
   private:
-    static constexpr std::size_t U_MIN = 0;
-    static constexpr std::size_t U_MAX = U_MIN + 1;
-    static constexpr std::size_t P_MAX = U_MAX + 1;
-    static constexpr std::size_t U_SOLCV = P_MAX + 1;
-    static constexpr std::size_t U_DCLOW = U_SOLCV + 1;
-    static constexpr std::size_t U_DCHIGH = U_DCLOW + 1;
-    static constexpr std::size_t MODUS = U_DCHIGH + 1;
-    static constexpr std::size_t S_BIOFF = MODUS + 1;
-    static constexpr std::size_t U_DCSTART = S_BIOFF + 1;
-    static constexpr std::size_t Z_USOLBATFILT = U_DCSTART + 1;
+    static constexpr std::size_t U_DCLOW = 0;
+    static constexpr std::size_t U_DCSTART = U_DCLOW + 1;
+    static constexpr std::size_t MODUS = U_DCSTART + 1;
+    static constexpr std::size_t P_MAX = MODUS + 1;
+    static constexpr std::size_t U_MIN = P_MAX + 1;
+    static constexpr std::size_t Z_USOLBATFILT = U_MIN + 1;
     static constexpr std::size_t U_SOLBATERR = Z_USOLBATFILT + 1;
     static constexpr std::size_t U_SOLBAT = U_SOLBATERR + 1;
-    static constexpr std::size_t P_MAXERR = U_SOLBAT + 1;
+    static constexpr std::size_t U_MAX = U_SOLBAT + 1;
+    static constexpr std::size_t S_BIOFF = U_MAX + 1;
+    static constexpr std::size_t P_MAXERR = S_BIOFF + 1;
     static constexpr std::size_t P_MAX_CHARGE = P_MAXERR + 1;
-    static constexpr std::size_t SIZE = P_MAX_CHARGE + 1;
+    static constexpr std::size_t U_DCHIGH = P_MAX_CHARGE + 1;
+    static constexpr std::size_t SIZE = U_DCHIGH + 1;
 
     static constexpr std::size_t X_CV = 0;
     static constexpr std::size_t Y_CV = X_CV + 1;
