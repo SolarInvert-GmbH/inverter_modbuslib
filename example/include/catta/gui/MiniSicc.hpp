@@ -72,8 +72,7 @@ class MiniSicc : public Fl_Double_Window
           _lock(*this)
     {
         Fl::scheme("plastic");  // plastic, gleam, oxy
-        Fl::foreground(0x00, 0x00, 0x00);
-        Fl::background(0x59, 0x6a, 0x79);
+        Fl::get_system_colors();
         static constexpr int passwordHeight = 70;
         this->_connection = new Connection<UART>(10, 10, WIDTH - 20, 130, defaultUartName, nullptr, CLIENTS);
         this->_passwort = new Password(10, 145, WIDTH - 20, passwordHeight, nullptr, crc(id), _unlock, _lock);

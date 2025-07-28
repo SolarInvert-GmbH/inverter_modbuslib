@@ -45,7 +45,7 @@ class Value : public Fl_Group
         _box->hide();
         _value = new Fl_Box(X + gap, Y21 + gap, W - W_UNIT - 2 * gap, H21 - 2 * gap, nullptr);
         _value->align(FL_ALIGN_RIGHT | FL_ALIGN_INSIDE);
-        _value->box(FL_FLAT_BOX);
+        _value->box(FL_DOWN_BOX);
         _value->hide();
         _unit = new Fl_Box(X + W - W_UNIT, Y21, W_UNIT, H21, nullptr);
         _unit->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
