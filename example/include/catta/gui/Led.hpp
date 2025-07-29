@@ -29,7 +29,7 @@ class Led : public Fl_Group
     Led(const int X, const int Y, const int W, const int H, const char* label) : Fl_Group(X, Y, W, H, nullptr)
     {
         const int gap = 5;
-        const int aLed = 12;
+        const int aLed = H / 3;
         const int YL = Y + (H - aLed) / 2;
         const int wLabel = W - gap * 3 - aLed;
         _label = new Fl_Box(X, Y, wLabel, H);
@@ -71,6 +71,11 @@ class Led : public Fl_Group
         if (!_value) return std::string(";");
         if (!_value.value()) return std::string("0;");
         return std::string("1;");
+    }
+    void resize(int x, int y, int w, int h)
+    {
+        Fl_Group::resize(x, y, w, h);
+        _led->resize(_led->x(), _led->y(), _led->h(), _led->h());
     }
 
   private:
