@@ -221,6 +221,13 @@ class MiniSicc : public Fl_Double_Window
                     _request = commandsRequest;
                     somethingHappend = true;
                 }
+                const Request passwordRequest =
+                    _passwort->work(_request.isEmpty() && isInIdle && _current == CLIENT_PASSWORD, _connection->modbusId(), current < CLIENTS);
+                if (!passwordRequest.isEmpty())
+                {
+                    _request = passwordRequest;
+                    somethingHappend = true;
+                }
                 if (_current < CLIENTS && current >= CLIENTS)
                     for (std::size_t i = 0; i < CACHE_SIZE; i++) _cache.setInvalid(i);
                 _current = current;
@@ -236,7 +243,8 @@ class MiniSicc : public Fl_Double_Window
     static constexpr std::size_t CLIENT_SOLAR = CLIENT_BATTERY + 1;
     static constexpr std::size_t CLIENT_WIND = CLIENT_SOLAR + 1;
     static constexpr std::size_t CLIENT_COMMANDS = CLIENT_WIND + 1;
-    static constexpr std::size_t CLIENTS = CLIENT_COMMANDS + 1;
+    static constexpr std::size_t CLIENT_PASSWORD = CLIENT_COMMANDS + 1;
+    static constexpr std::size_t CLIENTS = CLIENT_PASSWORD + 1;
 
     static constexpr std::size_t CACHE_DER_TYPE = 0;
     static constexpr std::size_t CACHE_REDUCTION = CACHE_DER_TYPE + 1;

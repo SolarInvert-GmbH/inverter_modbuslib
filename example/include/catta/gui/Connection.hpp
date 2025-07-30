@@ -245,6 +245,10 @@ class Connection : public Fl_Group
         if (_model) delete _model;
         if (_serialNumber) delete _serialNumber;
     }
+    /**
+     * @return Returns the modbus id.
+     */
+    std::uint8_t modbusId() const { return _id; }
 
   private:
     UART _uart;

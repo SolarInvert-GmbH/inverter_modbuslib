@@ -6,6 +6,10 @@
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Input.H>
 
+// si
+#include <catta/modbus/si/request/Request.hpp>
+#include <catta/modbus/si/response/Response.hpp>
+
 // std
 #include <array>
 #include <functional>
@@ -43,7 +47,9 @@ class Password : public Fl_Group
           _clientId(clientId + 10000),
           _onUnlock{onUnlock},
           _onLock{onLock},
-          _locked(true)
+          _locked(true),
+          _state(IDLE),
+          _isConnected(false)
     {
         _text = {};
         std::size_t index = 0;
@@ -72,6 +78,7 @@ class Password : public Fl_Group
         this->_input = new Fl_Input(GAP * 3 + W_ELEMENT * 2, GAP, W_ELEMENT, H_LINE, "password");
         this->_button = new Fl_Button(GAP * 4 + W_ELEMENT * 3, GAP, W_ELEMENT, H_LINE, BUTTON_LOCK);
         this->_button->callback(buttoncb, this);
+        this->_button->deactivate();
         this->box(FL_UP_BOX);
         this->end();
         this->resize(X, Y, W, H);
@@ -91,6 +98,48 @@ class Password : public Fl_Group
      * @return Returns @b true if password is given, otherwiese @b false.
      */
     bool isLocked() const { return _locked; }
+    /**
+     * @param canTakeRequest Wether there is space to send request.
+     * @param modbusId The modbus id.
+     * @param isConnected Is modbus uart connected.
+     * @return Returns the request to send.
+     */
+    catta::modbus::si::request::Request work(const bool canTakeRequest, const std::uint8_t modbusId, const bool isConnected)
+    {
+        const auto jump = [this](const std::uint8_t state, const catta::modbus::si::request::Request request)
+        {
+            _state = state;
+            return request;
+        };
+        if (isConnected != _isConnected)
+        {
+            if (isConnected)
+                _button->activate();
+            else
+            {
+                _button->deactivate();
+                if (!_locked) executeLock(false);
+            }
+            _isConnected = isConnected;
+        }
+        if (canTakeRequest)
+        {
+            switch (_state)
+            {
+                case LOCK_ENABLE_PERMANT:
+                    return jump(LOCK_FUNCTION_ACTIVATE, REQUEST_ENABLE_PERMANT);
+                case LOCK_FUNCTION_ACTIVATE:
+                    return jump(IDLE, REQUEST_FUNCTION_ACTIVATE(modbusId));
+                case UNLOCK_DISABLE_PERMANT:
+                    return jump(UNLOCK_FUNCTION_DEACTIVATE, REQUEST_DISABLE_PERMANT);
+                case UNLOCK_FUNCTION_DEACTIVATE:
+                    return jump(IDLE, REQUEST_FUNCTION_DEACTIVATE);
+                default:
+                    return catta::modbus::si::request::Request::empty();
+            }
+        }
+        return catta::modbus::si::request::Request::empty();
+    }
 
   private:
     std::uint32_t _clientId;
@@ -105,8 +154,22 @@ class Password : public Fl_Group
     Fl_Input* _input;
     Fl_Button* _button;
 
+    std::uint8_t _state;
+    bool _isConnected;
+
     constexpr static const char* BUTTON_LOCK = "unlock";
     constexpr static const char* BUTTON_UNLOCK = "lock";
+
+    void executeLock(const bool sendRequests)
+    {
+        _locked = true;
+        if (_onLock) _onLock();
+        _button->label(BUTTON_LOCK);
+        _input->show();
+        color(_defaultColor);
+        _unlocked->hide();
+        _state = sendRequests ? UNLOCK_DISABLE_PERMANT : IDLE;
+    }
 
     static void buttoncb(Fl_Widget*, void* object)
     {
@@ -132,6 +195,7 @@ class Password : public Fl_Group
                     password->_input->value("");
                     password->color(fl_rgb_color(0xc0, 0x00, 0x00));
                     password->_unlocked->show();
+                    password->_state = LOCK_ENABLE_PERMANT;
                 }
                 else
                 {
@@ -140,16 +204,37 @@ class Password : public Fl_Group
             }
             else
             {
-                password->_locked = true;
-                if (password->_onLock) password->_onLock();
-                password->_button->label(BUTTON_LOCK);
-                password->_input->show();
-                password->color(password->_defaultColor);
-                password->_unlocked->hide();
+                password->executeLock(true);
             }
         }
     }
     constexpr std::uint32_t blackMagic() const { return _clientId * 2 + 1234; }
+    constexpr static std::uint8_t IDLE = 0;
+    constexpr static std::uint8_t LOCK_ENABLE_PERMANT = IDLE + 1;
+    constexpr static std::uint8_t LOCK_FUNCTION_ACTIVATE = LOCK_ENABLE_PERMANT + 1;
+    constexpr static std::uint8_t UNLOCK_DISABLE_PERMANT = LOCK_FUNCTION_ACTIVATE + 1;
+    constexpr static std::uint8_t UNLOCK_FUNCTION_DEACTIVATE = UNLOCK_DISABLE_PERMANT + 1;
+
+    using Request = catta::modbus::si::request::Request;
+    using RegisterAddress = catta::modbus::si::RegisterAddress;
+    using Value = catta::modbus::sunspec::ValueU16;
+    using WriteRegister = catta::modbus::si::WriteRegister;
+
+    constexpr static RegisterAddress REGISTER_FUNCTION_ACTIVATE = RegisterAddress::siControlFunctionActivate();
+    constexpr static RegisterAddress REGISTER_ENABLE_PERMANT = RegisterAddress::siControlEnableWritePermanent();
+    constexpr static Value VALUE_ENABLE_PERMANT = Value::create(0xABCD);
+    constexpr static Value VALUE_DISABLE_PERMANT = Value::create(0xFFFF);
+    constexpr static Value VALUE_FUNCTION_ACTIVATE(const std::uint8_t id) { return Value::create(0x00AC * id); }
+    constexpr static Value VALUE_FUNCTION_DEACTIVATE = Value::create(0xFFFF);
+
+    constexpr static Request REQUEST_ENABLE_PERMANT = Request::writeRegister(WriteRegister::create(REGISTER_ENABLE_PERMANT, VALUE_ENABLE_PERMANT));
+    constexpr static Request REQUEST_DISABLE_PERMANT = Request::writeRegister(WriteRegister::create(REGISTER_ENABLE_PERMANT, VALUE_DISABLE_PERMANT));
+    constexpr static Request REQUEST_FUNCTION_ACTIVATE(const std::uint8_t id)
+    {
+        return Request::writeRegister(WriteRegister::create(REGISTER_FUNCTION_ACTIVATE, VALUE_FUNCTION_ACTIVATE(id)));
+    }
+    constexpr static Request REQUEST_FUNCTION_DEACTIVATE =
+        Request::writeRegister(WriteRegister::create(REGISTER_FUNCTION_ACTIVATE, VALUE_FUNCTION_DEACTIVATE));
 };
 }  // namespace gui
 }  // namespace catta
