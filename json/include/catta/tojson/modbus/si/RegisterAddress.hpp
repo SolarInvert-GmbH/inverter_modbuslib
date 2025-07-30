@@ -210,367 +210,382 @@ class Serializer<catta::modbus::si::RegisterAddress>
                     _state = SI_CONTROL_TRACKING_SELECTION + 0;
                     break;
                 case 53:
-                    _state = SI_CONTROL_START_COUNTDOWN + 0;
+                    _state = SI_CONTROL_FUNCTION_ACTIVATE + 0;
                     break;
                 case 54:
-                    _state = SI_CONTROL_NIGHT_SHUTDOWN + 0;
+                    _state = SI_CONTROL_FUNCTION_WRITE_EEPROM + 0;
                     break;
                 case 55:
-                    _state = SI_CONTROL_PMAX + 0;
+                    _state = SI_CONTROL_FUNCTION_RESET + 0;
                     break;
                 case 56:
-                    _state = SI_CONTROL_COSPHI + 0;
+                    _state = SI_CONTROL_START_COUNTDOWN + 0;
                     break;
                 case 57:
-                    _state = SI_CONTROL_UPTIME + 0;
+                    _state = SI_CONTROL_NIGHT_SHUTDOWN + 0;
                     break;
                 case 58:
-                    _state = SI_CONTROL_MPP_STEP_DAC0 + 0;
+                    _state = SI_CONTROL_PMAX + 0;
                     break;
                 case 59:
-                    _state = SI_CONTROL_MPP_STEP_DAC1 + 0;
+                    _state = SI_CONTROL_COSPHI + 0;
                     break;
                 case 60:
-                    _state = SI_CONTROL_MPP_STEP_DAC2 + 0;
+                    _state = SI_CONTROL_UPTIME + 0;
                     break;
                 case 61:
-                    _state = SI_CONTROL_MPP_STEP_DAC3 + 0;
+                    _state = SI_CONTROL_MPP_STEP_DAC0 + 0;
                     break;
                 case 62:
-                    _state = SI_CONTROL_MPP_STEP_UDC0 + 0;
+                    _state = SI_CONTROL_MPP_STEP_DAC1 + 0;
                     break;
                 case 63:
-                    _state = SI_CONTROL_MPP_STEP_UDC1 + 0;
+                    _state = SI_CONTROL_MPP_STEP_DAC2 + 0;
                     break;
                 case 64:
-                    _state = SI_CONTROL_MPP_STEP_UDC2 + 0;
+                    _state = SI_CONTROL_MPP_STEP_DAC3 + 0;
                     break;
                 case 65:
-                    _state = SI_CONTROL_MPP_STEP_UDC3 + 0;
+                    _state = SI_CONTROL_MPP_STEP_UDC0 + 0;
                     break;
                 case 66:
-                    _state = SI_CONTROL_MPP_SAMPLE_DAC0 + 0;
+                    _state = SI_CONTROL_MPP_STEP_UDC1 + 0;
                     break;
                 case 67:
-                    _state = SI_CONTROL_MPP_SAMPLE_DAC1 + 0;
+                    _state = SI_CONTROL_MPP_STEP_UDC2 + 0;
                     break;
                 case 68:
-                    _state = SI_CONTROL_MPP_SAMPLE_DAC2 + 0;
+                    _state = SI_CONTROL_MPP_STEP_UDC3 + 0;
                     break;
                 case 69:
-                    _state = SI_CONTROL_MPP_SAMPLE_DAC3 + 0;
+                    _state = SI_CONTROL_MPP_SAMPLE_DAC0 + 0;
                     break;
                 case 70:
-                    _state = SI_CONTROL_MPP_SAMPLE_UDC0 + 0;
+                    _state = SI_CONTROL_MPP_SAMPLE_DAC1 + 0;
                     break;
                 case 71:
-                    _state = SI_CONTROL_MPP_SAMPLE_UDC1 + 0;
+                    _state = SI_CONTROL_MPP_SAMPLE_DAC2 + 0;
                     break;
                 case 72:
-                    _state = SI_CONTROL_MPP_SAMPLE_UDC2 + 0;
+                    _state = SI_CONTROL_MPP_SAMPLE_DAC3 + 0;
                     break;
                 case 73:
-                    _state = SI_CONTROL_MPP_SAMPLE_UDC3 + 0;
+                    _state = SI_CONTROL_MPP_SAMPLE_UDC0 + 0;
                     break;
                 case 74:
-                    _state = SI_CONTROL_REDUCTION + 0;
+                    _state = SI_CONTROL_MPP_SAMPLE_UDC1 + 0;
                     break;
                 case 75:
-                    _state = SI_CONTROL_SINEDUTY + 0;
+                    _state = SI_CONTROL_MPP_SAMPLE_UDC2 + 0;
                     break;
                 case 76:
-                    _state = SI_CONTROL_FILTER_WIND_CURVE + 0;
+                    _state = SI_CONTROL_MPP_SAMPLE_UDC3 + 0;
                     break;
                 case 77:
-                    _state = SI_CONTROL_WIND_CURVE_X00 + 0;
+                    _state = SI_CONTROL_REDUCTION + 0;
                     break;
                 case 78:
-                    _state = SI_CONTROL_WIND_CURVE_X01 + 0;
+                    _state = SI_CONTROL_SINEDUTY + 0;
                     break;
                 case 79:
-                    _state = SI_CONTROL_WIND_CURVE_X02 + 0;
+                    _state = SI_CONTROL_FILTER_WIND_CURVE + 0;
                     break;
                 case 80:
-                    _state = SI_CONTROL_WIND_CURVE_X03 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X00 + 0;
                     break;
                 case 81:
-                    _state = SI_CONTROL_WIND_CURVE_X04 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X01 + 0;
                     break;
                 case 82:
-                    _state = SI_CONTROL_WIND_CURVE_X05 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X02 + 0;
                     break;
                 case 83:
-                    _state = SI_CONTROL_WIND_CURVE_X06 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X03 + 0;
                     break;
                 case 84:
-                    _state = SI_CONTROL_WIND_CURVE_X07 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X04 + 0;
                     break;
                 case 85:
-                    _state = SI_CONTROL_WIND_CURVE_X08 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X05 + 0;
                     break;
                 case 86:
-                    _state = SI_CONTROL_WIND_CURVE_X09 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X06 + 0;
                     break;
                 case 87:
-                    _state = SI_CONTROL_WIND_CURVE_X10 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X07 + 0;
                     break;
                 case 88:
-                    _state = SI_CONTROL_WIND_CURVE_X11 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X08 + 0;
                     break;
                 case 89:
-                    _state = SI_CONTROL_WIND_CURVE_X12 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X09 + 0;
                     break;
                 case 90:
-                    _state = SI_CONTROL_WIND_CURVE_X13 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X10 + 0;
                     break;
                 case 91:
-                    _state = SI_CONTROL_WIND_CURVE_X14 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X11 + 0;
                     break;
                 case 92:
-                    _state = SI_CONTROL_WIND_CURVE_X15 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X12 + 0;
                     break;
                 case 93:
-                    _state = SI_CONTROL_WIND_CURVE_Y00_READ + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X13 + 0;
                     break;
                 case 94:
-                    _state = SI_CONTROL_WIND_CURVE_Y01_READ + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X14 + 0;
                     break;
                 case 95:
-                    _state = SI_CONTROL_WIND_CURVE_Y02_READ + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X15 + 0;
                     break;
                 case 96:
-                    _state = SI_CONTROL_WIND_CURVE_Y03_READ + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y00_READ + 0;
                     break;
                 case 97:
-                    _state = SI_CONTROL_WIND_CURVE_Y04_READ + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y01_READ + 0;
                     break;
                 case 98:
-                    _state = SI_CONTROL_WIND_CURVE_Y05_READ + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y02_READ + 0;
                     break;
                 case 99:
-                    _state = SI_CONTROL_WIND_CURVE_Y06_READ + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y03_READ + 0;
                     break;
                 case 100:
-                    _state = SI_CONTROL_WIND_CURVE_Y07_READ + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y04_READ + 0;
                     break;
                 case 101:
-                    _state = SI_CONTROL_WIND_CURVE_Y08_READ + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y05_READ + 0;
                     break;
                 case 102:
-                    _state = SI_CONTROL_WIND_CURVE_Y09_READ + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y06_READ + 0;
                     break;
                 case 103:
-                    _state = SI_CONTROL_WIND_CURVE_Y10_READ + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y07_READ + 0;
                     break;
                 case 104:
-                    _state = SI_CONTROL_WIND_CURVE_Y11_READ + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y08_READ + 0;
                     break;
                 case 105:
-                    _state = SI_CONTROL_WIND_CURVE_Y12_READ + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y09_READ + 0;
                     break;
                 case 106:
-                    _state = SI_CONTROL_WIND_CURVE_Y13_READ + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y10_READ + 0;
                     break;
                 case 107:
-                    _state = SI_CONTROL_WIND_CURVE_Y14_READ + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y11_READ + 0;
                     break;
                 case 108:
-                    _state = SI_CONTROL_WIND_CURVE_Y15_READ + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y12_READ + 0;
                     break;
                 case 109:
-                    _state = SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y13_READ + 0;
                     break;
                 case 110:
-                    _state = SI_CONTROL_POWER_LIMIT_SAFTY_MODE + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y14_READ + 0;
                     break;
                 case 111:
-                    _state = SI_CONTROL_UMIN_WRITE + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y15_READ + 0;
                     break;
                 case 112:
-                    _state = SI_CONTROL_UMAX_WRITE + 0;
+                    _state = SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 0;
                     break;
                 case 113:
-                    _state = SI_CONTROL_VOLTAGE_DC_START_WRITE + 0;
+                    _state = SI_CONTROL_POWER_LIMIT_SAFTY_MODE + 0;
                     break;
                 case 114:
-                    _state = SI_CONTROL_BATTERY_BI_MODE_WRITE + 0;
+                    _state = SI_CONTROL_UMIN_WRITE + 0;
                     break;
                 case 115:
-                    _state = SI_CONTROL_BATTERY_SAFTY_MODE_WRITE + 0;
+                    _state = SI_CONTROL_UMAX_WRITE + 0;
                     break;
                 case 116:
-                    _state = SI_CONTROL_BATTERY_CV_MODE_WRITE + 0;
+                    _state = SI_CONTROL_VOLTAGE_DC_START_WRITE + 0;
                     break;
                 case 117:
-                    _state = SI_CONTROL_DC_LOW_WRITE + 0;
+                    _state = SI_CONTROL_BATTERY_BI_MODE_WRITE + 0;
                     break;
                 case 118:
-                    _state = SI_CONTROL_DC_HIGH_WRITE + 0;
+                    _state = SI_CONTROL_BATTERY_SAFTY_MODE_WRITE + 0;
                     break;
                 case 119:
-                    _state = SI_CONTROL_WIND_CURVE_Y00_WRITE + 0;
+                    _state = SI_CONTROL_BATTERY_CV_MODE_WRITE + 0;
                     break;
                 case 120:
-                    _state = SI_CONTROL_WIND_CURVE_Y01_WRITE + 0;
+                    _state = SI_CONTROL_DC_LOW_WRITE + 0;
                     break;
                 case 121:
-                    _state = SI_CONTROL_WIND_CURVE_Y02_WRITE + 0;
+                    _state = SI_CONTROL_DC_HIGH_WRITE + 0;
                     break;
                 case 122:
-                    _state = SI_CONTROL_WIND_CURVE_Y03_WRITE + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y00_WRITE + 0;
                     break;
                 case 123:
-                    _state = SI_CONTROL_WIND_CURVE_Y04_WRITE + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y01_WRITE + 0;
                     break;
                 case 124:
-                    _state = SI_CONTROL_WIND_CURVE_Y05_WRITE + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y02_WRITE + 0;
                     break;
                 case 125:
-                    _state = SI_CONTROL_WIND_CURVE_Y06_WRITE + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y03_WRITE + 0;
                     break;
                 case 126:
-                    _state = SI_CONTROL_WIND_CURVE_Y07_WRITE + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y04_WRITE + 0;
                     break;
                 case 127:
-                    _state = SI_CONTROL_WIND_CURVE_Y08_WRITE + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y05_WRITE + 0;
                     break;
                 case 128:
-                    _state = SI_CONTROL_WIND_CURVE_Y09_WRITE + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y06_WRITE + 0;
                     break;
                 case 129:
-                    _state = SI_CONTROL_WIND_CURVE_Y10_WRITE + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y07_WRITE + 0;
                     break;
                 case 130:
-                    _state = SI_CONTROL_WIND_CURVE_Y11_WRITE + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y08_WRITE + 0;
                     break;
                 case 131:
-                    _state = SI_CONTROL_WIND_CURVE_Y12_WRITE + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y09_WRITE + 0;
                     break;
                 case 132:
-                    _state = SI_CONTROL_WIND_CURVE_Y13_WRITE + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y10_WRITE + 0;
                     break;
                 case 133:
-                    _state = SI_CONTROL_WIND_CURVE_Y14_WRITE + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y11_WRITE + 0;
                     break;
                 case 134:
-                    _state = SI_CONTROL_WIND_CURVE_Y15_WRITE + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y12_WRITE + 0;
                     break;
                 case 135:
-                    _state = SI_CONTROL_CONSTANT_VOLTAGE_Y0_WRITE + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y13_WRITE + 0;
                     break;
                 case 136:
-                    _state = SI_CONTROL_CONSTANT_VOLTAGE_Y1_WRITE + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y14_WRITE + 0;
                     break;
                 case 137:
-                    _state = SI_CONTROL_CONSTANT_VOLTAGE_Y2_WRITE + 0;
+                    _state = SI_CONTROL_WIND_CURVE_Y15_WRITE + 0;
                     break;
                 case 138:
-                    _state = SI_CONTROL_DAC_CURVE_Y0_READ + 0;
+                    _state = SI_CONTROL_CONSTANT_VOLTAGE_Y0_WRITE + 0;
                     break;
                 case 139:
-                    _state = SI_CONTROL_DAC_CURVE_Y1_READ + 0;
+                    _state = SI_CONTROL_CONSTANT_VOLTAGE_Y1_WRITE + 0;
                     break;
                 case 140:
-                    _state = SI_CONTROL_DAC_CURVE_Y2_READ + 0;
+                    _state = SI_CONTROL_CONSTANT_VOLTAGE_Y2_WRITE + 0;
                     break;
                 case 141:
-                    _state = SI_CONTROL_DAC_CURVE_Y3_READ + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y0_READ + 0;
                     break;
                 case 142:
-                    _state = SI_CONTROL_DAC_CURVE_Y4_READ + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y1_READ + 0;
                     break;
                 case 143:
-                    _state = SI_CONTROL_DAC_CURVE_Y5_READ + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y2_READ + 0;
                     break;
                 case 144:
-                    _state = SI_CONTROL_DAC_CURVE_Y6_READ + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y3_READ + 0;
                     break;
                 case 145:
-                    _state = SI_CONTROL_DAC_CURVE_Y7_READ + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y4_READ + 0;
                     break;
                 case 146:
-                    _state = SI_CONTROL_DAC_CURVE_Y8_READ + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y5_READ + 0;
                     break;
                 case 147:
-                    _state = SI_CONTROL_DAC_CURVE_Y9_READ + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y6_READ + 0;
                     break;
                 case 148:
-                    _state = SI_CONTROL_CONSTANT_VOLTAGE_X0 + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y7_READ + 0;
                     break;
                 case 149:
-                    _state = SI_CONTROL_CONSTANT_VOLTAGE_X1 + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y8_READ + 0;
                     break;
                 case 150:
-                    _state = SI_CONTROL_CONSTANT_VOLTAGE_X2 + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y9_READ + 0;
                     break;
                 case 151:
-                    _state = SI_CONTROL_CONSTANT_VOLTAGE_Y0_READ + 0;
+                    _state = SI_CONTROL_CONSTANT_VOLTAGE_X0 + 0;
                     break;
                 case 152:
-                    _state = SI_CONTROL_CONSTANT_VOLTAGE_Y1_READ + 0;
+                    _state = SI_CONTROL_CONSTANT_VOLTAGE_X1 + 0;
                     break;
                 case 153:
-                    _state = SI_CONTROL_CONSTANT_VOLTAGE_Y2_READ + 0;
+                    _state = SI_CONTROL_CONSTANT_VOLTAGE_X2 + 0;
                     break;
                 case 154:
-                    _state = SI_CONTROL_DAC_CURVE_X0 + 0;
+                    _state = SI_CONTROL_CONSTANT_VOLTAGE_Y0_READ + 0;
                     break;
                 case 155:
-                    _state = SI_CONTROL_DAC_CURVE_X1 + 0;
+                    _state = SI_CONTROL_CONSTANT_VOLTAGE_Y1_READ + 0;
                     break;
                 case 156:
-                    _state = SI_CONTROL_DAC_CURVE_X2 + 0;
+                    _state = SI_CONTROL_CONSTANT_VOLTAGE_Y2_READ + 0;
                     break;
                 case 157:
-                    _state = SI_CONTROL_DAC_CURVE_X3 + 0;
+                    _state = SI_CONTROL_DAC_CURVE_X0 + 0;
                     break;
                 case 158:
-                    _state = SI_CONTROL_DAC_CURVE_X4 + 0;
+                    _state = SI_CONTROL_DAC_CURVE_X1 + 0;
                     break;
                 case 159:
-                    _state = SI_CONTROL_DAC_CURVE_X5 + 0;
+                    _state = SI_CONTROL_DAC_CURVE_X2 + 0;
                     break;
                 case 160:
-                    _state = SI_CONTROL_DAC_CURVE_X6 + 0;
+                    _state = SI_CONTROL_DAC_CURVE_X3 + 0;
                     break;
                 case 161:
-                    _state = SI_CONTROL_DAC_CURVE_X7 + 0;
+                    _state = SI_CONTROL_DAC_CURVE_X4 + 0;
                     break;
                 case 162:
-                    _state = SI_CONTROL_DAC_CURVE_X8 + 0;
+                    _state = SI_CONTROL_DAC_CURVE_X5 + 0;
                     break;
                 case 163:
-                    _state = SI_CONTROL_DAC_CURVE_X9 + 0;
+                    _state = SI_CONTROL_DAC_CURVE_X6 + 0;
                     break;
                 case 164:
-                    _state = SI_CONTROL_DAC_CURVE_Y0_WRITE + 0;
+                    _state = SI_CONTROL_DAC_CURVE_X7 + 0;
                     break;
                 case 165:
-                    _state = SI_CONTROL_DAC_CURVE_Y1_WRITE + 0;
+                    _state = SI_CONTROL_DAC_CURVE_X8 + 0;
                     break;
                 case 166:
-                    _state = SI_CONTROL_DAC_CURVE_Y2_WRITE + 0;
+                    _state = SI_CONTROL_DAC_CURVE_X9 + 0;
                     break;
                 case 167:
-                    _state = SI_CONTROL_DAC_CURVE_Y3_WRITE + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y0_WRITE + 0;
                     break;
                 case 168:
-                    _state = SI_CONTROL_DAC_CURVE_Y4_WRITE + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y1_WRITE + 0;
                     break;
                 case 169:
-                    _state = SI_CONTROL_DAC_CURVE_Y5_WRITE + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y2_WRITE + 0;
                     break;
                 case 170:
-                    _state = SI_CONTROL_DAC_CURVE_Y6_WRITE + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y3_WRITE + 0;
                     break;
                 case 171:
-                    _state = SI_CONTROL_DAC_CURVE_Y7_WRITE + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y4_WRITE + 0;
                     break;
                 case 172:
+                    _state = SI_CONTROL_DAC_CURVE_Y5_WRITE + 0;
+                    break;
+                case 173:
+                    _state = SI_CONTROL_DAC_CURVE_Y6_WRITE + 0;
+                    break;
+                case 174:
+                    _state = SI_CONTROL_DAC_CURVE_Y7_WRITE + 0;
+                    break;
+                case 175:
                     _state = SI_CONTROL_DAC_CURVE_Y8_WRITE + 0;
                     break;
-                default:
+                case 176:
                     _state = SI_CONTROL_DAC_CURVE_Y9_WRITE + 0;
+                    break;
+                case 177:
+                    _state = SI_CONTROL_ENABLE_WRITE_ONCE + 0;
+                    break;
+                default:
+                    _state = SI_CONTROL_ENABLE_WRITE_PERMANT + 0;
                     break;
             }
             return stay(token);
@@ -2961,6 +2976,156 @@ class Serializer<catta::modbus::si::RegisterAddress>
                 return next(catta::json::Token::character('o'));
             case SI_CONTROL_TRACKING_SELECTION + 25:
                 return jump(catta::json::Token::character('n'), TAIL + 0);
+            case SI_CONTROL_FUNCTION_ACTIVATE + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 9:
+                return next(catta::json::Token::character('F'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 10:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 12:
+                return next(catta::json::Token::character('c'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 13:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 14:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 15:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 16:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 17:
+                return next(catta::json::Token::character('A'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 18:
+                return next(catta::json::Token::character('c'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 19:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 20:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 21:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 22:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 23:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_FUNCTION_ACTIVATE + 24:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 9:
+                return next(catta::json::Token::character('F'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 10:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 12:
+                return next(catta::json::Token::character('c'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 13:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 14:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 15:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 16:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 17:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 18:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 19:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 20:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 21:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 22:
+                return next(catta::json::Token::character('E'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 23:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 24:
+                return next(catta::json::Token::character('p'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 25:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 26:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_FUNCTION_WRITE_EEPROM + 27:
+                return jump(catta::json::Token::character('m'), TAIL + 0);
+            case SI_CONTROL_FUNCTION_RESET + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_FUNCTION_RESET + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_FUNCTION_RESET + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_FUNCTION_RESET + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_FUNCTION_RESET + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_FUNCTION_RESET + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_FUNCTION_RESET + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_FUNCTION_RESET + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_FUNCTION_RESET + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_FUNCTION_RESET + 9:
+                return next(catta::json::Token::character('F'));
+            case SI_CONTROL_FUNCTION_RESET + 10:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_FUNCTION_RESET + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_FUNCTION_RESET + 12:
+                return next(catta::json::Token::character('c'));
+            case SI_CONTROL_FUNCTION_RESET + 13:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_FUNCTION_RESET + 14:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_FUNCTION_RESET + 15:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_FUNCTION_RESET + 16:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_FUNCTION_RESET + 17:
+                return next(catta::json::Token::character('R'));
+            case SI_CONTROL_FUNCTION_RESET + 18:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_FUNCTION_RESET + 19:
+                return next(catta::json::Token::character('s'));
+            case SI_CONTROL_FUNCTION_RESET + 20:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_FUNCTION_RESET + 21:
+                return jump(catta::json::Token::character('t'), TAIL + 0);
             case SI_CONTROL_START_COUNTDOWN + 0:
                 return next(catta::json::Token::character('S'));
             case SI_CONTROL_START_COUNTDOWN + 1:
@@ -8565,6 +8730,108 @@ class Serializer<catta::modbus::si::RegisterAddress>
                 return next(catta::json::Token::character('t'));
             case SI_CONTROL_DAC_CURVE_Y9_WRITE + 23:
                 return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 9:
+                return next(catta::json::Token::character('E'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 10:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 11:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 12:
+                return next(catta::json::Token::character('b'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 13:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 14:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 15:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 16:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 17:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 18:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 19:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 20:
+                return next(catta::json::Token::character('O'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 21:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 22:
+                return next(catta::json::Token::character('c'));
+            case SI_CONTROL_ENABLE_WRITE_ONCE + 23:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 9:
+                return next(catta::json::Token::character('E'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 10:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 11:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 12:
+                return next(catta::json::Token::character('b'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 13:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 14:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 15:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 16:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 17:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 18:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 19:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 20:
+                return next(catta::json::Token::character('P'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 21:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 22:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 23:
+                return next(catta::json::Token::character('m'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 24:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 25:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_ENABLE_WRITE_PERMANT + 26:
+                return jump(catta::json::Token::character('t'), TAIL + 0);
             case TAIL + 0:
                 return next(catta::json::Token::closeString());
             case TAIL + 1:
@@ -8640,7 +8907,10 @@ class Serializer<catta::modbus::si::RegisterAddress>
     static constexpr std::uint16_t SI_CONTROL_DC_LOW_READ = SI_CONTROL_BATTERY_CV_MODE_READ + 26;
     static constexpr std::uint16_t SI_CONTROL_DC_HIGH_READ = SI_CONTROL_DC_LOW_READ + 18;
     static constexpr std::uint16_t SI_CONTROL_TRACKING_SELECTION = SI_CONTROL_DC_HIGH_READ + 19;
-    static constexpr std::uint16_t SI_CONTROL_START_COUNTDOWN = SI_CONTROL_TRACKING_SELECTION + 26;
+    static constexpr std::uint16_t SI_CONTROL_FUNCTION_ACTIVATE = SI_CONTROL_TRACKING_SELECTION + 26;
+    static constexpr std::uint16_t SI_CONTROL_FUNCTION_WRITE_EEPROM = SI_CONTROL_FUNCTION_ACTIVATE + 25;
+    static constexpr std::uint16_t SI_CONTROL_FUNCTION_RESET = SI_CONTROL_FUNCTION_WRITE_EEPROM + 28;
+    static constexpr std::uint16_t SI_CONTROL_START_COUNTDOWN = SI_CONTROL_FUNCTION_RESET + 22;
     static constexpr std::uint16_t SI_CONTROL_NIGHT_SHUTDOWN = SI_CONTROL_START_COUNTDOWN + 23;
     static constexpr std::uint16_t SI_CONTROL_PMAX = SI_CONTROL_NIGHT_SHUTDOWN + 22;
     static constexpr std::uint16_t SI_CONTROL_COSPHI = SI_CONTROL_PMAX + 13;
@@ -8761,7 +9031,9 @@ class Serializer<catta::modbus::si::RegisterAddress>
     static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y7_WRITE = SI_CONTROL_DAC_CURVE_Y6_WRITE + 24;
     static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y8_WRITE = SI_CONTROL_DAC_CURVE_Y7_WRITE + 24;
     static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y9_WRITE = SI_CONTROL_DAC_CURVE_Y8_WRITE + 24;
-    static constexpr std::uint16_t TAIL = SI_CONTROL_DAC_CURVE_Y9_WRITE + 24;
+    static constexpr std::uint16_t SI_CONTROL_ENABLE_WRITE_ONCE = SI_CONTROL_DAC_CURVE_Y9_WRITE + 24;
+    static constexpr std::uint16_t SI_CONTROL_ENABLE_WRITE_PERMANT = SI_CONTROL_ENABLE_WRITE_ONCE + 24;
+    static constexpr std::uint16_t TAIL = SI_CONTROL_ENABLE_WRITE_PERMANT + 27;
     static constexpr std::uint16_t DONE = TAIL + 2;
     static constexpr std::uint16_t ERROR_STATE = DONE + 1;
 };
