@@ -690,12 +690,17 @@ class MiniSicc : public Fl_Double_Window
         {
             static constexpr std::optional<bool> empty = std::optional<bool>{};
             if (!r.type().isValue32())
+            {
                 _miniSicc._values->setLed1(empty);
+                _miniSicc._commands->setRelayOn(empty);
+            }
             else
             {
                 const std::uint32_t v = r.value32Value();
                 static constexpr std::uint32_t RELAY_OFF = 0x04;
-                _miniSicc._values->setLed1(!(v & RELAY_OFF));
+                const bool value = !(v & RELAY_OFF);
+                _miniSicc._values->setLed1(value);
+                _miniSicc._commands->setRelayOn(value);
             }
         }
 
@@ -715,11 +720,13 @@ class MiniSicc : public Fl_Double_Window
             else
             {
                 const std::uint32_t v = r.value32Value();
-                static constexpr std::uint32_t UAC_OK = 0x02;
-                static constexpr std::uint32_t FREQ_OK = 0x08;
-                static constexpr std::uint32_t WR_WORKING = 0x10;
-                static constexpr std::uint32_t PMAX_ACTIVE = 0x40;
+                static constexpr std::uint32_t UAC_OK = 0x0002;
+                static constexpr std::uint32_t FREQ_OK = 0x0008;
+                static constexpr std::uint32_t WR_WORKING = 0x0010;
+                static constexpr std::uint32_t PMAX_ACTIVE = 0x0040;
+                static constexpr std::uint32_t CV_MODE = 0x0100;
                 _miniSicc._values->setLed3(v & UAC_OK, v & FREQ_OK, v & WR_WORKING, v & PMAX_ACTIVE);
+                _miniSicc._commands->setCvMode(v & CV_MODE);
             }
         }
 
@@ -865,8 +872,8 @@ class MiniSicc : public Fl_Double_Window
             _miniSicc._cache.setValidTime(CACHE_AC_VOLTAGE_C, time);
             _miniSicc._cache.setValidTime(CACHE_FREQUENCY, time);
             _miniSicc._cache.setValidTime(CACHE_POWER_FACTOR, lockedTime);
-            _miniSicc._cache.setValidTime(CACHE_EVENTS_1, lockedTime);
-            _miniSicc._cache.setValidTime(CACHE_EVENTS_3, lockedTime);
+            _miniSicc._cache.setValidTime(CACHE_EVENTS_1, time);
+            _miniSicc._cache.setValidTime(CACHE_EVENTS_3, time);
             _miniSicc._cache.setValidTime(CACHE_ENERGY_PRODUCTION, time);
             _miniSicc._cache.setValidTime(CACHE_DC_VOLTAGE, time);
             _miniSicc._cache.setValidTime(CACHE_DC_POWER, time);
