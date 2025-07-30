@@ -49,10 +49,15 @@ class Commands : public Fl_Group
         static const int X2 = X1 + W_FLIP + GAP;
         static const int X3 = X2 + W_SPINNER + GAP;
         static const int X4 = X3 + W_SEND + GAP;
-        _labelMode = new Fl_Box(X0, Y + H_LINE * 1, W_LABEL, H_LINE, "CV Mode");
-        _labelMode->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
-        _labelInverterControl = new Fl_Box(X0, Y + H_LINE * 2, W_LABEL, H_LINE, "Inverter Control");
-        _labelInverterControl->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
+        const auto createLabel = [Y](Fl_Box*& label, const int line, const char* l)
+        {
+            label = new Fl_Box(X0, Y + H_LINE * line, W_LABEL, H_LINE, l);
+            label->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
+        };
+        createLabel(_labelMode, 1, "CV Mode");
+        createLabel(_labelInverterControl, 2, "Inverter Control");
+        createLabel(_labelReset, 3, "Reset Inverter");
+        createLabel(_labelWriteEeprom, 4, "Write Eeprom (attention!)");
 
         _flipMode = new FlipButton(X1, Y + H_LINE * 1, W_FLIP, H_LINE);
         _flipInverterControl = new FlipButton(X1, Y + H_LINE * 2, W_FLIP, H_LINE);
@@ -64,10 +69,16 @@ class Commands : public Fl_Group
         _spinner->step(0.1);
         _spinner->value(24.0);
 
-        _sendMode = new Fl_Button(X3, Y + H_LINE * 1, W_SEND, H_LINE, "@+5>");
-        _sendMode->callback(sendModeCb, this);
-        _sendInverterControl = new Fl_Button(X3, Y + H_LINE * 2, W_SEND, H_LINE, "@+5>");
-        _sendInverterControl->callback(sendInverterControlCb, this);
+        const auto createButton = [this, Y](Fl_Button*& button, const int line, Fl_Callback* cb)
+        {
+            button = new Fl_Button(X3, Y + H_LINE * line, W_SEND, H_LINE, "@+5>");
+            button->callback(cb, this);
+        };
+
+        createButton(_sendMode, 1, sendModeCb);
+        createButton(_sendInverterControl, 2, sendInverterControlCb);
+        createButton(_sendReset, 3, sendResetCb);
+        createButton(_sendWriteEeprom, 4, sendWriteEepromCb);
 
         _ledMode = new Led(X4, Y + H_LINE * 1, W_LED, H_LINE, "CV MODE");
         _ledInverterControl = new Led(X4, Y + H_LINE * 2, W_LED, H_LINE, "RELAY ON");
@@ -93,6 +104,8 @@ class Commands : public Fl_Group
             _request = {};
             _sendMode->show();
             _sendInverterControl->show();
+            _sendReset->show();
+            _sendWriteEeprom->show();
             return result;
         }
         (void)response;
@@ -107,6 +120,26 @@ class Commands : public Fl_Group
      * @param[in] cvMode The cvMode.
      */
     void setCvMode(const std::optional<bool> cvMode) { _ledMode->set(cvMode); }
+    /**
+     * Show locked stuff.
+     */
+    void lock()
+    {
+        _labelReset->hide();
+        _labelWriteEeprom->hide();
+        _sendReset->hide();
+        _sendWriteEeprom->hide();
+    }
+    /**
+     * Hide locked stuff.
+     */
+    void unlock()
+    {
+        _labelReset->show();
+        _labelWriteEeprom->show();
+        _sendReset->show();
+        _sendWriteEeprom->show();
+    }
 
   private:
     class FlipButton : public Fl_Group
@@ -157,14 +190,26 @@ class Commands : public Fl_Group
     };
     Fl_Box* _labelMode;
     Fl_Box* _labelInverterControl;
+    Fl_Box* _labelReset;
+    Fl_Box* _labelWriteEeprom;
     FlipButton* _flipMode;
     FlipButton* _flipInverterControl;
     Fl_Spinner* _spinner;
     Fl_Button* _sendMode;
     Fl_Button* _sendInverterControl;
+    Fl_Button* _sendReset;
+    Fl_Button* _sendWriteEeprom;
     Led* _ledMode;
     Led* _ledInverterControl;
     catta::modbus::si::request::Request _request;
+
+    void hideButtons()
+    {
+        _sendMode->hide();
+        _sendInverterControl->hide();
+        _sendReset->hide();
+        _sendWriteEeprom->hide();
+    }
 
     static void sendModeCb(Fl_Widget*, void* object)
     {
@@ -180,8 +225,7 @@ class Commands : public Fl_Group
             };
             commands->_request =
                 on ? catta::modbus::si::request::Request::startConstantVoltage(value()) : catta::modbus::si::request::Request::endConstantVoltage();
-            commands->_sendMode->hide();
-            commands->_sendInverterControl->hide();
+            commands->hideButtons();
         }
     }
 
@@ -193,10 +237,40 @@ class Commands : public Fl_Group
             const bool on = commands->_flipInverterControl->value();
             commands->_request =
                 on ? catta::modbus::si::request::Request::switchOnGridRelay() : catta::modbus::si::request::Request::switchOffGridRelay();
-            commands->_sendMode->hide();
-            commands->_sendInverterControl->hide();
+            commands->hideButtons();
         }
     }
+
+    static void sendResetCb(Fl_Widget*, void* object)
+    {
+        Commands* commands = static_cast<Commands*>(object);
+        if (commands)
+        {
+            commands->_request = REQUEST_RESET;
+            commands->hideButtons();
+        }
+    }
+
+    static void sendWriteEepromCb(Fl_Widget*, void* object)
+    {
+        Commands* commands = static_cast<Commands*>(object);
+        if (commands)
+        {
+            commands->_request = REQUEST_WRITE_EEPROM;
+            commands->hideButtons();
+        }
+    }
+
+    using Request = catta::modbus::si::request::Request;
+    using RegisterAddress = catta::modbus::si::RegisterAddress;
+    using Value = catta::modbus::sunspec::ValueU16;
+    using WriteRegister = catta::modbus::si::WriteRegister;
+
+    constexpr static RegisterAddress REGISTER_RESET = RegisterAddress::siControlFunctionReset();
+    constexpr static RegisterAddress REGISTER_WRITE_EEPROM = RegisterAddress::siControlFunctionWriteEeprom();
+    constexpr static Value VALUE = Value::create(0x0001);
+    constexpr static Request REQUEST_RESET = Request::writeRegister(WriteRegister::create(REGISTER_RESET, VALUE));
+    constexpr static Request REQUEST_WRITE_EEPROM = Request::writeRegister(WriteRegister::create(REGISTER_WRITE_EEPROM, VALUE));
 };
 }  // namespace gui
 }  // namespace catta

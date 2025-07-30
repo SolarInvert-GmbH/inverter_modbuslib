@@ -724,7 +724,10 @@ class MiniSicc : public Fl_Double_Window
         {
             static constexpr std::optional<bool> empty = std::optional<bool>{};
             if (!r.type().isValue32())
+            {
                 _miniSicc._values->setLed3(empty, empty, empty, empty);
+                _miniSicc._commands->setCvMode(empty);
+            }
             else
             {
                 const std::uint32_t v = r.value32Value();
@@ -906,6 +909,7 @@ class MiniSicc : public Fl_Double_Window
         {
             _miniSicc._values->unlock();
             _miniSicc._static->unlock();
+            _miniSicc._commands->unlock();
             _miniSicc._values->triggerSliderCallback();
             _miniSicc.handleProtectedTabs();
         }
@@ -922,6 +926,7 @@ class MiniSicc : public Fl_Double_Window
         {
             _miniSicc._values->lock();
             _miniSicc._static->lock();
+            _miniSicc._commands->lock();
             _miniSicc._values->triggerSliderCallback();
             _miniSicc.handleProtectedTabs();
         }
