@@ -1,0 +1,1787 @@
+[
+    {
+        "id": "dddc06ab12a489f4",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "613c042b0b59cc2f",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "readFactoryValues",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"factoryValues\",\"value\":null}",
+        "payloadType": "json",
+        "x": 150,
+        "y": 80,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "0fa01882b4094234",
+        "type": "debug",
+        "z": "dddc06ab12a489f4",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1020,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "8da4be9f41d23530",
+        "type": "change",
+        "z": "dddc06ab12a489f4",
+        "name": "Serialnumber",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.value.serialnumber",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1190,
+        "y": 120,
+        "wires": [
+            [
+                "0fa01882b4094234"
+            ]
+        ]
+    },
+    {
+        "id": "adfb03e1d2a4a604",
+        "type": "change",
+        "z": "dddc06ab12a489f4",
+        "name": "Value",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.value",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1170,
+        "y": 200,
+        "wires": [
+            [
+                "0fa01882b4094234"
+            ]
+        ]
+    },
+    {
+        "id": "80fc1ca1baf6b80b",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "readOperatingData33",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readOperatingData33\",\"value\":null}",
+        "payloadType": "json",
+        "x": 160,
+        "y": 140,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "0f4b6f5a7197ddb6",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "readOperatingData3e",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readOperatingData3e\",\"value\":null}",
+        "payloadType": "json",
+        "x": 160,
+        "y": 200,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "a8f67726d765f4d7",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "switchOffGridRelay",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"switchOffGridRelay\",\"value\":null}",
+        "payloadType": "json",
+        "x": 150,
+        "y": 260,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "f390f7297d58d830",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "switchOnGridRelay",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"switchOnGridRelay\",\"value\":null}",
+        "payloadType": "json",
+        "x": 150,
+        "y": 300,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "e4b1a5f0225b633a",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "forceIdle",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"forceIdle\",\"value\":null}",
+        "payloadType": "json",
+        "x": 120,
+        "y": 340,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "369831ff7ae7b5a9",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "deactivateIdle",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"deactivateIdle\",\"value\":null}",
+        "payloadType": "json",
+        "x": 130,
+        "y": 380,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "8de6dd81590c94d1",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "startConstantVoltage",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"startConstantVoltage\",\"value\":{\"uSet\":{\"quantety\":24.6,\"unit\":\"V\"}}}",
+        "payloadType": "json",
+        "x": 150,
+        "y": 420,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "40c6a930c6fb6630",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "endConstantVoltage",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"endConstantVoltage\",\"value\":null}",
+        "payloadType": "json",
+        "x": 150,
+        "y": 460,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "08aa0094d1a13696",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "setPowerFactor",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"setPowerFactor\",\"value\":{\"cosPhi\":1}}",
+        "payloadType": "json",
+        "x": 140,
+        "y": 500,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "b642f6aceec7ce22",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "controlBatteryInvert",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"controlBatteryInvert\",\"value\":{\"pMax\":{\"Charging\":false,\"Power\":{\"quantety\":2000,\"unit\":\"W\"}},\"uMin\":{\"quantety\":24.5,\"unit\":\"V\"},\"uMax\":{\"quantety\":27.2,\"unit\":\"V\"},\"timeout\":{\"quantety\":30,\"unit\":\"s\"}}}",
+        "payloadType": "json",
+        "x": 150,
+        "y": 540,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "4e1c1f4d302ba6bc",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "limitBatteryInvert",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"limitBatteryInvert\",\"value\":{\"pMaxfeed\":{\"quantety\":70,\"unit\":\"%\"}}}",
+        "payloadType": "json",
+        "x": 140,
+        "y": 580,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "85f8b22a14075566",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "readError",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readError\",\"value\":null}",
+        "payloadType": "json",
+        "x": 120,
+        "y": 620,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "c5e4187b890d5de9",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "CommonManufacturer",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"CommonManufacturer\"}}",
+        "payloadType": "json",
+        "x": 160,
+        "y": 740,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "920bedfec2d2d72a",
+        "type": "batteryinvert",
+        "z": "dddc06ab12a489f4",
+        "serialport": "/dev/ttyUSB0",
+        "modbusid": "18",
+        "timer": "1",
+        "winHide": false,
+        "name": "",
+        "x": 550,
+        "y": 540,
+        "wires": [
+            [
+                "1b410f270e47a071",
+                "0fa01882b4094234"
+            ]
+        ]
+    },
+    {
+        "id": "1b410f270e47a071",
+        "type": "switch",
+        "z": "dddc06ab12a489f4",
+        "name": "",
+        "property": "payload.type",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "exception",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "factoryValues",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "readError",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "readOperatingData33",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "readOperatingData3e",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "switchOffGridRelay",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "switchOnGridRelay",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "forceIdle",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "deactivateIdle",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "startConstantVoltage",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "endConstantVoltage",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "setPowerFactor",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "controlBatteryInvert",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "limitBatteryInvert",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "writeRegister",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "readRegister",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "error",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 17,
+        "x": 870,
+        "y": 220,
+        "wires": [
+            [],
+            [
+                "8da4be9f41d23530"
+            ],
+            [
+                "adfb03e1d2a4a604"
+            ],
+            [
+                "adfb03e1d2a4a604"
+            ],
+            [
+                "adfb03e1d2a4a604"
+            ],
+            [
+                "adfb03e1d2a4a604"
+            ],
+            [
+                "adfb03e1d2a4a604"
+            ],
+            [
+                "adfb03e1d2a4a604"
+            ],
+            [
+                "adfb03e1d2a4a604"
+            ],
+            [
+                "adfb03e1d2a4a604"
+            ],
+            [
+                "adfb03e1d2a4a604"
+            ],
+            [
+                "adfb03e1d2a4a604"
+            ],
+            [
+                "adfb03e1d2a4a604"
+            ],
+            [
+                "adfb03e1d2a4a604"
+            ],
+            [
+                "adfb03e1d2a4a604"
+            ],
+            [
+                "adfb03e1d2a4a604"
+            ],
+            [
+                "adfb03e1d2a4a604"
+            ]
+        ]
+    },
+    {
+        "id": "454fefcde0bbc22b",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "CommonModel",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"CommonModel\"}}",
+        "payloadType": "json",
+        "x": 140,
+        "y": 780,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "79431ec6db9a372a",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "CommonSerialNumber",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"CommonSerialNumber\"}}",
+        "payloadType": "json",
+        "x": 160,
+        "y": 820,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "5249721fceebe648",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "CommonDeviceAddress",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"CommonDeviceAddress\"}}",
+        "payloadType": "json",
+        "x": 170,
+        "y": 860,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "4c9efd562016f952",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterAmps",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterAmps\"}}",
+        "payloadType": "json",
+        "x": 130,
+        "y": 980,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "fff1f2458c4f9239",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterAmpsPhaseA",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterAmpsPhaseA\"}}",
+        "payloadType": "json",
+        "x": 160,
+        "y": 1020,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "9f9ad85a7305a6ec",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterAmpsPhaseB",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterAmpsPhaseB\"}}",
+        "payloadType": "json",
+        "x": 160,
+        "y": 1060,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "302fa67267b540ce",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterAmpsPhaseC",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterAmpsPhaseC\"}}",
+        "payloadType": "json",
+        "x": 160,
+        "y": 1100,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "903715bcf5dcdbc9",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterAmpsScaleFactor",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterAmpsScaleFactor\"}}",
+        "payloadType": "json",
+        "x": 170,
+        "y": 1140,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "39ef36d8735a82f4",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterPhaseVoltageA",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterPhaseVoltageA\"}}",
+        "payloadType": "json",
+        "x": 160,
+        "y": 1200,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "7860d49e83d47705",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterPhaseVoltageB",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterPhaseVoltageB\"}}",
+        "payloadType": "json",
+        "x": 160,
+        "y": 1240,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "af931c57bc9b8b3c",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterPhaseVoltageC",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterPhaseVoltageC\"}}",
+        "payloadType": "json",
+        "x": 160,
+        "y": 1280,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "f9f95e33ca4f0c5b",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterPhaseVoltageScaleFactor",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterPhaseVoltageScaleFactor\"}}",
+        "payloadType": "json",
+        "x": 190,
+        "y": 1320,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "c2d1d1f82af4b483",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterAcPower",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterAcPower\"}}",
+        "payloadType": "json",
+        "x": 540,
+        "y": 740,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "6881cf5cd5e5ee7b",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterAcPowerScaleFactor",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterAcPowerScaleFactor\"}}",
+        "payloadType": "json",
+        "x": 580,
+        "y": 780,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "ae7ca6dbb4083ed0",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterHertz",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterHertz\"}}",
+        "payloadType": "json",
+        "x": 530,
+        "y": 840,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "eba7380ab729bd10",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterHertzScaleFactor",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterHertzScaleFactor\"}}",
+        "payloadType": "json",
+        "x": 570,
+        "y": 880,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "0ce104841e64b983",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterPowerFactor",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterPowerFactor\"}}",
+        "payloadType": "json",
+        "x": 550,
+        "y": 1140,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "823453d25af7cd17",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterPowerFactorScaleFactor",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterPowerFactorScaleFactor\"}}",
+        "payloadType": "json",
+        "x": 590,
+        "y": 1180,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "5213d2501b4551f4",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterWattHours",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterWattHours\"}}",
+        "payloadType": "json",
+        "x": 550,
+        "y": 1240,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "be49abc98d95aed6",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterWattHoursScaleFactor",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterWattHoursScaleFactor\"}}",
+        "payloadType": "json",
+        "x": 580,
+        "y": 1280,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "a6f148ae4fb8f03f",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterTemperature",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterTemperature\"}}",
+        "payloadType": "json",
+        "x": 930,
+        "y": 940,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "b9c6c4a15f478713",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterTemperatureScaleFactor",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterTemperatureScaleFactor\"}}",
+        "payloadType": "json",
+        "x": 970,
+        "y": 980,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "c1571670903474c5",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "NameplateDerType",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"NameplateDerType\"}}",
+        "payloadType": "json",
+        "x": 930,
+        "y": 1300,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "5432667dc496983d",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "ExtendedMesurementsAcWattHours",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"ExtendedMesurementsAcWattHours\"}}",
+        "payloadType": "json",
+        "x": 980,
+        "y": 1340,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "ba1eef37b3b167bf",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterDcVoltage",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterDcVoltage\"}}",
+        "payloadType": "json",
+        "x": 930,
+        "y": 740,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "7da9b4eb5e9b8cee",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterDcVoltageScaleFactor",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterDcVoltageScaleFactor\"}}",
+        "payloadType": "json",
+        "x": 960,
+        "y": 780,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "e848548b4777f299",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterOperatingState",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterOperatingState\"}}",
+        "payloadType": "json",
+        "x": 940,
+        "y": 1040,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "5c5d7a983ccd1917",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterAcApparentPower",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterAcApparentPower\"}}",
+        "payloadType": "json",
+        "x": 570,
+        "y": 940,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "577660b87f7f00fa",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterAcApparentPowerScaleFactor",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterAcApparentPowerScaleFactor\"}}",
+        "payloadType": "json",
+        "x": 610,
+        "y": 980,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "9aace1f7a348eb4a",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterAcReactivePower",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterAcReactivePower\"}}",
+        "payloadType": "json",
+        "x": 570,
+        "y": 1040,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "6bdea7d11e505999",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterAcReactivePowerScaleFactor",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterAcReactivePowerScaleFactor\"}}",
+        "payloadType": "json",
+        "x": 610,
+        "y": 1080,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "5e99f17aa4e1cc5d",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterDcPower",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterDcPower\"}}",
+        "payloadType": "json",
+        "x": 920,
+        "y": 840,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "9290f706714e0ee5",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterDcPowerScaleFactor",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterDcPowerScaleFactor\"}}",
+        "payloadType": "json",
+        "x": 960,
+        "y": 880,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "8ef12401325beadc",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterVendorOperatingState",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterVendorOperatingState\"}}",
+        "payloadType": "json",
+        "x": 960,
+        "y": 1080,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "6a7892fb1513c6d7",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterVendorEventBitfield1",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterVendorEventBitfield1\"}}",
+        "payloadType": "json",
+        "x": 960,
+        "y": 1120,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "2b7f7e293d5cc120",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterVendorEventBitfield2",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterVendorEventBitfield2\"}}",
+        "payloadType": "json",
+        "x": 960,
+        "y": 1160,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "ffb8bcd28e21f485",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterVendorEventBitfield3",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterVendorEventBitfield3\"}}",
+        "payloadType": "json",
+        "x": 960,
+        "y": 1200,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "b051a1b5cd1aea58",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "InverterVendorEventBitfield4",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"InverterVendorEventBitfield4\"}}",
+        "payloadType": "json",
+        "x": 960,
+        "y": 1240,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    },
+    {
+        "id": "6d2df1ee8fa66a71",
+        "type": "inject",
+        "z": "dddc06ab12a489f4",
+        "name": "ExtendedMesurementsAcLifetimeCharge",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"type\":\"readRegister\",\"value\":{\"registerAddress\":\"ExtendedMesurementsAcLifetimeCharge\"}}",
+        "payloadType": "json",
+        "x": 1000,
+        "y": 1380,
+        "wires": [
+            [
+                "920bedfec2d2d72a"
+            ]
+        ]
+    }
+]
