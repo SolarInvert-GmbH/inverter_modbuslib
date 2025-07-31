@@ -1,11 +1,11 @@
 {
     "name": "node-red-solarinvert",
-    "version": "0.0.2",
+    "version": "1.0.0",
     "description": "Node-RED nodes to handle solarinvert inverter.",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://git.cattatech.de/company/ModbusLib.git"
+        "url": "https://github.com/maik-urbannek/inverter_modbuslib"
     },
     "author": {
         "name": "Maik Urbannek",
