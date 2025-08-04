@@ -150,13 +150,13 @@ class Commands : public Fl_Group
             const int w = W / 2;
             const int X0 = X;
             const int X1 = X0 + w;
-            _on = new Fl_Button(X0, Y, w, H, "On");
+            _on = new Fl_Button(X0, Y, w, H, nullptr);
             _on->type(102);
-            _on->value(1);
             _on->compact(1);
             _on->callback(onCb, this);
-            _off = new Fl_Button(X1, Y, w, H, nullptr);
+            _off = new Fl_Button(X1, Y, w, H, OFF);
             _off->type(102);
+            _off->value(1);
             _off->compact(1);
             _off->callback(offCb, this);
 
