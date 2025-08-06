@@ -1953,7 +1953,7 @@ class Parser<catta::modbus::si::RegisterAddress>
             case HUB + 858:
                 return input == catta::json::Token::character('t') ? jump(HUB + 859) : error();
             case HUB + 859:
-                return input == catta::json::Token::character('a') ? jump(HUB + 860) : error();
+                return input == catta::json::Token::character('e') ? jump(HUB + 860) : error();
             case HUB + 860:
                 return input == catta::json::Token::character('r') ? jump(HUB + 861) : error();
             case HUB + 861:

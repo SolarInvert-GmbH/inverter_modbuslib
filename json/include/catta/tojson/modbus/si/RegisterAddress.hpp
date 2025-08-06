@@ -387,7 +387,7 @@ class Serializer<catta::modbus::si::RegisterAddress>
                     _state = SI_CONTROL_WIND_CURVE_Y15_READ + 0;
                     break;
                 case 112:
-                    _state = SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 0;
+                    _state = SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 0;
                     break;
                 case 113:
                     _state = SI_CONTROL_POWER_LIMIT_SAFTY_MODE + 0;
@@ -5564,67 +5564,67 @@ class Serializer<catta::modbus::si::RegisterAddress>
                 return next(catta::json::Token::character('a'));
             case SI_CONTROL_WIND_CURVE_Y15_READ + 24:
                 return jump(catta::json::Token::character('d'), TAIL + 0);
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 0:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 0:
                 return next(catta::json::Token::character('S'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 1:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 1:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 2:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 2:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 3:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 3:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 4:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 4:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 5:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 5:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 6:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 6:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 7:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 7:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 8:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 8:
                 return next(catta::json::Token::character('l'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 9:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 9:
                 return next(catta::json::Token::character('S'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 10:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 10:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 11:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 11:
                 return next(catta::json::Token::character('l'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 12:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 12:
                 return next(catta::json::Token::character('a'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 13:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 13:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 14:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 14:
                 return next(catta::json::Token::character('B'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 15:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 15:
                 return next(catta::json::Token::character('a'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 16:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 16:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 17:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 17:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 18:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 19:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 18:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 19:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 20:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 20:
                 return next(catta::json::Token::character('y'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 21:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 21:
                 return next(catta::json::Token::character('F'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 22:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 22:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 23:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 23:
                 return next(catta::json::Token::character('l'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 24:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 24:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 25:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 25:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 26:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 26:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 27:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 27:
                 return next(catta::json::Token::character('S'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 28:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 28:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 29:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 29:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 30:
+            case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 30:
                 return jump(catta::json::Token::character('p'), TAIL + 0);
             case SI_CONTROL_POWER_LIMIT_SAFTY_MODE + 0:
                 return next(catta::json::Token::character('S'));
@@ -8966,8 +8966,8 @@ class Serializer<catta::modbus::si::RegisterAddress>
     static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_Y13_READ = SI_CONTROL_WIND_CURVE_Y12_READ + 25;
     static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_Y14_READ = SI_CONTROL_WIND_CURVE_Y13_READ + 25;
     static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_Y15_READ = SI_CONTROL_WIND_CURVE_Y14_READ + 25;
-    static constexpr std::uint16_t SI_CONTROL_SOLAR_BATTARY_FILTER_STEP = SI_CONTROL_WIND_CURVE_Y15_READ + 25;
-    static constexpr std::uint16_t SI_CONTROL_POWER_LIMIT_SAFTY_MODE = SI_CONTROL_SOLAR_BATTARY_FILTER_STEP + 31;
+    static constexpr std::uint16_t SI_CONTROL_SOLAR_BATTERY_FILTER_STEP = SI_CONTROL_WIND_CURVE_Y15_READ + 25;
+    static constexpr std::uint16_t SI_CONTROL_POWER_LIMIT_SAFTY_MODE = SI_CONTROL_SOLAR_BATTERY_FILTER_STEP + 31;
     static constexpr std::uint16_t SI_CONTROL_UMIN_WRITE = SI_CONTROL_POWER_LIMIT_SAFTY_MODE + 28;
     static constexpr std::uint16_t SI_CONTROL_UMAX_WRITE = SI_CONTROL_UMIN_WRITE + 18;
     static constexpr std::uint16_t SI_CONTROL_VOLTAGE_DC_START_WRITE = SI_CONTROL_UMAX_WRITE + 18;

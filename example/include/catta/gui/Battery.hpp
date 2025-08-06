@@ -60,10 +60,10 @@ class Battery : public Fl_Group
         static constexpr auto dcStartWriteAddress = Address::siControlVoltageDcStartWrite();
 
         static constexpr auto zUsolBatFil = Address::siControlSolarBatteryFilterStep();
-        static constexpr auto uSolBatErrRead = Address::siControlBattarySaftyModeRead();
-        static constexpr auto uSolBatErrWrite = Address::siControlBattarySaftyModeWrite();
-        static constexpr auto uSolBatRead = Address::siControlBattaryBiModeRead();
-        static constexpr auto uSolBatWrite = Address::siControlBattaryBiModeWrite();
+        static constexpr auto uSolBatErrRead = Address::siControlBatterySaftyModeRead();
+        static constexpr auto uSolBatErrWrite = Address::siControlBatterySaftyModeWrite();
+        static constexpr auto uSolBatRead = Address::siControlBatteryBiModeRead();
+        static constexpr auto uSolBatWrite = Address::siControlBatteryBiModeWrite();
 
         static constexpr auto pMaxErr = Address::siControlPowerLimitSaftyMode();
         static constexpr auto pMaxCharge = Address::storageNominalChargePower();

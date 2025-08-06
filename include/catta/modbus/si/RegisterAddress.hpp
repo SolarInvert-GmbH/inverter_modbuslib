@@ -68,9 +68,9 @@ class RegisterAddress
     constexpr static std::uint8_t SI_CONTROL_U_MIN_READ = 44;
     constexpr static std::uint8_t SI_CONTROL_U_MAX_READ = 45;
     constexpr static std::uint8_t SI_CONTROL_VOLTAGE_DC_START_READ = 46;
-    constexpr static std::uint8_t SI_CONTROL_BATTARY_BI_MODE_READ = 47;
-    constexpr static std::uint8_t SI_CONTROL_BATTARY_SAFTY_MODE_READ = 48;
-    constexpr static std::uint8_t SI_CONTROL_BATTARY_CV_MODE_READ = 49;
+    constexpr static std::uint8_t SI_CONTROL_BATTERY_BI_MODE_READ = 47;
+    constexpr static std::uint8_t SI_CONTROL_BATTERY_SAFTY_MODE_READ = 48;
+    constexpr static std::uint8_t SI_CONTROL_BATTERY_CV_MODE_READ = 49;
     constexpr static std::uint8_t SI_CONTROL_DC_LOW_READ = 50;
     constexpr static std::uint8_t SI_CONTROL_DC_HIGH_READ = 51;
     constexpr static std::uint8_t SI_CONTROL_TRACKING_SELECTION = 52;
@@ -138,9 +138,9 @@ class RegisterAddress
     constexpr static std::uint8_t SI_CONTROL_U_MAX_WRITE = 114;
     constexpr static std::uint8_t SI_CONTROL_U_MIN_WRITE = 115;
     constexpr static std::uint8_t SI_CONTROL_VOLTAGE_DC_START_WRITE = 116;
-    constexpr static std::uint8_t SI_CONTROL_BATTARY_BI_MODE_WRITE = 117;
-    constexpr static std::uint8_t SI_CONTROL_BATTARY_SAFTY_MODE_WRITE = 118;
-    constexpr static std::uint8_t SI_CONTROL_BATTARY_CV_MODE_WRITE = 119;
+    constexpr static std::uint8_t SI_CONTROL_BATTERY_BI_MODE_WRITE = 117;
+    constexpr static std::uint8_t SI_CONTROL_BATTERY_SAFTY_MODE_WRITE = 118;
+    constexpr static std::uint8_t SI_CONTROL_BATTERY_CV_MODE_WRITE = 119;
     constexpr static std::uint8_t SI_CONTROL_DC_LOW_WRITE = 120;
     constexpr static std::uint8_t SI_CONTROL_DC_HIGH_WRITE = 121;
     constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_00_WRITE = 122;
@@ -215,7 +215,7 @@ class RegisterAddress
      * inverterVendorEventBitfield1(), inverterVendorEventBitfield2(), inverterVendorEventBitfield3(), inverterVendorEventBitfield4(),
      * nameplateDerType(), basicSettingsMaxPower(), extendedMesurementsAcWattHours(), extendedMesurementsAcLifetimeCharge(),
      * storageNominalChargePower(), siControlModus(), siControlUMinRead(), siControlUMaxRead(), siControlVoltageDcStartRead(),
-     * siControlBattaryBiModeRead(), siControlBattarySaftyModeRead(), siControlBattaryCvModeRead(), siControlDcLowRead(), siControlDcHighRead(),
+     * siControlBatteryBiModeRead(), siControlBatterySaftyModeRead(), siControlBatteryCvModeRead(), siControlDcLowRead(), siControlDcHighRead(),
      * siControlTrackingSelection(), siControlFunctionActivate(), siControlFunctionWriteEeprom(), siControlFunctionReset(), siControlStartCountdown(),
      * siControlNightShutdown(), siControlPmax(), siControlCosphi(), siControlUptime(), siControlMppStepDac0(), siControlMppStepDac1(),
      * siControlMppStepDac2(), siControlMppStepDac3(), siControlMppStepUdc0(), siControlMppStepUdc1(), siControlMppStepUdc2(), siControlMppStepUdc3(),
@@ -229,7 +229,7 @@ class RegisterAddress
      * siControlWindCurveY07Read(), siControlWindCurveY08Read(), siControlWindCurveY09Read(), siControlWindCurveY10Read(),
      * siControlWindCurveY11Read(), siControlWindCurveY12Read(), siControlWindCurveY13Read(), siControlWindCurveY14Read(),
      * siControlWindCurveY15Read(), siControlSolarBatteryFilterStep(), siControlPowerLimitSaftyMode(), siControlUMaxWrite(), siControlUMinWrite(),
-     * siControlVoltageDcStartWrite(), siControlBattaryBiModeWrite(), siControlBattarySaftyModeWrite(), siControlBattaryCvModeWrite(),
+     * siControlVoltageDcStartWrite(), siControlBatteryBiModeWrite(), siControlBatterySaftyModeWrite(), siControlBatteryCvModeWrite(),
      * siControlDcLowWrite(), siControlDcHighWrite(), siControlWindCurveY00Write(), siControlWindCurveY01Write(), siControlWindCurveY02Write(),
      * siControlWindCurveY03Write(), siControlWindCurveY04Write(), siControlWindCurveY05Write(), siControlWindCurveY06Write(),
      * siControlWindCurveY07Write(), siControlWindCurveY08Write(), siControlWindCurveY09Write(), siControlWindCurveY10Write(),
@@ -486,18 +486,18 @@ class RegisterAddress
     /**
      * @return Returns the battery voltage setpoint in bi mode from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlBattaryBiModeRead() noexcept { return RegisterAddress{SI_CONTROL_BATTARY_BI_MODE_READ}; }
+    [[nodiscard]] constexpr static RegisterAddress siControlBatteryBiModeRead() noexcept { return RegisterAddress{SI_CONTROL_BATTERY_BI_MODE_READ}; }
     /**
      * @return Returns the battery voltage setpoint in bi mode from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlBattarySaftyModeRead() noexcept
+    [[nodiscard]] constexpr static RegisterAddress siControlBatterySaftyModeRead() noexcept
     {
-        return RegisterAddress{SI_CONTROL_BATTARY_SAFTY_MODE_READ};
+        return RegisterAddress{SI_CONTROL_BATTERY_SAFTY_MODE_READ};
     }
     /**
      * @return Returns the battery voltage setpoint in cv mode from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlBattaryCvModeRead() noexcept { return RegisterAddress{SI_CONTROL_BATTARY_CV_MODE_READ}; }
+    [[nodiscard]] constexpr static RegisterAddress siControlBatteryCvModeRead() noexcept { return RegisterAddress{SI_CONTROL_BATTERY_CV_MODE_READ}; }
     /**
      * @return Returns the low voltage for relay off from the si control model (read).
      */
@@ -781,23 +781,23 @@ class RegisterAddress
     /**
      * @return Returns the battery voltage setpoint in bi mode from the si control model (write).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlBattaryBiModeWrite() noexcept
+    [[nodiscard]] constexpr static RegisterAddress siControlBatteryBiModeWrite() noexcept
     {
-        return RegisterAddress{SI_CONTROL_BATTARY_BI_MODE_WRITE};
+        return RegisterAddress{SI_CONTROL_BATTERY_BI_MODE_WRITE};
     }
     /**
      * @return Returns the battery voltage setpoint in bi mode from the safty control model (write).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlBattarySaftyModeWrite() noexcept
+    [[nodiscard]] constexpr static RegisterAddress siControlBatterySaftyModeWrite() noexcept
     {
-        return RegisterAddress{SI_CONTROL_BATTARY_SAFTY_MODE_WRITE};
+        return RegisterAddress{SI_CONTROL_BATTERY_SAFTY_MODE_WRITE};
     }
     /**
      * @return Returns the battery voltage setpoint in bi mode from the cv control model (write).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlBattaryCvModeWrite() noexcept
+    [[nodiscard]] constexpr static RegisterAddress siControlBatteryCvModeWrite() noexcept
     {
-        return RegisterAddress{SI_CONTROL_BATTARY_CV_MODE_WRITE};
+        return RegisterAddress{SI_CONTROL_BATTERY_CV_MODE_WRITE};
     }
     /**
      * @return Returns the dc low from the cv control model (write).
@@ -1260,15 +1260,15 @@ class RegisterAddress
     /**
      * @return Returns @b true if battery voltage setpoint in bi mode from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlBattaryBiModeRead() const noexcept { return _value == SI_CONTROL_BATTARY_BI_MODE_READ; }
+    [[nodiscard]] constexpr bool isSiControlBatteryBiModeRead() const noexcept { return _value == SI_CONTROL_BATTERY_BI_MODE_READ; }
     /**
      * @return Returns @b true if battery voltage setpoint in bi mode from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlBattarySaftyModeRead() const noexcept { return _value == SI_CONTROL_BATTARY_SAFTY_MODE_READ; }
+    [[nodiscard]] constexpr bool isSiControlBatterySaftyModeRead() const noexcept { return _value == SI_CONTROL_BATTERY_SAFTY_MODE_READ; }
     /**
      * @return Returns @b true if battery voltage setpoint in cv mode from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlBattaryCvModeRead() const noexcept { return _value == SI_CONTROL_BATTARY_CV_MODE_READ; }
+    [[nodiscard]] constexpr bool isSiControlBatteryCvModeRead() const noexcept { return _value == SI_CONTROL_BATTERY_CV_MODE_READ; }
     /**
      * @return Returns @b true if low voltage for relay off from the si control model (read) is represented, otherwise @b false.
      */
@@ -1540,15 +1540,15 @@ class RegisterAddress
     /**
      * @return Returns @b true if battery voltage setpoint in bi mode from the si control model (write) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlBattaryBiModeWrite() const noexcept { return _value == SI_CONTROL_BATTARY_BI_MODE_WRITE; }
+    [[nodiscard]] constexpr bool isSiControlBatteryBiModeWrite() const noexcept { return _value == SI_CONTROL_BATTERY_BI_MODE_WRITE; }
     /**
      * @return Returns @b true if battery voltage setpoint in bi mode from the safty control model (write) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlBattarySaftyModeWrite() const noexcept { return _value == SI_CONTROL_BATTARY_SAFTY_MODE_WRITE; }
+    [[nodiscard]] constexpr bool isSiControlBatterySaftyModeWrite() const noexcept { return _value == SI_CONTROL_BATTERY_SAFTY_MODE_WRITE; }
     /**
      * @return Returns @b true if battery voltage setpoint in bi mode from the cv control model (write) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlBattaryCvModeWrite() const noexcept { return _value == SI_CONTROL_BATTARY_CV_MODE_WRITE; }
+    [[nodiscard]] constexpr bool isSiControlBatteryCvModeWrite() const noexcept { return _value == SI_CONTROL_BATTERY_CV_MODE_WRITE; }
     /**
      * @return Returns @b true if dc low from the cv control model (write) is represented, otherwise @b false.
      */
@@ -1839,9 +1839,9 @@ class RegisterAddress
                                                                       "SI_CONTROL_U_MIN_READ",
                                                                       "SI_CONTROL_U_MAX_READ",
                                                                       "SI_CONTROL_VOLTAGE_DC_START_READ",
-                                                                      "SI_CONTROL_BATTARY_BI_MODE_READ",
-                                                                      "SI_CONTROL_BATTARY_SAFTY_MODE_READ",
-                                                                      "SI_CONTROL_BATTARY_CV_MODE_READ",
+                                                                      "SI_CONTROL_BATTERY_BI_MODE_READ",
+                                                                      "SI_CONTROL_BATTERY_SAFTY_MODE_READ",
+                                                                      "SI_CONTROL_BATTERY_CV_MODE_READ",
                                                                       "SI_CONTROL_DC_LOW_READ",
                                                                       "SI_CONTROL_DC_HIGH_READ",
                                                                       "SI_CONTROL_TRACKING_SELECTION",
@@ -1909,9 +1909,9 @@ class RegisterAddress
                                                                       "SI_CONTROL_U_MAX_WRITE",
                                                                       "SI_CONTROL_U_MIN_WRITE",
                                                                       "SI_CONTROL_VOLTAGE_DC_START_WRITE",
-                                                                      "SI_CONTROL_BATTARY_BI_MODE_WRITE",
-                                                                      "SI_CONTROL_BATTARY_SAFTY_MODE_WRITE",
-                                                                      "SI_CONTROL_BATTARY_CV_MODE_WRITE",
+                                                                      "SI_CONTROL_BATTERY_BI_MODE_WRITE",
+                                                                      "SI_CONTROL_BATTERY_SAFTY_MODE_WRITE",
+                                                                      "SI_CONTROL_BATTERY_CV_MODE_WRITE",
                                                                       "SI_CONTROL_DC_LOW_WRITE",
                                                                       "SI_CONTROL_DC_HIGH_WRITE",
                                                                       "SI_CONTROL_WIND_CURVE_Y_00_WRITE",
@@ -2073,11 +2073,11 @@ class RegisterAddress
                 return std::uint16_t(40287);
             case SI_CONTROL_VOLTAGE_DC_START_READ:
                 return std::uint16_t(40291);
-            case SI_CONTROL_BATTARY_BI_MODE_READ:
+            case SI_CONTROL_BATTERY_BI_MODE_READ:
                 return std::uint16_t(40294);
-            case SI_CONTROL_BATTARY_SAFTY_MODE_READ:
+            case SI_CONTROL_BATTERY_SAFTY_MODE_READ:
                 return std::uint16_t(40295);
-            case SI_CONTROL_BATTARY_CV_MODE_READ:
+            case SI_CONTROL_BATTERY_CV_MODE_READ:
                 return std::uint16_t(40296);
             case SI_CONTROL_DC_LOW_READ:
                 return std::uint16_t(40297);
@@ -2213,11 +2213,11 @@ class RegisterAddress
                 return std::uint16_t(40402);
             case SI_CONTROL_VOLTAGE_DC_START_WRITE:
                 return std::uint16_t(40403);
-            case SI_CONTROL_BATTARY_BI_MODE_WRITE:
+            case SI_CONTROL_BATTERY_BI_MODE_WRITE:
                 return std::uint16_t(40404);
-            case SI_CONTROL_BATTARY_SAFTY_MODE_WRITE:
+            case SI_CONTROL_BATTERY_SAFTY_MODE_WRITE:
                 return std::uint16_t(40405);
-            case SI_CONTROL_BATTARY_CV_MODE_WRITE:
+            case SI_CONTROL_BATTERY_CV_MODE_WRITE:
                 return std::uint16_t(40406);
             case SI_CONTROL_DC_LOW_WRITE:
                 return std::uint16_t(40407);
@@ -2444,11 +2444,11 @@ class RegisterAddress
                 return Type::uint16();
             case SI_CONTROL_VOLTAGE_DC_START_READ:
                 return Type::uint16();
-            case SI_CONTROL_BATTARY_BI_MODE_READ:
+            case SI_CONTROL_BATTERY_BI_MODE_READ:
                 return Type::uint16();
-            case SI_CONTROL_BATTARY_SAFTY_MODE_READ:
+            case SI_CONTROL_BATTERY_SAFTY_MODE_READ:
                 return Type::uint16();
-            case SI_CONTROL_BATTARY_CV_MODE_READ:
+            case SI_CONTROL_BATTERY_CV_MODE_READ:
                 return Type::uint16();
             case SI_CONTROL_DC_LOW_READ:
                 return Type::uint16();
@@ -2584,11 +2584,11 @@ class RegisterAddress
                 return Type::uint16();
             case SI_CONTROL_VOLTAGE_DC_START_WRITE:
                 return Type::uint16();
-            case SI_CONTROL_BATTARY_BI_MODE_WRITE:
+            case SI_CONTROL_BATTERY_BI_MODE_WRITE:
                 return Type::uint16();
-            case SI_CONTROL_BATTARY_SAFTY_MODE_WRITE:
+            case SI_CONTROL_BATTERY_SAFTY_MODE_WRITE:
                 return Type::uint16();
-            case SI_CONTROL_BATTARY_CV_MODE_WRITE:
+            case SI_CONTROL_BATTERY_CV_MODE_WRITE:
                 return Type::uint16();
             case SI_CONTROL_DC_LOW_WRITE:
                 return Type::uint16();
@@ -2817,11 +2817,11 @@ class RegisterAddress
             case 40291:
                 return Address(SI_CONTROL_VOLTAGE_DC_START_READ);
             case 40294:
-                return Address(SI_CONTROL_BATTARY_BI_MODE_READ);
+                return Address(SI_CONTROL_BATTERY_BI_MODE_READ);
             case 40295:
-                return Address(SI_CONTROL_BATTARY_SAFTY_MODE_READ);
+                return Address(SI_CONTROL_BATTERY_SAFTY_MODE_READ);
             case 40296:
-                return Address(SI_CONTROL_BATTARY_CV_MODE_READ);
+                return Address(SI_CONTROL_BATTERY_CV_MODE_READ);
             case 40297:
                 return Address(SI_CONTROL_DC_LOW_READ);
             case 40298:
@@ -2957,11 +2957,11 @@ class RegisterAddress
             case 40403:
                 return Address(SI_CONTROL_VOLTAGE_DC_START_WRITE);
             case 40404:
-                return Address(SI_CONTROL_BATTARY_BI_MODE_WRITE);
+                return Address(SI_CONTROL_BATTERY_BI_MODE_WRITE);
             case 40405:
-                return Address(SI_CONTROL_BATTARY_SAFTY_MODE_WRITE);
+                return Address(SI_CONTROL_BATTERY_SAFTY_MODE_WRITE);
             case 40406:
-                return Address(SI_CONTROL_BATTARY_CV_MODE_WRITE);
+                return Address(SI_CONTROL_BATTERY_CV_MODE_WRITE);
             case 40407:
                 return Address(SI_CONTROL_DC_LOW_WRITE);
             case 40408:
@@ -3096,9 +3096,9 @@ class RegisterAddress
             case SI_CONTROL_U_MIN_WRITE:
             case SI_CONTROL_U_MAX_WRITE:
             case SI_CONTROL_VOLTAGE_DC_START_WRITE:
-            case SI_CONTROL_BATTARY_BI_MODE_WRITE:
-            case SI_CONTROL_BATTARY_SAFTY_MODE_WRITE:
-            case SI_CONTROL_BATTARY_CV_MODE_WRITE:
+            case SI_CONTROL_BATTERY_BI_MODE_WRITE:
+            case SI_CONTROL_BATTERY_SAFTY_MODE_WRITE:
+            case SI_CONTROL_BATTERY_CV_MODE_WRITE:
             case SI_CONTROL_DC_LOW_WRITE:
             case SI_CONTROL_DC_HIGH_WRITE:
             case SI_CONTROL_WIND_CURVE_Y_00_WRITE:
@@ -3191,9 +3191,9 @@ class RegisterAddress
             case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP:
             case SI_CONTROL_POWER_LIMIT_SAFTY_MODE:
             case SI_CONTROL_VOLTAGE_DC_START_WRITE:
-            case SI_CONTROL_BATTARY_BI_MODE_WRITE:
-            case SI_CONTROL_BATTARY_SAFTY_MODE_WRITE:
-            case SI_CONTROL_BATTARY_CV_MODE_WRITE:
+            case SI_CONTROL_BATTERY_BI_MODE_WRITE:
+            case SI_CONTROL_BATTERY_SAFTY_MODE_WRITE:
+            case SI_CONTROL_BATTERY_CV_MODE_WRITE:
             case SI_CONTROL_DC_LOW_WRITE:
             case SI_CONTROL_DC_HIGH_WRITE:
             case SI_CONTROL_WIND_CURVE_Y_00_WRITE:
