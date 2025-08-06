@@ -5,7 +5,7 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/maik-urbannek/inverter_modbuslib"
+        "url": "https://github.com/SolarInvert-GmbH/inverter_modbuslib"
     },
     "author": {
         "name": "Maik Urbannek",
