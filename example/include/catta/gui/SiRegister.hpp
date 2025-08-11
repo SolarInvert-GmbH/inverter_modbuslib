@@ -18,6 +18,11 @@
 // gui
 #include <catta/gui/Input.hpp>
 
+// std
+#include <chrono>
+#include <cmath>
+#include <limits>
+
 namespace catta
 {
 namespace gui
@@ -78,7 +83,8 @@ class SiRegister : public Fl_Group
                                                  menu("execption3"), menu("execption4"), menu(nullptr)};
 
         static const Fl_Menu_Item readMenu[] = {menu("read"),       menu("do nothing"), menu("execption1"), menu("execption2"),
-                                                menu("execption3"), menu("execption4"), menu(nullptr)};
+                                                menu("execption3"), menu("execption4"), menu("sinus5min"),  menu("sinus10min"),
+                                                menu("saw5min"),    menu("saw10min"),   menu(nullptr)};
         this->end();
         this->resizable(this);
         this->resize(X, Y, W, H);
@@ -95,12 +101,54 @@ class SiRegister : public Fl_Group
     }
     /**
      * @param[in] request The request to handle.
+     * @param[in] now The current time.
      * @return Returns the response for the input request. Can be empty.
      */
-    catta::modbus::si::response::Response handleRequest(const catta::modbus::si::request::Request& request)
+    catta::modbus::si::response::Response handleRequest(const catta::modbus::si::request::Request& request, const std::chrono::microseconds now)
     {
+        using namespace std::chrono_literals;
         using Response = catta::modbus::si::response::Response;
         using Type = catta::modbus::si::request::Type;
+        const auto sin = [](const float f) { return std::sin(f * 6.283185307f) * 0.5f + 0.5f; };
+        const auto saw = [](const float f) { return f; };
+        const auto handleFunction = [this](const auto function, const std::chrono::microseconds now, const std::chrono::microseconds width)
+        {
+            const float f = static_cast<float>(now.count() % (width.count() + 1)) / static_cast<float>(width.count());
+            const float value = function(f);
+
+            const auto transform = [value](const auto a, const auto b)
+            {
+                using T = std::remove_cvref_t<decltype(a)>;
+                const float A = static_cast<float>(a);
+                const float B = static_cast<float>(b);
+                const float V = (B - A) * value + A;
+                const T v = static_cast<T>(V);
+                return v;
+            };
+            using Type = catta::modbus::si::RegisterType;
+            switch (this->_address.type())
+            {
+                case Type::uint16():
+                    return Response::value16(transform(std::numeric_limits<std::uint16_t>::min(), std::numeric_limits<std::uint16_t>::max()));
+                case Type::sint16():
+                    return Response::value16(
+                        static_cast<std::uint16_t>(transform(std::numeric_limits<std::int16_t>::min(), std::numeric_limits<std::int16_t>::max())));
+                case Type::scaleFactor():
+                    return Response::value16(static_cast<std::uint16_t>(transform(static_cast<std::int8_t>(-10), static_cast<std::int8_t>(10))));
+                case Type::connectedPhase():
+                    return Response::value16(transform(static_cast<std::uint16_t>(0), static_cast<std::uint16_t>(3)));
+                case Type::uint32():
+                    return Response::value32(transform(std::numeric_limits<std::uint32_t>::min(), std::numeric_limits<std::uint32_t>::max()));
+                case Type::uint64():
+                    return Response::value64(transform(std::numeric_limits<std::uint64_t>::min(), std::numeric_limits<std::uint64_t>::max()));
+                case Type::string16():
+                    return Response::string16(catta::modbus::sunspec::String16::create(std::to_string(value).c_str()));
+                case Type::string32():
+                    return Response::string32(catta::modbus::sunspec::String32::create(std::to_string(value).c_str()));
+                default:
+                    return Response::empty();
+            }
+        };
         switch (request.type())
         {
             case Type::readRegister():
@@ -135,6 +183,14 @@ class SiRegister : public Fl_Group
                     }
                     case 1:  // nothing
                         return Response::empty();
+                    case 6:
+                        return handleFunction(sin, now, 5min);
+                    case 7:
+                        return handleFunction(sin, now, 10min);
+                    case 8:
+                        return handleFunction(saw, now, 5min);
+                    case 9:
+                        return handleFunction(saw, now, 10min);
                     default:  // execption1…4
                     {
                         const auto value =

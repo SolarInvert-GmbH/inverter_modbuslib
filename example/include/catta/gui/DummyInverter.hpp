@@ -106,7 +106,7 @@ class DummyInverter : public Fl_Double_Window
         {
             for (auto e : _siRegister) delete e;
         }
-        catta::modbus::si::response::Response handleRequest(const catta::modbus::si::request::Request& request)
+        catta::modbus::si::response::Response handleRequest(const catta::modbus::si::request::Request& request, const std::chrono::microseconds now)
         {
             using Response = catta::modbus::si::response::Response;
             using Type = catta::modbus::si::request::Type;
@@ -116,13 +116,13 @@ class DummyInverter : public Fl_Double_Window
                 {
                     const auto address = request.readRegisterValue().registerAddress();
                     if (address.isEmpty()) return Response::empty();
-                    return _siRegister[address]->handleRequest(request);
+                    return _siRegister[address]->handleRequest(request, now);
                 }
                 case Type::writeRegister():
                 {
                     const auto address = request.writeRegisterValue().registerAddress();
                     if (address.isEmpty()) return Response::empty();
-                    return _siRegister[address]->handleRequest(request);
+                    return _siRegister[address]->handleRequest(request, now);
                 }
                 default:
                     return Response::empty();
@@ -714,7 +714,7 @@ class DummyInverter : public Fl_Double_Window
                     const std::uint8_t id = modbus.modbusId();
                     const auto request = parser.data();
                     if (_uart->id() == id)
-                        handleRequest(request, response);
+                        handleRequest(request, response, now);
                     else
                         modbus = {};
                     if (isDebug)
@@ -807,14 +807,15 @@ class DummyInverter : public Fl_Double_Window
         if (self) self->_run = false;
     }
 
-    void handleRequest(const catta::modbus::si::request::Request& request, catta::modbus::si::response::Response& response)
+    void handleRequest(const catta::modbus::si::request::Request& request, catta::modbus::si::response::Response& response,
+                       const std::chrono::microseconds now)
     {
         using Type = catta::modbus::si::request::Type;
         switch (request.type())
         {
             case Type::readRegister():
             case Type::writeRegister():
-                response = _siRegisterGroup->handleRequest(request);
+                response = _siRegisterGroup->handleRequest(request, now);
                 break;
             case Type::factoryValues():
                 response = _siFactoryValues->handleRequest(request);
