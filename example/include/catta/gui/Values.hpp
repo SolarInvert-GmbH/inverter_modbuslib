@@ -376,18 +376,9 @@ class Values : public Fl_Group
     }
 
     static constexpr std::size_t stateSize = 12;
-    static constexpr const char* TYPE_STATE_MATRIX[stateSize] = {"Starting up",
-                                                                 "Going to Umin",
-                                                                 "Trap State One",
-                                                                 "MPP",
-                                                                 "Sweep",
-                                                                 "Constant Voltage",
-                                                                 "Low Sun (Constant Voltage)",
-                                                                 "WIND Characteristic curve",
-                                                                 "Trap State Two",
-                                                                 "BAT Mode",
-                                                                 "BAT Safety Mode",
-                                                                 "FRT"};
+    static constexpr const char* TYPE_STATE_MATRIX[stateSize] = {"Starting up",    "Going to Umin",    "Trap State One",  "MPP",
+                                                                 "Sweep",          "Constant Voltage", "Low Sun CV",      "WIND CV",
+                                                                 "Trap State Two", "BAT Mode",         "BAT Safety Mode", "FRT"};
     static constexpr const char* BUTTON_CSV_IDLE = "Start csv Logging";
     static constexpr const char* BUTTON_CSV_RUNNING = "End csv Logging";
     void setAcVoltage(const std::size_t i, const std::string& value, const char* unit)
