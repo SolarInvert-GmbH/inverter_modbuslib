@@ -237,6 +237,23 @@ class MiniSicc : public Fl_Double_Window
             if (!somethingHappend) Fl::wait(0);
         }
     }
+    /**
+     * @param[in] x x position.
+     * @param[in] y y position.
+     * @param[in] w width.
+     * @param[in] h height.
+     */
+    void resize(int x, int y, int w, int h) FL_OVERRIDE
+    {
+        Fl_Double_Window::resize(x, y, w, h);
+        const int X = _values->x();
+        const int Y = _values->y();
+        const int W = _values->w();
+        const int H = _values->h();
+        _wind->resize(X, Y, W, H);
+        _solar->resize(X, Y, W, H);
+        _battery->resize(X, Y, W, H);
+    }
 
   private:
     static constexpr std::size_t CLIENT_CACHE = 0;
