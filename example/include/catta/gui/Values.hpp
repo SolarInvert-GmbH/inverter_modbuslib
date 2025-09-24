@@ -303,8 +303,8 @@ class Values : public Fl_Group
     std::array<std::tuple<std::string, const char*>, 3> _acVoltages;
 
     static constexpr std::array<const char*, VALUE_SIZE> VALUE_LABEL = std::array<const char*, VALUE_SIZE>{
-        "AC Power", "AC Current", "AC Voltage", "Frequency", "PMAX",       "DC Power",    "DC Voltage", "Energy", "Temp",
-        "Opestate", "Opestate",   "Time",       "Tnightoff", "Startdelay", "PowerFactor", "cosPHI",     "DAC"};
+        "AC Power", "AC Current", "AC Voltage", "Frequency", "PMAX",       "DC Power",    "DC Voltage",      "Energy", "Temp",
+        "Opestate", "Opestate",   "Time",       "Tnightoff", "Startdelay", "PowerFactor", "cosPHI - Target", "DAC"};
 
     static constexpr std::array<const char*, LED_SIZE> LED_LABEL =
         std::array<const char*, LED_SIZE>{"RELAY ON", "UAC OK", "FREQ OK", "WR WORKING", "PMAX Active"};
