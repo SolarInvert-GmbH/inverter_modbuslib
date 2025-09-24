@@ -151,6 +151,14 @@ class Wind : public Fl_Group
         for (std::size_t i = 0; i < _write.size(); i++) _write[i]->stop();
         for (std::size_t i = 0; i < _curve.size(); i++) _curve[i]->stop();
     }
+    /**
+     * Begin request.
+     */
+    void start()
+    {
+        for (std::size_t i = 0; i < _write.size(); i++) _write[i]->start();
+        for (std::size_t i = 0; i < _curve.size(); i++) _curve[i]->start();
+    }
 
   private:
     static constexpr std::size_t U_DC_START = 0;

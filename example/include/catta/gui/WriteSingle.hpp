@@ -92,6 +92,10 @@ class WriteSingle : public Fl_Group
         _write->stop();
         _sendButton->setButtonMode(false);
     }
+    /**
+     * Begin request.
+     */
+    void start() { _write->start(); }
 
   private:
     class SendCallback

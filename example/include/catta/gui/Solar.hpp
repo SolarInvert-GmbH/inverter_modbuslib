@@ -84,6 +84,13 @@ class Solar : public Fl_Group
     {
         for (std::size_t i = 0; i < _write.size(); i++) _write[i]->stop();
     }
+    /**
+     * Begin request.
+     */
+    void start()
+    {
+        for (std::size_t i = 0; i < _write.size(); i++) _write[i]->start();
+    }
 
   private:
     static constexpr std::size_t S_BIO_OFF = 0;

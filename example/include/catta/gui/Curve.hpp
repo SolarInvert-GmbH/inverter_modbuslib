@@ -129,6 +129,13 @@ class Curve : public Fl_Group
         for (std::size_t i = 0; i < _writes.size(); i++) _writes[i]->stop();
         _sendButton->setButtonMode(false);
     }
+    /**
+     * Begin request.
+     */
+    void start()
+    {
+        for (std::size_t i = 0; i < _writes.size(); i++) _writes[i]->start();
+    }
 
   private:
     class SendCallback

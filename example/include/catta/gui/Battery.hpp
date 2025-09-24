@@ -211,6 +211,16 @@ class Battery : public Fl_Group
     {
         for (std::size_t i = 0; i < _write.size(); i++) _write[i]->stop();
         for (std::size_t i = 0; i < _cvCurve3.size(); i++) _cvCurve3[i]->stop();
+        for (std::size_t i = 0; i < _cvCurve10.size(); i++) _cvCurve10[i]->stop();
+    }
+    /**
+     * Begin request.
+     */
+    void start()
+    {
+        for (std::size_t i = 0; i < _write.size(); i++) _write[i]->start();
+        for (std::size_t i = 0; i < _cvCurve3.size(); i++) _cvCurve3[i]->start();
+        for (std::size_t i = 0; i < _cvCurve10.size(); i++) _cvCurve10[i]->start();
     }
 
   private:

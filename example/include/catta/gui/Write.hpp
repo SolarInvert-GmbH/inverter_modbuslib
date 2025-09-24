@@ -34,9 +34,13 @@ class Write
 {
   public:
     /**
+     * Start state.
+     */
+    static constexpr std::uint8_t STATE_START = 0;
+    /**
      * Reading state.
      */
-    static constexpr std::uint8_t STATE_READING = 0;
+    static constexpr std::uint8_t STATE_READING = STATE_START + 1;
     /**
      * Idle state.
      */
@@ -108,6 +112,10 @@ class Write
         _spinner->hide();
     }
     /**
+     * Begin request.
+     */
+    void start() { _state = STATE_START; }
+    /**
      * Destructor.
      */
     ~Write()
@@ -146,8 +154,6 @@ class Write
                 }
 
                 break;
-            case STATE_IDLE:
-                break;
             case STATE_WRITE:
                 if (!_sent.isEmpty() && request == _sent)
                 {
@@ -170,12 +176,14 @@ class Write
                     setReadRequest();
                 }
                 break;
-            default:
+            case STATE_START:
                 if (canTakeRequest)
                 {
                     _state = STATE_READING;
                     setReadRequest();
                 }
+                break;
+            default:
                 break;
         }
 

@@ -1010,21 +1010,30 @@ class MiniSicc : public Fl_Double_Window
         const catta::modbus::si::Type type = getType();
         const bool isLocked = _passwort->isLocked();
         if (!isLocked && type.isBattery())
+        {
             _tabs->add(_tab2);
+            _battery->start();
+        }
         else
         {
             _tabs->remove(_tab2);
             _battery->stop();
         }
         if (!isLocked && type.isSolar())
+        {
             _tabs->add(_tab3);
+            _solar->start();
+        }
         else
         {
             _tabs->remove(_tab3);
             _solar->stop();
         }
         if (!isLocked && type.isWind())
+        {
             _tabs->add(_tab4);
+            _wind->start();
+        }
         else
         {
             _tabs->remove(_tab4);
