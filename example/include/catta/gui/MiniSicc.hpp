@@ -340,7 +340,7 @@ class MiniSicc : public Fl_Double_Window
     static constexpr RegisterAddress REGISTER_EVENT_3 = RegisterAddress::inverterVendorEventBitfield3();
     static constexpr RegisterAddress REGISTER_ENERGY_PRODUCTION_SCALE = RegisterAddress::inverterWattHoursScaleFactor();
     static constexpr RegisterAddress REGISTER_ENERGY_PRODUCTION = RegisterAddress::inverterWattHours();
-    static constexpr RegisterAddress REGISTER_DC_VOLTAGE_SCALE = RegisterAddress::inverterDcPowerScaleFactor();
+    static constexpr RegisterAddress REGISTER_DC_VOLTAGE_SCALE = RegisterAddress::inverterDcVoltageScaleFactor();
     static constexpr RegisterAddress REGISTER_DC_VOLTAGE = RegisterAddress::inverterDcVoltage();
     static constexpr RegisterAddress REGISTER_DC_POWER_SCALE = RegisterAddress::inverterDcPowerScaleFactor();
     static constexpr RegisterAddress REGISTER_DC_POWER = RegisterAddress::inverterDcPower();
