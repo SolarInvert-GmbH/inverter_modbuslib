@@ -46,16 +46,20 @@ class Values : public Fl_Group
           _acVoltages{std::tuple<std::string, const char*>{"", nullptr}, std::tuple<std::string, const char*>{"", nullptr},
                       std::tuple<std::string, const char*>{"", nullptr}}
     {
+        static constexpr int GAP = 5;
+        static constexpr int H_LINE = 65;
+
+        _send = new Fl_Button(X + GAP, Y + 9, W / 5 - 2 * GAP, 30, "Get values once");
+        _send->callback(sendcb, this);
+        _send->hide();
+
         _slider = new Fl_Slider(X + W / 5, Y + 15, (W * 3) / 5, 20, "Refreshinterval");
         _slider->align(FL_ALIGN_TOP);
-        _slider->step(1.0 / 9.0);
+        _slider->step(1.0 / 10.0);
         _slider->type(5);
         _slider->box(FL_FLAT_BOX);
         _slider->callback(slidercb, this);
         _interval = new Fl_Box(X + (W * 4) / 5, Y, W / 5, 50, _invervalText.data());
-
-        static constexpr int GAP = 5;
-        static constexpr int H_LINE = 65;
 
         static const int PER_LINE = 4;
         const int W_WRITE = (W - (PER_LINE + 1) * GAP) / PER_LINE;
@@ -142,7 +146,11 @@ class Values : public Fl_Group
     /**
      * @param[in] callback The callback that is executed when the slider is changed.
      */
-    void setCallback(const std::function<void(const std::chrono::microseconds)> callback) { _callback = callback; }
+    void setCallbacks(const std::function<void(const std::chrono::microseconds)> sliderCallback, const std::function<void(void)> sendCallback)
+    {
+        _sliderCallback = sliderCallback;
+        _sendCallback = sendCallback;
+    }
     /**
      * @param[in] type The type.
      * @param[in] state The state.
@@ -253,6 +261,7 @@ class Values : public Fl_Group
   private:
     Fl_Slider* _slider;
     Fl_Box* _interval;
+    Fl_Button* _send;
 
     static constexpr std::size_t AC_POWER = 0;
     static constexpr std::size_t AC_CURRENT = AC_POWER + 1;
@@ -285,7 +294,8 @@ class Values : public Fl_Group
     std::array<Led*, LED_SIZE> _led;
     Fl_Button* _saveCsv;
     std::array<char, 3> _operatingState2Text;
-    std::function<void(const std::chrono::microseconds interval)> _callback;
+    std::function<void(const std::chrono::microseconds interval)> _sliderCallback;
+    std::function<void()> _sendCallback;
     std::array<char, 4> _invervalText;
     std::chrono::microseconds _lastCsv;
     std::chrono::microseconds _sliderValue;
@@ -304,14 +314,26 @@ class Values : public Fl_Group
         Values* values = static_cast<Values*>(object);
         if (values)
         {
+            static constexpr std::array<char, 4> infinity = {static_cast<char>(0xe2), static_cast<char>(0x88), static_cast<char>(0x9e), '\0'};
             const double d = values->_slider->value();
-            const int i = static_cast<int>(d * 9.0 + 1.5);
-            values->_invervalText[0] = i < 10 ? ' ' : static_cast<char>('0' + (i / 10) % 10);
-            values->_invervalText[1] = static_cast<char>('0' + (i) % 10);
+            const int i = static_cast<int>(d * 10.0 + 1.5);
+            std::chrono::microseconds s = std::chrono::microseconds::max();
+            if (i > 10)
+            {
+                values->_invervalText = infinity;
+                values->_send->show();
+            }
+            else
+            {
+                values->_invervalText[0] = i < 10 ? ' ' : static_cast<char>('0' + (i / 10) % 10);
+                values->_invervalText[1] = static_cast<char>('0' + (i) % 10);
+                values->_invervalText[2] = '\0';
+                values->_send->hide();
+                s = std::chrono::seconds{i};
+            }
             values->_interval->label(values->_invervalText.data());
-            const std::chrono::seconds s = std::chrono::seconds{i};
             values->_sliderValue = s;
-            if (values->_callback) values->_callback(s);
+            if (values->_sliderCallback) values->_sliderCallback(s);
         }
     }
 
@@ -345,6 +367,12 @@ class Values : public Fl_Group
             values->_lastCsv = std::chrono::microseconds{0};
             values->_saveCsv->label(BUTTON_CSV_IDLE);
         }
+    }
+
+    static void sendcb(Fl_Widget*, void* object)
+    {
+        Values* values = static_cast<Values*>(object);
+        if (values && values->_sendCallback) values->_sendCallback();
     }
 
     static constexpr std::size_t stateSize = 12;

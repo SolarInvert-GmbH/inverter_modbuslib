@@ -68,6 +68,7 @@ class MiniSicc : public Fl_Double_Window
           _readOperatingData3eCallback(*this),
           _softwareVersionCallback(*this),
           _sliderCallback(*this),
+          _sendCallback(*this),
           _unlock(*this),
           _lock(*this)
     {
@@ -168,7 +169,7 @@ class MiniSicc : public Fl_Double_Window
         _cache.setCallback(CACHE_READ_OPERATING_DATA_3E, _readOperatingData3eCallback);
         _cache.setCallback(CACHE_REDUCTION, _reductionCallback);
         _cache.setCallback(CACHE_SOFTWARE_VERSION, _softwareVersionCallback);
-        _values->setCallback(_sliderCallback);
+        _values->setCallbacks(_sliderCallback, _sendCallback);
         _lock();
     }
     /**
@@ -873,8 +874,8 @@ class MiniSicc : public Fl_Double_Window
         SliderCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
         void operator()(const std::chrono::microseconds t)
         {
-            const std::chrono::microseconds time = t * 4;
             const std::chrono::microseconds never = std::chrono::microseconds::max();
+            const std::chrono::microseconds time = t == never ? never : t * 4;
             const std::chrono::microseconds lockedTime = _miniSicc._passwort->isLocked() ? never : time;
             _miniSicc._cache.setValidTime(CACHE_AC_CURRENT, time);
             _miniSicc._cache.setValidTime(CACHE_AC_POWER, time);
@@ -901,6 +902,39 @@ class MiniSicc : public Fl_Double_Window
       private:
         MiniSicc& _miniSicc;
     } _sliderCallback;
+    class SendCallback
+    {
+      public:
+        SendCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()()
+        {
+            if (_miniSicc._passwort->isLocked()) _miniSicc._cache.setInvalid(CACHE_POWER_FACTOR);
+
+            _miniSicc._cache.setInvalid(CACHE_AC_CURRENT);
+            _miniSicc._cache.setInvalid(CACHE_AC_POWER);
+            _miniSicc._cache.setInvalid(CACHE_AC_VOLTAGE_A);
+            _miniSicc._cache.setInvalid(CACHE_AC_VOLTAGE_B);
+            _miniSicc._cache.setInvalid(CACHE_AC_VOLTAGE_C);
+            _miniSicc._cache.setInvalid(CACHE_FREQUENCY);
+
+            _miniSicc._cache.setInvalid(CACHE_EVENTS_1);
+            _miniSicc._cache.setInvalid(CACHE_EVENTS_3);
+            _miniSicc._cache.setInvalid(CACHE_ENERGY_PRODUCTION);
+            _miniSicc._cache.setInvalid(CACHE_DC_VOLTAGE);
+            _miniSicc._cache.setInvalid(CACHE_DC_POWER);
+            _miniSicc._cache.setInvalid(CACHE_TEMPERATURE);
+            _miniSicc._cache.setInvalid(CACHE_PMAX);
+            _miniSicc._cache.setInvalid(CACHE_NIGHT_SHUTDOWN);
+            _miniSicc._cache.setInvalid(CACHE_START_COUNTDOWN);
+            _miniSicc._cache.setInvalid(CACHE_UPTIME);
+            _miniSicc._cache.setInvalid(CACHE_COSPHI);
+            _miniSicc._cache.setInvalid(CACHE_DAC);
+            _miniSicc._cache.setInvalid(CACHE_VENDOR_OPERATING_STATE);
+        }
+
+      private:
+        MiniSicc& _miniSicc;
+    } _sendCallback;
     class Unlock
     {
       public:
