@@ -26,13 +26,14 @@ class Led : public Fl_Group
      * @param[in] label The value name.
      * Constructor.
      */
-    Led(const int X, const int Y, const int W, const int H, const char* label) : Fl_Group(X, Y, W, H, nullptr)
+    Led(const int X, const int Y, const int W, const int H, const char* label) : Fl_Group(X, Y + 13, W - 2, H - 26, nullptr)
     {
         const int gap = 5;
         const int aLed = H / 3;
         const int YL = Y + (H - aLed) / 2;
         const int wLabel = W - gap * 3 - aLed;
-        _label = new Fl_Box(X, Y, wLabel, H);
+        this->box(FL_FLAT_BOX);
+        _label = new Fl_Box(X + gap, YL, wLabel - gap, aLed);
         _label->label(label);
         _label->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
         _led = new Fl_Box(X + wLabel + gap, YL, aLed, aLed, nullptr);
