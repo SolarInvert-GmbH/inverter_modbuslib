@@ -47,7 +47,7 @@ class Connection : public Fl_Group
     static constexpr int W_BUTTON = 100;
     static constexpr int W_BOX = 300;
     static constexpr int H_LINE = 50;
-    static constexpr int defaultWidth = W_INPUT + GAP + W_BUTTON + GAP + W_BUTTON + GAP + W_BOX + GAP + W_INPUT;
+    static constexpr int defaultWidth = GAP * 7 + 2 * W_INPUT + 2 * W_BUTTON + W_BOX;
     static constexpr int defaultHeight = H_LINE * 2 + GAP;
     static constexpr int W_LABLE = (defaultWidth - 2 * GAP) / 3;
 
@@ -83,21 +83,25 @@ class Connection : public Fl_Group
           _id(0x00),
           _error(ERROR::empty())
     {
-        this->_input = new Fl_Input(GAP, GAP, W_INPUT, H_LINE);
+        int x = GAP;
+        this->_input = new Fl_Input(x, GAP, W_INPUT + 2 * GAP, H_LINE);
+        x += W_INPUT + 3 * GAP;
         this->_input->value(defaultName);
-        this->_button0 = new Fl_Button(GAP + W_INPUT + GAP, GAP, W_BUTTON, H_LINE, "Connect");
+        this->_button0 = new Fl_Button(x, GAP, W_BUTTON, H_LINE, "Connect");
         this->_button0->callback(opencb, this);
-        this->_button1 = new Fl_Button(GAP + W_INPUT + GAP + W_BUTTON + GAP, GAP, W_BUTTON, H_LINE, "Disconnect");
+        x += W_BUTTON + GAP;
+        this->_button1 = new Fl_Button(x, GAP, W_BUTTON, H_LINE, "Disconnect");
         this->_button1->callback(closecb, this);
         this->_button1->deactivate();
-        this->_status = new Fl_Box(GAP + W_INPUT + GAP + W_BUTTON + GAP + W_BUTTON + GAP, GAP, W_BOX, H_LINE, getErrorString());
+        x += W_BUTTON + GAP;
+        this->_status = new Fl_Box(x, GAP, W_BOX - GAP, H_LINE, getErrorString());
         this->_status->box(FL_DOWN_BOX);
-        this->_autoSearch =
-            new Fl_Check_Button(GAP + W_INPUT + GAP + W_BUTTON + GAP + W_BUTTON + GAP + W_BOX + GAP, GAP, W_INPUT / 2 + 10, H_LINE, "auto");
+        x += W_BOX;
+        this->_autoSearch = new Fl_Check_Button(x, GAP, W_INPUT / 2 + GAP, H_LINE, "auto");
         this->_autoSearch->callback(autocb, this);
         this->_autoSearch->value(1);
-        this->_modbusId = new Fl_Input(GAP + W_INPUT + GAP + W_BUTTON + GAP + W_BUTTON + GAP + W_BOX + GAP + W_INPUT / 2 + 2 * GAP, GAP,
-                                       W_INPUT / 2 - 2 * GAP, H_LINE);
+        x += W_INPUT / 2 + 2 * GAP;
+        this->_modbusId = new Fl_Input(x, GAP, W_INPUT / 2, H_LINE);
         this->_modbusId->value("00");
         this->_modbusId->deactivate();
         this->_manufacturer = new Fl_Box(GAP, GAP * 2 + H_LINE, W_LABLE, H_LINE, _stringManufacturer.data());
