@@ -244,13 +244,12 @@ class Values : public Fl_Group
      */
     void work(const std::chrono::microseconds now)
     {
-        if (_lastCsv != std::chrono::microseconds::zero() && _lastCsv + _sliderValue < now)
+        if (_lastCsv != std::chrono::microseconds::zero() && _sliderValue != std::chrono::microseconds::max() && _lastCsv + _sliderValue < now)
         {
             const std::string line = [this]()
             {
                 std::string s;
-                for (std::size_t i = 0; i < VALUE_SIZE; i++) s += _value[i]->get();
-                for (std::size_t i = 0; i < LED_SIZE; i++) s += _led[i]->get();
+                for (std::size_t i = 0; i < CSV_INDEX.size(); i++) s += _value[CSV_INDEX[i]]->get();
                 return s;
             }();
             _csvLogging.line(line);
@@ -309,6 +308,8 @@ class Values : public Fl_Group
     static constexpr std::array<const char*, LED_SIZE> LED_LABEL =
         std::array<const char*, LED_SIZE>{"RELAY ON", "UAC OK", "FREQ OK", "WR WORKING", "PMAX Active"};
 
+    static constexpr std::array<std::size_t, 7> CSV_INDEX = {TIME, AC_POWER, DC_VOLTAGE, OPERATING_STATE, TEMPERATURE, AC_VOLTAGE, ENERGY_PRODUCTION};
+
     static void slidercb(Fl_Widget*, void* object)
     {
         Values* values = static_cast<Values*>(object);
@@ -353,8 +354,7 @@ class Values : public Fl_Group
                 const std::string header = []()
                 {
                     std::string s;
-                    for (std::size_t i = 0; i < VALUE_SIZE; i++) s += std::string(VALUE_LABEL[i]) + ";;";
-                    for (std::size_t i = 0; i < LED_SIZE; i++) s += std::string(LED_LABEL[i]) + ";";
+                    for (std::size_t i = 0; i < CSV_INDEX.size(); i++) s += std::string(VALUE_LABEL[CSV_INDEX[i]]) + ";;";
                     return s;
                 }();
                 values->_csvLogging.start(std::string(chooser.filename()), header);
