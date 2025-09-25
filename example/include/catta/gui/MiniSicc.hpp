@@ -70,7 +70,8 @@ class MiniSicc : public Fl_Double_Window
           _sliderCallback(*this),
           _sendCallback(*this),
           _unlock(*this),
-          _lock(*this)
+          _lock(*this),
+          _reset(*this)
     {
         Fl::scheme("plastic");  // plastic, gleam, oxy
         Fl::get_system_colors();
@@ -103,7 +104,7 @@ class MiniSicc : public Fl_Double_Window
         this->_wind = new Wind(Xcontent, Ycontent, Wcontent, Hcontent);
         _tab4->end();
         _tab5 = new Fl_Group(Xtab, Ytab, Wtab, Htab, "Commands");
-        this->_commands = new Commands(Xcontent, Ycontent, Wcontent, Hcontent);
+        this->_commands = new Commands(Xcontent, Ycontent, Wcontent, Hcontent, _reset);
         _tab5->end();
         this->resizable(this->_tabs);
         this->end();
@@ -986,6 +987,16 @@ class MiniSicc : public Fl_Double_Window
         MiniSicc& _miniSicc;
 
     } _lock;
+    class Reset
+    {
+      public:
+        Reset(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()() { _miniSicc._passwort->reset(); }
+
+      private:
+        MiniSicc& _miniSicc;
+
+    } _reset;
     constexpr static std::uint16_t crc(const std::uint64_t input)
     {
         const auto next = [](const std::uint8_t byte, const std::uint16_t last)

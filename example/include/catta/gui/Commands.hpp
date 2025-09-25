@@ -15,6 +15,7 @@
 
 // std
 #include <array>
+#include <functional>
 #include <string>
 
 namespace catta
@@ -35,7 +36,8 @@ class Commands : public Fl_Group
      * @param[in] H The height of the widget.
      * Constructor.
      */
-    Commands(const int X, const int Y, const int W, const int H) : Fl_Group(X, Y, W, H, nullptr)
+    Commands(const int X, const int Y, const int W, const int H, const std::function<void()> resetCallback)
+        : Fl_Group(X, Y, W, H, nullptr), _resetCallback(resetCallback), _locked(false)
     {
         static constexpr int GAP = 5;
         static constexpr int H_LINE = 45;
@@ -49,15 +51,15 @@ class Commands : public Fl_Group
         static const int X2 = X1 + W_FLIP + GAP;
         static const int X3 = X2 + W_SPINNER + GAP;
         static const int X4 = X3 + W_SEND + GAP;
-        const auto createLabel = [Y](Fl_Box*& label, const int line, const char* l)
+        const auto createLabel = [Y](Fl_Box*& label, const int line, const char* l, const int factor)
         {
-            label = new Fl_Box(X0, Y + H_LINE * line, W_LABEL, H_LINE, l);
+            label = new Fl_Box(X0, Y + H_LINE * line, W_LABEL * factor, H_LINE, l);
             label->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
         };
-        createLabel(_labelMode, 1, "CV Mode");
-        createLabel(_labelInverterControl, 2, "Inverter Control");
-        createLabel(_labelReset, 3, "Reset Inverter");
-        createLabel(_labelWriteEeprom, 4, "Write Eeprom (attention!)");
+        createLabel(_labelMode, 1, "CV Mode", 1);
+        createLabel(_labelInverterControl, 2, "Inverter Control", 1);
+        createLabel(_labelReset, 3, "Reset Inverter", 1);
+        createLabel(_labelWriteEeprom, 4, "Write Eeprom (attention!)", 2);
 
         _flipMode = new FlipButton(X1, Y + H_LINE * 1, W_FLIP, H_LINE);
         _flipInverterControl = new FlipButton(X1, Y + H_LINE * 2, W_FLIP, H_LINE);
@@ -104,8 +106,8 @@ class Commands : public Fl_Group
             _request = {};
             _sendMode->show();
             _sendInverterControl->show();
-            _sendReset->show();
-            _sendWriteEeprom->show();
+            if (!_locked) _sendReset->show();
+            if (!_locked) _sendWriteEeprom->show();
             return result;
         }
         (void)response;
@@ -129,6 +131,7 @@ class Commands : public Fl_Group
         _labelWriteEeprom->hide();
         _sendReset->hide();
         _sendWriteEeprom->hide();
+        _locked = true;
     }
     /**
      * Hide locked stuff.
@@ -139,6 +142,7 @@ class Commands : public Fl_Group
         _labelWriteEeprom->show();
         _sendReset->show();
         _sendWriteEeprom->show();
+        _locked = false;
     }
 
   private:
@@ -202,6 +206,8 @@ class Commands : public Fl_Group
     Led* _ledMode;
     Led* _ledInverterControl;
     catta::modbus::si::request::Request _request;
+    std::function<void()> _resetCallback;
+    bool _locked;
 
     void hideButtons()
     {
@@ -248,6 +254,7 @@ class Commands : public Fl_Group
         {
             commands->_request = REQUEST_RESET;
             commands->hideButtons();
+            if (commands->_resetCallback) commands->_resetCallback();
         }
     }
 

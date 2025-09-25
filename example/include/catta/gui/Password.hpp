@@ -140,6 +140,15 @@ class Password : public Fl_Group
         }
         return catta::modbus::si::request::Request::empty();
     }
+    /**
+     * On reset, the password is locked on inverter side. So the gui has also to be locked.
+     */
+    void reset()
+    {
+        _button->deactivate();
+        if (!_locked) executeLock(false);
+        _isConnected = false;
+    }
 
   private:
     std::uint32_t _clientId;
