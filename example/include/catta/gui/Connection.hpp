@@ -298,7 +298,7 @@ class Connection : public Fl_Group
     using ERROR = decltype(UART::empty().error());
     ERROR _error;
 
-    static constexpr std::chrono::microseconds TIMEOUT = std::chrono::milliseconds{500};
+    static constexpr std::chrono::microseconds TIMEOUT = std::chrono::milliseconds{50};
     static constexpr std::size_t UART_NOT_CONNECTED = 1;
     static constexpr std::size_t UART_CONNECTED = UART_NOT_CONNECTED + 1;
     static constexpr std::size_t MANUFACTURE_RECEIVED = UART_CONNECTED + 1;
