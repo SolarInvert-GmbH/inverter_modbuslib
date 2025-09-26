@@ -621,7 +621,11 @@ class DummyInverter : public Fl_Double_Window
     void run()
     {
         using namespace std::chrono_literals;
-        auto modbus = catta::modbus::SlaveUart();
+        static constexpr std::chrono::microseconds requestTimeout = std::chrono::milliseconds{100};
+        static constexpr std::chrono::microseconds dataTimeout = std::chrono::microseconds{500};
+        static constexpr std::chrono::microseconds stayInError = std::chrono::microseconds{100};
+        static constexpr std::chrono::microseconds waitForSend = std::chrono::microseconds{700};
+        auto modbus = catta::modbus::SlaveUart(requestTimeout, dataTimeout, stayInError, waitForSend);
 
         catta::frommodbus::Parser<catta::modbus::si::request::Request> parser;
         catta::tomodbus::Serializer<catta::modbus::si::response::Response> serializer;
