@@ -154,10 +154,13 @@ class Commands : public Fl_Group
             const int w = W / 2;
             const int X0 = X;
             const int X1 = X0 + w;
-            _on = new Fl_Button(X0, Y, w, H, nullptr);
+            _on = new Fl_Button(X0, Y, w, H, ON);
+            _frontColor = _on->labelcolor();
+            _backColor = fl_inactive(_frontColor);
             _on->type(102);
             _on->compact(1);
             _on->callback(onCb, this);
+            _on->labelcolor(_backColor);
             _off = new Fl_Button(X1, Y, w, H, OFF);
             _off->type(102);
             _off->value(1);
@@ -171,6 +174,8 @@ class Commands : public Fl_Group
       private:
         Fl_Button* _on;
         Fl_Button* _off;
+        Fl_Color _frontColor;
+        Fl_Color _backColor;
         static constexpr const char* ON = "On";
         static constexpr const char* OFF = "Off";
         static void onCb(Fl_Widget*, void* object)
@@ -178,8 +183,8 @@ class Commands : public Fl_Group
             FlipButton* fb = static_cast<FlipButton*>(object);
             if (fb)
             {
-                fb->_on->label(ON);
-                fb->_off->label(nullptr);
+                fb->_on->labelcolor(fb->_frontColor);
+                fb->_off->labelcolor(fb->_backColor);
             }
         }
         static void offCb(Fl_Widget*, void* object)
@@ -187,8 +192,8 @@ class Commands : public Fl_Group
             FlipButton* fb = static_cast<FlipButton*>(object);
             if (fb)
             {
-                fb->_on->label(nullptr);
-                fb->_off->label(OFF);
+                fb->_on->labelcolor(fb->_backColor);
+                fb->_off->labelcolor(fb->_frontColor);
             }
         }
     };
