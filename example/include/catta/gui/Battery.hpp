@@ -156,8 +156,8 @@ class Battery : public Fl_Group
             cbArray[i + SIZE] = std::tuple<std::size_t, Battery*>{i + SIZE, this};
             const int y = Y + H_LINE * (int(SIZE / PER_LINE) + 1);
             _cvCurve3[i] = new Curve<3>(X + GAP + (int(i) % PER_LINE_CURVE_3) * (GAP + W_WRITE_CURVE_3), y + H_LINE * (int(i) / PER_LINE_CURVE_3),
-                                        W_WRITE_CURVE_3, H_LINE, FL_INT_INPUT, 0.0, 256.0, 1.0, curve3AddressRead[i], curve3AddressWrite[i],
-                                        _toRegister256, _fromRegister256, 30, "V", LABEL[i + SIZE]);
+                                        W_WRITE_CURVE_3, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, curve3AddressRead[i], curve3AddressWrite[i],
+                                        _toRegisterDeci, _fromRegisterDeci, 30, "V", LABEL[i + SIZE]);
         }
 
         const int W_WRITE_CURVE_10 = W - 2 * GAP;
@@ -167,8 +167,8 @@ class Battery : public Fl_Group
             cbArray[i + SIZE + CURVES_3] = std::tuple<std::size_t, Battery*>{i + SIZE + CURVES_3, this};
             const int y = Y + H_LINE * (int(SIZE / PER_LINE) + 2);
             _cvCurve10[i] =
-                new Curve<10>(X + GAP, y + H_LINE * (int(i)), W_WRITE_CURVE_10, H_LINE, FL_INT_INPUT, 0.0, 256.0, 1.0, curve10AddressRead[i],
-                              curve10AddressWrite[i], _toRegister256, _fromRegister256, 30, "V", LABEL[i + SIZE + CURVES_3]);
+                new Curve<10>(X + GAP, y + H_LINE * (int(i)), W_WRITE_CURVE_10, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, curve10AddressRead[i],
+                              curve10AddressWrite[i], _toRegisterDeci, _fromRegisterDeci, 30, "V", LABEL[i + SIZE + CURVES_3]);
         }
         this->end();
     }
