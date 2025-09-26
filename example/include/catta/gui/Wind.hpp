@@ -48,36 +48,38 @@ class Wind : public Fl_Group
         static constexpr auto pMaxAddress = Address::basicSettingsMaxPower();
 
         static constexpr std::array<std::array<Address, 8>, CURVES> curveAddressRead = {
-            std::array<Address, 8>{Address::siControlWindCurveX00(), Address::siControlWindCurveX01(), Address::siControlWindCurveX02(),
-                                   Address::siControlWindCurveX03(), Address::siControlWindCurveX04(), Address::siControlWindCurveX05(),
-                                   Address::siControlWindCurveX06(), Address::siControlWindCurveX07()},
+            std::array<Address, 8>{Address::siControlWindCurveX00Read(), Address::siControlWindCurveX01Read(), Address::siControlWindCurveX02Read(),
+                                   Address::siControlWindCurveX03Read(), Address::siControlWindCurveX04Read(), Address::siControlWindCurveX05Read(),
+                                   Address::siControlWindCurveX06Read(), Address::siControlWindCurveX07Read()},
             std::array<Address, 8>{Address::siControlWindCurveY00Read(), Address::siControlWindCurveY01Read(), Address::siControlWindCurveY02Read(),
                                    Address::siControlWindCurveY03Read(), Address::siControlWindCurveY04Read(), Address::siControlWindCurveY05Read(),
                                    Address::siControlWindCurveY06Read(), Address::siControlWindCurveY07Read()},
-            std::array<Address, 8>{Address::siControlWindCurveX08(), Address::siControlWindCurveX09(), Address::siControlWindCurveX10(),
-                                   Address::siControlWindCurveX11(), Address::siControlWindCurveX12(), Address::siControlWindCurveX13(),
-                                   Address::siControlWindCurveX14(), Address::siControlWindCurveX15()},
+            std::array<Address, 8>{Address::siControlWindCurveX08Read(), Address::siControlWindCurveX09Read(), Address::siControlWindCurveX10Read(),
+                                   Address::siControlWindCurveX11Read(), Address::siControlWindCurveX12Read(), Address::siControlWindCurveX13Read(),
+                                   Address::siControlWindCurveX14Read(), Address::siControlWindCurveX15Read()},
             std::array<Address, 8>{Address::siControlWindCurveY08Read(), Address::siControlWindCurveY09Read(), Address::siControlWindCurveY10Read(),
                                    Address::siControlWindCurveY11Read(), Address::siControlWindCurveY12Read(), Address::siControlWindCurveY13Read(),
                                    Address::siControlWindCurveY14Read(), Address::siControlWindCurveY15Read()}};
 
         static constexpr std::array<std::array<Address, 8>, CURVES> curveAddressWrite = {
-            std::array<Address, 8>{Address::siControlWindCurveX00(), Address::siControlWindCurveX01(), Address::siControlWindCurveX02(),
-                                   Address::siControlWindCurveX03(), Address::siControlWindCurveX04(), Address::siControlWindCurveX05(),
-                                   Address::siControlWindCurveX06(), Address::siControlWindCurveX07()},
+            std::array<Address, 8>{Address::siControlWindCurveX00Write(), Address::siControlWindCurveX01Write(),
+                                   Address::siControlWindCurveX02Write(), Address::siControlWindCurveX03Write(),
+                                   Address::siControlWindCurveX04Write(), Address::siControlWindCurveX05Write(),
+                                   Address::siControlWindCurveX06Write(), Address::siControlWindCurveX07Write()},
             std::array<Address, 8>{Address::siControlWindCurveY00Write(), Address::siControlWindCurveY01Write(),
                                    Address::siControlWindCurveY02Write(), Address::siControlWindCurveY03Write(),
                                    Address::siControlWindCurveY04Write(), Address::siControlWindCurveY05Write(),
                                    Address::siControlWindCurveY06Write(), Address::siControlWindCurveY07Write()},
-            std::array<Address, 8>{Address::siControlWindCurveX08(), Address::siControlWindCurveX09(), Address::siControlWindCurveX10(),
-                                   Address::siControlWindCurveX11(), Address::siControlWindCurveX12(), Address::siControlWindCurveX13(),
-                                   Address::siControlWindCurveX14(), Address::siControlWindCurveX15()},
+            std::array<Address, 8>{Address::siControlWindCurveX08Write(), Address::siControlWindCurveX09Write(),
+                                   Address::siControlWindCurveX10Write(), Address::siControlWindCurveX11Write(),
+                                   Address::siControlWindCurveX12Write(), Address::siControlWindCurveX13Write(),
+                                   Address::siControlWindCurveX14Write(), Address::siControlWindCurveX15Write()},
             std::array<Address, 8>{Address::siControlWindCurveY08Write(), Address::siControlWindCurveY09Write(),
                                    Address::siControlWindCurveY10Write(), Address::siControlWindCurveY11Write(),
                                    Address::siControlWindCurveY12Write(), Address::siControlWindCurveY13Write(),
                                    Address::siControlWindCurveY14Write(), Address::siControlWindCurveY15Write()}};
 
-        static constexpr std::array<const char*, CURVES> curveUnit = {"V", "W", "V", "W"};
+        static constexpr std::array<const char*, CURVES> curveUnit = {"W", "V", "W", "V"};
 
         static std::array<std::tuple<std::size_t, Wind*>, ROBIN_SIZE> cbArray;
         for (std::size_t i = 0; i < SIZE; i++)
@@ -108,8 +110,8 @@ class Wind : public Fl_Group
             cbArray[i + SIZE] = std::tuple<std::size_t, Wind*>{i + SIZE, this};
             const int y = Y + H_LINE * (int(i + SIZE / PER_LINE) + 2);
             const int W_CURVE = W - 2 * GAP;
-            _curve[i] = new Curve<8>(X + GAP, y, W_CURVE, H_LINE, FL_INT_INPUT, 0.0, 256.0, 1.0, curveAddressRead[i], curveAddressWrite[i],
-                                     _toRegister256, _fromRegister256, 30, curveUnit[i], LABEL[SIZE + i]);
+            _curve[i] = new Curve<8>(X + GAP, y, W_CURVE, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, curveAddressRead[i], curveAddressWrite[i],
+                                     _toRegisterDeci, _fromRegisterDeci, 30, curveUnit[i], LABEL[SIZE + i]);
         }
         this->end();
     }
@@ -208,17 +210,6 @@ class Wind : public Fl_Group
 
       private:
     } _fromRegisterDeci;
-
-    class ToRegister256
-    {
-      public:
-        std::uint16_t operator()(const double input) { return static_cast<std::uint16_t>(input); }
-    } _toRegister256;
-    class FromRegister256
-    {
-      public:
-        double operator()(const std::uint16_t input) { return static_cast<double>(input); }
-    } _fromRegister256;
 };
 }  // namespace gui
 }  // namespace catta

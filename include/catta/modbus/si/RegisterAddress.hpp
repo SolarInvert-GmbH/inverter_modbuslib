@@ -101,22 +101,22 @@ class RegisterAddress
     constexpr static std::uint8_t SI_CONTROL_REDUCTION = 77;
     constexpr static std::uint8_t SI_CONTROL_SINEDUTY = 78;
     constexpr static std::uint8_t SI_CONTROL_FILTER_WIND_CURVE = 79;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_00 = 80;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_01 = 81;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_02 = 82;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_03 = 83;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_04 = 84;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_05 = 85;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_06 = 86;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_07 = 87;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_08 = 88;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_09 = 89;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_10 = 90;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_11 = 91;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_12 = 92;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_13 = 93;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_14 = 94;
-    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_15 = 95;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_00_READ = 80;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_01_READ = 81;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_02_READ = 82;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_03_READ = 83;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_04_READ = 84;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_05_READ = 85;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_06_READ = 86;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_07_READ = 87;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_08_READ = 88;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_09_READ = 89;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_10_READ = 90;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_11_READ = 91;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_12_READ = 92;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_13_READ = 93;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_14_READ = 94;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_15_READ = 95;
     constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_00_READ = 96;
     constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_01_READ = 97;
     constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_Y_02_READ = 98;
@@ -198,9 +198,25 @@ class RegisterAddress
     constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_7_WRITE = 174;
     constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_8_WRITE = 175;
     constexpr static std::uint8_t SI_CONTROL_DAC_CURVE_Y_9_WRITE = 176;
-    constexpr static std::uint8_t SI_CONTROL_ENABLE_WRITE_ONCE = 177;
-    constexpr static std::uint8_t SI_CONTROL_ENABLE_WRITE_PERMANENT = 178;
-    constexpr static std::uint8_t EMPTY = 179;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_00_WRITE = 177;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_01_WRITE = 178;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_02_WRITE = 179;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_03_WRITE = 180;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_04_WRITE = 181;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_05_WRITE = 182;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_06_WRITE = 183;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_07_WRITE = 184;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_08_WRITE = 185;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_09_WRITE = 186;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_10_WRITE = 187;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_11_WRITE = 188;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_12_WRITE = 189;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_13_WRITE = 190;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_14_WRITE = 191;
+    constexpr static std::uint8_t SI_CONTROL_WIND_CURVE_X_15_WRITE = 192;
+    constexpr static std::uint8_t SI_CONTROL_ENABLE_WRITE_ONCE = 193;
+    constexpr static std::uint8_t SI_CONTROL_ENABLE_WRITE_PERMANENT = 194;
+    constexpr static std::uint8_t EMPTY = 195;
 
   public:
     /**
@@ -221,29 +237,33 @@ class RegisterAddress
      * siControlMppStepDac2(), siControlMppStepDac3(), siControlMppStepUdc0(), siControlMppStepUdc1(), siControlMppStepUdc2(), siControlMppStepUdc3(),
      * siControlMppSampleDac0(), siControlMppSampleDac1(), siControlMppSampleDac2(), siControlMppSampleDac3(), siControlMppSampleUdc0(),
      * siControlMppSampleUdc1(), siControlMppSampleUdc2(), siControlMppSampleUdc3(), siControlReduction(), siControlSineduty(),
-     * siControlFilterWindCurve(), siControlWindCurveX00(), siControlWindCurveX01(), siControlWindCurveX02(), siControlWindCurveX03(),
-     * siControlWindCurveX04(), siControlWindCurveX05(), siControlWindCurveX06(), siControlWindCurveX07(), siControlWindCurveX08(),
-     * siControlWindCurveX09(), siControlWindCurveX10(), siControlWindCurveX11(), siControlWindCurveX12(), siControlWindCurveX13(),
-     * siControlWindCurveX14(), siControlWindCurveX15(), siControlWindCurveY00Read(), siControlWindCurveY01Read(), siControlWindCurveY02Read(),
-     * siControlWindCurveY03Read(), siControlWindCurveY04Read(), siControlWindCurveY05Read(), siControlWindCurveY06Read(),
-     * siControlWindCurveY07Read(), siControlWindCurveY08Read(), siControlWindCurveY09Read(), siControlWindCurveY10Read(),
-     * siControlWindCurveY11Read(), siControlWindCurveY12Read(), siControlWindCurveY13Read(), siControlWindCurveY14Read(),
-     * siControlWindCurveY15Read(), siControlSolarBatteryFilterStep(), siControlPowerLimitSaftyMode(), siControlUMaxWrite(), siControlUMinWrite(),
-     * siControlVoltageDcStartWrite(), siControlBatteryBiModeWrite(), siControlBatterySaftyModeWrite(), siControlBatteryCvModeWrite(),
-     * siControlDcLowWrite(), siControlDcHighWrite(), siControlWindCurveY00Write(), siControlWindCurveY01Write(), siControlWindCurveY02Write(),
-     * siControlWindCurveY03Write(), siControlWindCurveY04Write(), siControlWindCurveY05Write(), siControlWindCurveY06Write(),
-     * siControlWindCurveY07Write(), siControlWindCurveY08Write(), siControlWindCurveY09Write(), siControlWindCurveY10Write(),
-     * siControlWindCurveY11Write(), siControlWindCurveY12Write(), siControlWindCurveY13Write(), siControlWindCurveY14Write(),
-     * siControlWindCurveY15Write(), siControlConstantVoltageY0Write(), siControlConstantVoltageY1Write(), siControlConstantVoltageY2Write(),
-     * siControlDacCurveY0Read(), siControlDacCurveY1Read(), siControlDacCurveY2Read(), siControlDacCurveY3Read(), siControlDacCurveY4Read(),
-     * siControlDacCurveY5Read(), siControlDacCurveY6Read(), siControlDacCurveY7Read(), siControlDacCurveY8Read(), siControlDacCurveY9Read(),
-     * siControlConstantVoltageX0(), siControlConstantVoltageX1(), siControlConstantVoltageX2(), siControlConstantVoltageY0Read(),
-     * siControlConstantVoltageY1Read(), siControlConstantVoltageY2Read(), siControlDacCurveX0(), siControlDacCurveX1(), siControlDacCurveX2(),
-     * siControlDacCurveX3(), siControlDacCurveX4(), siControlDacCurveX5(), siControlDacCurveX6(), siControlDacCurveX7(), siControlDacCurveX8(),
-     * siControlDacCurveX9(), siControlDacCurveY0Write(), siControlDacCurveY1Write(), siControlDacCurveY2Write(), siControlDacCurveY3Write(),
-     * siControlDacCurveY4Write(), siControlDacCurveY5Write(), siControlDacCurveY6Write(), siControlDacCurveY7Write(), siControlDacCurveY8Write(),
-     * siControlDacCurveY9Write(), siControlEnableWriteOnce(), siControlEnableWritePermanent() or empty(). Explicit constructor. Converts uint8 to
-     * register.
+     * siControlFilterWindCurve(), siControlWindCurveX00Read(), siControlWindCurveX01Read(), siControlWindCurveX02Read(), siControlWindCurveX03Read(),
+     * siControlWindCurveX04Read(), siControlWindCurveX05Read(), siControlWindCurveX06Read(), siControlWindCurveX07Read(),
+     * siControlWindCurveX08Read(), siControlWindCurveX09Read(), siControlWindCurveX10Read(), siControlWindCurveX11Read(),
+     * siControlWindCurveX12Read(), siControlWindCurveX13Read(), siControlWindCurveX14Read(), siControlWindCurveX15Read(),
+     * siControlWindCurveY00Read(), siControlWindCurveY01Read(), siControlWindCurveY02Read(), siControlWindCurveY03Read(),
+     * siControlWindCurveY04Read(), siControlWindCurveY05Read(), siControlWindCurveY06Read(), siControlWindCurveY07Read(),
+     * siControlWindCurveY08Read(), siControlWindCurveY09Read(), siControlWindCurveY10Read(), siControlWindCurveY11Read(),
+     * siControlWindCurveY12Read(), siControlWindCurveY13Read(), siControlWindCurveY14Read(), siControlWindCurveY15Read(),
+     * siControlSolarBatteryFilterStep(), siControlPowerLimitSaftyMode(), siControlUMaxWrite(), siControlUMinWrite(), siControlVoltageDcStartWrite(),
+     * siControlBatteryBiModeWrite(), siControlBatterySaftyModeWrite(), siControlBatteryCvModeWrite(), siControlDcLowWrite(), siControlDcHighWrite(),
+     * siControlWindCurveY00Write(), siControlWindCurveY01Write(), siControlWindCurveY02Write(), siControlWindCurveY03Write(),
+     * siControlWindCurveY04Write(), siControlWindCurveY05Write(), siControlWindCurveY06Write(), siControlWindCurveY07Write(),
+     * siControlWindCurveY08Write(), siControlWindCurveY09Write(), siControlWindCurveY10Write(), siControlWindCurveY11Write(),
+     * siControlWindCurveY12Write(), siControlWindCurveY13Write(), siControlWindCurveY14Write(), siControlWindCurveY15Write(),
+     * siControlConstantVoltageY0Write(), siControlConstantVoltageY1Write(), siControlConstantVoltageY2Write(), siControlDacCurveY0Read(),
+     * siControlDacCurveY1Read(), siControlDacCurveY2Read(), siControlDacCurveY3Read(), siControlDacCurveY4Read(), siControlDacCurveY5Read(),
+     * siControlDacCurveY6Read(), siControlDacCurveY7Read(), siControlDacCurveY8Read(), siControlDacCurveY9Read(), siControlConstantVoltageX0(),
+     * siControlConstantVoltageX1(), siControlConstantVoltageX2(), siControlConstantVoltageY0Read(), siControlConstantVoltageY1Read(),
+     * siControlConstantVoltageY2Read(), siControlDacCurveX0(), siControlDacCurveX1(), siControlDacCurveX2(), siControlDacCurveX3(),
+     * siControlDacCurveX4(), siControlDacCurveX5(), siControlDacCurveX6(), siControlDacCurveX7(), siControlDacCurveX8(), siControlDacCurveX9(),
+     * siControlDacCurveY0Write(), siControlDacCurveY1Write(), siControlDacCurveY2Write(), siControlDacCurveY3Write(), siControlDacCurveY4Write(),
+     * siControlDacCurveY5Write(), siControlDacCurveY6Write(), siControlDacCurveY7Write(), siControlDacCurveY8Write(), siControlDacCurveY9Write(),
+     * siControlWindCurveX00Write(), siControlWindCurveX01Write(), siControlWindCurveX02Write(), siControlWindCurveX03Write(),
+     * siControlWindCurveX04Write(), siControlWindCurveX05Write(), siControlWindCurveX06Write(), siControlWindCurveX07Write(),
+     * siControlWindCurveX08Write(), siControlWindCurveX09Write(), siControlWindCurveX10Write(), siControlWindCurveX11Write(),
+     * siControlWindCurveX12Write(), siControlWindCurveX13Write(), siControlWindCurveX14Write(), siControlWindCurveX15Write(),
+     * siControlEnableWriteOnce(), siControlEnableWritePermanent() or empty(). Explicit constructor. Converts uint8 to register.
      */
     [[nodiscard]] constexpr explicit RegisterAddress(const std::uint8_t value) noexcept : _value(value) {}
     /**
@@ -622,69 +642,69 @@ class RegisterAddress
      */
     [[nodiscard]] constexpr static RegisterAddress siControlFilterWindCurve() noexcept { return RegisterAddress{SI_CONTROL_FILTER_WIND_CURVE}; }
     /**
-     * @return Returns the wind curve x 00 from the si control model.
+     * @return Returns the wind curve x 00 from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX00() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_00}; }
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX00Read() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_00_READ}; }
     /**
-     * @return Returns the wind curve x 01 from the si control model.
+     * @return Returns the wind curve x 01 from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX01() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_01}; }
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX01Read() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_01_READ}; }
     /**
-     * @return Returns the wind curve x 02 from the si control model.
+     * @return Returns the wind curve x 02 from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX02() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_02}; }
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX02Read() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_02_READ}; }
     /**
-     * @return Returns the wind curve x 03 from the si control model.
+     * @return Returns the wind curve x 03 from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX03() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_03}; }
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX03Read() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_03_READ}; }
     /**
-     * @return Returns the wind curve x 04 from the si control model.
+     * @return Returns the wind curve x 04 from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX04() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_04}; }
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX04Read() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_04_READ}; }
     /**
-     * @return Returns the wind curve x 05 from the si control model.
+     * @return Returns the wind curve x 05 from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX05() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_05}; }
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX05Read() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_05_READ}; }
     /**
-     * @return Returns the wind curve x 06 from the si control model.
+     * @return Returns the wind curve x 06 from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX06() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_06}; }
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX06Read() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_06_READ}; }
     /**
-     * @return Returns the wind curve x 07 from the si control model.
+     * @return Returns the wind curve x 07 from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX07() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_07}; }
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX07Read() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_07_READ}; }
     /**
-     * @return Returns the wind curve x 08 from the si control model.
+     * @return Returns the wind curve x 08 from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX08() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_08}; }
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX08Read() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_08_READ}; }
     /**
-     * @return Returns the wind curve x 09 from the si control model.
+     * @return Returns the wind curve x 09 from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX09() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_09}; }
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX09Read() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_09_READ}; }
     /**
-     * @return Returns the wind curve x 10 from the si control model.
+     * @return Returns the wind curve x 10 from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX10() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_10}; }
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX10Read() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_10_READ}; }
     /**
-     * @return Returns the wind curve x 11 from the si control model.
+     * @return Returns the wind curve x 11 from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX11() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_11}; }
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX11Read() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_11_READ}; }
     /**
-     * @return Returns the wind curve x 12 from the si control model.
+     * @return Returns the wind curve x 12 from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX12() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_12}; }
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX12Read() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_12_READ}; }
     /**
-     * @return Returns the wind curve x 13 from the si control model.
+     * @return Returns the wind curve x 13 from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX13() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_13}; }
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX13Read() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_13_READ}; }
     /**
-     * @return Returns the wind curve x 14 from the si control model.
+     * @return Returns the wind curve x 14 from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX14() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_14}; }
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX14Read() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_14_READ}; }
     /**
-     * @return Returns the wind curve x 15 from the si control model.
+     * @return Returns the wind curve x 15 from the si control model (read).
      */
-    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX15() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_15}; }
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX15Read() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_15_READ}; }
     /**
      * @return Returns the wind curve y 00 from the si control model (read).
      */
@@ -1046,6 +1066,70 @@ class RegisterAddress
      */
     [[nodiscard]] constexpr static RegisterAddress siControlDacCurveY9Write() noexcept { return RegisterAddress{SI_CONTROL_DAC_CURVE_Y_9_WRITE}; }
     /**
+     * @return Returns the wind curve x 00 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX00Write() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_00_WRITE}; }
+    /**
+     * @return Returns the wind curve x 01 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX01Write() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_01_WRITE}; }
+    /**
+     * @return Returns the wind curve x 02 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX02Write() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_02_WRITE}; }
+    /**
+     * @return Returns the wind curve x 03 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX03Write() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_03_WRITE}; }
+    /**
+     * @return Returns the wind curve x 04 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX04Write() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_04_WRITE}; }
+    /**
+     * @return Returns the wind curve x 05 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX05Write() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_05_WRITE}; }
+    /**
+     * @return Returns the wind curve x 06 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX06Write() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_06_WRITE}; }
+    /**
+     * @return Returns the wind curve x 07 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX07Write() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_07_WRITE}; }
+    /**
+     * @return Returns the wind curve x 08 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX08Write() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_08_WRITE}; }
+    /**
+     * @return Returns the wind curve x 09 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX09Write() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_09_WRITE}; }
+    /**
+     * @return Returns the wind curve x 10 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX10Write() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_10_WRITE}; }
+    /**
+     * @return Returns the wind curve x 11 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX11Write() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_11_WRITE}; }
+    /**
+     * @return Returns the wind curve x 12 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX12Write() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_12_WRITE}; }
+    /**
+     * @return Returns the wind curve x 13 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX13Write() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_13_WRITE}; }
+    /**
+     * @return Returns the wind curve x 14 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX14Write() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_14_WRITE}; }
+    /**
+     * @return Returns the wind curve x 15 from the si control model (write).
+     */
+    [[nodiscard]] constexpr static RegisterAddress siControlWindCurveX15Write() noexcept { return RegisterAddress{SI_CONTROL_WIND_CURVE_X_15_WRITE}; }
+    /**
      * @return Returns the enable once register from the si control model.
      */
     [[nodiscard]] constexpr static RegisterAddress siControlEnableWriteOnce() noexcept { return RegisterAddress{SI_CONTROL_ENABLE_WRITE_ONCE}; }
@@ -1390,69 +1474,69 @@ class RegisterAddress
      */
     [[nodiscard]] constexpr bool isSiControlFilterWindCurve() const noexcept { return _value == SI_CONTROL_FILTER_WIND_CURVE; }
     /**
-     * @return Returns @b true if wind curve x 00 from the si control model is represented, otherwise @b false.
+     * @return Returns @b true if wind curve x 00 from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlWindCurveX00() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_00; }
+    [[nodiscard]] constexpr bool isSiControlWindCurveX00Read() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_00_READ; }
     /**
-     * @return Returns @b true if wind curve x 01 from the si control model is represented, otherwise @b false.
+     * @return Returns @b true if wind curve x 01 from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlWindCurveX01() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_01; }
+    [[nodiscard]] constexpr bool isSiControlWindCurveX01Read() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_01_READ; }
     /**
-     * @return Returns @b true if wind curve x 02 from the si control model is represented, otherwise @b false.
+     * @return Returns @b true if wind curve x 02 from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlWindCurveX02() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_02; }
+    [[nodiscard]] constexpr bool isSiControlWindCurveX02Read() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_02_READ; }
     /**
-     * @return Returns @b true if wind curve x 03 from the si control model is represented, otherwise @b false.
+     * @return Returns @b true if wind curve x 03 from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlWindCurveX03() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_03; }
+    [[nodiscard]] constexpr bool isSiControlWindCurveX03Read() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_03_READ; }
     /**
-     * @return Returns @b true if wind curve x 04 from the si control model is represented, otherwise @b false.
+     * @return Returns @b true if wind curve x 04 from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlWindCurveX04() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_04; }
+    [[nodiscard]] constexpr bool isSiControlWindCurveX04Read() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_04_READ; }
     /**
-     * @return Returns @b true if wind curve x 05 from the si control model is represented, otherwise @b false.
+     * @return Returns @b true if wind curve x 05 from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlWindCurveX05() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_05; }
+    [[nodiscard]] constexpr bool isSiControlWindCurveX05Read() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_05_READ; }
     /**
-     * @return Returns @b true if wind curve x 06 from the si control model is represented, otherwise @b false.
+     * @return Returns @b true if wind curve x 06 from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlWindCurveX06() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_06; }
+    [[nodiscard]] constexpr bool isSiControlWindCurveX06Read() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_06_READ; }
     /**
-     * @return Returns @b true if wind curve x 07 from the si control model is represented, otherwise @b false.
+     * @return Returns @b true if wind curve x 07 from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlWindCurveX07() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_07; }
+    [[nodiscard]] constexpr bool isSiControlWindCurveX07Read() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_07_READ; }
     /**
-     * @return Returns @b true if wind curve x 08 from the si control model is represented, otherwise @b false.
+     * @return Returns @b true if wind curve x 08 from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlWindCurveX08() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_08; }
+    [[nodiscard]] constexpr bool isSiControlWindCurveX08Read() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_08_READ; }
     /**
-     * @return Returns @b true if wind curve x 09 from the si control model is represented, otherwise @b false.
+     * @return Returns @b true if wind curve x 09 from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlWindCurveX09() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_09; }
+    [[nodiscard]] constexpr bool isSiControlWindCurveX09Read() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_09_READ; }
     /**
-     * @return Returns @b true if wind curve x 10 from the si control model is represented, otherwise @b false.
+     * @return Returns @b true if wind curve x 10 from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlWindCurveX10() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_10; }
+    [[nodiscard]] constexpr bool isSiControlWindCurveX10Read() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_10_READ; }
     /**
-     * @return Returns @b true if wind curve x 11 from the si control model is represented, otherwise @b false.
+     * @return Returns @b true if wind curve x 11 from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlWindCurveX11() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_11; }
+    [[nodiscard]] constexpr bool isSiControlWindCurveX11Read() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_11_READ; }
     /**
-     * @return Returns @b true if wind curve x 12 from the si control model is represented, otherwise @b false.
+     * @return Returns @b true if wind curve x 12 from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlWindCurveX12() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_12; }
+    [[nodiscard]] constexpr bool isSiControlWindCurveX12Read() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_12_READ; }
     /**
-     * @return Returns @b true if wind curve x 13 from the si control model is represented, otherwise @b false.
+     * @return Returns @b true if wind curve x 13 from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlWindCurveX13() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_13; }
+    [[nodiscard]] constexpr bool isSiControlWindCurveX13Read() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_13_READ; }
     /**
-     * @return Returns @b true if wind curve x 14 from the si control model is represented, otherwise @b false.
+     * @return Returns @b true if wind curve x 14 from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlWindCurveX14() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_14; }
+    [[nodiscard]] constexpr bool isSiControlWindCurveX14Read() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_14_READ; }
     /**
-     * @return Returns @b true if wind curve x 15 from the si control model is represented, otherwise @b false.
+     * @return Returns @b true if wind curve x 15 from the si control model (read) is represented, otherwise @b false.
      */
-    [[nodiscard]] constexpr bool isSiControlWindCurveX15() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_15; }
+    [[nodiscard]] constexpr bool isSiControlWindCurveX15Read() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_15_READ; }
     /**
      * @return Returns @b true if wind curve y 00 from the si control model (read) is represented, otherwise @b false.
      */
@@ -1778,6 +1862,70 @@ class RegisterAddress
      */
     [[nodiscard]] constexpr bool isSiControlDacCurveY9Write() const noexcept { return _value == SI_CONTROL_DAC_CURVE_Y_9_WRITE; }
     /**
+     * @return Returns @b true if wind curve x 00 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlWindCurveX00Write() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_00_WRITE; }
+    /**
+     * @return Returns @b true if wind curve x 01 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlWindCurveX01Write() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_01_WRITE; }
+    /**
+     * @return Returns @b true if wind curve x 02 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlWindCurveX02Write() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_02_WRITE; }
+    /**
+     * @return Returns @b true if wind curve x 03 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlWindCurveX03Write() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_03_WRITE; }
+    /**
+     * @return Returns @b true if wind curve x 04 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlWindCurveX04Write() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_04_WRITE; }
+    /**
+     * @return Returns @b true if wind curve x 05 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlWindCurveX05Write() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_05_WRITE; }
+    /**
+     * @return Returns @b true if wind curve x 06 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlWindCurveX06Write() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_06_WRITE; }
+    /**
+     * @return Returns @b true if wind curve x 07 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlWindCurveX07Write() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_07_WRITE; }
+    /**
+     * @return Returns @b true if wind curve x 08 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlWindCurveX08Write() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_08_WRITE; }
+    /**
+     * @return Returns @b true if wind curve x 09 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlWindCurveX09Write() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_09_WRITE; }
+    /**
+     * @return Returns @b true if wind curve x 10 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlWindCurveX10Write() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_10_WRITE; }
+    /**
+     * @return Returns @b true if wind curve x 11 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlWindCurveX11Write() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_11_WRITE; }
+    /**
+     * @return Returns @b true if wind curve x 12 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlWindCurveX12Write() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_12_WRITE; }
+    /**
+     * @return Returns @b true if wind curve x 13 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlWindCurveX13Write() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_13_WRITE; }
+    /**
+     * @return Returns @b true if wind curve x 14 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlWindCurveX14Write() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_14_WRITE; }
+    /**
+     * @return Returns @b true if wind curve x 15 from the si control model (write) is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSiControlWindCurveX15Write() const noexcept { return _value == SI_CONTROL_WIND_CURVE_X_15_WRITE; }
+    /**
      * @return Returns @b true if enable once register from the si control model is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isSiControlEnableWriteOnce() const noexcept { return _value == SI_CONTROL_ENABLE_WRITE_ONCE; }
@@ -1872,22 +2020,22 @@ class RegisterAddress
                                                                       "SI_CONTROL_REDUCTION",
                                                                       "SI_CONTROL_SINEDUTY",
                                                                       "SI_CONTROL_FILTER_WIND_CURVE",
-                                                                      "SI_CONTROL_WIND_CURVE_X_00",
-                                                                      "SI_CONTROL_WIND_CURVE_X_01",
-                                                                      "SI_CONTROL_WIND_CURVE_X_02",
-                                                                      "SI_CONTROL_WIND_CURVE_X_03",
-                                                                      "SI_CONTROL_WIND_CURVE_X_04",
-                                                                      "SI_CONTROL_WIND_CURVE_X_05",
-                                                                      "SI_CONTROL_WIND_CURVE_X_06",
-                                                                      "SI_CONTROL_WIND_CURVE_X_07",
-                                                                      "SI_CONTROL_WIND_CURVE_X_08",
-                                                                      "SI_CONTROL_WIND_CURVE_X_09",
-                                                                      "SI_CONTROL_WIND_CURVE_X_10",
-                                                                      "SI_CONTROL_WIND_CURVE_X_11",
-                                                                      "SI_CONTROL_WIND_CURVE_X_12",
-                                                                      "SI_CONTROL_WIND_CURVE_X_13",
-                                                                      "SI_CONTROL_WIND_CURVE_X_14",
-                                                                      "SI_CONTROL_WIND_CURVE_X_15",
+                                                                      "SI_CONTROL_WIND_CURVE_X_00_READ",
+                                                                      "SI_CONTROL_WIND_CURVE_X_01_READ",
+                                                                      "SI_CONTROL_WIND_CURVE_X_02_READ",
+                                                                      "SI_CONTROL_WIND_CURVE_X_03_READ",
+                                                                      "SI_CONTROL_WIND_CURVE_X_04_READ",
+                                                                      "SI_CONTROL_WIND_CURVE_X_05_READ",
+                                                                      "SI_CONTROL_WIND_CURVE_X_06_READ",
+                                                                      "SI_CONTROL_WIND_CURVE_X_07_READ",
+                                                                      "SI_CONTROL_WIND_CURVE_X_08_READ",
+                                                                      "SI_CONTROL_WIND_CURVE_X_09_READ",
+                                                                      "SI_CONTROL_WIND_CURVE_X_10_READ",
+                                                                      "SI_CONTROL_WIND_CURVE_X_11_READ",
+                                                                      "SI_CONTROL_WIND_CURVE_X_12_READ",
+                                                                      "SI_CONTROL_WIND_CURVE_X_13_READ",
+                                                                      "SI_CONTROL_WIND_CURVE_X_14_READ",
+                                                                      "SI_CONTROL_WIND_CURVE_X_15_READ",
                                                                       "SI_CONTROL_WIND_CURVE_Y_00_READ",
                                                                       "SI_CONTROL_WIND_CURVE_Y_01_READ",
                                                                       "SI_CONTROL_WIND_CURVE_Y_02_READ",
@@ -1969,6 +2117,22 @@ class RegisterAddress
                                                                       "SI_CONTROL_DAC_CURVE_Y_7_WRITE",
                                                                       "SI_CONTROL_DAC_CURVE_Y_8_WRITE",
                                                                       "SI_CONTROL_DAC_CURVE_Y_9_WRITE",
+                                                                      "SI_CONTROL_WIND_CURVE_X_00_WRITE",
+                                                                      "SI_CONTROL_WIND_CURVE_X_01_WRITE",
+                                                                      "SI_CONTROL_WIND_CURVE_X_02_WRITE",
+                                                                      "SI_CONTROL_WIND_CURVE_X_03_WRITE",
+                                                                      "SI_CONTROL_WIND_CURVE_X_04_WRITE",
+                                                                      "SI_CONTROL_WIND_CURVE_X_05_WRITE",
+                                                                      "SI_CONTROL_WIND_CURVE_X_06_WRITE",
+                                                                      "SI_CONTROL_WIND_CURVE_X_07_WRITE",
+                                                                      "SI_CONTROL_WIND_CURVE_X_08_WRITE",
+                                                                      "SI_CONTROL_WIND_CURVE_X_09_WRITE",
+                                                                      "SI_CONTROL_WIND_CURVE_X_10_WRITE",
+                                                                      "SI_CONTROL_WIND_CURVE_X_11_WRITE",
+                                                                      "SI_CONTROL_WIND_CURVE_X_12_WRITE",
+                                                                      "SI_CONTROL_WIND_CURVE_X_13_WRITE",
+                                                                      "SI_CONTROL_WIND_CURVE_X_14_WRITE",
+                                                                      "SI_CONTROL_WIND_CURVE_X_15_WRITE",
                                                                       "SI_CONTROL_ENABLE_WRITE_ONCE",
                                                                       "SI_CONTROL_ENABLE_WRITE_PERMANENT"};
 
@@ -2139,37 +2303,37 @@ class RegisterAddress
                 return std::uint16_t(40357);
             case SI_CONTROL_FILTER_WIND_CURVE:
                 return std::uint16_t(40360);
-            case SI_CONTROL_WIND_CURVE_X_00:
+            case SI_CONTROL_WIND_CURVE_X_00_READ:
                 return std::uint16_t(40361);
-            case SI_CONTROL_WIND_CURVE_X_01:
+            case SI_CONTROL_WIND_CURVE_X_01_READ:
                 return std::uint16_t(40362);
-            case SI_CONTROL_WIND_CURVE_X_02:
+            case SI_CONTROL_WIND_CURVE_X_02_READ:
                 return std::uint16_t(40363);
-            case SI_CONTROL_WIND_CURVE_X_03:
+            case SI_CONTROL_WIND_CURVE_X_03_READ:
                 return std::uint16_t(40364);
-            case SI_CONTROL_WIND_CURVE_X_04:
+            case SI_CONTROL_WIND_CURVE_X_04_READ:
                 return std::uint16_t(40365);
-            case SI_CONTROL_WIND_CURVE_X_05:
+            case SI_CONTROL_WIND_CURVE_X_05_READ:
                 return std::uint16_t(40366);
-            case SI_CONTROL_WIND_CURVE_X_06:
+            case SI_CONTROL_WIND_CURVE_X_06_READ:
                 return std::uint16_t(40367);
-            case SI_CONTROL_WIND_CURVE_X_07:
+            case SI_CONTROL_WIND_CURVE_X_07_READ:
                 return std::uint16_t(40368);
-            case SI_CONTROL_WIND_CURVE_X_08:
+            case SI_CONTROL_WIND_CURVE_X_08_READ:
                 return std::uint16_t(40369);
-            case SI_CONTROL_WIND_CURVE_X_09:
+            case SI_CONTROL_WIND_CURVE_X_09_READ:
                 return std::uint16_t(40370);
-            case SI_CONTROL_WIND_CURVE_X_10:
+            case SI_CONTROL_WIND_CURVE_X_10_READ:
                 return std::uint16_t(40371);
-            case SI_CONTROL_WIND_CURVE_X_11:
+            case SI_CONTROL_WIND_CURVE_X_11_READ:
                 return std::uint16_t(40372);
-            case SI_CONTROL_WIND_CURVE_X_12:
+            case SI_CONTROL_WIND_CURVE_X_12_READ:
                 return std::uint16_t(40373);
-            case SI_CONTROL_WIND_CURVE_X_13:
+            case SI_CONTROL_WIND_CURVE_X_13_READ:
                 return std::uint16_t(40374);
-            case SI_CONTROL_WIND_CURVE_X_14:
+            case SI_CONTROL_WIND_CURVE_X_14_READ:
                 return std::uint16_t(40375);
-            case SI_CONTROL_WIND_CURVE_X_15:
+            case SI_CONTROL_WIND_CURVE_X_15_READ:
                 return std::uint16_t(40376);
             case SI_CONTROL_WIND_CURVE_Y_00_READ:
                 return std::uint16_t(40377);
@@ -2333,6 +2497,38 @@ class RegisterAddress
                 return std::uint16_t(40475);
             case SI_CONTROL_DAC_CURVE_Y_9_WRITE:
                 return std::uint16_t(40476);
+            case SI_CONTROL_WIND_CURVE_X_00_WRITE:
+                return std::uint16_t(40477);
+            case SI_CONTROL_WIND_CURVE_X_01_WRITE:
+                return std::uint16_t(40478);
+            case SI_CONTROL_WIND_CURVE_X_02_WRITE:
+                return std::uint16_t(40479);
+            case SI_CONTROL_WIND_CURVE_X_03_WRITE:
+                return std::uint16_t(40480);
+            case SI_CONTROL_WIND_CURVE_X_04_WRITE:
+                return std::uint16_t(40481);
+            case SI_CONTROL_WIND_CURVE_X_05_WRITE:
+                return std::uint16_t(40482);
+            case SI_CONTROL_WIND_CURVE_X_06_WRITE:
+                return std::uint16_t(40483);
+            case SI_CONTROL_WIND_CURVE_X_07_WRITE:
+                return std::uint16_t(40484);
+            case SI_CONTROL_WIND_CURVE_X_08_WRITE:
+                return std::uint16_t(40485);
+            case SI_CONTROL_WIND_CURVE_X_09_WRITE:
+                return std::uint16_t(40486);
+            case SI_CONTROL_WIND_CURVE_X_10_WRITE:
+                return std::uint16_t(40487);
+            case SI_CONTROL_WIND_CURVE_X_11_WRITE:
+                return std::uint16_t(40488);
+            case SI_CONTROL_WIND_CURVE_X_12_WRITE:
+                return std::uint16_t(40489);
+            case SI_CONTROL_WIND_CURVE_X_13_WRITE:
+                return std::uint16_t(40490);
+            case SI_CONTROL_WIND_CURVE_X_14_WRITE:
+                return std::uint16_t(40491);
+            case SI_CONTROL_WIND_CURVE_X_15_WRITE:
+                return std::uint16_t(40492);
             case SI_CONTROL_ENABLE_WRITE_ONCE:
                 return std::uint16_t(40496);
             case SI_CONTROL_ENABLE_WRITE_PERMANENT:
@@ -2510,37 +2706,37 @@ class RegisterAddress
                 return Type::uint16();
             case SI_CONTROL_FILTER_WIND_CURVE:
                 return Type::uint16();
-            case SI_CONTROL_WIND_CURVE_X_00:
+            case SI_CONTROL_WIND_CURVE_X_00_READ:
                 return Type::uint16();
-            case SI_CONTROL_WIND_CURVE_X_01:
+            case SI_CONTROL_WIND_CURVE_X_01_READ:
                 return Type::uint16();
-            case SI_CONTROL_WIND_CURVE_X_02:
+            case SI_CONTROL_WIND_CURVE_X_02_READ:
                 return Type::uint16();
-            case SI_CONTROL_WIND_CURVE_X_03:
+            case SI_CONTROL_WIND_CURVE_X_03_READ:
                 return Type::uint16();
-            case SI_CONTROL_WIND_CURVE_X_04:
+            case SI_CONTROL_WIND_CURVE_X_04_READ:
                 return Type::uint16();
-            case SI_CONTROL_WIND_CURVE_X_05:
+            case SI_CONTROL_WIND_CURVE_X_05_READ:
                 return Type::uint16();
-            case SI_CONTROL_WIND_CURVE_X_06:
+            case SI_CONTROL_WIND_CURVE_X_06_READ:
                 return Type::uint16();
-            case SI_CONTROL_WIND_CURVE_X_07:
+            case SI_CONTROL_WIND_CURVE_X_07_READ:
                 return Type::uint16();
-            case SI_CONTROL_WIND_CURVE_X_08:
+            case SI_CONTROL_WIND_CURVE_X_08_READ:
                 return Type::uint16();
-            case SI_CONTROL_WIND_CURVE_X_09:
+            case SI_CONTROL_WIND_CURVE_X_09_READ:
                 return Type::uint16();
-            case SI_CONTROL_WIND_CURVE_X_10:
+            case SI_CONTROL_WIND_CURVE_X_10_READ:
                 return Type::uint16();
-            case SI_CONTROL_WIND_CURVE_X_11:
+            case SI_CONTROL_WIND_CURVE_X_11_READ:
                 return Type::uint16();
-            case SI_CONTROL_WIND_CURVE_X_12:
+            case SI_CONTROL_WIND_CURVE_X_12_READ:
                 return Type::uint16();
-            case SI_CONTROL_WIND_CURVE_X_13:
+            case SI_CONTROL_WIND_CURVE_X_13_READ:
                 return Type::uint16();
-            case SI_CONTROL_WIND_CURVE_X_14:
+            case SI_CONTROL_WIND_CURVE_X_14_READ:
                 return Type::uint16();
-            case SI_CONTROL_WIND_CURVE_X_15:
+            case SI_CONTROL_WIND_CURVE_X_15_READ:
                 return Type::uint16();
             case SI_CONTROL_WIND_CURVE_Y_00_READ:
                 return Type::uint16();
@@ -2703,6 +2899,38 @@ class RegisterAddress
             case SI_CONTROL_DAC_CURVE_Y_8_WRITE:
                 return Type::uint16();
             case SI_CONTROL_DAC_CURVE_Y_9_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_WIND_CURVE_X_00_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_WIND_CURVE_X_01_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_WIND_CURVE_X_02_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_WIND_CURVE_X_03_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_WIND_CURVE_X_04_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_WIND_CURVE_X_05_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_WIND_CURVE_X_06_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_WIND_CURVE_X_07_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_WIND_CURVE_X_08_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_WIND_CURVE_X_09_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_WIND_CURVE_X_10_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_WIND_CURVE_X_11_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_WIND_CURVE_X_12_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_WIND_CURVE_X_13_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_WIND_CURVE_X_14_WRITE:
+                return Type::uint16();
+            case SI_CONTROL_WIND_CURVE_X_15_WRITE:
                 return Type::uint16();
             case SI_CONTROL_ENABLE_WRITE_ONCE:
                 return Type::uint16();
@@ -2883,37 +3111,37 @@ class RegisterAddress
             case 40360:
                 return Address(SI_CONTROL_FILTER_WIND_CURVE);
             case 40361:
-                return Address(SI_CONTROL_WIND_CURVE_X_00);
+                return Address(SI_CONTROL_WIND_CURVE_X_00_READ);
             case 40362:
-                return Address(SI_CONTROL_WIND_CURVE_X_01);
+                return Address(SI_CONTROL_WIND_CURVE_X_01_READ);
             case 40363:
-                return Address(SI_CONTROL_WIND_CURVE_X_02);
+                return Address(SI_CONTROL_WIND_CURVE_X_02_READ);
             case 40364:
-                return Address(SI_CONTROL_WIND_CURVE_X_03);
+                return Address(SI_CONTROL_WIND_CURVE_X_03_READ);
             case 40365:
-                return Address(SI_CONTROL_WIND_CURVE_X_04);
+                return Address(SI_CONTROL_WIND_CURVE_X_04_READ);
             case 40366:
-                return Address(SI_CONTROL_WIND_CURVE_X_05);
+                return Address(SI_CONTROL_WIND_CURVE_X_05_READ);
             case 40367:
-                return Address(SI_CONTROL_WIND_CURVE_X_06);
+                return Address(SI_CONTROL_WIND_CURVE_X_06_READ);
             case 40368:
-                return Address(SI_CONTROL_WIND_CURVE_X_07);
+                return Address(SI_CONTROL_WIND_CURVE_X_07_READ);
             case 40369:
-                return Address(SI_CONTROL_WIND_CURVE_X_08);
+                return Address(SI_CONTROL_WIND_CURVE_X_08_READ);
             case 40370:
-                return Address(SI_CONTROL_WIND_CURVE_X_09);
+                return Address(SI_CONTROL_WIND_CURVE_X_09_READ);
             case 40371:
-                return Address(SI_CONTROL_WIND_CURVE_X_10);
+                return Address(SI_CONTROL_WIND_CURVE_X_10_READ);
             case 40372:
-                return Address(SI_CONTROL_WIND_CURVE_X_11);
+                return Address(SI_CONTROL_WIND_CURVE_X_11_READ);
             case 40373:
-                return Address(SI_CONTROL_WIND_CURVE_X_12);
+                return Address(SI_CONTROL_WIND_CURVE_X_12_READ);
             case 40374:
-                return Address(SI_CONTROL_WIND_CURVE_X_13);
+                return Address(SI_CONTROL_WIND_CURVE_X_13_READ);
             case 40375:
-                return Address(SI_CONTROL_WIND_CURVE_X_14);
+                return Address(SI_CONTROL_WIND_CURVE_X_14_READ);
             case 40376:
-                return Address(SI_CONTROL_WIND_CURVE_X_15);
+                return Address(SI_CONTROL_WIND_CURVE_X_15_READ);
             case 40377:
                 return Address(SI_CONTROL_WIND_CURVE_Y_00_READ);
             case 40378:
@@ -3076,6 +3304,38 @@ class RegisterAddress
                 return Address(SI_CONTROL_DAC_CURVE_Y_8_WRITE);
             case 40476:
                 return Address(SI_CONTROL_DAC_CURVE_Y_9_WRITE);
+            case 40477:
+                return Address(SI_CONTROL_WIND_CURVE_X_00_WRITE);
+            case 40478:
+                return Address(SI_CONTROL_WIND_CURVE_X_01_WRITE);
+            case 40479:
+                return Address(SI_CONTROL_WIND_CURVE_X_02_WRITE);
+            case 40480:
+                return Address(SI_CONTROL_WIND_CURVE_X_03_WRITE);
+            case 40481:
+                return Address(SI_CONTROL_WIND_CURVE_X_04_WRITE);
+            case 40482:
+                return Address(SI_CONTROL_WIND_CURVE_X_05_WRITE);
+            case 40483:
+                return Address(SI_CONTROL_WIND_CURVE_X_06_WRITE);
+            case 40484:
+                return Address(SI_CONTROL_WIND_CURVE_X_07_WRITE);
+            case 40485:
+                return Address(SI_CONTROL_WIND_CURVE_X_08_WRITE);
+            case 40486:
+                return Address(SI_CONTROL_WIND_CURVE_X_09_WRITE);
+            case 40487:
+                return Address(SI_CONTROL_WIND_CURVE_X_10_WRITE);
+            case 40488:
+                return Address(SI_CONTROL_WIND_CURVE_X_11_WRITE);
+            case 40489:
+                return Address(SI_CONTROL_WIND_CURVE_X_12_WRITE);
+            case 40490:
+                return Address(SI_CONTROL_WIND_CURVE_X_13_WRITE);
+            case 40491:
+                return Address(SI_CONTROL_WIND_CURVE_X_14_WRITE);
+            case 40492:
+                return Address(SI_CONTROL_WIND_CURVE_X_15_WRITE);
             case 40496:
                 return Address(SI_CONTROL_ENABLE_WRITE_ONCE);
             case 40497:
@@ -3130,6 +3390,22 @@ class RegisterAddress
             case SI_CONTROL_DAC_CURVE_Y_7_WRITE:
             case SI_CONTROL_DAC_CURVE_Y_8_WRITE:
             case SI_CONTROL_DAC_CURVE_Y_9_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_00_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_01_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_02_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_03_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_04_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_05_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_06_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_07_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_08_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_09_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_10_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_11_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_12_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_13_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_14_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_15_WRITE:
                 return false;
             default:
                 return true;
@@ -3172,22 +3448,22 @@ class RegisterAddress
             case SI_CONTROL_REDUCTION:
             case SI_CONTROL_SINEDUTY:
             case SI_CONTROL_FILTER_WIND_CURVE:
-            case SI_CONTROL_WIND_CURVE_X_00:
-            case SI_CONTROL_WIND_CURVE_X_01:
-            case SI_CONTROL_WIND_CURVE_X_02:
-            case SI_CONTROL_WIND_CURVE_X_03:
-            case SI_CONTROL_WIND_CURVE_X_04:
-            case SI_CONTROL_WIND_CURVE_X_05:
-            case SI_CONTROL_WIND_CURVE_X_06:
-            case SI_CONTROL_WIND_CURVE_X_07:
-            case SI_CONTROL_WIND_CURVE_X_08:
-            case SI_CONTROL_WIND_CURVE_X_09:
-            case SI_CONTROL_WIND_CURVE_X_10:
-            case SI_CONTROL_WIND_CURVE_X_11:
-            case SI_CONTROL_WIND_CURVE_X_12:
-            case SI_CONTROL_WIND_CURVE_X_13:
-            case SI_CONTROL_WIND_CURVE_X_14:
-            case SI_CONTROL_WIND_CURVE_X_15:
+            case SI_CONTROL_WIND_CURVE_X_00_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_01_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_02_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_03_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_04_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_05_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_06_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_07_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_08_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_09_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_10_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_11_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_12_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_13_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_14_WRITE:
+            case SI_CONTROL_WIND_CURVE_X_15_WRITE:
             case SI_CONTROL_SOLAR_BATTERY_FILTER_STEP:
             case SI_CONTROL_POWER_LIMIT_SAFTY_MODE:
             case SI_CONTROL_VOLTAGE_DC_START_WRITE:

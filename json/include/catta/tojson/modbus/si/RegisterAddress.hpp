@@ -291,52 +291,52 @@ class Serializer<catta::modbus::si::RegisterAddress>
                     _state = SI_CONTROL_FILTER_WIND_CURVE + 0;
                     break;
                 case 80:
-                    _state = SI_CONTROL_WIND_CURVE_X00 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X00READ + 0;
                     break;
                 case 81:
-                    _state = SI_CONTROL_WIND_CURVE_X01 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X01READ + 0;
                     break;
                 case 82:
-                    _state = SI_CONTROL_WIND_CURVE_X02 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X02READ + 0;
                     break;
                 case 83:
-                    _state = SI_CONTROL_WIND_CURVE_X03 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X03READ + 0;
                     break;
                 case 84:
-                    _state = SI_CONTROL_WIND_CURVE_X04 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X04READ + 0;
                     break;
                 case 85:
-                    _state = SI_CONTROL_WIND_CURVE_X05 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X05READ + 0;
                     break;
                 case 86:
-                    _state = SI_CONTROL_WIND_CURVE_X06 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X06READ + 0;
                     break;
                 case 87:
-                    _state = SI_CONTROL_WIND_CURVE_X07 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X07READ + 0;
                     break;
                 case 88:
-                    _state = SI_CONTROL_WIND_CURVE_X08 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X08READ + 0;
                     break;
                 case 89:
-                    _state = SI_CONTROL_WIND_CURVE_X09 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X09READ + 0;
                     break;
                 case 90:
-                    _state = SI_CONTROL_WIND_CURVE_X10 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X10READ + 0;
                     break;
                 case 91:
-                    _state = SI_CONTROL_WIND_CURVE_X11 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X11READ + 0;
                     break;
                 case 92:
-                    _state = SI_CONTROL_WIND_CURVE_X12 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X12READ + 0;
                     break;
                 case 93:
-                    _state = SI_CONTROL_WIND_CURVE_X13 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X13READ + 0;
                     break;
                 case 94:
-                    _state = SI_CONTROL_WIND_CURVE_X14 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X14READ + 0;
                     break;
                 case 95:
-                    _state = SI_CONTROL_WIND_CURVE_X15 + 0;
+                    _state = SI_CONTROL_WIND_CURVE_X15READ + 0;
                     break;
                 case 96:
                     _state = SI_CONTROL_WIND_CURVE_Y00_READ + 0;
@@ -582,6 +582,54 @@ class Serializer<catta::modbus::si::RegisterAddress>
                     _state = SI_CONTROL_DAC_CURVE_Y9_WRITE + 0;
                     break;
                 case 177:
+                    _state = SI_CONTROL_WIND_CURVE_X00WRITE + 0;
+                    break;
+                case 178:
+                    _state = SI_CONTROL_WIND_CURVE_X01WRITE + 0;
+                    break;
+                case 179:
+                    _state = SI_CONTROL_WIND_CURVE_X02WRITE + 0;
+                    break;
+                case 180:
+                    _state = SI_CONTROL_WIND_CURVE_X03WRITE + 0;
+                    break;
+                case 181:
+                    _state = SI_CONTROL_WIND_CURVE_X04WRITE + 0;
+                    break;
+                case 182:
+                    _state = SI_CONTROL_WIND_CURVE_X05WRITE + 0;
+                    break;
+                case 183:
+                    _state = SI_CONTROL_WIND_CURVE_X06WRITE + 0;
+                    break;
+                case 184:
+                    _state = SI_CONTROL_WIND_CURVE_X07WRITE + 0;
+                    break;
+                case 185:
+                    _state = SI_CONTROL_WIND_CURVE_X08WRITE + 0;
+                    break;
+                case 186:
+                    _state = SI_CONTROL_WIND_CURVE_X09WRITE + 0;
+                    break;
+                case 187:
+                    _state = SI_CONTROL_WIND_CURVE_X10WRITE + 0;
+                    break;
+                case 188:
+                    _state = SI_CONTROL_WIND_CURVE_X11WRITE + 0;
+                    break;
+                case 189:
+                    _state = SI_CONTROL_WIND_CURVE_X12WRITE + 0;
+                    break;
+                case 190:
+                    _state = SI_CONTROL_WIND_CURVE_X13WRITE + 0;
+                    break;
+                case 191:
+                    _state = SI_CONTROL_WIND_CURVE_X14WRITE + 0;
+                    break;
+                case 192:
+                    _state = SI_CONTROL_WIND_CURVE_X15WRITE + 0;
+                    break;
+                case 193:
                     _state = SI_CONTROL_ENABLE_WRITE_ONCE + 0;
                     break;
                 default:
@@ -4092,678 +4140,806 @@ class Serializer<catta::modbus::si::RegisterAddress>
                 return next(catta::json::Token::character('v'));
             case SI_CONTROL_FILTER_WIND_CURVE + 23:
                 return jump(catta::json::Token::character('e'), TAIL + 0);
-            case SI_CONTROL_WIND_CURVE_X00 + 0:
+            case SI_CONTROL_WIND_CURVE_X00READ + 0:
                 return next(catta::json::Token::character('S'));
-            case SI_CONTROL_WIND_CURVE_X00 + 1:
+            case SI_CONTROL_WIND_CURVE_X00READ + 1:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X00 + 2:
+            case SI_CONTROL_WIND_CURVE_X00READ + 2:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X00 + 3:
+            case SI_CONTROL_WIND_CURVE_X00READ + 3:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X00 + 4:
+            case SI_CONTROL_WIND_CURVE_X00READ + 4:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X00 + 5:
+            case SI_CONTROL_WIND_CURVE_X00READ + 5:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_WIND_CURVE_X00 + 6:
+            case SI_CONTROL_WIND_CURVE_X00READ + 6:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X00 + 7:
+            case SI_CONTROL_WIND_CURVE_X00READ + 7:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X00 + 8:
+            case SI_CONTROL_WIND_CURVE_X00READ + 8:
                 return next(catta::json::Token::character('l'));
-            case SI_CONTROL_WIND_CURVE_X00 + 9:
+            case SI_CONTROL_WIND_CURVE_X00READ + 9:
                 return next(catta::json::Token::character('W'));
-            case SI_CONTROL_WIND_CURVE_X00 + 10:
+            case SI_CONTROL_WIND_CURVE_X00READ + 10:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X00 + 11:
+            case SI_CONTROL_WIND_CURVE_X00READ + 11:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X00 + 12:
+            case SI_CONTROL_WIND_CURVE_X00READ + 12:
                 return next(catta::json::Token::character('d'));
-            case SI_CONTROL_WIND_CURVE_X00 + 13:
+            case SI_CONTROL_WIND_CURVE_X00READ + 13:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X00 + 14:
+            case SI_CONTROL_WIND_CURVE_X00READ + 14:
                 return next(catta::json::Token::character('u'));
-            case SI_CONTROL_WIND_CURVE_X00 + 15:
+            case SI_CONTROL_WIND_CURVE_X00READ + 15:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X00 + 16:
+            case SI_CONTROL_WIND_CURVE_X00READ + 16:
                 return next(catta::json::Token::character('v'));
-            case SI_CONTROL_WIND_CURVE_X00 + 17:
+            case SI_CONTROL_WIND_CURVE_X00READ + 17:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_WIND_CURVE_X00 + 18:
+            case SI_CONTROL_WIND_CURVE_X00READ + 18:
                 return next(catta::json::Token::character('X'));
-            case SI_CONTROL_WIND_CURVE_X00 + 19:
+            case SI_CONTROL_WIND_CURVE_X00READ + 19:
                 return next(catta::json::Token::character('0'));
-            case SI_CONTROL_WIND_CURVE_X00 + 20:
-                return jump(catta::json::Token::character('0'), TAIL + 0);
-            case SI_CONTROL_WIND_CURVE_X01 + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_WIND_CURVE_X01 + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X01 + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X01 + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X01 + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X01 + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_WIND_CURVE_X01 + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X01 + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X01 + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_WIND_CURVE_X01 + 9:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_WIND_CURVE_X01 + 10:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X01 + 11:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X01 + 12:
-                return next(catta::json::Token::character('d'));
-            case SI_CONTROL_WIND_CURVE_X01 + 13:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X01 + 14:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_WIND_CURVE_X01 + 15:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X01 + 16:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_WIND_CURVE_X01 + 17:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_WIND_CURVE_X01 + 18:
-                return next(catta::json::Token::character('X'));
-            case SI_CONTROL_WIND_CURVE_X01 + 19:
+            case SI_CONTROL_WIND_CURVE_X00READ + 20:
                 return next(catta::json::Token::character('0'));
-            case SI_CONTROL_WIND_CURVE_X01 + 20:
-                return jump(catta::json::Token::character('1'), TAIL + 0);
-            case SI_CONTROL_WIND_CURVE_X02 + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_WIND_CURVE_X02 + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X02 + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X02 + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X02 + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X02 + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_WIND_CURVE_X02 + 6:
+            case SI_CONTROL_WIND_CURVE_X00READ + 21:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X02 + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X02 + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_WIND_CURVE_X02 + 9:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_WIND_CURVE_X02 + 10:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X02 + 11:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X02 + 12:
-                return next(catta::json::Token::character('d'));
-            case SI_CONTROL_WIND_CURVE_X02 + 13:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X02 + 14:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_WIND_CURVE_X02 + 15:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X02 + 16:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_WIND_CURVE_X02 + 17:
+            case SI_CONTROL_WIND_CURVE_X00READ + 22:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_WIND_CURVE_X02 + 18:
+            case SI_CONTROL_WIND_CURVE_X00READ + 23:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_WIND_CURVE_X00READ + 24:
+                return jump(catta::json::Token::character('d'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X01READ + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 18:
                 return next(catta::json::Token::character('X'));
-            case SI_CONTROL_WIND_CURVE_X02 + 19:
+            case SI_CONTROL_WIND_CURVE_X01READ + 19:
                 return next(catta::json::Token::character('0'));
-            case SI_CONTROL_WIND_CURVE_X02 + 20:
-                return jump(catta::json::Token::character('2'), TAIL + 0);
-            case SI_CONTROL_WIND_CURVE_X03 + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_WIND_CURVE_X03 + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X03 + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X03 + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X03 + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X03 + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_WIND_CURVE_X03 + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X03 + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X03 + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_WIND_CURVE_X03 + 9:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_WIND_CURVE_X03 + 10:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X03 + 11:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X03 + 12:
-                return next(catta::json::Token::character('d'));
-            case SI_CONTROL_WIND_CURVE_X03 + 13:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X03 + 14:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_WIND_CURVE_X03 + 15:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X03 + 16:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_WIND_CURVE_X03 + 17:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_WIND_CURVE_X03 + 18:
-                return next(catta::json::Token::character('X'));
-            case SI_CONTROL_WIND_CURVE_X03 + 19:
-                return next(catta::json::Token::character('0'));
-            case SI_CONTROL_WIND_CURVE_X03 + 20:
-                return jump(catta::json::Token::character('3'), TAIL + 0);
-            case SI_CONTROL_WIND_CURVE_X04 + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_WIND_CURVE_X04 + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X04 + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X04 + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X04 + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X04 + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_WIND_CURVE_X04 + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X04 + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X04 + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_WIND_CURVE_X04 + 9:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_WIND_CURVE_X04 + 10:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X04 + 11:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X04 + 12:
-                return next(catta::json::Token::character('d'));
-            case SI_CONTROL_WIND_CURVE_X04 + 13:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X04 + 14:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_WIND_CURVE_X04 + 15:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X04 + 16:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_WIND_CURVE_X04 + 17:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_WIND_CURVE_X04 + 18:
-                return next(catta::json::Token::character('X'));
-            case SI_CONTROL_WIND_CURVE_X04 + 19:
-                return next(catta::json::Token::character('0'));
-            case SI_CONTROL_WIND_CURVE_X04 + 20:
-                return jump(catta::json::Token::character('4'), TAIL + 0);
-            case SI_CONTROL_WIND_CURVE_X05 + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_WIND_CURVE_X05 + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X05 + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X05 + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X05 + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X05 + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_WIND_CURVE_X05 + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X05 + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X05 + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_WIND_CURVE_X05 + 9:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_WIND_CURVE_X05 + 10:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X05 + 11:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X05 + 12:
-                return next(catta::json::Token::character('d'));
-            case SI_CONTROL_WIND_CURVE_X05 + 13:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X05 + 14:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_WIND_CURVE_X05 + 15:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X05 + 16:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_WIND_CURVE_X05 + 17:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_WIND_CURVE_X05 + 18:
-                return next(catta::json::Token::character('X'));
-            case SI_CONTROL_WIND_CURVE_X05 + 19:
-                return next(catta::json::Token::character('0'));
-            case SI_CONTROL_WIND_CURVE_X05 + 20:
-                return jump(catta::json::Token::character('5'), TAIL + 0);
-            case SI_CONTROL_WIND_CURVE_X06 + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_WIND_CURVE_X06 + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X06 + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X06 + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X06 + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X06 + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_WIND_CURVE_X06 + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X06 + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X06 + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_WIND_CURVE_X06 + 9:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_WIND_CURVE_X06 + 10:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X06 + 11:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X06 + 12:
-                return next(catta::json::Token::character('d'));
-            case SI_CONTROL_WIND_CURVE_X06 + 13:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X06 + 14:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_WIND_CURVE_X06 + 15:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X06 + 16:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_WIND_CURVE_X06 + 17:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_WIND_CURVE_X06 + 18:
-                return next(catta::json::Token::character('X'));
-            case SI_CONTROL_WIND_CURVE_X06 + 19:
-                return next(catta::json::Token::character('0'));
-            case SI_CONTROL_WIND_CURVE_X06 + 20:
-                return jump(catta::json::Token::character('6'), TAIL + 0);
-            case SI_CONTROL_WIND_CURVE_X07 + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_WIND_CURVE_X07 + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X07 + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X07 + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X07 + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X07 + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_WIND_CURVE_X07 + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X07 + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X07 + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_WIND_CURVE_X07 + 9:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_WIND_CURVE_X07 + 10:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X07 + 11:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X07 + 12:
-                return next(catta::json::Token::character('d'));
-            case SI_CONTROL_WIND_CURVE_X07 + 13:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X07 + 14:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_WIND_CURVE_X07 + 15:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X07 + 16:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_WIND_CURVE_X07 + 17:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_WIND_CURVE_X07 + 18:
-                return next(catta::json::Token::character('X'));
-            case SI_CONTROL_WIND_CURVE_X07 + 19:
-                return next(catta::json::Token::character('0'));
-            case SI_CONTROL_WIND_CURVE_X07 + 20:
-                return jump(catta::json::Token::character('7'), TAIL + 0);
-            case SI_CONTROL_WIND_CURVE_X08 + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_WIND_CURVE_X08 + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X08 + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X08 + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X08 + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X08 + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_WIND_CURVE_X08 + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X08 + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X08 + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_WIND_CURVE_X08 + 9:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_WIND_CURVE_X08 + 10:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X08 + 11:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X08 + 12:
-                return next(catta::json::Token::character('d'));
-            case SI_CONTROL_WIND_CURVE_X08 + 13:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X08 + 14:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_WIND_CURVE_X08 + 15:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X08 + 16:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_WIND_CURVE_X08 + 17:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_WIND_CURVE_X08 + 18:
-                return next(catta::json::Token::character('X'));
-            case SI_CONTROL_WIND_CURVE_X08 + 19:
-                return next(catta::json::Token::character('0'));
-            case SI_CONTROL_WIND_CURVE_X08 + 20:
-                return jump(catta::json::Token::character('8'), TAIL + 0);
-            case SI_CONTROL_WIND_CURVE_X09 + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_WIND_CURVE_X09 + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X09 + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X09 + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X09 + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X09 + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_WIND_CURVE_X09 + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X09 + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X09 + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_WIND_CURVE_X09 + 9:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_WIND_CURVE_X09 + 10:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X09 + 11:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X09 + 12:
-                return next(catta::json::Token::character('d'));
-            case SI_CONTROL_WIND_CURVE_X09 + 13:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X09 + 14:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_WIND_CURVE_X09 + 15:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X09 + 16:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_WIND_CURVE_X09 + 17:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_WIND_CURVE_X09 + 18:
-                return next(catta::json::Token::character('X'));
-            case SI_CONTROL_WIND_CURVE_X09 + 19:
-                return next(catta::json::Token::character('0'));
-            case SI_CONTROL_WIND_CURVE_X09 + 20:
-                return jump(catta::json::Token::character('9'), TAIL + 0);
-            case SI_CONTROL_WIND_CURVE_X10 + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_WIND_CURVE_X10 + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X10 + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X10 + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X10 + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X10 + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_WIND_CURVE_X10 + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X10 + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X10 + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_WIND_CURVE_X10 + 9:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_WIND_CURVE_X10 + 10:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X10 + 11:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X10 + 12:
-                return next(catta::json::Token::character('d'));
-            case SI_CONTROL_WIND_CURVE_X10 + 13:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X10 + 14:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_WIND_CURVE_X10 + 15:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X10 + 16:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_WIND_CURVE_X10 + 17:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_WIND_CURVE_X10 + 18:
-                return next(catta::json::Token::character('X'));
-            case SI_CONTROL_WIND_CURVE_X10 + 19:
+            case SI_CONTROL_WIND_CURVE_X01READ + 20:
                 return next(catta::json::Token::character('1'));
-            case SI_CONTROL_WIND_CURVE_X10 + 20:
-                return jump(catta::json::Token::character('0'), TAIL + 0);
-            case SI_CONTROL_WIND_CURVE_X11 + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_WIND_CURVE_X11 + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X11 + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X11 + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X11 + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X11 + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_WIND_CURVE_X11 + 6:
+            case SI_CONTROL_WIND_CURVE_X01READ + 21:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X11 + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X11 + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_WIND_CURVE_X11 + 9:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_WIND_CURVE_X11 + 10:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X11 + 11:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X11 + 12:
-                return next(catta::json::Token::character('d'));
-            case SI_CONTROL_WIND_CURVE_X11 + 13:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X11 + 14:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_WIND_CURVE_X11 + 15:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X11 + 16:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_WIND_CURVE_X11 + 17:
+            case SI_CONTROL_WIND_CURVE_X01READ + 22:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_WIND_CURVE_X11 + 18:
-                return next(catta::json::Token::character('X'));
-            case SI_CONTROL_WIND_CURVE_X11 + 19:
-                return next(catta::json::Token::character('1'));
-            case SI_CONTROL_WIND_CURVE_X11 + 20:
-                return jump(catta::json::Token::character('1'), TAIL + 0);
-            case SI_CONTROL_WIND_CURVE_X12 + 0:
+            case SI_CONTROL_WIND_CURVE_X01READ + 23:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_WIND_CURVE_X01READ + 24:
+                return jump(catta::json::Token::character('d'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X02READ + 0:
                 return next(catta::json::Token::character('S'));
-            case SI_CONTROL_WIND_CURVE_X12 + 1:
+            case SI_CONTROL_WIND_CURVE_X02READ + 1:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X12 + 2:
+            case SI_CONTROL_WIND_CURVE_X02READ + 2:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X12 + 3:
+            case SI_CONTROL_WIND_CURVE_X02READ + 3:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X12 + 4:
+            case SI_CONTROL_WIND_CURVE_X02READ + 4:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X12 + 5:
+            case SI_CONTROL_WIND_CURVE_X02READ + 5:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_WIND_CURVE_X12 + 6:
+            case SI_CONTROL_WIND_CURVE_X02READ + 6:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X12 + 7:
+            case SI_CONTROL_WIND_CURVE_X02READ + 7:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X12 + 8:
+            case SI_CONTROL_WIND_CURVE_X02READ + 8:
                 return next(catta::json::Token::character('l'));
-            case SI_CONTROL_WIND_CURVE_X12 + 9:
+            case SI_CONTROL_WIND_CURVE_X02READ + 9:
                 return next(catta::json::Token::character('W'));
-            case SI_CONTROL_WIND_CURVE_X12 + 10:
+            case SI_CONTROL_WIND_CURVE_X02READ + 10:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X12 + 11:
+            case SI_CONTROL_WIND_CURVE_X02READ + 11:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X12 + 12:
+            case SI_CONTROL_WIND_CURVE_X02READ + 12:
                 return next(catta::json::Token::character('d'));
-            case SI_CONTROL_WIND_CURVE_X12 + 13:
+            case SI_CONTROL_WIND_CURVE_X02READ + 13:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X12 + 14:
+            case SI_CONTROL_WIND_CURVE_X02READ + 14:
                 return next(catta::json::Token::character('u'));
-            case SI_CONTROL_WIND_CURVE_X12 + 15:
+            case SI_CONTROL_WIND_CURVE_X02READ + 15:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X12 + 16:
+            case SI_CONTROL_WIND_CURVE_X02READ + 16:
                 return next(catta::json::Token::character('v'));
-            case SI_CONTROL_WIND_CURVE_X12 + 17:
+            case SI_CONTROL_WIND_CURVE_X02READ + 17:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_WIND_CURVE_X12 + 18:
+            case SI_CONTROL_WIND_CURVE_X02READ + 18:
                 return next(catta::json::Token::character('X'));
-            case SI_CONTROL_WIND_CURVE_X12 + 19:
-                return next(catta::json::Token::character('1'));
-            case SI_CONTROL_WIND_CURVE_X12 + 20:
-                return jump(catta::json::Token::character('2'), TAIL + 0);
-            case SI_CONTROL_WIND_CURVE_X13 + 0:
+            case SI_CONTROL_WIND_CURVE_X02READ + 19:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X02READ + 20:
+                return next(catta::json::Token::character('2'));
+            case SI_CONTROL_WIND_CURVE_X02READ + 21:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X02READ + 22:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X02READ + 23:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_WIND_CURVE_X02READ + 24:
+                return jump(catta::json::Token::character('d'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X03READ + 0:
                 return next(catta::json::Token::character('S'));
-            case SI_CONTROL_WIND_CURVE_X13 + 1:
+            case SI_CONTROL_WIND_CURVE_X03READ + 1:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X13 + 2:
+            case SI_CONTROL_WIND_CURVE_X03READ + 2:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X13 + 3:
+            case SI_CONTROL_WIND_CURVE_X03READ + 3:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X13 + 4:
+            case SI_CONTROL_WIND_CURVE_X03READ + 4:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X13 + 5:
+            case SI_CONTROL_WIND_CURVE_X03READ + 5:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_WIND_CURVE_X13 + 6:
+            case SI_CONTROL_WIND_CURVE_X03READ + 6:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X13 + 7:
+            case SI_CONTROL_WIND_CURVE_X03READ + 7:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X13 + 8:
+            case SI_CONTROL_WIND_CURVE_X03READ + 8:
                 return next(catta::json::Token::character('l'));
-            case SI_CONTROL_WIND_CURVE_X13 + 9:
+            case SI_CONTROL_WIND_CURVE_X03READ + 9:
                 return next(catta::json::Token::character('W'));
-            case SI_CONTROL_WIND_CURVE_X13 + 10:
+            case SI_CONTROL_WIND_CURVE_X03READ + 10:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X13 + 11:
+            case SI_CONTROL_WIND_CURVE_X03READ + 11:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X13 + 12:
+            case SI_CONTROL_WIND_CURVE_X03READ + 12:
                 return next(catta::json::Token::character('d'));
-            case SI_CONTROL_WIND_CURVE_X13 + 13:
+            case SI_CONTROL_WIND_CURVE_X03READ + 13:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X13 + 14:
+            case SI_CONTROL_WIND_CURVE_X03READ + 14:
                 return next(catta::json::Token::character('u'));
-            case SI_CONTROL_WIND_CURVE_X13 + 15:
+            case SI_CONTROL_WIND_CURVE_X03READ + 15:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X13 + 16:
+            case SI_CONTROL_WIND_CURVE_X03READ + 16:
                 return next(catta::json::Token::character('v'));
-            case SI_CONTROL_WIND_CURVE_X13 + 17:
+            case SI_CONTROL_WIND_CURVE_X03READ + 17:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_WIND_CURVE_X13 + 18:
+            case SI_CONTROL_WIND_CURVE_X03READ + 18:
                 return next(catta::json::Token::character('X'));
-            case SI_CONTROL_WIND_CURVE_X13 + 19:
-                return next(catta::json::Token::character('1'));
-            case SI_CONTROL_WIND_CURVE_X13 + 20:
-                return jump(catta::json::Token::character('3'), TAIL + 0);
-            case SI_CONTROL_WIND_CURVE_X14 + 0:
+            case SI_CONTROL_WIND_CURVE_X03READ + 19:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X03READ + 20:
+                return next(catta::json::Token::character('3'));
+            case SI_CONTROL_WIND_CURVE_X03READ + 21:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X03READ + 22:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X03READ + 23:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_WIND_CURVE_X03READ + 24:
+                return jump(catta::json::Token::character('d'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X04READ + 0:
                 return next(catta::json::Token::character('S'));
-            case SI_CONTROL_WIND_CURVE_X14 + 1:
+            case SI_CONTROL_WIND_CURVE_X04READ + 1:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X14 + 2:
+            case SI_CONTROL_WIND_CURVE_X04READ + 2:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X14 + 3:
+            case SI_CONTROL_WIND_CURVE_X04READ + 3:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X14 + 4:
+            case SI_CONTROL_WIND_CURVE_X04READ + 4:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X14 + 5:
+            case SI_CONTROL_WIND_CURVE_X04READ + 5:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_WIND_CURVE_X14 + 6:
+            case SI_CONTROL_WIND_CURVE_X04READ + 6:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X14 + 7:
+            case SI_CONTROL_WIND_CURVE_X04READ + 7:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X14 + 8:
+            case SI_CONTROL_WIND_CURVE_X04READ + 8:
                 return next(catta::json::Token::character('l'));
-            case SI_CONTROL_WIND_CURVE_X14 + 9:
+            case SI_CONTROL_WIND_CURVE_X04READ + 9:
                 return next(catta::json::Token::character('W'));
-            case SI_CONTROL_WIND_CURVE_X14 + 10:
+            case SI_CONTROL_WIND_CURVE_X04READ + 10:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X14 + 11:
+            case SI_CONTROL_WIND_CURVE_X04READ + 11:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X14 + 12:
+            case SI_CONTROL_WIND_CURVE_X04READ + 12:
                 return next(catta::json::Token::character('d'));
-            case SI_CONTROL_WIND_CURVE_X14 + 13:
+            case SI_CONTROL_WIND_CURVE_X04READ + 13:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X14 + 14:
+            case SI_CONTROL_WIND_CURVE_X04READ + 14:
                 return next(catta::json::Token::character('u'));
-            case SI_CONTROL_WIND_CURVE_X14 + 15:
+            case SI_CONTROL_WIND_CURVE_X04READ + 15:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X14 + 16:
+            case SI_CONTROL_WIND_CURVE_X04READ + 16:
                 return next(catta::json::Token::character('v'));
-            case SI_CONTROL_WIND_CURVE_X14 + 17:
+            case SI_CONTROL_WIND_CURVE_X04READ + 17:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_WIND_CURVE_X14 + 18:
+            case SI_CONTROL_WIND_CURVE_X04READ + 18:
                 return next(catta::json::Token::character('X'));
-            case SI_CONTROL_WIND_CURVE_X14 + 19:
-                return next(catta::json::Token::character('1'));
-            case SI_CONTROL_WIND_CURVE_X14 + 20:
-                return jump(catta::json::Token::character('4'), TAIL + 0);
-            case SI_CONTROL_WIND_CURVE_X15 + 0:
+            case SI_CONTROL_WIND_CURVE_X04READ + 19:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X04READ + 20:
+                return next(catta::json::Token::character('4'));
+            case SI_CONTROL_WIND_CURVE_X04READ + 21:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X04READ + 22:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X04READ + 23:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_WIND_CURVE_X04READ + 24:
+                return jump(catta::json::Token::character('d'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X05READ + 0:
                 return next(catta::json::Token::character('S'));
-            case SI_CONTROL_WIND_CURVE_X15 + 1:
+            case SI_CONTROL_WIND_CURVE_X05READ + 1:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X15 + 2:
+            case SI_CONTROL_WIND_CURVE_X05READ + 2:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X15 + 3:
+            case SI_CONTROL_WIND_CURVE_X05READ + 3:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X15 + 4:
+            case SI_CONTROL_WIND_CURVE_X05READ + 4:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X15 + 5:
+            case SI_CONTROL_WIND_CURVE_X05READ + 5:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_WIND_CURVE_X15 + 6:
+            case SI_CONTROL_WIND_CURVE_X05READ + 6:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X15 + 7:
+            case SI_CONTROL_WIND_CURVE_X05READ + 7:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_WIND_CURVE_X15 + 8:
+            case SI_CONTROL_WIND_CURVE_X05READ + 8:
                 return next(catta::json::Token::character('l'));
-            case SI_CONTROL_WIND_CURVE_X15 + 9:
+            case SI_CONTROL_WIND_CURVE_X05READ + 9:
                 return next(catta::json::Token::character('W'));
-            case SI_CONTROL_WIND_CURVE_X15 + 10:
+            case SI_CONTROL_WIND_CURVE_X05READ + 10:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_WIND_CURVE_X15 + 11:
+            case SI_CONTROL_WIND_CURVE_X05READ + 11:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_WIND_CURVE_X15 + 12:
+            case SI_CONTROL_WIND_CURVE_X05READ + 12:
                 return next(catta::json::Token::character('d'));
-            case SI_CONTROL_WIND_CURVE_X15 + 13:
+            case SI_CONTROL_WIND_CURVE_X05READ + 13:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_WIND_CURVE_X15 + 14:
+            case SI_CONTROL_WIND_CURVE_X05READ + 14:
                 return next(catta::json::Token::character('u'));
-            case SI_CONTROL_WIND_CURVE_X15 + 15:
+            case SI_CONTROL_WIND_CURVE_X05READ + 15:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_WIND_CURVE_X15 + 16:
+            case SI_CONTROL_WIND_CURVE_X05READ + 16:
                 return next(catta::json::Token::character('v'));
-            case SI_CONTROL_WIND_CURVE_X15 + 17:
+            case SI_CONTROL_WIND_CURVE_X05READ + 17:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_WIND_CURVE_X15 + 18:
+            case SI_CONTROL_WIND_CURVE_X05READ + 18:
                 return next(catta::json::Token::character('X'));
-            case SI_CONTROL_WIND_CURVE_X15 + 19:
+            case SI_CONTROL_WIND_CURVE_X05READ + 19:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X05READ + 20:
+                return next(catta::json::Token::character('5'));
+            case SI_CONTROL_WIND_CURVE_X05READ + 21:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X05READ + 22:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X05READ + 23:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_WIND_CURVE_X05READ + 24:
+                return jump(catta::json::Token::character('d'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X06READ + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 19:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 20:
+                return next(catta::json::Token::character('6'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 21:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 22:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 23:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_WIND_CURVE_X06READ + 24:
+                return jump(catta::json::Token::character('d'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X07READ + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 19:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 20:
+                return next(catta::json::Token::character('7'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 21:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 22:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 23:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_WIND_CURVE_X07READ + 24:
+                return jump(catta::json::Token::character('d'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X08READ + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 19:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 20:
+                return next(catta::json::Token::character('8'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 21:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 22:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 23:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_WIND_CURVE_X08READ + 24:
+                return jump(catta::json::Token::character('d'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X09READ + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 19:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 20:
+                return next(catta::json::Token::character('9'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 21:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 22:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 23:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_WIND_CURVE_X09READ + 24:
+                return jump(catta::json::Token::character('d'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X10READ + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 19:
                 return next(catta::json::Token::character('1'));
-            case SI_CONTROL_WIND_CURVE_X15 + 20:
-                return jump(catta::json::Token::character('5'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X10READ + 20:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 21:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 22:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 23:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_WIND_CURVE_X10READ + 24:
+                return jump(catta::json::Token::character('d'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X11READ + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 19:
+                return next(catta::json::Token::character('1'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 20:
+                return next(catta::json::Token::character('1'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 21:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 22:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 23:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_WIND_CURVE_X11READ + 24:
+                return jump(catta::json::Token::character('d'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X12READ + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 19:
+                return next(catta::json::Token::character('1'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 20:
+                return next(catta::json::Token::character('2'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 21:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 22:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 23:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_WIND_CURVE_X12READ + 24:
+                return jump(catta::json::Token::character('d'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X13READ + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 19:
+                return next(catta::json::Token::character('1'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 20:
+                return next(catta::json::Token::character('3'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 21:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 22:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 23:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_WIND_CURVE_X13READ + 24:
+                return jump(catta::json::Token::character('d'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X14READ + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 19:
+                return next(catta::json::Token::character('1'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 20:
+                return next(catta::json::Token::character('4'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 21:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 22:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 23:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_WIND_CURVE_X14READ + 24:
+                return jump(catta::json::Token::character('d'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X15READ + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 19:
+                return next(catta::json::Token::character('1'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 20:
+                return next(catta::json::Token::character('5'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 21:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 22:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 23:
+                return next(catta::json::Token::character('a'));
+            case SI_CONTROL_WIND_CURVE_X15READ + 24:
+                return jump(catta::json::Token::character('d'), TAIL + 0);
             case SI_CONTROL_WIND_CURVE_Y00_READ + 0:
                 return next(catta::json::Token::character('S'));
             case SI_CONTROL_WIND_CURVE_Y00_READ + 1:
@@ -8730,6 +8906,838 @@ class Serializer<catta::modbus::si::RegisterAddress>
                 return next(catta::json::Token::character('t'));
             case SI_CONTROL_DAC_CURVE_Y9_WRITE + 23:
                 return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 19:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 20:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 21:
+                return next(catta::json::Token::character('w'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 22:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 23:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 24:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X00WRITE + 25:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 19:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 20:
+                return next(catta::json::Token::character('1'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 21:
+                return next(catta::json::Token::character('w'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 22:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 23:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 24:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X01WRITE + 25:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 19:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 20:
+                return next(catta::json::Token::character('2'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 21:
+                return next(catta::json::Token::character('w'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 22:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 23:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 24:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X02WRITE + 25:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 19:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 20:
+                return next(catta::json::Token::character('3'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 21:
+                return next(catta::json::Token::character('w'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 22:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 23:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 24:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X03WRITE + 25:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 19:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 20:
+                return next(catta::json::Token::character('4'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 21:
+                return next(catta::json::Token::character('w'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 22:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 23:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 24:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X04WRITE + 25:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 19:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 20:
+                return next(catta::json::Token::character('5'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 21:
+                return next(catta::json::Token::character('w'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 22:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 23:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 24:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X05WRITE + 25:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 19:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 20:
+                return next(catta::json::Token::character('6'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 21:
+                return next(catta::json::Token::character('w'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 22:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 23:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 24:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X06WRITE + 25:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 19:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 20:
+                return next(catta::json::Token::character('7'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 21:
+                return next(catta::json::Token::character('w'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 22:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 23:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 24:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X07WRITE + 25:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 19:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 20:
+                return next(catta::json::Token::character('8'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 21:
+                return next(catta::json::Token::character('w'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 22:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 23:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 24:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X08WRITE + 25:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 19:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 20:
+                return next(catta::json::Token::character('9'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 21:
+                return next(catta::json::Token::character('w'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 22:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 23:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 24:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X09WRITE + 25:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 19:
+                return next(catta::json::Token::character('1'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 20:
+                return next(catta::json::Token::character('0'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 21:
+                return next(catta::json::Token::character('w'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 22:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 23:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 24:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X10WRITE + 25:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 19:
+                return next(catta::json::Token::character('1'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 20:
+                return next(catta::json::Token::character('1'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 21:
+                return next(catta::json::Token::character('w'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 22:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 23:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 24:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X11WRITE + 25:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 19:
+                return next(catta::json::Token::character('1'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 20:
+                return next(catta::json::Token::character('2'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 21:
+                return next(catta::json::Token::character('w'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 22:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 23:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 24:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X12WRITE + 25:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 19:
+                return next(catta::json::Token::character('1'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 20:
+                return next(catta::json::Token::character('3'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 21:
+                return next(catta::json::Token::character('w'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 22:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 23:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 24:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X13WRITE + 25:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 19:
+                return next(catta::json::Token::character('1'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 20:
+                return next(catta::json::Token::character('4'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 21:
+                return next(catta::json::Token::character('w'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 22:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 23:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 24:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X14WRITE + 25:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 0:
+                return next(catta::json::Token::character('S'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 1:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 2:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 3:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 4:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 5:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 6:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 7:
+                return next(catta::json::Token::character('o'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 8:
+                return next(catta::json::Token::character('l'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 9:
+                return next(catta::json::Token::character('W'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 10:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 11:
+                return next(catta::json::Token::character('n'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 12:
+                return next(catta::json::Token::character('d'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 13:
+                return next(catta::json::Token::character('C'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 14:
+                return next(catta::json::Token::character('u'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 15:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 16:
+                return next(catta::json::Token::character('v'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 17:
+                return next(catta::json::Token::character('e'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 18:
+                return next(catta::json::Token::character('X'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 19:
+                return next(catta::json::Token::character('1'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 20:
+                return next(catta::json::Token::character('5'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 21:
+                return next(catta::json::Token::character('w'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 22:
+                return next(catta::json::Token::character('r'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 23:
+                return next(catta::json::Token::character('i'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 24:
+                return next(catta::json::Token::character('t'));
+            case SI_CONTROL_WIND_CURVE_X15WRITE + 25:
+                return jump(catta::json::Token::character('e'), TAIL + 0);
             case SI_CONTROL_ENABLE_WRITE_ONCE + 0:
                 return next(catta::json::Token::character('S'));
             case SI_CONTROL_ENABLE_WRITE_ONCE + 1:
@@ -8934,23 +9942,23 @@ class Serializer<catta::modbus::si::RegisterAddress>
     static constexpr std::uint16_t SI_CONTROL_REDUCTION = SI_CONTROL_MPP_SAMPLE_UDC3 + 22;
     static constexpr std::uint16_t SI_CONTROL_SINEDUTY = SI_CONTROL_REDUCTION + 18;
     static constexpr std::uint16_t SI_CONTROL_FILTER_WIND_CURVE = SI_CONTROL_SINEDUTY + 17;
-    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X00 = SI_CONTROL_FILTER_WIND_CURVE + 24;
-    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X01 = SI_CONTROL_WIND_CURVE_X00 + 21;
-    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X02 = SI_CONTROL_WIND_CURVE_X01 + 21;
-    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X03 = SI_CONTROL_WIND_CURVE_X02 + 21;
-    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X04 = SI_CONTROL_WIND_CURVE_X03 + 21;
-    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X05 = SI_CONTROL_WIND_CURVE_X04 + 21;
-    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X06 = SI_CONTROL_WIND_CURVE_X05 + 21;
-    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X07 = SI_CONTROL_WIND_CURVE_X06 + 21;
-    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X08 = SI_CONTROL_WIND_CURVE_X07 + 21;
-    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X09 = SI_CONTROL_WIND_CURVE_X08 + 21;
-    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X10 = SI_CONTROL_WIND_CURVE_X09 + 21;
-    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X11 = SI_CONTROL_WIND_CURVE_X10 + 21;
-    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X12 = SI_CONTROL_WIND_CURVE_X11 + 21;
-    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X13 = SI_CONTROL_WIND_CURVE_X12 + 21;
-    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X14 = SI_CONTROL_WIND_CURVE_X13 + 21;
-    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X15 = SI_CONTROL_WIND_CURVE_X14 + 21;
-    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_Y00_READ = SI_CONTROL_WIND_CURVE_X15 + 21;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X00READ = SI_CONTROL_FILTER_WIND_CURVE + 24;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X01READ = SI_CONTROL_WIND_CURVE_X00READ + 25;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X02READ = SI_CONTROL_WIND_CURVE_X01READ + 25;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X03READ = SI_CONTROL_WIND_CURVE_X02READ + 25;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X04READ = SI_CONTROL_WIND_CURVE_X03READ + 25;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X05READ = SI_CONTROL_WIND_CURVE_X04READ + 25;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X06READ = SI_CONTROL_WIND_CURVE_X05READ + 25;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X07READ = SI_CONTROL_WIND_CURVE_X06READ + 25;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X08READ = SI_CONTROL_WIND_CURVE_X07READ + 25;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X09READ = SI_CONTROL_WIND_CURVE_X08READ + 25;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X10READ = SI_CONTROL_WIND_CURVE_X09READ + 25;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X11READ = SI_CONTROL_WIND_CURVE_X10READ + 25;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X12READ = SI_CONTROL_WIND_CURVE_X11READ + 25;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X13READ = SI_CONTROL_WIND_CURVE_X12READ + 25;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X14READ = SI_CONTROL_WIND_CURVE_X13READ + 25;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X15READ = SI_CONTROL_WIND_CURVE_X14READ + 25;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_Y00_READ = SI_CONTROL_WIND_CURVE_X15READ + 25;
     static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_Y01_READ = SI_CONTROL_WIND_CURVE_Y00_READ + 25;
     static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_Y02_READ = SI_CONTROL_WIND_CURVE_Y01_READ + 25;
     static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_Y03_READ = SI_CONTROL_WIND_CURVE_Y02_READ + 25;
@@ -9031,7 +10039,23 @@ class Serializer<catta::modbus::si::RegisterAddress>
     static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y7_WRITE = SI_CONTROL_DAC_CURVE_Y6_WRITE + 24;
     static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y8_WRITE = SI_CONTROL_DAC_CURVE_Y7_WRITE + 24;
     static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y9_WRITE = SI_CONTROL_DAC_CURVE_Y8_WRITE + 24;
-    static constexpr std::uint16_t SI_CONTROL_ENABLE_WRITE_ONCE = SI_CONTROL_DAC_CURVE_Y9_WRITE + 24;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X00WRITE = SI_CONTROL_DAC_CURVE_Y9_WRITE + 24;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X01WRITE = SI_CONTROL_WIND_CURVE_X00WRITE + 26;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X02WRITE = SI_CONTROL_WIND_CURVE_X01WRITE + 26;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X03WRITE = SI_CONTROL_WIND_CURVE_X02WRITE + 26;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X04WRITE = SI_CONTROL_WIND_CURVE_X03WRITE + 26;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X05WRITE = SI_CONTROL_WIND_CURVE_X04WRITE + 26;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X06WRITE = SI_CONTROL_WIND_CURVE_X05WRITE + 26;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X07WRITE = SI_CONTROL_WIND_CURVE_X06WRITE + 26;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X08WRITE = SI_CONTROL_WIND_CURVE_X07WRITE + 26;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X09WRITE = SI_CONTROL_WIND_CURVE_X08WRITE + 26;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X10WRITE = SI_CONTROL_WIND_CURVE_X09WRITE + 26;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X11WRITE = SI_CONTROL_WIND_CURVE_X10WRITE + 26;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X12WRITE = SI_CONTROL_WIND_CURVE_X11WRITE + 26;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X13WRITE = SI_CONTROL_WIND_CURVE_X12WRITE + 26;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X14WRITE = SI_CONTROL_WIND_CURVE_X13WRITE + 26;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X15WRITE = SI_CONTROL_WIND_CURVE_X14WRITE + 26;
+    static constexpr std::uint16_t SI_CONTROL_ENABLE_WRITE_ONCE = SI_CONTROL_WIND_CURVE_X15WRITE + 26;
     static constexpr std::uint16_t SI_CONTROL_ENABLE_WRITE_PERMANT = SI_CONTROL_ENABLE_WRITE_ONCE + 24;
     static constexpr std::uint16_t TAIL = SI_CONTROL_ENABLE_WRITE_PERMANT + 27;
     static constexpr std::uint16_t DONE = TAIL + 2;
