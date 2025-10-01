@@ -38,7 +38,7 @@ else()
     set(CMAKE_COVERAGE_FLAG "")
 endif()
 
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 ${CMAKE_COVERAGE_FLAG} -Werror")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 ${CMAKE_COVERAGE_FLAG} -Werror -s")
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 ${CMAKE_COVERAGE_FLAG} -ggdb -fsanitize=address -fsanitize=undefined")
 message(STATUS "Build Type: " ${CMAKE_BUILD_TYPE})
 
