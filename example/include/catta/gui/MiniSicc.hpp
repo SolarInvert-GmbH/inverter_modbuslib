@@ -521,6 +521,7 @@ class MiniSicc : public Fl_Double_Window
             else
             {
                 std::uint64_t t = 0;
+                bool isMax = false;
                 bool minus = false;
 
                 switch (T::address.type())
@@ -528,6 +529,7 @@ class MiniSicc : public Fl_Double_Window
                     case catta::modbus::si::RegisterType::sint16():
                     {
                         if (!r.type().isValue16()) return T::setValue(_miniSicc._values, std::string(), nullptr);
+                        isMax = r.value16Value() == 0xffff;
                         if (static_cast<std::int16_t>(r.value16Value()) < 0)
                         {
                             minus = true;
@@ -540,22 +542,27 @@ class MiniSicc : public Fl_Double_Window
                     case catta::modbus::si::RegisterType::uint16():
                         if (!r.type().isValue16()) return T::setValue(_miniSicc._values, std::string(), nullptr);
                         t = r.value16Value();
+                        isMax = r.value16Value() == 0xffff;
                         break;
                     case catta::modbus::si::RegisterType::uint32():
                         if (!r.type().isValue32()) return T::setValue(_miniSicc._values, std::string(), nullptr);
                         t = r.value32Value();
+                        isMax = r.value32Value() == 0xffffffff;
                         break;
                     case catta::modbus::si::RegisterType::uint64():
                         if (!r.type().isValue64()) return T::setValue(_miniSicc._values, std::string(), nullptr);
                         t = r.value64Value();
+                        isMax = r.value64Value() == 0xffffffffffffffff;
                         break;
                     default:
                         return T::setValue(_miniSicc._values, std::string(), nullptr);
                 }
-                const std::string scaledNumber = [scale, minus, t]()
+                const std::string scaledNumber = isMax ? NO_VALUE
+                                                       : [scale, minus, t]()
                 {
-                    if (scale == 0) return std::to_string(t);
-                    if (scale > 0) return std::to_string(t) + std::string(static_cast<std::size_t>(scale), '0');
+                    if (scale == 0) return std::to_string(static_cast<std::int32_t>(t) * (minus ? -1 : 1));
+                    if (scale > 0)
+                        return std::to_string(static_cast<std::int32_t>(t) * (minus ? -1 : 1)) + std::string(static_cast<std::size_t>(scale), '0');
                     const std::uint64_t factor = [scale]()
                     {
                         std::uint64_t result = 1;
@@ -589,6 +596,8 @@ class MiniSicc : public Fl_Double_Window
     ScaledValueCallback<DcPower> _dcPowerCallback;
     ScaledValueCallback<Temperature> _temperatureCallback;
 
+    static constexpr const char* NO_VALUE = "----";
+
     class PmaxCallback
     {
       public:
@@ -598,7 +607,11 @@ class MiniSicc : public Fl_Double_Window
             if (!r.type().isValue16())
                 return _miniSicc._values->setPmax("", nullptr);
             else
-                _miniSicc._values->setPmax(std::to_string(r.value16Value() / 10) + "." + std::to_string(r.value16Value() % 10), "W");
+            {
+                const std::string s =
+                    r.value16Value() == 0xffff ? NO_VALUE : std::to_string(r.value16Value() / 10) + "." + std::to_string(r.value16Value() % 10);
+                _miniSicc._values->setPmax(s, "W");
+            }
         }
 
       private:
@@ -614,7 +627,10 @@ class MiniSicc : public Fl_Double_Window
             if (!r.type().isValue16())
                 return _miniSicc._values->setTnightoff("", nullptr);
             else
-                _miniSicc._values->setTnightoff(std::to_string(r.value16Value()), "s");
+            {
+                const std::string s = r.value16Value() == 0xffff ? NO_VALUE : std::to_string(r.value16Value());
+                _miniSicc._values->setTnightoff(s, "s");
+            }
         }
 
       private:
@@ -630,7 +646,10 @@ class MiniSicc : public Fl_Double_Window
             if (!r.type().isValue16())
                 return _miniSicc._values->setStartdelay("", nullptr);
             else
-                _miniSicc._values->setStartdelay(std::to_string(r.value16Value()), "s");
+            {
+                const std::string s = r.value16Value() == 0xffff ? NO_VALUE : std::to_string(r.value16Value());
+                _miniSicc._values->setStartdelay(s, "s");
+            }
         }
 
       private:
@@ -657,6 +676,7 @@ class MiniSicc : public Fl_Double_Window
                 set(5, 60, 3600);
                 set(8, 10, 60);
                 set(9, 1, 60);
+                if (v == 0xffffffff) t = NO_VALUE;
                 _miniSicc._values->setTime(t);
             }
         }
@@ -685,7 +705,7 @@ class MiniSicc : public Fl_Double_Window
                     s[3] = static_cast<char>('0' + (v / 1) % 10);
                     return s;
                 }();
-                _miniSicc._values->setCosphi(head + tail, nullptr);
+                _miniSicc._values->setCosphi(v == 0xffff ? NO_VALUE : head + tail, nullptr);
             }
         }
 
@@ -702,7 +722,10 @@ class MiniSicc : public Fl_Double_Window
             if (!r.type().isValue16())
                 return _miniSicc._values->setDac("", nullptr);
             else
-                _miniSicc._values->setDac(std::to_string(r.value16Value()), nullptr);
+            {
+                const std::string s = r.value16Value() == 0xffff ? NO_VALUE : std::to_string(r.value16Value());
+                _miniSicc._values->setDac(s, nullptr);
+            }
         }
 
       private:
@@ -816,6 +839,7 @@ class MiniSicc : public Fl_Double_Window
                 set(1, 10);
                 started = true;
                 set(2, 1);
+                if (v == 0xffff) s = NO_VALUE;
                 _miniSicc._static->setReduction(s);
             }
         }
