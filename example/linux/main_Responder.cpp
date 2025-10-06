@@ -26,6 +26,7 @@
 #include <signal.h>
 
 // std
+#include <cmath>
 #include <vector>
 
 enum LogLevel
@@ -146,14 +147,68 @@ static void signalHandler(const int signal)
     if (signal == SIGTERM || signal == SIGINT) end = true;
 }
 
+template <class T>
+static T sinus(const double min, const double max, const std::uint8_t id, const double length)
+{
+    const double p = 3.141592654;
+    const double offset = static_cast<double>(id % 4) / 4.0;
+    const double t = ((static_cast<double>(catta::linux::Time::get().count()) / 1'000'000.0) / length + offset) * 2.0 * p;
+    const double s = std::sin(t) * 0.5 + 0.5;
+    const double v = s * (max - min) + min;
+    return static_cast<T>(v);
+}
+
+static std::uint32_t saw(const std::uint32_t max, const std::uint8_t id)
+{
+    const std::int64_t m = static_cast<std::uint32_t>(max);
+    const std::int64_t offset = static_cast<int32_t>(id % 4) * (m / 4);
+    const std::uint32_t t = static_cast<uint32_t>((catta::linux::Time::get().count() / 1'000'000 + offset) % m);
+    return t;
+}
+
+static std::uint16_t state()
+{
+    const std::uint16_t max = catta::modbus::si::State::empty();
+    const std::uint16_t v = static_cast<std::uint16_t>(((catta::linux::Time::get().count() / 1'000'000) / 30) % max);
+    return v;
+}
+
 static void handleRequest(const catta::modbus::si::request::Request &request, catta::modbus::si::response::Response &response,
-                          catta::random::Random &random)
+                          catta::random::Random &random, const std::uint8_t id)
 {
     using Type = catta::modbus::si::request::Type;
     using Response = catta::modbus::si::response::Response;
     switch (request.type())
     {
         case Type::readRegister():
+
+            using Address = catta::modbus::si::RegisterAddress;
+            switch (request.readRegisterValue().registerAddress())
+            {
+                case Address::inverterDcVoltage():
+                    response = Response::value16(sinus<std::uint16_t>(240.0, 480.0, id, 300.0));
+                    return;
+                case Address::siControlUptime():
+                    response = Response::value32(saw(500, id));
+                    return;
+                case Address::inverterAcPower():
+                    response = Response::value16(sinus<std::uint16_t>(5000.0, 10000.0, id, 400.0));
+                    return;
+                case Address::inverterVendorOperatingState():
+                    response = Response::value16(id == 0x00 ? 0 : state());
+                    return;
+                case Address::inverterTemperature():
+                    response = Response::value16(sinus<std::uint16_t>(200.0, 800.0, id, 200.0));
+                    return;
+                case Address::inverterPhaseVoltageA():
+                    response = Response::value16(sinus<std::uint16_t>(200.0, 250.0, id, 800.0));
+                    return;
+                case Address::inverterWattHours():
+                    response = Response::value32(sinus<std::uint32_t>(0.0, 1000.0, id, 800.0));
+                    return;
+                default:
+                    break;
+            }
 
             switch (request.readRegisterValue().registerAddress().type())
             {
@@ -177,8 +232,20 @@ static void handleRequest(const catta::modbus::si::request::Request &request, ca
                     response = Response::string16(random.create<catta::modbus::sunspec::String16>());
                     break;
                 case catta::modbus::si::RegisterType::string32():
-                    response = Response::string32(random.create<catta::modbus::sunspec::String32>());
+                {
+                    const std::array<char, 10> s = std::array<char, 10>{'d',
+                                                                        'u',
+                                                                        'm',
+                                                                        'm',
+                                                                        'y',
+                                                                        '-',
+                                                                        static_cast<char>('0' + (id / 100) % 10),
+                                                                        static_cast<char>('0' + (id / 10) % 10),
+                                                                        static_cast<char>('0' + (id / 1) % 10),
+                                                                        '\0'};
+                    response = Response::string32(catta::modbus::sunspec::String32::create(s.data()));
                     break;
+                }
 
                 default:
                     break;
@@ -366,7 +433,7 @@ int main(int argc, char *argv[])
             if (parser.state().isDone())
             {
                 const auto request = parser.data();
-                handleRequest(request, response, random);
+                handleRequest(request, response, random, modbus.modbusId());
                 if (isDebug)
                 {
                     debugLog("Received Bytes: " + printLine(receiveLine) + '\n');
