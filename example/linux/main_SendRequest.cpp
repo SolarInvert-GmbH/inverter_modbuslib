@@ -117,7 +117,7 @@ static std::tuple<std::string, LogLevel, std::uint8_t, catta::modbus::si::reques
         if (i + 1 >= argc) logAndExit("Add " + name + " after '--" + name + "'.");
         i++;
         const std::uint8_t v = std::uint8_t(catta::fromstring::fromString<catta::Hexadecimal<std::uint8_t>>(argv[i]));
-        if (v == 0 && name != "00") logAndExit("Add valid (two hex digets) " + name + " after '--" + name + "'.");
+        if (v == 0 && std::string(argv[i]) != "00") logAndExit("Add valid (two hex digets) " + name + " after '--" + name + "'.");
         arg = v;
     };
 
