@@ -64,6 +64,7 @@ class Values : public Fl_Group
         _slider->type(5);
         _slider->box(FL_FLAT_BOX);
         _slider->callback(slidercb, this);
+        _slider->value(0.2);
         _interval = new Fl_Box(X + (W * 4) / 5, Y, W / 5, 50, _invervalText.data());
 
         static const int PER_LINE = 4;
