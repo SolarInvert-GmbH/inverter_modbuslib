@@ -25,10 +25,10 @@ class CsvLogging
      * @param[in] file Path to file.
      * @param[in] header Header line.
      */
-    void start(const std::string& file, const std::string& header)
+    bool start(const std::string& file, const std::string& header)
     {
         _file = file;
-        writeline(std::ios_base::out, header);
+        return writeline(std::ios_base::out, header);
     }
 
     /**
@@ -38,11 +38,13 @@ class CsvLogging
 
   private:
     std::string _file;
-    void writeline(const std::ios_base::openmode mode, const std::string& content)
+    bool writeline(const std::ios_base::openmode mode, const std::string& content)
     {
         std::ofstream outfile;
         outfile.open(_file.c_str(), mode);
+        if (!outfile.is_open()) return false;
         outfile << content.c_str() << '\n';
+        return static_cast<bool>(outfile);
     }
 };
 }  // namespace gui

@@ -11,9 +11,11 @@
 // fltk
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
+#include <FL/Fl_Choice.H>
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Native_File_Chooser.H>
 #include <FL/Fl_Slider.H>
+#include <FL/fl_ask.H>
 
 // std
 #include <array>
@@ -43,6 +45,9 @@ class Values : public Fl_Group
         : Fl_Group(X, Y, W, H, nullptr),
           _operatingState2Text{},
           _invervalText{' ', '1', 's'},
+          _currentTime(std::chrono::microseconds::zero()),
+          _lastCsv(std::chrono::microseconds::zero()),
+          _csvWaitTime(std::chrono::microseconds::max()),
           _acVoltages{std::tuple<std::string, const char*>{"", nullptr}, std::tuple<std::string, const char*>{"", nullptr},
                       std::tuple<std::string, const char*>{"", nullptr}}
     {
@@ -77,6 +82,25 @@ class Values : public Fl_Group
             _led[i] = new Led(X + GAP + (int(i) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(i + VALUE_SIZE + PER_LINE - 1) / PER_LINE + 1),
                               W_WRITE, H_LINE, LED_LABEL[i]);
         }
+
+        auto menu = [](const char* text)
+        {
+            return Fl_Menu_Item{.text = text,
+                                .shortcut_ = 0,
+                                .callback_ = nullptr,
+                                .user_data_ = nullptr,
+                                .flags = 0,
+                                .labeltype_ = 0,
+                                .labelfont_ = 0,
+                                .labelsize_ = 0,
+                                .labelcolor_ = 0};
+        };
+        static const Fl_Menu_Item csvMenu[] = {menu("3 s"), menu("10 s"), menu("60 s"), menu("600 s"), menu(nullptr)};
+
+        _csvChoice = new Fl_Choice(X + GAP + (int(6) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(6 + VALUE_SIZE + PER_LINE - 1) / PER_LINE + 1),
+                                   W_WRITE, 45, nullptr);
+        _csvChoice->menu(csvMenu);
+
         _saveCsv = new Fl_Button(X + GAP + (int(7) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(7 + VALUE_SIZE + PER_LINE - 1) / PER_LINE + 1),
                                  W_WRITE, 45, BUTTON_CSV_IDLE);
         _saveCsv->callback(savecb, this);
@@ -242,9 +266,15 @@ class Values : public Fl_Group
     /**
      * @param[in] now The current time.
      */
-    void work(const std::chrono::microseconds now)
+    void work(const std::chrono::microseconds now, const catta::modbus::sunspec::String32::Raw& stringManufacturer,
+              const catta::modbus::sunspec::String32::Raw& stringModel, const catta::modbus::sunspec::String32::Raw& stringSerialNumber)
     {
-        if (_lastCsv != std::chrono::microseconds::zero() && _sliderValue != std::chrono::microseconds::max() && _lastCsv + _sliderValue < now)
+        _stringManufacturer = stringManufacturer;
+        _stringModel = stringModel;
+        _stringSerialNumber = stringSerialNumber;
+
+        _currentTime = now;
+        if (_lastCsv != std::chrono::microseconds::zero() && _csvWaitTime != std::chrono::microseconds::max() && _lastCsv + _csvWaitTime < now)
         {
             const std::string line = [this]()
             {
@@ -261,6 +291,7 @@ class Values : public Fl_Group
     Fl_Slider* _slider;
     Fl_Box* _interval;
     Fl_Button* _send;
+    Fl_Choice* _csvChoice;
 
     static constexpr std::size_t AC_POWER = 0;
     static constexpr std::size_t AC_CURRENT = AC_POWER + 1;
@@ -296,10 +327,15 @@ class Values : public Fl_Group
     std::function<void(const std::chrono::microseconds interval)> _sliderCallback;
     std::function<void()> _sendCallback;
     std::array<char, 4> _invervalText;
+    std::chrono::microseconds _currentTime;
     std::chrono::microseconds _lastCsv;
-    std::chrono::microseconds _sliderValue;
+    std::chrono::microseconds _csvWaitTime;
     catta::gui::CsvLogging _csvLogging;
     std::array<std::tuple<std::string, const char*>, 3> _acVoltages;
+
+    catta::modbus::sunspec::String32::Raw _stringManufacturer;
+    catta::modbus::sunspec::String32::Raw _stringModel;
+    catta::modbus::sunspec::String32::Raw _stringSerialNumber;
 
     static constexpr std::array<const char*, VALUE_SIZE> VALUE_LABEL = std::array<const char*, VALUE_SIZE>{
         "AC Power", "AC Current", "AC Voltage", "Frequency", "PMAX",       "DC Power (est.)", "DC Voltage", "Energy", "Temp",
@@ -333,9 +369,17 @@ class Values : public Fl_Group
                 s = std::chrono::seconds{i};
             }
             values->_interval->label(values->_invervalText.data());
-            values->_sliderValue = s;
             if (values->_sliderCallback) values->_sliderCallback(s);
         }
+    }
+
+    static std::string getDate(const std::chrono::microseconds now)
+    {
+        std::chrono::system_clock::time_point utc_time = std::chrono::time_point<std::chrono::system_clock>(now);
+        auto local_zone = std::chrono::current_zone();
+        std::chrono::zoned_time local_time{local_zone, floor<std::chrono::seconds>(utc_time)};
+        std::string datetime = std::format("{:%Y-%m-%d_%H:%M:%S}", local_time);
+        return datetime;
     }
 
     static void savecb(Fl_Widget*, void* object)
@@ -349,6 +393,9 @@ class Values : public Fl_Group
             chooser.type(Fl_Native_File_Chooser::BROWSE_SAVE_FILE);
             chooser.filter("CSV\t*.csv\n");
             chooser.options(Fl_Native_File_Chooser::SAVEAS_CONFIRM);
+            const std::string preset = std::string(values->_stringModel.data()) + "-" + std::string(values->_stringSerialNumber.data()) + "-" +
+                                       getDate(values->_currentTime) + ".csv";
+            chooser.preset_file(preset.c_str());
             if (chooser.show() == 0)  // blocking call/ no boackground communication
             {
                 const std::string header = []()
@@ -357,15 +404,27 @@ class Values : public Fl_Group
                     for (std::size_t i = 0; i < CSV_INDEX.size(); i++) s += std::string(VALUE_LABEL[CSV_INDEX[i]]) + ";;";
                     return s;
                 }();
-                values->_csvLogging.start(std::string(chooser.filename()), header);
-                values->_lastCsv = std::chrono::microseconds{1};
-                values->_saveCsv->label(BUTTON_CSV_RUNNING);
+                if (!values->_csvLogging.start(std::string(chooser.filename()), header))
+                    fl_alert("Could not write: %s", chooser.filename());
+                else
+                {
+                    values->_lastCsv = std::chrono::microseconds{1};
+                    values->_saveCsv->label(BUTTON_CSV_RUNNING);
+                    static constexpr std::size_t SIZE = 4;
+                    static constexpr std::array<std::chrono::microseconds, SIZE> timeValues = {std::chrono::seconds{3}, std::chrono::seconds{10},
+                                                                                               std::chrono::seconds{60}, std::chrono::seconds{600}};
+                    const std::size_t choice = static_cast<std::size_t>(values->_csvChoice->value());
+                    const std::size_t index = choice >= SIZE ? SIZE - 1 : choice;
+                    values->_csvWaitTime = timeValues[index];
+                    values->_csvChoice->deactivate();
+                }
             }
         }
         else
         {
             values->_lastCsv = std::chrono::microseconds{0};
             values->_saveCsv->label(BUTTON_CSV_IDLE);
+            values->_csvChoice->activate();
         }
     }
 

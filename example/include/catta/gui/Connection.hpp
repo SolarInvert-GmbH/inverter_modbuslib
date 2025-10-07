@@ -253,6 +253,18 @@ class Connection : public Fl_Group
      * @return Returns the modbus id.
      */
     std::uint8_t modbusId() const { return _id; }
+    /**
+     * @return Returns the manufacturer string.
+     */
+    const catta::modbus::sunspec::String32::Raw& stringManufacturer() const { return _stringManufacturer; }
+    /**
+     * @return Returns the model string.
+     */
+    const catta::modbus::sunspec::String32::Raw& stringModel() const { return _stringModel; }
+    /**
+     * @return Returns the serial number string.
+     */
+    const catta::modbus::sunspec::String32::Raw& stringSerialNumber() const { return _stringSerialNumber; }
 
   private:
     UART _uart;

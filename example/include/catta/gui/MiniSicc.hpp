@@ -234,7 +234,7 @@ class MiniSicc : public Fl_Double_Window
                     for (std::size_t i = 0; i < CACHE_SIZE; i++) _cache.setInvalid(i);
                 _current = current;
             }
-            _values->work(now);
+            _values->work(now, _connection->stringManufacturer(), _connection->stringModel(), _connection->stringSerialNumber());
             if (!somethingHappend) Fl::wait(0);
         }
     }
