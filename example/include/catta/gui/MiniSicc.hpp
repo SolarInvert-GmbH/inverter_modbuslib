@@ -4,6 +4,7 @@
 #include <catta/gui/Battery.hpp>
 #include <catta/gui/Commands.hpp>
 #include <catta/gui/Connection.hpp>
+#include <catta/gui/Error.hpp>
 #include <catta/gui/Password.hpp>
 #include <catta/gui/Solar.hpp>
 #include <catta/gui/Static.hpp>
@@ -67,6 +68,7 @@ class MiniSicc : public Fl_Double_Window
           _factoryValuesCallback(*this),
           _readOperatingData3eCallback(*this),
           _softwareVersionCallback(*this),
+          _readErrorCallback(*this),
           _sliderCallback(*this),
           _sendCallback(*this),
           _unlock(*this),
@@ -106,6 +108,9 @@ class MiniSicc : public Fl_Double_Window
         _tab5 = new Fl_Group(Xtab, Ytab, Wtab, Htab, "Commands");
         this->_commands = new Commands(Xcontent, Ycontent, Wcontent, Hcontent, _reset);
         _tab5->end();
+        _tab6 = new Fl_Group(Xtab, Ytab, Wtab, Htab, "Error");
+        this->_error = new Error(Xcontent, Ycontent, Wcontent, Hcontent);
+        _tab6->end();
         this->resizable(this->_tabs);
         this->end();
         this->callback(close_cb);
@@ -116,6 +121,7 @@ class MiniSicc : public Fl_Double_Window
         _cache.setRequest(CACHE_FACTORY_VALUES, REQUEST_FACTORY_VALUES);
         _cache.setRequest(CACHE_READ_OPERATING_DATA_3E, REQUEST_READ_OPERATING_DATA_3E);
         _cache.setRequest(CACHE_SOFTWARE_VERSION, REQUEST_SOFTWARE_VERSION);
+        _cache.setRequest(CACHE_READ_ERROR, REQUEST_READ_ERROR);
         _cache.setRequest(CACHE_AC_CURRENT_SCALE, REQUEST_AC_CURRENT_SCALE);
         _cache.setRequest(CACHE_AC_CURRENT, REQUEST_AC_CURRENT);
         _cache.setRequest(CACHE_AC_POWER_SCALE, REQUEST_AC_POWER_SCALE);
@@ -170,6 +176,7 @@ class MiniSicc : public Fl_Double_Window
         _cache.setCallback(CACHE_READ_OPERATING_DATA_3E, _readOperatingData3eCallback);
         _cache.setCallback(CACHE_REDUCTION, _reductionCallback);
         _cache.setCallback(CACHE_SOFTWARE_VERSION, _softwareVersionCallback);
+        _cache.setCallback(CACHE_READ_ERROR, _readErrorCallback);
         _values->setCallbacks(_sliderCallback, _sendCallback);
         _lock();
     }
@@ -235,6 +242,7 @@ class MiniSicc : public Fl_Double_Window
                 _current = current;
             }
             _values->work(now, _connection->stringManufacturer(), _connection->stringModel(), _connection->stringSerialNumber());
+            _error->work(now, _connection->stringManufacturer(), _connection->stringModel(), _connection->stringSerialNumber());
             if (!somethingHappend) Fl::wait(0);
         }
     }
@@ -299,7 +307,8 @@ class MiniSicc : public Fl_Double_Window
     static constexpr std::size_t CACHE_START_COUNTDOWN = CACHE_NIGHT_SHUTDOWN + 1;
     static constexpr std::size_t CACHE_UPTIME = CACHE_START_COUNTDOWN + 1;
     static constexpr std::size_t CACHE_VENDOR_OPERATING_STATE = CACHE_UPTIME + 1;
-    static constexpr std::size_t CACHE_SIZE = CACHE_VENDOR_OPERATING_STATE + 1;
+    static constexpr std::size_t CACHE_READ_ERROR = CACHE_VENDOR_OPERATING_STATE + 1;
+    static constexpr std::size_t CACHE_SIZE = CACHE_READ_ERROR + 1;
 
     using Request = catta::modbus::si::request::Request;
     using Response = catta::modbus::si::response::Response;
@@ -321,12 +330,14 @@ class MiniSicc : public Fl_Double_Window
     Solar* _solar;
     Wind* _wind;
     Commands* _commands;
+    Error* _error;
     Fl_Group* _tab0;
     Fl_Group* _tab1;
     Fl_Group* _tab2;
     Fl_Group* _tab3;
     Fl_Group* _tab4;
     Fl_Group* _tab5;
+    Fl_Group* _tab6;
 
     static constexpr int WIDTH = 600;
     static constexpr int HEIGHT = 800;
@@ -404,6 +415,7 @@ class MiniSicc : public Fl_Double_Window
     static constexpr Request REQUEST_START_COUNTDOWN = Request::readRegister(ReadRegister::create(REGISTER_START_COUNTDOWN));
     static constexpr Request REQUEST_UPTIME = Request::readRegister(ReadRegister::create(REGISTER_UPTIME));
     static constexpr Request REQUEST_VENDOR_OPERATING_STATE = Request::readRegister(ReadRegister::create(REGISTER_VENDOR_OPERATING_STATE));
+    static constexpr Request REQUEST_READ_ERROR = Request::readError();
 
     class AcCurrent
     {
@@ -909,6 +921,19 @@ class MiniSicc : public Fl_Double_Window
       private:
         MiniSicc& _miniSicc;
     } _softwareVersionCallback;
+
+    class ReadErrorCallback
+    {
+      public:
+        ReadErrorCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()(const Response& r)
+        {
+            _miniSicc._error->setError(r.type().isReadError() ? r.readErrorValue() : catta::modbus::si::response::ReadError::empty());
+        }
+
+      private:
+        MiniSicc& _miniSicc;
+    } _readErrorCallback;
 
     class SliderCallback
     {

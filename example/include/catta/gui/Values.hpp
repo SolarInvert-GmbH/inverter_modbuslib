@@ -266,6 +266,9 @@ class Values : public Fl_Group
     void triggerSliderCallback() { slidercb(nullptr, this); }
     /**
      * @param[in] now The current time.
+     * @param[in] stringManufacturer The manufacturer string.
+     * @param[in] stringModel The model string.
+     * @param[in] stringSerialNumber The serial number string.
      */
     void work(const std::chrono::microseconds now, const catta::modbus::sunspec::String32::Raw& stringManufacturer,
               const catta::modbus::sunspec::String32::Raw& stringModel, const catta::modbus::sunspec::String32::Raw& stringSerialNumber)

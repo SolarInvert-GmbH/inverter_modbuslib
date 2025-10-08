@@ -42,9 +42,13 @@ class ReadError
     static constexpr std::uint8_t DIFFERENCE_GRID_VOLTAGE = OVER_TEMPERATURE_SHUTDOWN + 1;
     static constexpr std::uint8_t ERROR_GRID_RELAIS = DIFFERENCE_GRID_VOLTAGE + 1;
     static constexpr std::uint8_t ERROR_CURRENT_SENSOR = ERROR_GRID_RELAIS + 1;
-    static constexpr std::uint8_t SIZE = ERROR_CURRENT_SENSOR + 1;
 
   public:
+    /**
+     * The number of different errors.
+     */
+    static constexpr std::uint8_t SIZE = ERROR_CURRENT_SENSOR + 1;
+
     /**
      * Default constructor. Creates invalid read error block.
      */
