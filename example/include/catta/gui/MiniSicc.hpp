@@ -941,8 +941,12 @@ class MiniSicc : public Fl_Double_Window
         SliderCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
         void operator()(const std::chrono::microseconds t)
         {
+            static constexpr std::int64_t f = 5;
+            static constexpr const std::chrono::microseconds minLong = std::chrono::seconds{10};
             const std::chrono::microseconds never = std::chrono::microseconds::max();
+            const std::chrono::microseconds longT = t * f > minLong ? t * f : minLong;
             const std::chrono::microseconds time = t == never ? never : t * 4;
+            const std::chrono::microseconds longTime = t == never ? never : longT * 4;
             const std::chrono::microseconds lockedTime = _miniSicc._passwort->isLocked() ? never : time;
             _miniSicc._cache.setValidTime(CACHE_AC_CURRENT, time);
             _miniSicc._cache.setValidTime(CACHE_AC_POWER, time);
@@ -953,13 +957,13 @@ class MiniSicc : public Fl_Double_Window
             _miniSicc._cache.setValidTime(CACHE_POWER_FACTOR, lockedTime);
             _miniSicc._cache.setValidTime(CACHE_EVENTS_1, time);
             _miniSicc._cache.setValidTime(CACHE_EVENTS_3, time);
-            _miniSicc._cache.setValidTime(CACHE_ENERGY_PRODUCTION, time);
+            _miniSicc._cache.setValidTime(CACHE_ENERGY_PRODUCTION, longTime);
             _miniSicc._cache.setValidTime(CACHE_DC_VOLTAGE, time);
             _miniSicc._cache.setValidTime(CACHE_DC_POWER, time);
-            _miniSicc._cache.setValidTime(CACHE_TEMPERATURE, time);
-            _miniSicc._cache.setValidTime(CACHE_PMAX, time);
+            _miniSicc._cache.setValidTime(CACHE_TEMPERATURE, longTime);
+            _miniSicc._cache.setValidTime(CACHE_PMAX, longTime);
             _miniSicc._cache.setValidTime(CACHE_NIGHT_SHUTDOWN, time);
-            _miniSicc._cache.setValidTime(CACHE_START_COUNTDOWN, time);
+            _miniSicc._cache.setValidTime(CACHE_START_COUNTDOWN, longTime);
             _miniSicc._cache.setValidTime(CACHE_UPTIME, time);
             _miniSicc._cache.setValidTime(CACHE_COSPHI, time);
             _miniSicc._cache.setValidTime(CACHE_DAC, time);
