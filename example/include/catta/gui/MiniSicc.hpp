@@ -339,7 +339,7 @@ class MiniSicc : public Fl_Double_Window
     Fl_Group* _tab5;
     Fl_Group* _tab6;
 
-    static constexpr int WIDTH = 600;
+    static constexpr int WIDTH = 700;
     static constexpr int HEIGHT = 800;
 
     static void close_cb(Fl_Widget* widget, void*)
