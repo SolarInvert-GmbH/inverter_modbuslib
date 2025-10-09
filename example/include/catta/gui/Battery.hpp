@@ -106,11 +106,11 @@ class Battery : public Fl_Group
             cbArray[i] = std::tuple<std::size_t, Battery*>{i, this};
         }
         _write[U_DCLOW] = new WriteSingle(X + GAP + (int(U_DCLOW) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_DCLOW) / PER_LINE), W_WRITE,
-                                          H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, dcLowReadAddress, dcLowWriteAddress, _toRegisterCenti,
-                                          _fromRegisterCenti, W_SEND, "V", LABEL[U_DCLOW]);
+                                          H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, dcLowReadAddress, dcLowWriteAddress, _toRegisterDeci,
+                                          _fromRegisterDeci, W_SEND, "V", LABEL[U_DCLOW]);
         _write[U_DCSTART] = new WriteSingle(X + GAP + (int(U_DCSTART) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_DCSTART) / PER_LINE),
-                                            W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, dcStartReadAddress, dcStartWriteAddress,
-                                            _toRegisterCenti, _fromRegisterCenti, W_SEND, "V", LABEL[U_DCSTART]);
+                                            W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, dcStartReadAddress, dcStartWriteAddress,
+                                            _toRegisterDeci, _fromRegisterDeci, W_SEND, "V", LABEL[U_DCSTART]);
         _write[MODUS] =
             new WriteSingle(X + GAP + (int(MODUS) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(MODUS) / PER_LINE), W_WRITE, H_LINE,
                             FL_FLOAT_INPUT, 0.0, 255.0, 1.00, modusAddress, modusAddress, _toRegister256, _fromRegister256, W_SEND, "", LABEL[MODUS]);
@@ -125,11 +125,11 @@ class Battery : public Fl_Group
                                                 Y + H_LINE * (int(Z_USOLBATFILT) / PER_LINE), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.0, 255.0, 1.00,
                                                 zUsolBatFil, zUsolBatFil, _toRegister256, _fromRegister256, W_SEND, "", LABEL[Z_USOLBATFILT]);
         _write[U_SOLBATERR] = new WriteSingle(X + GAP + (int(U_SOLBATERR) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_SOLBATERR) / PER_LINE),
-                                              W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uSolBatErrRead, uSolBatErrWrite, _toRegisterCenti,
-                                              _fromRegisterCenti, W_SEND, "V", LABEL[U_SOLBATERR]);
+                                              W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, uSolBatErrRead, uSolBatErrWrite, _toRegisterDeci,
+                                              _fromRegisterDeci, W_SEND, "V", LABEL[U_SOLBATERR]);
         _write[U_SOLBAT] = new WriteSingle(X + GAP + (int(U_SOLBAT) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_SOLBAT) / PER_LINE), W_WRITE,
-                                           H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uSolBatRead, uSolBatWrite, _toRegisterCenti,
-                                           _fromRegisterCenti, W_SEND, "V", LABEL[U_SOLBAT]);
+                                           H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, uSolBatRead, uSolBatWrite, _toRegisterDeci, _fromRegisterDeci,
+                                           W_SEND, "V", LABEL[U_SOLBAT]);
 
         _write[U_MAX] = new WriteSingle(X + GAP + (int(U_MAX) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_MAX) / PER_LINE), W_WRITE, H_LINE,
                                         FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uMaxReadAddress, uMaxWriteAddress, _toRegisterCenti, _fromRegisterCenti,
@@ -139,14 +139,14 @@ class Battery : public Fl_Group
                                           W_SEND, "", LABEL[S_BIOFF]);
         _write[P_MAXERR] =
             new WriteSingle(X + GAP + (int(P_MAXERR) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(P_MAXERR) / PER_LINE), W_WRITE, H_LINE,
-                            FL_FLOAT_INPUT, 0.01, 655.00, 0.01, pMaxErr, pMaxErr, _toRegisterCenti, _fromRegisterCenti, W_SEND, "W", LABEL[P_MAXERR]);
+                            FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, pMaxErr, pMaxErr, _toRegisterDeci, _fromRegisterDeci, W_SEND, "W", LABEL[P_MAXERR]);
         _write[P_MAX_CHARGE] = new WriteSingle(X + GAP + (int(P_MAX_CHARGE) % PER_LINE) * (GAP + W_WRITE),
-                                               Y + H_LINE * (int(P_MAX_CHARGE) / PER_LINE), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01,
+                                               Y + H_LINE * (int(P_MAX_CHARGE) / PER_LINE), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1,
                                                pMaxCharge, pMaxCharge, _toRegisterCenti, _fromRegisterCenti, W_SEND, "W", LABEL[P_MAX_CHARGE]);
 
         _write[U_DCHIGH] = new WriteSingle(X + GAP + (int(U_DCHIGH) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_DCHIGH) / PER_LINE), W_WRITE,
-                                           H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, dcHighReadAddress, dcHighWriteAddress, _toRegisterCenti,
-                                           _fromRegisterCenti, W_SEND, "V", LABEL[U_DCHIGH]);
+                                           H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, dcHighReadAddress, dcHighWriteAddress, _toRegisterDeci,
+                                           _fromRegisterDeci, W_SEND, "V", LABEL[U_DCHIGH]);
 
         static const int PER_LINE_CURVE_3 = 2;
         const int W_WRITE_CURVE_3 = (W - (PER_LINE_CURVE_3 + 1) * GAP) / PER_LINE_CURVE_3;
@@ -168,7 +168,7 @@ class Battery : public Fl_Group
             const int y = Y + H_LINE * (int(SIZE / PER_LINE) + 2);
             _cvCurve10[i] =
                 new Curve<10>(X + GAP, y + H_LINE * (int(i)), W_WRITE_CURVE_10, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, curve10AddressRead[i],
-                              curve10AddressWrite[i], _toRegisterDeci, _fromRegisterDeci, 30, "V", LABEL[i + SIZE + CURVES_3]);
+                              curve10AddressWrite[i], _toRegisterDeci, _fromRegisterDeci, 30, i == X_DAC ? "DAC" : "V", LABEL[i + SIZE + CURVES_3]);
         }
         this->end();
     }
