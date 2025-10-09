@@ -79,8 +79,6 @@ class Wind : public Fl_Group
                                    Address::siControlWindCurveY12Write(), Address::siControlWindCurveY13Write(),
                                    Address::siControlWindCurveY14Write(), Address::siControlWindCurveY15Write()}};
 
-        static constexpr std::array<const char*, CURVES> curveUnit = {"W", "V", "W", "V"};
-
         static std::array<std::tuple<std::size_t, Wind*>, ROBIN_SIZE> cbArray;
         for (std::size_t i = 0; i < SIZE; i++)
         {
@@ -88,12 +86,12 @@ class Wind : public Fl_Group
         }
 
         _write[U_DC_START] = new WriteSingle(X + GAP + (int(U_DC_START) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_DC_START) / PER_LINE),
-                                             W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, dcStartReadAddress, dcStartWriteAddress,
-                                             _toRegisterCenti, _fromRegisterCenti, W_SEND, "V", LABEL[U_DC_START]);
+                                             W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, dcStartReadAddress, dcStartWriteAddress,
+                                             _toRegisterDeci, _fromRegisterDeci, W_SEND, "V", LABEL[U_DC_START]);
 
         _write[U_DC_HIGH] = new WriteSingle(X + GAP + (int(U_DC_HIGH) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_DC_HIGH) / PER_LINE),
-                                            W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.01, 655.00, 0.01, dcHighReadAddress, dcHighWriteAddress,
-                                            _toRegisterCenti, _fromRegisterCenti, W_SEND, "V", LABEL[U_DC_HIGH]);
+                                            W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, dcHighReadAddress, dcHighWriteAddress, _toRegisterDeci,
+                                            _fromRegisterDeci, W_SEND, "V", LABEL[U_DC_HIGH]);
 
         _write[Z_PT1WINDUSOL] =
             new WriteSingle(X + GAP + (int(Z_PT1WINDUSOL) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(Z_PT1WINDUSOL) / PER_LINE), W_WRITE,
@@ -110,8 +108,12 @@ class Wind : public Fl_Group
             cbArray[i + SIZE] = std::tuple<std::size_t, Wind*>{i + SIZE, this};
             const int y = Y + H_LINE * (int(i + SIZE / PER_LINE) + 2);
             const int W_CURVE = W - 2 * GAP;
-            _curve[i] = new Curve<8>(X + GAP, y, W_CURVE, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, curveAddressRead[i], curveAddressWrite[i],
-                                     _toRegisterDeci, _fromRegisterDeci, 30, curveUnit[i], LABEL[SIZE + i]);
+            if (i % 2)
+                _curve[i] = new Curve<8>(X + GAP, y, W_CURVE, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, curveAddressRead[i], curveAddressWrite[i],
+                                         _toRegisterDeci, _fromRegisterDeci, 30, "V", LABEL[SIZE + i]);
+            else
+                _curve[i] = new Curve<8>(X + GAP, y, W_CURVE, H_LINE, FL_FLOAT_INPUT, 1.0, 65500.0, 1.0, curveAddressRead[i], curveAddressWrite[i],
+                                         _toRegisterOne, _fromRegisterOne, 30, "W", LABEL[SIZE + i]);
         }
         this->end();
     }
@@ -210,6 +212,22 @@ class Wind : public Fl_Group
 
       private:
     } _fromRegisterDeci;
+
+    class ToRegisterOne
+    {
+      public:
+        std::uint16_t operator()(const double input) { return static_cast<std::uint16_t>(input); }
+
+      private:
+    } _toRegisterOne;
+
+    class FromRegisterOne
+    {
+      public:
+        double operator()(const std::uint16_t input) { return static_cast<double>(input); }
+
+      private:
+    } _fromRegisterOne;
 };
 }  // namespace gui
 }  // namespace catta
