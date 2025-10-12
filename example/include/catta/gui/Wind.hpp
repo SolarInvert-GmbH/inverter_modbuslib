@@ -95,8 +95,8 @@ class Wind : public Fl_Group
 
         _write[Z_PT1WINDUSOL] =
             new WriteSingle(X + GAP + (int(Z_PT1WINDUSOL) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(Z_PT1WINDUSOL) / PER_LINE), W_WRITE,
-                            H_LINE, FL_FLOAT_INPUT, 0.1, 25.5, 0.1, zPt1WindUsolAddress, zPt1WindUsolAddress, _toRegisterDeci, _fromRegisterDeci,
-                            W_SEND, "s", LABEL[Z_PT1WINDUSOL]);
+                            H_LINE, FL_FLOAT_INPUT, 0.16, 20.4, 0.08, zPt1WindUsolAddress, zPt1WindUsolAddress, _toWindUSol, _fromWindUSol, W_SEND,
+                            "s", LABEL[Z_PT1WINDUSOL]);
 
         _write[P_MAX] = new WriteSingle(X + GAP + (int(P_MAX) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(P_MAX) / PER_LINE), W_WRITE, H_LINE,
                                         FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, pMaxAddress, pMaxAddress, _toRegisterDeci, _fromRegisterDeci, W_SEND, "W",
@@ -228,6 +228,22 @@ class Wind : public Fl_Group
 
       private:
     } _fromRegisterOne;
+
+    class ToWindUSol
+    {
+      public:
+        std::uint16_t operator()(const double input) { return static_cast<std::uint16_t>(input / 0.08); }
+
+      private:
+    } _toWindUSol;
+
+    class FromWindUSol
+    {
+      public:
+        double operator()(const std::uint16_t input) { return static_cast<double>(input) * 0.08; }
+
+      private:
+    } _fromWindUSol;
 };
 }  // namespace gui
 }  // namespace catta
