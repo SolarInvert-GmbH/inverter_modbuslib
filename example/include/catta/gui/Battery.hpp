@@ -32,9 +32,24 @@ class Battery : public Fl_Group
      */
     Battery(const int X, const int Y, const int W, const int H) : Fl_Group(X, Y, W, H, nullptr)
     {
-        static constexpr std::array<const char*, ROBIN_SIZE + 1> LABEL = {
-            "UDCLOW",  "UDCSTART", "MODUS",      "PMAX",    "UMIN_ext",           "Z_usolbatfilt",      "usolbaterr", "USOLBAT", "UMAX_ext",
-            "S_BIOFF", "pmaxerr",  "PMAXcharge", "UDCHIGH", "CONSTANT_VOLTAGE_X", "CONSTANT_VOLTAGE_Y", "DAC_X",      "COM_Y",   "CURVE"};
+        static constexpr std::array<const char*, ROBIN_SIZE> LABEL = {"UDCLOW",
+                                                                      "UDCSTART",
+                                                                      "MODUS",
+                                                                      "PMAX",
+                                                                      "UMIN_ext",
+                                                                      "Z_usolbatfilt",
+                                                                      "usolbaterr",
+                                                                      "USOLBAT",
+                                                                      "UMAX_ext",
+                                                                      "S_BIOFF",
+                                                                      "pmaxerr",
+                                                                      "PMAXcharge",
+                                                                      "UDCHIGH",
+                                                                      "Ext10V_RED    [0.5V|5.0V|9.5V]",
+                                                                      "Ext10V_CV    [0.5V|5.0V|9.5V]",
+                                                                      "UsolCor_KL    X 0…9",
+                                                                      "UsolCor_KL    Y 0…4",
+                                                                      "UsolCor_KL    Y 5…9"};
         static constexpr int GAP = 5;
         static constexpr int H_LINE = 65;
 
@@ -80,25 +95,27 @@ class Battery : public Fl_Group
             std::array<Address, 3>{Address::siControlConstantVoltageY0Write(), Address::siControlConstantVoltageY1Write(),
                                    Address::siControlConstantVoltageY2Write()}};
 
-        static constexpr std::array<std::array<Address, 10>, CURVES_10> curve10AddressRead = {
-            std::array<Address, 10>{Address::siControlDacCurveX0(), Address::siControlDacCurveX1(), Address::siControlDacCurveX2(),
-                                    Address::siControlDacCurveX3(), Address::siControlDacCurveX4(), Address::siControlDacCurveX5(),
-                                    Address::siControlDacCurveX6(), Address::siControlDacCurveX7(), Address::siControlDacCurveX8(),
-                                    Address::siControlDacCurveX9()},
-            std::array<Address, 10>{Address::siControlDacCurveY0Read(), Address::siControlDacCurveY1Read(), Address::siControlDacCurveY2Read(),
-                                    Address::siControlDacCurveY3Read(), Address::siControlDacCurveY4Read(), Address::siControlDacCurveY5Read(),
-                                    Address::siControlDacCurveY6Read(), Address::siControlDacCurveY7Read(), Address::siControlDacCurveY8Read(),
-                                    Address::siControlDacCurveY9Read()}};
+        static constexpr std::array<std::array<Address, 10>, CURVES_10> curve10AddressRead = {std::array<Address, 10>{
+            Address::siControlDacCurveX0(), Address::siControlDacCurveX1(), Address::siControlDacCurveX2(), Address::siControlDacCurveX3(),
+            Address::siControlDacCurveX4(), Address::siControlDacCurveX5(), Address::siControlDacCurveX6(), Address::siControlDacCurveX7(),
+            Address::siControlDacCurveX8(), Address::siControlDacCurveX9()}};
 
-        static constexpr std::array<std::array<Address, 10>, CURVES_10> curve10AddressWrite = {
-            std::array<Address, 10>{Address::siControlDacCurveX0(), Address::siControlDacCurveX1(), Address::siControlDacCurveX2(),
-                                    Address::siControlDacCurveX3(), Address::siControlDacCurveX4(), Address::siControlDacCurveX5(),
-                                    Address::siControlDacCurveX6(), Address::siControlDacCurveX7(), Address::siControlDacCurveX8(),
-                                    Address::siControlDacCurveX9()},
-            std::array<Address, 10>{Address::siControlDacCurveY0Write(), Address::siControlDacCurveY1Write(), Address::siControlDacCurveY2Write(),
-                                    Address::siControlDacCurveY3Write(), Address::siControlDacCurveY4Write(), Address::siControlDacCurveY5Write(),
-                                    Address::siControlDacCurveY6Write(), Address::siControlDacCurveY7Write(), Address::siControlDacCurveY8Write(),
-                                    Address::siControlDacCurveY9Write()}};
+        static constexpr std::array<std::array<Address, 10>, CURVES_10> curve10AddressWrite = {std::array<Address, 10>{
+            Address::siControlDacCurveX0(), Address::siControlDacCurveX1(), Address::siControlDacCurveX2(), Address::siControlDacCurveX3(),
+            Address::siControlDacCurveX4(), Address::siControlDacCurveX5(), Address::siControlDacCurveX6(), Address::siControlDacCurveX7(),
+            Address::siControlDacCurveX8(), Address::siControlDacCurveX9()}};
+
+        static constexpr std::array<std::array<Address, 5>, CURVES_5> curve5AddressRead = {
+            std::array<Address, 5>{Address::siControlDacCurveY0Read(), Address::siControlDacCurveY1Read(), Address::siControlDacCurveY2Read(),
+                                   Address::siControlDacCurveY3Read(), Address::siControlDacCurveY4Read()},
+            std::array<Address, 5>{Address::siControlDacCurveY5Read(), Address::siControlDacCurveY6Read(), Address::siControlDacCurveY7Read(),
+                                   Address::siControlDacCurveY8Read(), Address::siControlDacCurveY9Read()}};
+
+        static constexpr std::array<std::array<Address, 5>, CURVES_5> curve5AddressWrite = {
+            std::array<Address, 5>{Address::siControlDacCurveY0Write(), Address::siControlDacCurveY1Write(), Address::siControlDacCurveY2Write(),
+                                   Address::siControlDacCurveY3Write(), Address::siControlDacCurveY4Write()},
+            std::array<Address, 5>{Address::siControlDacCurveY5Write(), Address::siControlDacCurveY6Write(), Address::siControlDacCurveY7Write(),
+                                   Address::siControlDacCurveY8Write(), Address::siControlDacCurveY9Write()}};
 
         static std::array<std::tuple<std::size_t, Battery*>, ROBIN_SIZE> cbArray;
         for (std::size_t i = 0; i < SIZE; i++)
@@ -122,8 +139,8 @@ class Battery : public Fl_Group
                                         FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uMinReadAddress, uMinWriteAddress, _toRegisterCenti, _fromRegisterCenti,
                                         W_SEND, "V", LABEL[U_MIN]);
         _write[Z_USOLBATFILT] = new WriteSingle(X + GAP + (int(Z_USOLBATFILT) % PER_LINE) * (GAP + W_WRITE),
-                                                Y + H_LINE * (int(Z_USOLBATFILT) / PER_LINE), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.0, 255.0, 1.00,
-                                                zUsolBatFil, zUsolBatFil, _toRegister256, _fromRegister256, W_SEND, "", LABEL[Z_USOLBATFILT]);
+                                                Y + H_LINE * (int(Z_USOLBATFILT) / PER_LINE), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.00, 0.50, 0.02,
+                                                zUsolBatFil, zUsolBatFil, _toUsolBatFilt, _fromUsolBatFilt, W_SEND, "s", LABEL[Z_USOLBATFILT]);
         _write[U_SOLBATERR] = new WriteSingle(X + GAP + (int(U_SOLBATERR) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_SOLBATERR) / PER_LINE),
                                               W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, uSolBatErrRead, uSolBatErrWrite, _toRegisterDeci,
                                               _fromRegisterDeci, W_SEND, "V", LABEL[U_SOLBATERR]);
@@ -151,24 +168,31 @@ class Battery : public Fl_Group
         static const int PER_LINE_CURVE_3 = 2;
         const int W_WRITE_CURVE_3 = (W - (PER_LINE_CURVE_3 + 1) * GAP) / PER_LINE_CURVE_3;
 
-        for (std::size_t i = 0; i < CURVES_3; i++)
-        {
-            cbArray[i + SIZE] = std::tuple<std::size_t, Battery*>{i + SIZE, this};
-            const int y = Y + H_LINE * (int(SIZE / PER_LINE) + 1);
-            _cvCurve3[i] = new Curve<3>(X + GAP + (int(i) % PER_LINE_CURVE_3) * (GAP + W_WRITE_CURVE_3), y + H_LINE * (int(i) / PER_LINE_CURVE_3),
-                                        W_WRITE_CURVE_3, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, curve3AddressRead[i], curve3AddressWrite[i],
-                                        _toRegisterDeci, _fromRegisterDeci, 30, "V", LABEL[i + SIZE]);
-        }
+        for (std::size_t i = 0; i < CURVES_3; i++) cbArray[i + SIZE] = std::tuple<std::size_t, Battery*>{i + SIZE, this};
+        const int yc3 = Y + H_LINE * (int(SIZE / PER_LINE) + 1);
+        _cvCurve3[0] = new Curve<3>(X + GAP + (int(0) % PER_LINE_CURVE_3) * (GAP + W_WRITE_CURVE_3), yc3 + H_LINE * (int(0) / PER_LINE_CURVE_3),
+                                    W_WRITE_CURVE_3, H_LINE, FL_FLOAT_INPUT, -100.0, 100.0, 1.0, curve3AddressRead[0], curve3AddressWrite[0],
+                                    _toRegister3X, _fromRegister3X, 30, "%ₚₘₐₓ", LABEL[0 + SIZE]);
+        _cvCurve3[1] = new Curve<3>(X + GAP + (int(1) % PER_LINE_CURVE_3) * (GAP + W_WRITE_CURVE_3), yc3 + H_LINE * (int(1) / PER_LINE_CURVE_3),
+                                    W_WRITE_CURVE_3, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, curve3AddressRead[1], curve3AddressWrite[1],
+                                    _toRegisterDeci, _fromRegisterDeci, 30, "V", LABEL[1 + SIZE]);
 
         const int W_WRITE_CURVE_10 = W - 2 * GAP;
 
-        for (std::size_t i = 0; i < CURVES_10; i++)
+        for (std::size_t i = 0; i < CURVES_10; i++) cbArray[i + SIZE + CURVES_3] = std::tuple<std::size_t, Battery*>{i + SIZE + CURVES_3, this};
+        const int yc10 = Y + H_LINE * (int(SIZE / PER_LINE) + 2);
+        _cvCurve10[0] =
+            new Curve<10>(X + GAP, yc10 + H_LINE * (int(0)), W_WRITE_CURVE_10, H_LINE, FL_FLOAT_INPUT, 1.0, 255.0, 1.0, curve10AddressRead[0],
+                          curve10AddressWrite[0], _toRegister256, _fromRegister256, 30, "DAC", LABEL[0 + SIZE + CURVES_3]);
+
+        const int W_WRITE_CURVE_5 = W - 2 * GAP;
+        for (std::size_t i = 0; i < CURVES_5; i++)
         {
-            cbArray[i + SIZE + CURVES_3] = std::tuple<std::size_t, Battery*>{i + SIZE + CURVES_3, this};
-            const int y = Y + H_LINE * (int(SIZE / PER_LINE) + 2);
-            _cvCurve10[i] =
-                new Curve<10>(X + GAP, y + H_LINE * (int(i)), W_WRITE_CURVE_10, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, curve10AddressRead[i],
-                              curve10AddressWrite[i], _toRegisterDeci, _fromRegisterDeci, 30, i == X_DAC ? "DAC" : "V", LABEL[i + SIZE + CURVES_3]);
+            cbArray[i + SIZE + CURVES_10] = std::tuple<std::size_t, Battery*>{i + SIZE + CURVES_10, this};
+            const int y = Y + H_LINE * (int(SIZE / PER_LINE) + 2 + static_cast<int>(i));
+            _cvCurve5[i] = new Curve<5>(X + GAP, y + H_LINE * (int(1)), W_WRITE_CURVE_5, H_LINE, FL_FLOAT_INPUT, _fromUsolCorKl(0),
+                                        _fromUsolCorKl(255), _toUsolCorKl.c, curve5AddressRead[i], curve5AddressWrite[i], _toUsolCorKl,
+                                        _fromUsolCorKl, 30, "ΔV", LABEL[i + SIZE + CURVES_10 + CURVES_3]);
         }
         this->end();
     }
@@ -194,7 +218,9 @@ class Battery : public Fl_Group
             const catta::modbus::si::request::Request r =
                 j < SIZE              ? _write[j]->work(canTakeRequest && send.isEmpty(), response, request, now)
                 : j - SIZE < CURVES_3 ? _cvCurve3[j - SIZE]->work(canTakeRequest && send.isEmpty(), response, request, now)
-                                      : _cvCurve10[j - SIZE - CURVES_3]->work(canTakeRequest && send.isEmpty(), response, request, now);
+                : j - SIZE - CURVES_3 < CURVES_10
+                    ? _cvCurve10[j - SIZE - CURVES_3]->work(canTakeRequest && send.isEmpty(), response, request, now)
+                    : _cvCurve5[j - SIZE - CURVES_3 - CURVES_10]->work(canTakeRequest && send.isEmpty(), response, request, now);
             if (!r.isEmpty())
             {
                 send = r;
@@ -212,6 +238,7 @@ class Battery : public Fl_Group
         for (std::size_t i = 0; i < _write.size(); i++) _write[i]->stop();
         for (std::size_t i = 0; i < _cvCurve3.size(); i++) _cvCurve3[i]->stop();
         for (std::size_t i = 0; i < _cvCurve10.size(); i++) _cvCurve10[i]->stop();
+        for (std::size_t i = 0; i < _cvCurve5.size(); i++) _cvCurve5[i]->stop();
     }
     /**
      * Begin request.
@@ -221,6 +248,7 @@ class Battery : public Fl_Group
         for (std::size_t i = 0; i < _write.size(); i++) _write[i]->start();
         for (std::size_t i = 0; i < _cvCurve3.size(); i++) _cvCurve3[i]->start();
         for (std::size_t i = 0; i < _cvCurve10.size(); i++) _cvCurve10[i]->start();
+        for (std::size_t i = 0; i < _cvCurve5.size(); i++) _cvCurve5[i]->start();
     }
 
   private:
@@ -244,14 +272,18 @@ class Battery : public Fl_Group
     static constexpr std::size_t CURVES_3 = Y_CV + 1;
 
     static constexpr std::size_t X_DAC = 0;
-    static constexpr std::size_t Y_DAC = X_DAC + 1;
-    static constexpr std::size_t CURVES_10 = Y_DAC + 1;
+    static constexpr std::size_t CURVES_10 = X_DAC + 1;
 
-    static constexpr std::size_t ROBIN_SIZE = SIZE + CURVES_3 + CURVES_10;
+    static constexpr std::size_t Y_DAC_0 = 0;
+    static constexpr std::size_t Y_DAC_1 = Y_DAC_0 + 1;
+    static constexpr std::size_t CURVES_5 = Y_DAC_1 + 1;
+
+    static constexpr std::size_t ROBIN_SIZE = SIZE + CURVES_3 + CURVES_10 + CURVES_5;
 
     std::array<WriteSingle*, SIZE> _write;
     std::array<Curve<3>*, CURVES_3> _cvCurve3;
     std::array<Curve<10>*, CURVES_10> _cvCurve10;
+    std::array<Curve<5>*, CURVES_5> _cvCurve5;
     std::size_t _roundRobin;
     class ToRegisterCenti
     {
@@ -293,6 +325,51 @@ class Battery : public Fl_Group
       public:
         double operator()(const std::uint16_t input) { return static_cast<double>(input); }
     } _fromRegister256;
+
+    class ToRegister3x
+    {
+      public:
+        std::uint16_t operator()(const double input) { return static_cast<std::uint16_t>(input + 100.0); }
+    } _toRegister3X;
+    class FromRegister3x
+    {
+      public:
+        double operator()(const std::uint16_t input) { return static_cast<double>(input - 100.0); }
+    } _fromRegister3X;
+
+    class ToUsolBatFilt
+    {
+      public:
+        std::uint16_t operator()(const double input) { return static_cast<std::uint16_t>(input / 0.02); }
+
+      private:
+    } _toUsolBatFilt;
+
+    class FromUsolBatFilt
+    {
+      public:
+        double operator()(const std::uint16_t input) { return static_cast<double>(input) * 0.02; }
+
+      private:
+    } _fromUsolBatFilt;
+
+    class ToUsolCorKl
+    {
+      public:
+        static constexpr double c = 0.062055;
+        std::uint16_t operator()(const double input) { return static_cast<std::uint16_t>((input / c) + 127.5); }
+
+      private:
+    } _toUsolCorKl;
+
+    class FromUsolCorKl
+    {
+      public:
+        static constexpr double c = ToUsolCorKl::c;
+        double operator()(const std::uint16_t input) { return (static_cast<double>(input) - 127.5) * c; }
+
+      private:
+    } _fromUsolCorKl;
 };
 }  // namespace gui
 }  // namespace catta
