@@ -104,45 +104,45 @@ class Serializer<catta::modbus::si::response::ReadError>
             case DATA + 25:
                 return low(input.islandGrid().value());
             case DATA + 26:
-                return next(Output::data(0x00));
-            case DATA + 27:
-                return next(Output::data(0x00));
-            case DATA + 28:
-                return next(Output::data(0x00));
-            case DATA + 29:
-                return next(Output::data(0x00));
-            case DATA + 30:
                 return high(input.overCurrentInterrupt().value());
-            case DATA + 31:
+            case DATA + 27:
                 return low(input.overCurrentInterrupt().value());
-            case DATA + 32:
-                return next(Output::data(0x00));
-            case DATA + 33:
-                return next(Output::data(0x00));
-            case DATA + 34:
+            case DATA + 28:
                 return high(input.overVoltageInterrupt().value());
-            case DATA + 35:
+            case DATA + 29:
                 return low(input.overVoltageInterrupt().value());
-            case DATA + 36:
+            case DATA + 30:
                 return high(input.averageGridOverVoltage().value());
-            case DATA + 37:
+            case DATA + 31:
                 return low(input.averageGridOverVoltage().value());
-            case DATA + 38:
+            case DATA + 32:
                 return high(input.overTempratureShutdown().value());
-            case DATA + 39:
+            case DATA + 33:
                 return low(input.overTempratureShutdown().value());
-            case DATA + 40:
+            case DATA + 34:
                 return high(input.differenceGridVoltage().value());
-            case DATA + 41:
+            case DATA + 35:
                 return low(input.differenceGridVoltage().value());
-            case DATA + 42:
+            case DATA + 36:
                 return high(input.errorGridRelais().value());
-            case DATA + 43:
+            case DATA + 37:
                 return low(input.errorGridRelais().value());
-            case DATA + 44:
+            case DATA + 38:
                 return high(input.errorCurrentSensor().value());
-            case DATA + 45:
+            case DATA + 39:
                 return low(input.errorCurrentSensor().value());
+            case DATA + 40:
+                return next(Output::data(0x00));
+            case DATA + 41:
+                return next(Output::data(0x00));
+            case DATA + 42:
+                return next(Output::data(0x00));
+            case DATA + 43:
+                return next(Output::data(0x00));
+            case DATA + 44:
+                return next(Output::data(0x00));
+            case DATA + 45:
+                return next(Output::data(0x00));
             case TAIL + 0:
                 return done();
             default:

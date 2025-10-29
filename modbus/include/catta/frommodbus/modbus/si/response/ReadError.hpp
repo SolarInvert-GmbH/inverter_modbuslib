@@ -107,45 +107,45 @@ class Parser<catta::modbus::si::response::ReadError>
             case DATA + 25:
                 return low(_islandGrid);
             case DATA + 26:
-                return next();
-            case DATA + 27:
-                return next();
-            case DATA + 28:
-                return next();
-            case DATA + 29:
-                return next();
-            case DATA + 30:
                 return high(_overCurrentInterrupt);
-            case DATA + 31:
+            case DATA + 27:
                 return low(_overCurrentInterrupt);
-            case DATA + 32:
-                return next();
-            case DATA + 33:
-                return next();
-            case DATA + 34:
+            case DATA + 28:
                 return high(_overVoltageInterrupt);
-            case DATA + 35:
+            case DATA + 29:
                 return low(_overVoltageInterrupt);
-            case DATA + 36:
+            case DATA + 30:
                 return high(_averageGridOverVoltage);
-            case DATA + 37:
+            case DATA + 31:
                 return low(_averageGridOverVoltage);
-            case DATA + 38:
+            case DATA + 32:
                 return high(_overTempratureShutdown);
-            case DATA + 39:
+            case DATA + 33:
                 return low(_overTempratureShutdown);
-            case DATA + 40:
+            case DATA + 34:
                 return high(_differenceGridVoltage);
-            case DATA + 41:
+            case DATA + 35:
                 return low(_differenceGridVoltage);
-            case DATA + 42:
+            case DATA + 36:
                 return high(_errorGridRelais);
-            case DATA + 43:
+            case DATA + 37:
                 return low(_errorGridRelais);
-            case DATA + 44:
+            case DATA + 38:
                 return high(_errorCurrentSensor);
-            case DATA + 45:
+            case DATA + 39:
                 return low(_errorCurrentSensor);
+            case DATA + 40:
+                return next();
+            case DATA + 41:
+                return next();
+            case DATA + 42:
+                return next();
+            case DATA + 43:
+                return next();
+            case DATA + 44:
+                return next();
+            case DATA + 45:
+                return next();
             case TAIL + 0:
                 return input == catta::modbus::Token::end() ? jump(DONE + 0) : error();
             default:
