@@ -382,7 +382,7 @@ class Values : public Fl_Group
         std::chrono::system_clock::time_point utc_time = std::chrono::time_point<std::chrono::system_clock>(now);
         auto local_zone = std::chrono::current_zone();
         std::chrono::zoned_time local_time{local_zone, floor<std::chrono::seconds>(utc_time)};
-        std::string datetime = std::format("{:%Y-%m-%d_%H:%M:%S}", local_time);
+        std::string datetime = std::format("{:%Y-%m-%d_%Hh_%Mm_%Ss}", local_time);
         return datetime;
     }
 

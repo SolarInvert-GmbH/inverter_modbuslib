@@ -115,12 +115,12 @@ class Error : public Fl_Group
         "AC_Max",        "AC_Min",    "DC_Max",   "DC_Min",    "Freq_Max", "Freq_Min",     "OT1",          "OT2",     "OT3",     "OT4-UACDIFF",
         "OT5_CURENSENS", "COM-error", "Grid-OFF", "Ext.P.Red", "Rds_off",  "Over_Current", "High_Pac_REL", "SDLATCH", "AVERAGE", "OVERHEAT"};
 
-    static std::string getDate(const std::chrono::microseconds now)
+    static std::string getDate(const std::chrono::microseconds now, const bool colon)
     {
         std::chrono::system_clock::time_point utc_time = std::chrono::time_point<std::chrono::system_clock>(now);
         auto local_zone = std::chrono::current_zone();
         std::chrono::zoned_time local_time{local_zone, floor<std::chrono::seconds>(utc_time)};
-        std::string datetime = std::format("{:%Y-%m-%d_%H:%M:%S}", local_time);
+        std::string datetime = colon ? std::format("{:%Y-%m-%d_%H:%M:%S}", local_time) : std::format("{:%Y-%m-%d_%Hh_%Mm_%Ss}", local_time);
         return datetime;
     }
 
@@ -134,7 +134,7 @@ class Error : public Fl_Group
         chooser.filter("TXT\t*.txt\n");
         chooser.options(Fl_Native_File_Chooser::SAVEAS_CONFIRM);
         const std::string preset = std::string("Error-") + std::string(error->_stringModel.data()) + "-" +
-                                   std::string(error->_stringSerialNumber.data()) + "-" + getDate(error->_currentTime) + ".txt";
+                                   std::string(error->_stringSerialNumber.data()) + "-" + getDate(error->_currentTime, false) + ".txt";
         chooser.preset_file(preset.c_str());
         const auto right = [](const std::string& name)
         {
@@ -157,7 +157,7 @@ class Error : public Fl_Group
         if (chooser.show() == 0)  // blocking call/ no boackground communication
         {
             std::string content = std::string(error->_stringModel.data()) + "-" + std::string(error->_stringSerialNumber.data()) + "\n\n" +
-                                  getDate(error->_currentTime) + "\n\n";
+                                  getDate(error->_currentTime, true) + "\n\n";
             for (std::size_t y = 0; y < 5; y++)
                 for (std::size_t x = 0; x < 4; x++)
                 {
