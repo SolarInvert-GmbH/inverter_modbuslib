@@ -474,34 +474,34 @@ class Serializer<catta::modbus::si::RegisterAddress>
                     _state = SI_CONTROL_CONSTANT_VOLTAGE_Y2_WRITE + 0;
                     break;
                 case 141:
-                    _state = SI_CONTROL_DAC_CURVE_Y0_READ + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y0 + 0;
                     break;
                 case 142:
-                    _state = SI_CONTROL_DAC_CURVE_Y1_READ + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y1 + 0;
                     break;
                 case 143:
-                    _state = SI_CONTROL_DAC_CURVE_Y2_READ + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y2 + 0;
                     break;
                 case 144:
-                    _state = SI_CONTROL_DAC_CURVE_Y3_READ + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y3 + 0;
                     break;
                 case 145:
-                    _state = SI_CONTROL_DAC_CURVE_Y4_READ + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y4 + 0;
                     break;
                 case 146:
-                    _state = SI_CONTROL_DAC_CURVE_Y5_READ + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y5 + 0;
                     break;
                 case 147:
-                    _state = SI_CONTROL_DAC_CURVE_Y6_READ + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y6 + 0;
                     break;
                 case 148:
-                    _state = SI_CONTROL_DAC_CURVE_Y7_READ + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y7 + 0;
                     break;
                 case 149:
-                    _state = SI_CONTROL_DAC_CURVE_Y8_READ + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y8 + 0;
                     break;
                 case 150:
-                    _state = SI_CONTROL_DAC_CURVE_Y9_READ + 0;
+                    _state = SI_CONTROL_DAC_CURVE_Y9 + 0;
                     break;
                 case 151:
                     _state = SI_CONTROL_CONSTANT_VOLTAGE_X0 + 0;
@@ -552,84 +552,54 @@ class Serializer<catta::modbus::si::RegisterAddress>
                     _state = SI_CONTROL_DAC_CURVE_X9 + 0;
                     break;
                 case 167:
-                    _state = SI_CONTROL_DAC_CURVE_Y0_WRITE + 0;
-                    break;
-                case 168:
-                    _state = SI_CONTROL_DAC_CURVE_Y1_WRITE + 0;
-                    break;
-                case 169:
-                    _state = SI_CONTROL_DAC_CURVE_Y2_WRITE + 0;
-                    break;
-                case 170:
-                    _state = SI_CONTROL_DAC_CURVE_Y3_WRITE + 0;
-                    break;
-                case 171:
-                    _state = SI_CONTROL_DAC_CURVE_Y4_WRITE + 0;
-                    break;
-                case 172:
-                    _state = SI_CONTROL_DAC_CURVE_Y5_WRITE + 0;
-                    break;
-                case 173:
-                    _state = SI_CONTROL_DAC_CURVE_Y6_WRITE + 0;
-                    break;
-                case 174:
-                    _state = SI_CONTROL_DAC_CURVE_Y7_WRITE + 0;
-                    break;
-                case 175:
-                    _state = SI_CONTROL_DAC_CURVE_Y8_WRITE + 0;
-                    break;
-                case 176:
-                    _state = SI_CONTROL_DAC_CURVE_Y9_WRITE + 0;
-                    break;
-                case 177:
                     _state = SI_CONTROL_WIND_CURVE_X00WRITE + 0;
                     break;
-                case 178:
+                case 168:
                     _state = SI_CONTROL_WIND_CURVE_X01WRITE + 0;
                     break;
-                case 179:
+                case 169:
                     _state = SI_CONTROL_WIND_CURVE_X02WRITE + 0;
                     break;
-                case 180:
+                case 170:
                     _state = SI_CONTROL_WIND_CURVE_X03WRITE + 0;
                     break;
-                case 181:
+                case 171:
                     _state = SI_CONTROL_WIND_CURVE_X04WRITE + 0;
                     break;
-                case 182:
+                case 172:
                     _state = SI_CONTROL_WIND_CURVE_X05WRITE + 0;
                     break;
-                case 183:
+                case 173:
                     _state = SI_CONTROL_WIND_CURVE_X06WRITE + 0;
                     break;
-                case 184:
+                case 174:
                     _state = SI_CONTROL_WIND_CURVE_X07WRITE + 0;
                     break;
-                case 185:
+                case 175:
                     _state = SI_CONTROL_WIND_CURVE_X08WRITE + 0;
                     break;
-                case 186:
+                case 176:
                     _state = SI_CONTROL_WIND_CURVE_X09WRITE + 0;
                     break;
-                case 187:
+                case 177:
                     _state = SI_CONTROL_WIND_CURVE_X10WRITE + 0;
                     break;
-                case 188:
+                case 178:
                     _state = SI_CONTROL_WIND_CURVE_X11WRITE + 0;
                     break;
-                case 189:
+                case 179:
                     _state = SI_CONTROL_WIND_CURVE_X12WRITE + 0;
                     break;
-                case 190:
+                case 180:
                     _state = SI_CONTROL_WIND_CURVE_X13WRITE + 0;
                     break;
-                case 191:
+                case 181:
                     _state = SI_CONTROL_WIND_CURVE_X14WRITE + 0;
                     break;
-                case 192:
+                case 182:
                     _state = SI_CONTROL_WIND_CURVE_X15WRITE + 0;
                     break;
-                case 193:
+                case 183:
                     _state = SI_CONTROL_ENABLE_WRITE_ONCE + 0;
                     break;
                 default:
@@ -7250,466 +7220,386 @@ class Serializer<catta::modbus::si::RegisterAddress>
                 return next(catta::json::Token::character('t'));
             case SI_CONTROL_CONSTANT_VOLTAGE_Y2_WRITE + 30:
                 return jump(catta::json::Token::character('e'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 0:
+            case SI_CONTROL_DAC_CURVE_Y0 + 0:
                 return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 1:
+            case SI_CONTROL_DAC_CURVE_Y0 + 1:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 2:
+            case SI_CONTROL_DAC_CURVE_Y0 + 2:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 3:
+            case SI_CONTROL_DAC_CURVE_Y0 + 3:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 4:
+            case SI_CONTROL_DAC_CURVE_Y0 + 4:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 5:
+            case SI_CONTROL_DAC_CURVE_Y0 + 5:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 6:
+            case SI_CONTROL_DAC_CURVE_Y0 + 6:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 7:
+            case SI_CONTROL_DAC_CURVE_Y0 + 7:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 8:
+            case SI_CONTROL_DAC_CURVE_Y0 + 8:
                 return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 9:
+            case SI_CONTROL_DAC_CURVE_Y0 + 9:
                 return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 10:
+            case SI_CONTROL_DAC_CURVE_Y0 + 10:
                 return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 11:
+            case SI_CONTROL_DAC_CURVE_Y0 + 11:
                 return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 12:
+            case SI_CONTROL_DAC_CURVE_Y0 + 12:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 13:
+            case SI_CONTROL_DAC_CURVE_Y0 + 13:
                 return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 14:
+            case SI_CONTROL_DAC_CURVE_Y0 + 14:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 15:
+            case SI_CONTROL_DAC_CURVE_Y0 + 15:
                 return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 16:
+            case SI_CONTROL_DAC_CURVE_Y0 + 16:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 17:
+            case SI_CONTROL_DAC_CURVE_Y0 + 17:
                 return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 18:
-                return next(catta::json::Token::character('0'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 19:
-                return next(catta::json::Token::character('R'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 20:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 21:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y0_READ + 22:
-                return jump(catta::json::Token::character('d'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 0:
+            case SI_CONTROL_DAC_CURVE_Y0 + 18:
+                return jump(catta::json::Token::character('0'), TAIL + 0);
+            case SI_CONTROL_DAC_CURVE_Y1 + 0:
                 return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 1:
+            case SI_CONTROL_DAC_CURVE_Y1 + 1:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 2:
+            case SI_CONTROL_DAC_CURVE_Y1 + 2:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 3:
+            case SI_CONTROL_DAC_CURVE_Y1 + 3:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 4:
+            case SI_CONTROL_DAC_CURVE_Y1 + 4:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 5:
+            case SI_CONTROL_DAC_CURVE_Y1 + 5:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 6:
+            case SI_CONTROL_DAC_CURVE_Y1 + 6:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 7:
+            case SI_CONTROL_DAC_CURVE_Y1 + 7:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 8:
+            case SI_CONTROL_DAC_CURVE_Y1 + 8:
                 return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 9:
+            case SI_CONTROL_DAC_CURVE_Y1 + 9:
                 return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 10:
+            case SI_CONTROL_DAC_CURVE_Y1 + 10:
                 return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 11:
+            case SI_CONTROL_DAC_CURVE_Y1 + 11:
                 return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 12:
+            case SI_CONTROL_DAC_CURVE_Y1 + 12:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 13:
+            case SI_CONTROL_DAC_CURVE_Y1 + 13:
                 return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 14:
+            case SI_CONTROL_DAC_CURVE_Y1 + 14:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 15:
+            case SI_CONTROL_DAC_CURVE_Y1 + 15:
                 return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 16:
+            case SI_CONTROL_DAC_CURVE_Y1 + 16:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 17:
+            case SI_CONTROL_DAC_CURVE_Y1 + 17:
                 return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 18:
-                return next(catta::json::Token::character('1'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 19:
-                return next(catta::json::Token::character('R'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 20:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 21:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y1_READ + 22:
-                return jump(catta::json::Token::character('d'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 0:
+            case SI_CONTROL_DAC_CURVE_Y1 + 18:
+                return jump(catta::json::Token::character('1'), TAIL + 0);
+            case SI_CONTROL_DAC_CURVE_Y2 + 0:
                 return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 1:
+            case SI_CONTROL_DAC_CURVE_Y2 + 1:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 2:
+            case SI_CONTROL_DAC_CURVE_Y2 + 2:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 3:
+            case SI_CONTROL_DAC_CURVE_Y2 + 3:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 4:
+            case SI_CONTROL_DAC_CURVE_Y2 + 4:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 5:
+            case SI_CONTROL_DAC_CURVE_Y2 + 5:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 6:
+            case SI_CONTROL_DAC_CURVE_Y2 + 6:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 7:
+            case SI_CONTROL_DAC_CURVE_Y2 + 7:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 8:
+            case SI_CONTROL_DAC_CURVE_Y2 + 8:
                 return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 9:
+            case SI_CONTROL_DAC_CURVE_Y2 + 9:
                 return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 10:
+            case SI_CONTROL_DAC_CURVE_Y2 + 10:
                 return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 11:
+            case SI_CONTROL_DAC_CURVE_Y2 + 11:
                 return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 12:
+            case SI_CONTROL_DAC_CURVE_Y2 + 12:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 13:
+            case SI_CONTROL_DAC_CURVE_Y2 + 13:
                 return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 14:
+            case SI_CONTROL_DAC_CURVE_Y2 + 14:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 15:
+            case SI_CONTROL_DAC_CURVE_Y2 + 15:
                 return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 16:
+            case SI_CONTROL_DAC_CURVE_Y2 + 16:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 17:
+            case SI_CONTROL_DAC_CURVE_Y2 + 17:
                 return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 18:
-                return next(catta::json::Token::character('2'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 19:
-                return next(catta::json::Token::character('R'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 20:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 21:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y2_READ + 22:
-                return jump(catta::json::Token::character('d'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 0:
+            case SI_CONTROL_DAC_CURVE_Y2 + 18:
+                return jump(catta::json::Token::character('2'), TAIL + 0);
+            case SI_CONTROL_DAC_CURVE_Y3 + 0:
                 return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 1:
+            case SI_CONTROL_DAC_CURVE_Y3 + 1:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 2:
+            case SI_CONTROL_DAC_CURVE_Y3 + 2:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 3:
+            case SI_CONTROL_DAC_CURVE_Y3 + 3:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 4:
+            case SI_CONTROL_DAC_CURVE_Y3 + 4:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 5:
+            case SI_CONTROL_DAC_CURVE_Y3 + 5:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 6:
+            case SI_CONTROL_DAC_CURVE_Y3 + 6:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 7:
+            case SI_CONTROL_DAC_CURVE_Y3 + 7:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 8:
+            case SI_CONTROL_DAC_CURVE_Y3 + 8:
                 return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 9:
+            case SI_CONTROL_DAC_CURVE_Y3 + 9:
                 return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 10:
+            case SI_CONTROL_DAC_CURVE_Y3 + 10:
                 return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 11:
+            case SI_CONTROL_DAC_CURVE_Y3 + 11:
                 return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 12:
+            case SI_CONTROL_DAC_CURVE_Y3 + 12:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 13:
+            case SI_CONTROL_DAC_CURVE_Y3 + 13:
                 return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 14:
+            case SI_CONTROL_DAC_CURVE_Y3 + 14:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 15:
+            case SI_CONTROL_DAC_CURVE_Y3 + 15:
                 return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 16:
+            case SI_CONTROL_DAC_CURVE_Y3 + 16:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 17:
+            case SI_CONTROL_DAC_CURVE_Y3 + 17:
                 return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 18:
-                return next(catta::json::Token::character('3'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 19:
-                return next(catta::json::Token::character('R'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 20:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 21:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y3_READ + 22:
-                return jump(catta::json::Token::character('d'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 0:
+            case SI_CONTROL_DAC_CURVE_Y3 + 18:
+                return jump(catta::json::Token::character('3'), TAIL + 0);
+            case SI_CONTROL_DAC_CURVE_Y4 + 0:
                 return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 1:
+            case SI_CONTROL_DAC_CURVE_Y4 + 1:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 2:
+            case SI_CONTROL_DAC_CURVE_Y4 + 2:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 3:
+            case SI_CONTROL_DAC_CURVE_Y4 + 3:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 4:
+            case SI_CONTROL_DAC_CURVE_Y4 + 4:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 5:
+            case SI_CONTROL_DAC_CURVE_Y4 + 5:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 6:
+            case SI_CONTROL_DAC_CURVE_Y4 + 6:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 7:
+            case SI_CONTROL_DAC_CURVE_Y4 + 7:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 8:
+            case SI_CONTROL_DAC_CURVE_Y4 + 8:
                 return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 9:
+            case SI_CONTROL_DAC_CURVE_Y4 + 9:
                 return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 10:
+            case SI_CONTROL_DAC_CURVE_Y4 + 10:
                 return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 11:
+            case SI_CONTROL_DAC_CURVE_Y4 + 11:
                 return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 12:
+            case SI_CONTROL_DAC_CURVE_Y4 + 12:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 13:
+            case SI_CONTROL_DAC_CURVE_Y4 + 13:
                 return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 14:
+            case SI_CONTROL_DAC_CURVE_Y4 + 14:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 15:
+            case SI_CONTROL_DAC_CURVE_Y4 + 15:
                 return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 16:
+            case SI_CONTROL_DAC_CURVE_Y4 + 16:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 17:
+            case SI_CONTROL_DAC_CURVE_Y4 + 17:
                 return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 18:
-                return next(catta::json::Token::character('4'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 19:
-                return next(catta::json::Token::character('R'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 20:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 21:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y4_READ + 22:
-                return jump(catta::json::Token::character('d'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 0:
+            case SI_CONTROL_DAC_CURVE_Y4 + 18:
+                return jump(catta::json::Token::character('4'), TAIL + 0);
+            case SI_CONTROL_DAC_CURVE_Y5 + 0:
                 return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 1:
+            case SI_CONTROL_DAC_CURVE_Y5 + 1:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 2:
+            case SI_CONTROL_DAC_CURVE_Y5 + 2:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 3:
+            case SI_CONTROL_DAC_CURVE_Y5 + 3:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 4:
+            case SI_CONTROL_DAC_CURVE_Y5 + 4:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 5:
+            case SI_CONTROL_DAC_CURVE_Y5 + 5:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 6:
+            case SI_CONTROL_DAC_CURVE_Y5 + 6:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 7:
+            case SI_CONTROL_DAC_CURVE_Y5 + 7:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 8:
+            case SI_CONTROL_DAC_CURVE_Y5 + 8:
                 return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 9:
+            case SI_CONTROL_DAC_CURVE_Y5 + 9:
                 return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 10:
+            case SI_CONTROL_DAC_CURVE_Y5 + 10:
                 return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 11:
+            case SI_CONTROL_DAC_CURVE_Y5 + 11:
                 return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 12:
+            case SI_CONTROL_DAC_CURVE_Y5 + 12:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 13:
+            case SI_CONTROL_DAC_CURVE_Y5 + 13:
                 return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 14:
+            case SI_CONTROL_DAC_CURVE_Y5 + 14:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 15:
+            case SI_CONTROL_DAC_CURVE_Y5 + 15:
                 return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 16:
+            case SI_CONTROL_DAC_CURVE_Y5 + 16:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 17:
+            case SI_CONTROL_DAC_CURVE_Y5 + 17:
                 return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 18:
-                return next(catta::json::Token::character('5'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 19:
-                return next(catta::json::Token::character('R'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 20:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 21:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y5_READ + 22:
-                return jump(catta::json::Token::character('d'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 0:
+            case SI_CONTROL_DAC_CURVE_Y5 + 18:
+                return jump(catta::json::Token::character('5'), TAIL + 0);
+            case SI_CONTROL_DAC_CURVE_Y6 + 0:
                 return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 1:
+            case SI_CONTROL_DAC_CURVE_Y6 + 1:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 2:
+            case SI_CONTROL_DAC_CURVE_Y6 + 2:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 3:
+            case SI_CONTROL_DAC_CURVE_Y6 + 3:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 4:
+            case SI_CONTROL_DAC_CURVE_Y6 + 4:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 5:
+            case SI_CONTROL_DAC_CURVE_Y6 + 5:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 6:
+            case SI_CONTROL_DAC_CURVE_Y6 + 6:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 7:
+            case SI_CONTROL_DAC_CURVE_Y6 + 7:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 8:
+            case SI_CONTROL_DAC_CURVE_Y6 + 8:
                 return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 9:
+            case SI_CONTROL_DAC_CURVE_Y6 + 9:
                 return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 10:
+            case SI_CONTROL_DAC_CURVE_Y6 + 10:
                 return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 11:
+            case SI_CONTROL_DAC_CURVE_Y6 + 11:
                 return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 12:
+            case SI_CONTROL_DAC_CURVE_Y6 + 12:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 13:
+            case SI_CONTROL_DAC_CURVE_Y6 + 13:
                 return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 14:
+            case SI_CONTROL_DAC_CURVE_Y6 + 14:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 15:
+            case SI_CONTROL_DAC_CURVE_Y6 + 15:
                 return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 16:
+            case SI_CONTROL_DAC_CURVE_Y6 + 16:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 17:
+            case SI_CONTROL_DAC_CURVE_Y6 + 17:
                 return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 18:
-                return next(catta::json::Token::character('6'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 19:
-                return next(catta::json::Token::character('R'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 20:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 21:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y6_READ + 22:
-                return jump(catta::json::Token::character('d'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 0:
+            case SI_CONTROL_DAC_CURVE_Y6 + 18:
+                return jump(catta::json::Token::character('6'), TAIL + 0);
+            case SI_CONTROL_DAC_CURVE_Y7 + 0:
                 return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 1:
+            case SI_CONTROL_DAC_CURVE_Y7 + 1:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 2:
+            case SI_CONTROL_DAC_CURVE_Y7 + 2:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 3:
+            case SI_CONTROL_DAC_CURVE_Y7 + 3:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 4:
+            case SI_CONTROL_DAC_CURVE_Y7 + 4:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 5:
+            case SI_CONTROL_DAC_CURVE_Y7 + 5:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 6:
+            case SI_CONTROL_DAC_CURVE_Y7 + 6:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 7:
+            case SI_CONTROL_DAC_CURVE_Y7 + 7:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 8:
+            case SI_CONTROL_DAC_CURVE_Y7 + 8:
                 return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 9:
+            case SI_CONTROL_DAC_CURVE_Y7 + 9:
                 return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 10:
+            case SI_CONTROL_DAC_CURVE_Y7 + 10:
                 return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 11:
+            case SI_CONTROL_DAC_CURVE_Y7 + 11:
                 return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 12:
+            case SI_CONTROL_DAC_CURVE_Y7 + 12:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 13:
+            case SI_CONTROL_DAC_CURVE_Y7 + 13:
                 return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 14:
+            case SI_CONTROL_DAC_CURVE_Y7 + 14:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 15:
+            case SI_CONTROL_DAC_CURVE_Y7 + 15:
                 return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 16:
+            case SI_CONTROL_DAC_CURVE_Y7 + 16:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 17:
+            case SI_CONTROL_DAC_CURVE_Y7 + 17:
                 return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 18:
-                return next(catta::json::Token::character('7'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 19:
-                return next(catta::json::Token::character('R'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 20:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 21:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y7_READ + 22:
-                return jump(catta::json::Token::character('d'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 0:
+            case SI_CONTROL_DAC_CURVE_Y7 + 18:
+                return jump(catta::json::Token::character('7'), TAIL + 0);
+            case SI_CONTROL_DAC_CURVE_Y8 + 0:
                 return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 1:
+            case SI_CONTROL_DAC_CURVE_Y8 + 1:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 2:
+            case SI_CONTROL_DAC_CURVE_Y8 + 2:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 3:
+            case SI_CONTROL_DAC_CURVE_Y8 + 3:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 4:
+            case SI_CONTROL_DAC_CURVE_Y8 + 4:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 5:
+            case SI_CONTROL_DAC_CURVE_Y8 + 5:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 6:
+            case SI_CONTROL_DAC_CURVE_Y8 + 6:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 7:
+            case SI_CONTROL_DAC_CURVE_Y8 + 7:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 8:
+            case SI_CONTROL_DAC_CURVE_Y8 + 8:
                 return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 9:
+            case SI_CONTROL_DAC_CURVE_Y8 + 9:
                 return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 10:
+            case SI_CONTROL_DAC_CURVE_Y8 + 10:
                 return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 11:
+            case SI_CONTROL_DAC_CURVE_Y8 + 11:
                 return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 12:
+            case SI_CONTROL_DAC_CURVE_Y8 + 12:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 13:
+            case SI_CONTROL_DAC_CURVE_Y8 + 13:
                 return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 14:
+            case SI_CONTROL_DAC_CURVE_Y8 + 14:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 15:
+            case SI_CONTROL_DAC_CURVE_Y8 + 15:
                 return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 16:
+            case SI_CONTROL_DAC_CURVE_Y8 + 16:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 17:
+            case SI_CONTROL_DAC_CURVE_Y8 + 17:
                 return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 18:
-                return next(catta::json::Token::character('8'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 19:
-                return next(catta::json::Token::character('R'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 20:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 21:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y8_READ + 22:
-                return jump(catta::json::Token::character('d'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 0:
+            case SI_CONTROL_DAC_CURVE_Y8 + 18:
+                return jump(catta::json::Token::character('8'), TAIL + 0);
+            case SI_CONTROL_DAC_CURVE_Y9 + 0:
                 return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 1:
+            case SI_CONTROL_DAC_CURVE_Y9 + 1:
                 return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 2:
+            case SI_CONTROL_DAC_CURVE_Y9 + 2:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 3:
+            case SI_CONTROL_DAC_CURVE_Y9 + 3:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 4:
+            case SI_CONTROL_DAC_CURVE_Y9 + 4:
                 return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 5:
+            case SI_CONTROL_DAC_CURVE_Y9 + 5:
                 return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 6:
+            case SI_CONTROL_DAC_CURVE_Y9 + 6:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 7:
+            case SI_CONTROL_DAC_CURVE_Y9 + 7:
                 return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 8:
+            case SI_CONTROL_DAC_CURVE_Y9 + 8:
                 return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 9:
+            case SI_CONTROL_DAC_CURVE_Y9 + 9:
                 return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 10:
+            case SI_CONTROL_DAC_CURVE_Y9 + 10:
                 return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 11:
+            case SI_CONTROL_DAC_CURVE_Y9 + 11:
                 return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 12:
+            case SI_CONTROL_DAC_CURVE_Y9 + 12:
                 return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 13:
+            case SI_CONTROL_DAC_CURVE_Y9 + 13:
                 return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 14:
+            case SI_CONTROL_DAC_CURVE_Y9 + 14:
                 return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 15:
+            case SI_CONTROL_DAC_CURVE_Y9 + 15:
                 return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 16:
+            case SI_CONTROL_DAC_CURVE_Y9 + 16:
                 return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 17:
+            case SI_CONTROL_DAC_CURVE_Y9 + 17:
                 return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 18:
-                return next(catta::json::Token::character('9'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 19:
-                return next(catta::json::Token::character('R'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 20:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 21:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y9_READ + 22:
-                return jump(catta::json::Token::character('d'), TAIL + 0);
+            case SI_CONTROL_DAC_CURVE_Y9 + 18:
+                return jump(catta::json::Token::character('9'), TAIL + 0);
             case SI_CONTROL_CONSTANT_VOLTAGE_X0 + 0:
                 return next(catta::json::Token::character('S'));
             case SI_CONTROL_CONSTANT_VOLTAGE_X0 + 1:
@@ -8426,486 +8316,6 @@ class Serializer<catta::modbus::si::RegisterAddress>
                 return next(catta::json::Token::character('X'));
             case SI_CONTROL_DAC_CURVE_X9 + 18:
                 return jump(catta::json::Token::character('9'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 9:
-                return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 10:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 11:
-                return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 12:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 13:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 14:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 15:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 16:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 17:
-                return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 18:
-                return next(catta::json::Token::character('0'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 19:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 20:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 21:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 22:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y0_WRITE + 23:
-                return jump(catta::json::Token::character('e'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 9:
-                return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 10:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 11:
-                return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 12:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 13:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 14:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 15:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 16:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 17:
-                return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 18:
-                return next(catta::json::Token::character('1'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 19:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 20:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 21:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 22:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y1_WRITE + 23:
-                return jump(catta::json::Token::character('e'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 9:
-                return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 10:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 11:
-                return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 12:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 13:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 14:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 15:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 16:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 17:
-                return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 18:
-                return next(catta::json::Token::character('2'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 19:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 20:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 21:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 22:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y2_WRITE + 23:
-                return jump(catta::json::Token::character('e'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 9:
-                return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 10:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 11:
-                return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 12:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 13:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 14:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 15:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 16:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 17:
-                return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 18:
-                return next(catta::json::Token::character('3'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 19:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 20:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 21:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 22:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y3_WRITE + 23:
-                return jump(catta::json::Token::character('e'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 9:
-                return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 10:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 11:
-                return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 12:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 13:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 14:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 15:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 16:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 17:
-                return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 18:
-                return next(catta::json::Token::character('4'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 19:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 20:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 21:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 22:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y4_WRITE + 23:
-                return jump(catta::json::Token::character('e'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 9:
-                return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 10:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 11:
-                return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 12:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 13:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 14:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 15:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 16:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 17:
-                return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 18:
-                return next(catta::json::Token::character('5'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 19:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 20:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 21:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 22:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y5_WRITE + 23:
-                return jump(catta::json::Token::character('e'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 9:
-                return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 10:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 11:
-                return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 12:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 13:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 14:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 15:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 16:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 17:
-                return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 18:
-                return next(catta::json::Token::character('6'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 19:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 20:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 21:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 22:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y6_WRITE + 23:
-                return jump(catta::json::Token::character('e'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 9:
-                return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 10:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 11:
-                return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 12:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 13:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 14:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 15:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 16:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 17:
-                return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 18:
-                return next(catta::json::Token::character('7'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 19:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 20:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 21:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 22:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y7_WRITE + 23:
-                return jump(catta::json::Token::character('e'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 9:
-                return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 10:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 11:
-                return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 12:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 13:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 14:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 15:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 16:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 17:
-                return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 18:
-                return next(catta::json::Token::character('8'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 19:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 20:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 21:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 22:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y8_WRITE + 23:
-                return jump(catta::json::Token::character('e'), TAIL + 0);
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 0:
-                return next(catta::json::Token::character('S'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 1:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 2:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 3:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 4:
-                return next(catta::json::Token::character('n'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 5:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 6:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 7:
-                return next(catta::json::Token::character('o'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 8:
-                return next(catta::json::Token::character('l'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 9:
-                return next(catta::json::Token::character('D'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 10:
-                return next(catta::json::Token::character('a'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 11:
-                return next(catta::json::Token::character('c'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 12:
-                return next(catta::json::Token::character('C'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 13:
-                return next(catta::json::Token::character('u'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 14:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 15:
-                return next(catta::json::Token::character('v'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 16:
-                return next(catta::json::Token::character('e'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 17:
-                return next(catta::json::Token::character('Y'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 18:
-                return next(catta::json::Token::character('9'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 19:
-                return next(catta::json::Token::character('W'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 20:
-                return next(catta::json::Token::character('r'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 21:
-                return next(catta::json::Token::character('i'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 22:
-                return next(catta::json::Token::character('t'));
-            case SI_CONTROL_DAC_CURVE_Y9_WRITE + 23:
-                return jump(catta::json::Token::character('e'), TAIL + 0);
             case SI_CONTROL_WIND_CURVE_X00WRITE + 0:
                 return next(catta::json::Token::character('S'));
             case SI_CONTROL_WIND_CURVE_X00WRITE + 1:
@@ -10003,17 +9413,17 @@ class Serializer<catta::modbus::si::RegisterAddress>
     static constexpr std::uint16_t SI_CONTROL_CONSTANT_VOLTAGE_Y0_WRITE = SI_CONTROL_WIND_CURVE_Y15_WRITE + 26;
     static constexpr std::uint16_t SI_CONTROL_CONSTANT_VOLTAGE_Y1_WRITE = SI_CONTROL_CONSTANT_VOLTAGE_Y0_WRITE + 31;
     static constexpr std::uint16_t SI_CONTROL_CONSTANT_VOLTAGE_Y2_WRITE = SI_CONTROL_CONSTANT_VOLTAGE_Y1_WRITE + 31;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y0_READ = SI_CONTROL_CONSTANT_VOLTAGE_Y2_WRITE + 31;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y1_READ = SI_CONTROL_DAC_CURVE_Y0_READ + 23;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y2_READ = SI_CONTROL_DAC_CURVE_Y1_READ + 23;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y3_READ = SI_CONTROL_DAC_CURVE_Y2_READ + 23;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y4_READ = SI_CONTROL_DAC_CURVE_Y3_READ + 23;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y5_READ = SI_CONTROL_DAC_CURVE_Y4_READ + 23;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y6_READ = SI_CONTROL_DAC_CURVE_Y5_READ + 23;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y7_READ = SI_CONTROL_DAC_CURVE_Y6_READ + 23;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y8_READ = SI_CONTROL_DAC_CURVE_Y7_READ + 23;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y9_READ = SI_CONTROL_DAC_CURVE_Y8_READ + 23;
-    static constexpr std::uint16_t SI_CONTROL_CONSTANT_VOLTAGE_X0 = SI_CONTROL_DAC_CURVE_Y9_READ + 23;
+    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y0 = SI_CONTROL_CONSTANT_VOLTAGE_Y2_WRITE + 31;
+    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y1 = SI_CONTROL_DAC_CURVE_Y0 + 19;
+    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y2 = SI_CONTROL_DAC_CURVE_Y1 + 19;
+    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y3 = SI_CONTROL_DAC_CURVE_Y2 + 19;
+    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y4 = SI_CONTROL_DAC_CURVE_Y3 + 19;
+    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y5 = SI_CONTROL_DAC_CURVE_Y4 + 19;
+    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y6 = SI_CONTROL_DAC_CURVE_Y5 + 19;
+    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y7 = SI_CONTROL_DAC_CURVE_Y6 + 19;
+    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y8 = SI_CONTROL_DAC_CURVE_Y7 + 19;
+    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y9 = SI_CONTROL_DAC_CURVE_Y8 + 19;
+    static constexpr std::uint16_t SI_CONTROL_CONSTANT_VOLTAGE_X0 = SI_CONTROL_DAC_CURVE_Y9 + 19;
     static constexpr std::uint16_t SI_CONTROL_CONSTANT_VOLTAGE_X1 = SI_CONTROL_CONSTANT_VOLTAGE_X0 + 26;
     static constexpr std::uint16_t SI_CONTROL_CONSTANT_VOLTAGE_X2 = SI_CONTROL_CONSTANT_VOLTAGE_X1 + 26;
     static constexpr std::uint16_t SI_CONTROL_CONSTANT_VOLTAGE_Y0_READ = SI_CONTROL_CONSTANT_VOLTAGE_X2 + 26;
@@ -10029,17 +9439,7 @@ class Serializer<catta::modbus::si::RegisterAddress>
     static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_X7 = SI_CONTROL_DAC_CURVE_X6 + 19;
     static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_X8 = SI_CONTROL_DAC_CURVE_X7 + 19;
     static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_X9 = SI_CONTROL_DAC_CURVE_X8 + 19;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y0_WRITE = SI_CONTROL_DAC_CURVE_X9 + 19;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y1_WRITE = SI_CONTROL_DAC_CURVE_Y0_WRITE + 24;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y2_WRITE = SI_CONTROL_DAC_CURVE_Y1_WRITE + 24;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y3_WRITE = SI_CONTROL_DAC_CURVE_Y2_WRITE + 24;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y4_WRITE = SI_CONTROL_DAC_CURVE_Y3_WRITE + 24;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y5_WRITE = SI_CONTROL_DAC_CURVE_Y4_WRITE + 24;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y6_WRITE = SI_CONTROL_DAC_CURVE_Y5_WRITE + 24;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y7_WRITE = SI_CONTROL_DAC_CURVE_Y6_WRITE + 24;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y8_WRITE = SI_CONTROL_DAC_CURVE_Y7_WRITE + 24;
-    static constexpr std::uint16_t SI_CONTROL_DAC_CURVE_Y9_WRITE = SI_CONTROL_DAC_CURVE_Y8_WRITE + 24;
-    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X00WRITE = SI_CONTROL_DAC_CURVE_Y9_WRITE + 24;
+    static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X00WRITE = SI_CONTROL_DAC_CURVE_X9 + 19;
     static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X01WRITE = SI_CONTROL_WIND_CURVE_X00WRITE + 26;
     static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X02WRITE = SI_CONTROL_WIND_CURVE_X01WRITE + 26;
     static constexpr std::uint16_t SI_CONTROL_WIND_CURVE_X03WRITE = SI_CONTROL_WIND_CURVE_X02WRITE + 26;

@@ -45,8 +45,8 @@ class Battery : public Fl_Group
                                                                       "pmaxerr",
                                                                       "PMAXcharge",
                                                                       "UDCHIGH",
-                                                                      "Ext10V_RED    [0.5V|5.0V|9.5V]",
-                                                                      "Ext10V_CV    [0.5V|5.0V|9.5V]",
+                                                                      "Ext10V_RED    [0.5V  |  5.0V  |  9.5V] % from PMAX",
+                                                                      "Ext10V_CV    [0.5V  |  5.0V  |  9.5V]",
                                                                       "UsolCor_KL    X 0…9",
                                                                       "UsolCor_KL    Y 0…4",
                                                                       "UsolCor_KL    Y 5…9"};
@@ -106,16 +106,16 @@ class Battery : public Fl_Group
             Address::siControlDacCurveX8(), Address::siControlDacCurveX9()}};
 
         static constexpr std::array<std::array<Address, 5>, CURVES_5> curve5AddressRead = {
-            std::array<Address, 5>{Address::siControlDacCurveY0Read(), Address::siControlDacCurveY1Read(), Address::siControlDacCurveY2Read(),
-                                   Address::siControlDacCurveY3Read(), Address::siControlDacCurveY4Read()},
-            std::array<Address, 5>{Address::siControlDacCurveY5Read(), Address::siControlDacCurveY6Read(), Address::siControlDacCurveY7Read(),
-                                   Address::siControlDacCurveY8Read(), Address::siControlDacCurveY9Read()}};
+            std::array<Address, 5>{Address::siControlDacCurveY0(), Address::siControlDacCurveY1(), Address::siControlDacCurveY2(),
+                                   Address::siControlDacCurveY3(), Address::siControlDacCurveY4()},
+            std::array<Address, 5>{Address::siControlDacCurveY5(), Address::siControlDacCurveY6(), Address::siControlDacCurveY7(),
+                                   Address::siControlDacCurveY8(), Address::siControlDacCurveY9()}};
 
         static constexpr std::array<std::array<Address, 5>, CURVES_5> curve5AddressWrite = {
-            std::array<Address, 5>{Address::siControlDacCurveY0Write(), Address::siControlDacCurveY1Write(), Address::siControlDacCurveY2Write(),
-                                   Address::siControlDacCurveY3Write(), Address::siControlDacCurveY4Write()},
-            std::array<Address, 5>{Address::siControlDacCurveY5Write(), Address::siControlDacCurveY6Write(), Address::siControlDacCurveY7Write(),
-                                   Address::siControlDacCurveY8Write(), Address::siControlDacCurveY9Write()}};
+            std::array<Address, 5>{Address::siControlDacCurveY0(), Address::siControlDacCurveY1(), Address::siControlDacCurveY2(),
+                                   Address::siControlDacCurveY3(), Address::siControlDacCurveY4()},
+            std::array<Address, 5>{Address::siControlDacCurveY5(), Address::siControlDacCurveY6(), Address::siControlDacCurveY7(),
+                                   Address::siControlDacCurveY8(), Address::siControlDacCurveY9()}};
 
         static std::array<std::tuple<std::size_t, Battery*>, ROBIN_SIZE> cbArray;
         for (std::size_t i = 0; i < SIZE; i++)
@@ -136,7 +136,7 @@ class Battery : public Fl_Group
                                         LABEL[P_MAX]);
 
         _write[U_MIN] = new WriteSingle(X + GAP + (int(U_MIN) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_MIN) / PER_LINE), W_WRITE, H_LINE,
-                                        FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uMinReadAddress, uMinWriteAddress, _toRegisterCenti, _fromRegisterCenti,
+                                        FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, uMinReadAddress, uMinWriteAddress, _toRegisterDeci, _fromRegisterDeci,
                                         W_SEND, "V", LABEL[U_MIN]);
         _write[Z_USOLBATFILT] = new WriteSingle(X + GAP + (int(Z_USOLBATFILT) % PER_LINE) * (GAP + W_WRITE),
                                                 Y + H_LINE * (int(Z_USOLBATFILT) / PER_LINE), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.00, 0.50, 0.02,
@@ -149,7 +149,7 @@ class Battery : public Fl_Group
                                            W_SEND, "V", LABEL[U_SOLBAT]);
 
         _write[U_MAX] = new WriteSingle(X + GAP + (int(U_MAX) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_MAX) / PER_LINE), W_WRITE, H_LINE,
-                                        FL_FLOAT_INPUT, 0.01, 655.00, 0.01, uMaxReadAddress, uMaxWriteAddress, _toRegisterCenti, _fromRegisterCenti,
+                                        FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, uMaxReadAddress, uMaxWriteAddress, _toRegisterDeci, _fromRegisterDeci,
                                         W_SEND, "V", LABEL[U_MAX]);
         _write[S_BIOFF] = new WriteSingle(X + GAP + (int(S_BIOFF) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(S_BIOFF) / PER_LINE), W_WRITE,
                                           H_LINE, FL_FLOAT_INPUT, 0.0, 2.0, 1.0, sBioOffAddress, sBioOffAddress, _toRegister256, _fromRegister256,
@@ -159,7 +159,7 @@ class Battery : public Fl_Group
                             FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, pMaxErr, pMaxErr, _toRegisterDeci, _fromRegisterDeci, W_SEND, "W", LABEL[P_MAXERR]);
         _write[P_MAX_CHARGE] = new WriteSingle(X + GAP + (int(P_MAX_CHARGE) % PER_LINE) * (GAP + W_WRITE),
                                                Y + H_LINE * (int(P_MAX_CHARGE) / PER_LINE), W_WRITE, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1,
-                                               pMaxCharge, pMaxCharge, _toRegisterCenti, _fromRegisterCenti, W_SEND, "W", LABEL[P_MAX_CHARGE]);
+                                               pMaxCharge, pMaxCharge, _toRegisterDeci, _fromRegisterDeci, W_SEND, "W", LABEL[P_MAX_CHARGE]);
 
         _write[U_DCHIGH] = new WriteSingle(X + GAP + (int(U_DCHIGH) % PER_LINE) * (GAP + W_WRITE), Y + H_LINE * (int(U_DCHIGH) / PER_LINE), W_WRITE,
                                            H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, dcHighReadAddress, dcHighWriteAddress, _toRegisterDeci,
@@ -172,7 +172,7 @@ class Battery : public Fl_Group
         const int yc3 = Y + H_LINE * (int(SIZE / PER_LINE) + 1);
         _cvCurve3[0] = new Curve<3>(X + GAP + (int(0) % PER_LINE_CURVE_3) * (GAP + W_WRITE_CURVE_3), yc3 + H_LINE * (int(0) / PER_LINE_CURVE_3),
                                     W_WRITE_CURVE_3, H_LINE, FL_FLOAT_INPUT, -100.0, 100.0, 1.0, curve3AddressRead[0], curve3AddressWrite[0],
-                                    _toRegister3X, _fromRegister3X, 30, "%ₚₘₐₓ", LABEL[0 + SIZE]);
+                                    _toRegister3X, _fromRegister3X, 30, "%", LABEL[0 + SIZE]);
         _cvCurve3[1] = new Curve<3>(X + GAP + (int(1) % PER_LINE_CURVE_3) * (GAP + W_WRITE_CURVE_3), yc3 + H_LINE * (int(1) / PER_LINE_CURVE_3),
                                     W_WRITE_CURVE_3, H_LINE, FL_FLOAT_INPUT, 0.1, 6550.0, 0.1, curve3AddressRead[1], curve3AddressWrite[1],
                                     _toRegisterDeci, _fromRegisterDeci, 30, "V", LABEL[1 + SIZE]);
