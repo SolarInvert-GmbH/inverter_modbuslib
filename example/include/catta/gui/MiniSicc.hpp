@@ -243,7 +243,7 @@ class MiniSicc : public Fl_Double_Window
             }
             _values->work(now, _connection->stringManufacturer(), _connection->stringModel(), _connection->stringSerialNumber());
             _error->work(now, _connection->stringManufacturer(), _connection->stringModel(), _connection->stringSerialNumber());
-            if (!somethingHappend) Fl::wait(0);
+            if (!somethingHappend) Fl::wait(0.0001);
         }
     }
     /**

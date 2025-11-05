@@ -765,7 +765,7 @@ class DummyInverter : public Fl_Double_Window
                 }
             }
 
-            if (!somethingHappend) Fl::wait(0);
+            if (!somethingHappend) Fl::wait(0.00001);
         }
     }
 
