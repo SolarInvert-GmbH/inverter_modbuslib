@@ -345,8 +345,8 @@ int main(int argc, char *argv[])
 
     catta::modbus::SlaveUartState state;
 
-    std::optional<std::uint8_t> receivedByte = {};
-    std::optional<std::uint8_t> sendByte = {};
+    std::optional<std::uint8_t> receivedByte = std::nullopt;
+    std::optional<std::uint8_t> sendByte = std::nullopt;
     catta::modbus::Token sendToken = {};
     catta::modbus::Token receiveToken = {};
 
@@ -396,7 +396,7 @@ int main(int argc, char *argv[])
                 sendLine = {};
             }
             if (sendHandled) sendToken = {};
-            receivedByte = {};
+            receivedByte = std::nullopt;
             sendByte = sendByteLocal;
 
             receiveToken = recevieTokenLocal;
@@ -406,7 +406,7 @@ int main(int argc, char *argv[])
             if (uart.write(static_cast<char>(sendByte.value())))
             {
                 if (isVerbose) debugLog("send: " + catta::tostring::toString(catta::Hexadecimal(sendByte.value())) + '\n');
-                sendByte = {};
+                sendByte = std::nullopt;
                 somethingHappend = true;
             }
         if (uart.error().isEmpty())
