@@ -1,0 +1,19 @@
+[Unit]
+Description=Reads the windspeed
+Requires=SolarInvertName.service
+After=SolarInvertName.service
+StartLimitIntervalSec=3600
+StartLimitBurst=100
+StartLimitAction=reboot
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/solarinvert/name.env
+EnvironmentFile=/etc/solarinvert/influxdb.env
+EnvironmentFile=/etc/solarinvert/wind.env
+ExecStart=/usr/bin/log_solarinvert_wind.sh "${GIOP}" "${MEASUREMENT_DURATION_SECONDS}" "${FACTOR}" "${INFLUX_ENDPOINT}" "${INFLUX_ORG}" "${INFLUX_BUCKET}" "${INFLUX_HASH}" "${NAME_1}"
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
