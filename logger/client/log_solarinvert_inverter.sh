@@ -74,7 +74,7 @@ while true; do
                 readRegisterToLines InverterAcPower 10 acpower "${ID}" "${NAME}"
             fi
             if [[ "${PARAMETER_DC_VOLTAGE}" == "true" ]]; then
-                readRegisterToLines InverterDcVoltage 10 dcvoltage "${ID}" "${NAME}"
+                readRegisterToLines InverterDcVoltage 100 dcvoltage "${ID}" "${NAME}"
             fi
             if [[ "${PARAMETER_OPERATING_STATE}" == "true" ]]; then
                 readRegisterToLines InverterVendorOperatingState 1 state "${ID}" "${NAME}"
