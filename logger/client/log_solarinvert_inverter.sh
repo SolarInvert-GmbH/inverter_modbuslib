@@ -46,7 +46,11 @@ readRegisterToLines()
             if [[ "${REGISTER_TYPE}" == "sI16" && "${VALUE_INTEGER}" -gt 32767 ]]; then
                 VALUE_INTEGER=$(( (65536 - VALUE_INTEGER)*(-1) ))
             fi
-            VALUE_FLOAT=$(echo "${VALUE_INTEGER}/${2}" | bc -l | sed -E 's/\.?0+$//' | sed -E 's/^$/0/'1)
+            if [[ "${2}" == "temperature" ]]; then
+                VALUE_FLOAT=$(echo "124.0 - ${VALUE_INTEGER}/2.0" | bc -l | sed -E 's/\.?0+$//' | sed -E 's/^$/0/'1)
+            else
+                VALUE_FLOAT=$(echo "${VALUE_INTEGER}/${2}" | bc -l | sed -E 's/\.?0+$//' | sed -E 's/^$/0/'1)
+            fi
             LINES="${LINES}
 ${3},_inverter=${5} value=${VALUE_FLOAT}   $(date +%s%N)"
         fi
@@ -73,25 +77,25 @@ while true; do
         echo "ID: ${ID} NAME: ${NAME}" >&2
         if [[ -n ${ID} ]]; then
             if [[ "${PARAMETER_TIME}" == "true" ]]; then
-                readRegisterToLines SiControlUptime               1 time        "${ID}" "${NAME}" "uI32"
+                readRegisterToLines SiControlUptime                        1 time        "${ID}" "${NAME}" "uI32"
             fi
             if [[ "${PARAMETER_AC_POWER}" == "true" ]]; then
-                readRegisterToLines InverterAcPower              10 acpower     "${ID}" "${NAME}" "sI16"
+                readRegisterToLines InverterAcPower                       10 acpower     "${ID}" "${NAME}" "sI16"
             fi
             if [[ "${PARAMETER_DC_VOLTAGE}" == "true" ]]; then
-                readRegisterToLines InverterDcVoltage           100 dcvoltage   "${ID}" "${NAME}" "uI16"
+                readRegisterToLines InverterDcVoltage                    100 dcvoltage   "${ID}" "${NAME}" "uI16"
             fi
             if [[ "${PARAMETER_OPERATING_STATE}" == "true" ]]; then
-                readRegisterToLines InverterVendorOperatingState  1 state       "${ID}" "${NAME}" "uI16"
+                readRegisterToLines InverterVendorOperatingState           1 state       "${ID}" "${NAME}" "uI16"
             fi
             if [[ "${PARAMETER_TEMPERATURE}" == "true" ]]; then
-                readRegisterToLines InverterTemperature          10 temperature "${ID}" "${NAME}" "sI16"
+                readRegisterToLines InverterTemperature          temperature temperature "${ID}" "${NAME}" "sI16"
             fi
             if [[ "${PARAMETER_AC_VOLTAGE}" == "true" ]]; then
-                readRegisterToLines InverterPhaseVoltageA         1 acvoltage   "${ID}" "${NAME}" "uI16"
+                readRegisterToLines InverterPhaseVoltageA                  1 acvoltage   "${ID}" "${NAME}" "uI16"
             fi
             if [[ "${PARAMETER_ENERGY_PRODUCTION}" == "true" ]]; then
-                readRegisterToLines InverterWattHours            10 energy      "${ID}" "${NAME}" "uI32"
+                readRegisterToLines InverterWattHours                     10 energy      "${ID}" "${NAME}" "uI32"
             fi
         fi
     done
