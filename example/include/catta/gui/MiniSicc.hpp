@@ -71,6 +71,7 @@ class MiniSicc : public Fl_Double_Window
           _readErrorCallback(*this),
           _sliderCallback(*this),
           _sendCallback(*this),
+          _errorButton(*this),
           _unlock(*this),
           _lock(*this),
           _reset(*this)
@@ -109,7 +110,7 @@ class MiniSicc : public Fl_Double_Window
         this->_commands = new Commands(Xcontent, Ycontent, Wcontent, Hcontent, _reset);
         _tab5->end();
         _tab6 = new Fl_Group(Xtab, Ytab, Wtab, Htab, "Error");
-        this->_error = new Error(Xcontent, Ycontent, Wcontent, Hcontent);
+        this->_error = new Error(Xcontent, Ycontent, Wcontent, Hcontent, _errorButton);
         _tab6->end();
         this->resizable(this->_tabs);
         this->end();
@@ -1023,6 +1024,16 @@ class MiniSicc : public Fl_Double_Window
       private:
         MiniSicc& _miniSicc;
     } _sendCallback;
+    class ErrorButton
+    {
+      public:
+        ErrorButton(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()() { _miniSicc._cache.setInvalid(CACHE_READ_ERROR); }
+
+      private:
+        MiniSicc& _miniSicc;
+
+    } _errorButton;
     class Unlock
     {
       public:

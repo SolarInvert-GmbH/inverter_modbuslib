@@ -36,9 +36,11 @@ class Error : public Fl_Group
      * @param[in] Y The y coordinate of the widget.
      * @param[in] W The width of the widget.
      * @param[in] H The height of the widget.
+     * @param[in] onButton The button callback.
      * Constructor.
      */
-    Error(const int X, const int Y, const int W, const int H) : Fl_Group(X, Y, W, H, nullptr), _currentTime(std::chrono::microseconds::zero())
+    Error(const int X, const int Y, const int W, const int H, const std::function<void()>& onButton)
+        : Fl_Group(X, Y, W, H, nullptr), _onButton(onButton), _currentTime(std::chrono::microseconds::zero())
     {
         static constexpr int GAP = 5;
         static constexpr int H_LINE = 65;
@@ -57,6 +59,9 @@ class Error : public Fl_Group
         _save = new Fl_Button(X + GAP + 3 * (GAP + W_WRITE), Y + H_LINE * 7, W_WRITE, 45, "Save Error Log");
         _save->callback(savecb, this);
         _save->hide();
+        _read = new Fl_Button(X + GAP + 3 * (GAP + W_WRITE), Y + H_LINE * 0, W_WRITE, 45, "Read Error Log");
+        _read->callback(readcb, this);
+        _read->hide();
         this->end();
         this->show();
     }
@@ -66,6 +71,7 @@ class Error : public Fl_Group
     ~Error()
     {
         delete _save;
+        delete _read;
         for (std::size_t i = 0; i < SIZE; i++) delete _value[i];
     }
     /**
@@ -74,9 +80,15 @@ class Error : public Fl_Group
     void setError(const catta::modbus::si::response::ReadError data) noexcept
     {
         if (data.isEmpty())
+        {
             _save->hide();
+            _read->hide();
+        }
         else
+        {
             _save->show();
+            _read->show();
+        }
         _data = data;
         const auto string = [](const catta::modbus::sunspec::ValueU16 value) -> std::string {
             return value.isEmpty() ? "" : value.value() == 0xffff ? "----" : std::to_string(static_cast<std::uint32_t>(value.value()));
@@ -101,7 +113,10 @@ class Error : public Fl_Group
   private:
     static constexpr std::uint8_t SIZE = catta::modbus::si::response::ReadError::SIZE;
 
+    std::function<void()> _onButton;
+
     Fl_Button* _save;
+    Fl_Button* _read;
     std::array<Value*, SIZE> _value;
     catta::gui::CsvLogging _csvLogging;
 
@@ -122,6 +137,12 @@ class Error : public Fl_Group
         std::chrono::zoned_time local_time{local_zone, floor<std::chrono::seconds>(utc_time)};
         std::string datetime = colon ? std::format("{:%Y-%m-%d_%H:%M:%S}", local_time) : std::format("{:%Y-%m-%d_%Hh_%Mm_%Ss}", local_time);
         return datetime;
+    }
+    static void readcb(Fl_Widget*, void* object)
+    {
+        Error* error = static_cast<Error*>(object);
+        if (!error) return;
+        if (error->_onButton) error->_onButton();
     }
 
     static void savecb(Fl_Widget*, void* object)
