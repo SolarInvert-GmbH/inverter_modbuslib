@@ -791,9 +791,13 @@ module.exports = function(RED) {
                                         "quantety": node.cache.dcVoltage * (data[0] << 8 | data[1]), "unit": "V"
                                     };
                                 case "InverterTemperature":
+                                {
+                                    let value = (data[0] << 8) | data[1];
+                                    if (value & 0x8000) value |= 0xFFFF0000;
                                     return {
-                                        "quantety": node.cache.temperature * (data[0] << 8 | data[1]), "unit": "°C"
+                                        "quantety": 124.0 - value/2.0, "unit": "°C"
                                     };
+                                }
                                 case "CommonDeviceAddress":
                                 case "InverterOperatingState":
                                 case "InverterVendorOperatingState":
