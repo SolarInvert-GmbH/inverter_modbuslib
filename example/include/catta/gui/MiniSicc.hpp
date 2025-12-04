@@ -480,15 +480,6 @@ class MiniSicc : public Fl_Double_Window
         static void setValue(Values* values, const std::string& value, const char* unit) { values->setDcPower(value, unit); }
     };
 
-    class Temperature
-    {
-      public:
-        static constexpr const char* unit = "°C";
-        static constexpr std::size_t cacheScale = CACHE_TEMPERATURE_SCALE;
-        static constexpr RegisterAddress address = REGISTER_TEMPERATURE;
-        static void setValue(Values* values, const std::string& value, const char* unit) { values->setTemperature(value, unit); }
-    };
-
     class AcVoltageA
     {
       public:
@@ -606,9 +597,35 @@ class MiniSicc : public Fl_Double_Window
     ScaledValueCallback<EnergyProduction> _energyProductionCallback;
     ScaledValueCallback<DcVoltage> _dcVoltageCallback;
     ScaledValueCallback<DcPower> _dcPowerCallback;
-    ScaledValueCallback<Temperature> _temperatureCallback;
 
     static constexpr const char* NO_VALUE = "----";
+
+    class TemperatureCallback
+    {
+      public:
+        TemperatureCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
+        void operator()(const Response& r)
+        {
+            if (!r.type().isValue16())
+                return _miniSicc._values->setTemperature("", nullptr);
+            else
+            {
+                const auto getString = [&r]() -> std::string
+                {
+                    const std::uint16_t v = r.value16Value();
+                    if (v == 0xffff) return NO_VALUE;
+                    const int i = static_cast<std::int16_t>(v);
+                    const int d = 248 - i;
+                    const std::string fraction = d % 2 == 0 ? std::string(".0") : std::string(".5");
+                    return std::to_string(d / 2) + fraction;
+                };
+                _miniSicc._values->setTemperature(getString(), "°C");
+            }
+        }
+
+      private:
+        MiniSicc& _miniSicc;
+    } _temperatureCallback;
 
     class PmaxCallback
     {
