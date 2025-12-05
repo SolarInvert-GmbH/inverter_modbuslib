@@ -355,7 +355,7 @@ class Values : public Fl_Group
         Values* values = static_cast<Values*>(object);
         if (values)
         {
-            static constexpr std::array<char, 4> infinity = {static_cast<char>(0xe2), static_cast<char>(0x88), static_cast<char>(0x9e), '\0'};
+            static constexpr std::array<char, 4> infinity = {'o', 'f', 'f', '\0'};
             const double d = values->_slider->value();
             const int i = static_cast<int>(d * 10.0 + 1.5);
             std::chrono::microseconds s = std::chrono::microseconds::max();
