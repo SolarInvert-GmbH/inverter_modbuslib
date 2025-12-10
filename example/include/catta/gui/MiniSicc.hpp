@@ -957,7 +957,7 @@ class MiniSicc : public Fl_Double_Window
     {
       public:
         SliderCallback(MiniSicc& miniSicc) : _miniSicc(miniSicc) {}
-        void operator()(const std::chrono::microseconds t)
+        void operator()(const std::chrono::microseconds t, const std::chrono::microseconds csv)
         {
             static constexpr std::int64_t f = 5;
             static constexpr const std::chrono::microseconds minLong = std::chrono::seconds{10};
@@ -966,26 +966,28 @@ class MiniSicc : public Fl_Double_Window
             const std::chrono::microseconds time = t == never ? never : t * 4;
             const std::chrono::microseconds longTime = t == never ? never : longT * 4;
             const std::chrono::microseconds lockedTime = _miniSicc._passwort->isLocked() ? never : time;
+            const std::chrono::microseconds csvTime = std::min(time, csv);
+            const std::chrono::microseconds csvLongTime = std::min(longTime, csv);
             _miniSicc._cache.setValidTime(CACHE_AC_CURRENT, time);
-            _miniSicc._cache.setValidTime(CACHE_AC_POWER, time);
-            _miniSicc._cache.setValidTime(CACHE_AC_VOLTAGE_A, time);
-            _miniSicc._cache.setValidTime(CACHE_AC_VOLTAGE_B, time);
-            _miniSicc._cache.setValidTime(CACHE_AC_VOLTAGE_C, time);
+            _miniSicc._cache.setValidTime(CACHE_AC_POWER, csvTime);
+            _miniSicc._cache.setValidTime(CACHE_AC_VOLTAGE_A, csvTime);
+            _miniSicc._cache.setValidTime(CACHE_AC_VOLTAGE_B, csvTime);
+            _miniSicc._cache.setValidTime(CACHE_AC_VOLTAGE_C, csvTime);
             _miniSicc._cache.setValidTime(CACHE_FREQUENCY, time);
             _miniSicc._cache.setValidTime(CACHE_POWER_FACTOR, lockedTime);
             _miniSicc._cache.setValidTime(CACHE_EVENTS_1, time);
             _miniSicc._cache.setValidTime(CACHE_EVENTS_3, time);
-            _miniSicc._cache.setValidTime(CACHE_ENERGY_PRODUCTION, longTime);
-            _miniSicc._cache.setValidTime(CACHE_DC_VOLTAGE, time);
+            _miniSicc._cache.setValidTime(CACHE_ENERGY_PRODUCTION, csvLongTime);
+            _miniSicc._cache.setValidTime(CACHE_DC_VOLTAGE, csvTime);
             _miniSicc._cache.setValidTime(CACHE_DC_POWER, time);
-            _miniSicc._cache.setValidTime(CACHE_TEMPERATURE, longTime);
+            _miniSicc._cache.setValidTime(CACHE_TEMPERATURE, csvLongTime);
             _miniSicc._cache.setValidTime(CACHE_PMAX, longTime);
             _miniSicc._cache.setValidTime(CACHE_NIGHT_SHUTDOWN, time);
             _miniSicc._cache.setValidTime(CACHE_START_COUNTDOWN, longTime);
-            _miniSicc._cache.setValidTime(CACHE_UPTIME, time);
+            _miniSicc._cache.setValidTime(CACHE_UPTIME, csvTime);
             _miniSicc._cache.setValidTime(CACHE_COSPHI, time);
             _miniSicc._cache.setValidTime(CACHE_DAC, time);
-            _miniSicc._cache.setValidTime(CACHE_VENDOR_OPERATING_STATE, time);
+            _miniSicc._cache.setValidTime(CACHE_VENDOR_OPERATING_STATE, csvTime);
         }
 
       private:

@@ -169,9 +169,11 @@ class Values : public Fl_Group
      */
     void setTemperature(const std::string& value, const char* unit) noexcept { _value[TEMPERATURE]->set(value, unit); }
     /**
-     * @param[in] callback The callback that is executed when the slider is changed.
+     * @param[in] sliderCallback The callback that is executed when the slider is changed.
+     * @param[in] sendCallback The callback that is executed when the send button is pressed.
      */
-    void setCallbacks(const std::function<void(const std::chrono::microseconds)> sliderCallback, const std::function<void(void)> sendCallback)
+    void setCallbacks(const std::function<void(const std::chrono::microseconds, const std::chrono::microseconds)> sliderCallback,
+                      const std::function<void(void)> sendCallback)
     {
         _sliderCallback = sliderCallback;
         _sendCallback = sendCallback;
@@ -328,7 +330,7 @@ class Values : public Fl_Group
     std::array<Led*, LED_SIZE> _led;
     Fl_Button* _saveCsv;
     std::array<char, 3> _operatingState2Text;
-    std::function<void(const std::chrono::microseconds interval)> _sliderCallback;
+    std::function<void(const std::chrono::microseconds sliderInterval, const std::chrono::microseconds csvInterval)> _sliderCallback;
     std::function<void()> _sendCallback;
     std::array<char, 4> _invervalText;
     std::chrono::microseconds _currentTime;
@@ -373,7 +375,7 @@ class Values : public Fl_Group
                 s = std::chrono::seconds{i};
             }
             values->_interval->label(values->_invervalText.data());
-            if (values->_sliderCallback) values->_sliderCallback(s);
+            if (values->_sliderCallback) values->_sliderCallback(s, values->_csvWaitTime);
         }
     }
 
@@ -421,6 +423,7 @@ class Values : public Fl_Group
                     const std::size_t index = choice >= SIZE ? SIZE - 1 : choice;
                     values->_csvWaitTime = timeValues[index];
                     values->_csvChoice->deactivate();
+                    values->triggerSliderCallback();
                 }
             }
         }
@@ -429,6 +432,8 @@ class Values : public Fl_Group
             values->_lastCsv = std::chrono::microseconds{0};
             values->_saveCsv->label(BUTTON_CSV_IDLE);
             values->_csvChoice->activate();
+            values->_csvWaitTime = std::chrono::microseconds::max();
+            values->triggerSliderCallback();
         }
     }
 
