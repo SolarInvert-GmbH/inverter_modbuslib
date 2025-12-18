@@ -27,6 +27,7 @@
 
 // std
 #include <cmath>
+#include <fstream>
 #include <vector>
 
 enum LogLevel
@@ -78,10 +79,13 @@ static std::string printTimestamp(const std::chrono::microseconds t)
 
 static void printHelp(const std::string_view program)
 {
-    std::cout << program << " --uart /dev/ttyUSB0 [--debug [--verbose]] \n";
+    std::cout << program << " --uart /dev/ttyUSB0 [--debug [--verbose]] [--switch] \n";
     std::cout << " --uart     : uart device.\n";
     std::cout << "[--debug]   : print debug messages.\n";
     std::cout << "[--verbose] : vebose debug messages. Needs '--verbose'.\n";
+    std::cout
+        << "[--switch]  : path to a file. The file is read on every response. The first five character of the file have to be '0' or '1'. If the "
+           "request is for id 0…4 and the the n-th byte is '0' there will be no response. All other ids will be ignored when switch file is set.\n";
 }
 
 static void logAndExit(const std::string &message)
@@ -90,11 +94,12 @@ static void logAndExit(const std::string &message)
     exit(EXIT_FAILURE);
 }
 
-static std::tuple<std::string, LogLevel> checkFlags(int argc, char *argv[])
+static std::tuple<std::string, LogLevel, std::string> checkFlags(int argc, char *argv[])
 {
     std::string uart;
     bool debug = false;
     bool verbose = false;
+    std::string switchFile;
 
     static const auto checkArg = [](const std::string &arg, const std::string &name)
     {
@@ -123,6 +128,8 @@ static std::tuple<std::string, LogLevel> checkFlags(int argc, char *argv[])
             setBool(debug, "debug");
         else if (flag == "--verbose")
             setBool(verbose, "verbose");
+        else if (flag == "--switch")
+            setArg(switchFile, "switch", i);
         else if (flag == "help" || flag == "-h" || flag == "--help")
         {
             printHelp(argv[0]);
@@ -137,7 +144,7 @@ static std::tuple<std::string, LogLevel> checkFlags(int argc, char *argv[])
         logLevel = verbose ? VERBOSE : DEBUG;
     else if (verbose)
         logAndExit("Used '--verbose' without '--debug'");
-    return std::tuple<std::string, LogLevel>{uart, logLevel};
+    return std::tuple<std::string, LogLevel, std::string>{uart, logLevel, switchFile};
 }
 
 static bool end = false;
@@ -173,9 +180,23 @@ static std::uint16_t state()
     return v;
 }
 
-static void handleRequest(const catta::modbus::si::request::Request &request, catta::modbus::si::response::Response &response,
-                          catta::random::Random &random, const std::uint8_t id)
+static bool ignoreRequest(const std::string &switchFile, const std::uint8_t id)
 {
+    if (id >= 5) return !switchFile.empty();
+    std::ifstream f(switchFile.c_str());
+    for (std::uint8_t i = 0; i < 5; i++)
+    {
+        char c = '1';
+        f.get(c);
+        if (id == i) return c == '0';
+    }
+    return false;
+}
+
+static void handleRequest(const catta::modbus::si::request::Request &request, catta::modbus::si::response::Response &response,
+                          catta::random::Random &random, const std::uint8_t id, const std::string &switchFile)
+{
+    if (ignoreRequest(switchFile, id)) return;
     using Type = catta::modbus::si::request::Type;
     using Response = catta::modbus::si::response::Response;
     switch (request.type())
@@ -301,7 +322,7 @@ static void handleRequest(const catta::modbus::si::request::Request &request, ca
 int main(int argc, char *argv[])
 {
     using namespace std::chrono_literals;
-    const auto [uartDevice, logLevel] = checkFlags(argc, argv);
+    const auto [uartDevice, logLevel, switchFile] = checkFlags(argc, argv);
 
     const bool isDebug = logLevel == DEBUG || logLevel == VERBOSE;
     const bool isVerbose = logLevel == VERBOSE;
@@ -339,7 +360,6 @@ int main(int argc, char *argv[])
             }
         }
     };
-
     catta::frommodbus::Parser<catta::modbus::si::request::Request> parser;
     catta::tomodbus::Serializer<catta::modbus::si::response::Response> serializer;
 
@@ -433,7 +453,7 @@ int main(int argc, char *argv[])
             if (parser.state().isDone())
             {
                 const auto request = parser.data();
-                handleRequest(request, response, random, modbus.modbusId());
+                handleRequest(request, response, random, modbus.modbusId(), switchFile);
                 if (isDebug)
                 {
                     debugLog("Received Bytes: " + printLine(receiveLine) + '\n');
@@ -441,6 +461,12 @@ int main(int argc, char *argv[])
                     debugLog("Received: ");
                 }
                 std::cout << catta::tostring::toString(request) << '\n';
+                if (response.isEmpty())
+                {
+                    debugLog("Response: ");
+                    std::cout << "EMPTY\n";
+                    modbus = {};
+                }
                 parser = {};
             }
             if (parser.state().isFailed())
@@ -463,7 +489,8 @@ int main(int argc, char *argv[])
             if (serializer.state().isDone())
             {
                 serializer = {};
-                if (isDebug) debugLog("Send: " + catta::tostring::toString(response) + '\n');
+                if (isDebug) debugLog("Send: ");
+                std::cout << catta::tostring::toString(response) << '\n';
                 response = {};
             }
             if (serializer.state().isFailed())
