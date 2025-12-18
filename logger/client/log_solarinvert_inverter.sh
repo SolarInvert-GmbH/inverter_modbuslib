@@ -2,38 +2,78 @@
 
 COMMAND="SendRequest"
 UART="${1}"
-ID_1="${2}"
-ID_2="${3}"
-ID_3="${4}"
-ID_4="${5}"
-ID_5="${6}"
 
-PARAMETER_TIME="${7}"
-PARAMETER_AC_POWER="${8}"
-PARAMETER_DC_VOLTAGE="${9}"
-PARAMETER_OPERATING_STATE="${10}"
-PARAMETER_TEMPERATURE="${11}"
-PARAMETER_AC_VOLTAGE="${12}"
-PARAMETER_ENERGY_PRODUCTION="${13}"
+PARAMETER_TIME="${2}"
+PARAMETER_AC_POWER="${3}"
+PARAMETER_DC_VOLTAGE="${4}"
+PARAMETER_OPERATING_STATE="${5}"
+PARAMETER_TEMPERATURE="${6}"
+PARAMETER_AC_VOLTAGE="${7}"
+PARAMETER_ENERGY_PRODUCTION="${8}"
 
-INFLUX_ENDPOINT="${14}"
-INFLUX_ORG="${15}"
-INFLUX_BUCKET="${16}"
-INFLUX_HASH="${17}"
-
-NAME_1="${19}"
-NAME_2="${20}"
-NAME_3="${21}"
-NAME_4="${22}"
-NAME_5="${23}"
+INFLUX_ENDPOINT="${9}"
+INFLUX_ORG="${10}"
+INFLUX_BUCKET="${11}"
+INFLUX_HASH="${12}"
 
 LINES=""
 
-MAX_ERROR="100"
+MAX_ERROR="10000"
 ERROR_COUNTER="0"
-LOOP_TIME_SECONDS="${18}"
+LOOP_TIME_SECONDS="${13}"
 NANO_FACTOR="1000000000"
 LOOP_TIME_NANO_SECONDS=$((NANO_FACTOR * LOOP_TIME_SECONDS))
+MAX_ID="110"
+VALID_TIME=$(( MAX_ID * LOOP_TIME_SECONDS * 5 ))
+
+
+CHECK_ID="00"
+
+INVERTER_LIST=()
+
+listAddObject()
+{
+    declare -gA "INVERTER_LIST_OBJECT_${1}"
+    declare -n OBJECT="INVERTER_LIST_OBJECT_${1}"
+    OBJECT[ID]="${1}"
+    OBJECT[NAME]="${2}"
+    OBJECT[LAST_SEEN]="${3}"
+    INVERTER_LIST+=("INVERTER_LIST_OBJECT_${1}")
+}
+
+listRemoveObject()
+{
+    local NEW_INVERTER_LIST=()
+    for OBJECT in "${INVERTER_LIST[@]}"; do
+        if [[ "${OBJECT}" != "INVERTER_LIST_OBJECT_${1}" ]]; then
+            NEW_INVERTER_LIST+=("${OBJECT}")
+        fi
+    done
+    INVERTER_LIST=("${NEW_INVERTER_LIST[@]}")
+
+    unset "INVERTER_LIST_OBJECT_${1}"
+}
+
+listHasObject()
+{
+    for OBJECT in "${INVERTER_LIST[@]}"; do
+        [[ "${OBJECT}" == "INVERTER_LIST_OBJECT_${1}" ]] && return 0
+    done
+    return 1
+}
+
+listToString()
+{
+    RESULT=""
+    for ELEMENT in "${INVERTER_LIST[@]}"; do
+        declare -n OBJECT="${ELEMENT}"
+        if [[ -n "$RESULT" ]]; then
+            RESULT="${RESULT},"
+        fi
+        RESULT="${RESULT}[${OBJECT[ID]},${OBJECT[NAME]},${OBJECT[LAST_SEEN]}]"
+    done
+    echo "${RESULT}"
+}
 
 readRegisterToLines()
 {
@@ -55,6 +95,7 @@ readRegisterToLines()
 ${3},_inverter=${5} value=${VALUE_FLOAT}   $(date +%s%N)"
         fi
         ERROR_COUNTER="0"
+        CALL_WAS_SUCCESFULL="true"
     else
         ((ERROR_COUNTER++))
         if [ "${ERROR_COUNTER}" -ge "${MAX_ERROR}" ]; then
@@ -65,15 +106,36 @@ ${3},_inverter=${5} value=${VALUE_FLOAT}   $(date +%s%N)"
     echo "[${ERROR_COUNTER}] ${RESULT}"
 }
 
+readName()
+{
+        echo "${COMMAND}" --uart "${UART}" --modbusid "${1}" --request \''{"type":"readRegister","value":{"registerAddress":"CommonSerialNumber"}}'\' --timeout 100 >&2
+
+    RESULT=$("${COMMAND}" --uart "${UART}" --modbusid "${1}" --request   '{"type":"readRegister","value":{"registerAddress":"CommonSerialNumber"}}'   --timeout 100)
+
+    if [ $? -eq 0 ]; then
+        VALUE=$(echo "${RESULT}" | cut -d: -f5 | cut -d\} -f1)
+        ERROR_COUNTER="0"
+        echo "${VALUE}" >&2
+        echo "${VALUE}"
+        return 0
+    else
+        echo "Error: ${RESULT}" >&2
+        ((ERROR_COUNTER++))
+        return 1
+    fi
+}
+
 echo "start..." >&2
 
 while true; do
     START_TIME_NANO_SECONDS=$(date +%s%N)
     LINES=""
 
-    for i in {1..5}; do
-        declare -n ID="ID_${i}"
-        declare -n NAME="NAME_${i}"
+    for ELEMENT in "${INVERTER_LIST[@]}"; do
+        declare -n INVERTER="${ELEMENT}"
+        ID="${INVERTER[ID]}"
+        NAME="${INVERTER[NAME]}"
+        CALL_WAS_SUCCESFULL="false"
         echo "ID: ${ID} NAME: ${NAME}" >&2
         if [[ -n ${ID} ]]; then
             if [[ "${PARAMETER_TIME}" == "true" ]]; then
@@ -98,6 +160,13 @@ while true; do
                 readRegisterToLines InverterWattHours                     10 energy      "${ID}" "${NAME}" "uI32"
             fi
         fi
+        if [[ ${CALL_WAS_SUCCESFULL} == "true" ]];then
+            INVERTER[LAST_SEEN]="$(date +%s)"
+        fi
+        if (( $(date +%s) - INVERTER[LAST_SEEN] > VALID_TIME )); then
+            listRemoveObject "${ID}"
+            echo "Have not heared from inverter ${ID} for ${VALID_TIME} seconds. Drop inverter ${ID}." >&2
+        fi
     done
     if [ -n "${LINES}" ]; then
         curl -X POST "${INFLUX_ENDPOINT}/api/v2/write?bucket=${INFLUX_BUCKET}&org=${INFLUX_ORG}"   --header "Authorization: Token ${INFLUX_HASH}"   --data-raw "${LINES}" &
@@ -108,6 +177,22 @@ while true; do
     END_TIME_NANO_SECONDS=$(date +%s%N)
     DURATION_NANO_SECONDS=$((END_TIME_NANO_SECONDS - START_TIME_NANO_SECONDS))
     SLEEP_NANO_SECONDS=$((LOOP_TIME_NANO_SECONDS - DURATION_NANO_SECONDS))
+
+    if ! listHasObject "${CHECK_ID}"; then
+        if VALUE=$(readName "${CHECK_ID}"); then
+            listAddObject "${CHECK_ID}" "${VALUE}" "$(date +%s)"
+            echo "Add inverter ${CHECK_ID} (${VALUE})." >&2
+        fi
+    fi
+
+    CHECK_ID_DEC=$(( 16#$CHECK_ID ))
+    CHECK_ID_DEC=$(( CHECK_ID_DEC + 1 ))
+    if (( "${CHECK_ID_DEC}" > "${MAX_ID}" )); then
+        CHECK_ID_DEC=0
+    fi
+    CHECK_ID=$(printf "%02x" "${CHECK_ID_DEC}")
+
+    echo "Inverter list {$(listToString)}. Next id to check ${CHECK_ID}." >&2
 
     if (( SLEEP_NANO_SECONDS > 0 )); then
         SLEEP_SECONDS=$(echo "${SLEEP_NANO_SECONDS}/${NANO_FACTOR}" | bc -l)

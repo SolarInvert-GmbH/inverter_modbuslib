@@ -29,12 +29,13 @@ error_multy()
 print_help_and_leave()
 {
     echo "ussage:"
-    echo "${0} [--influxDB PASSWORD | --remote <ENDPOINT> <ORG> <BUCKET> <HASH>] [--grafana] [--inverter <LOOP> <ADDRESS1> [ADDRESS2] [ADDRESS3] [ADDRESS4] [ADDRESS5] <DEVICE> [TIME] [AC_POWER] [DC_VOLTAGE] [OPERATING_STATE] [TEMPERATURE] [AC_VOLTAGE] [ENERGY_PRODUCTION]] [--wind GPIO DURATION FACTOR] [--modbuslib]"
+    echo "${0} [--influxDB PASSWORD | --remote <ENDPOINT> <ORG> <BUCKET> <HASH>] [--grafana <COUNT>] [--inverter <LOOP> <DEVICE> [TIME] [AC_POWER] [DC_VOLTAGE] [OPERATING_STATE] [TEMPERATURE] [AC_VOLTAGE] [ENERGY_PRODUCTION]] [--wind GPIO DURATION FACTOR] [--modbuslib]"
     echo "${0} --help"
     echo "${0} --unistall"
     echo "  --influxDB    Installs InfluxDB. Is in conflict do '--remote'"
     echo "     PASSWORD   The password for the influxDB"
     echo "  --grafana     Installs grafana"
+    echo "     COUNT      The number of inverter in grafana"
     echo "  --remote      Sets the endpopint and hash for an already installed InfluxDB. Is in conflict do '--influxDB'"
     echo "     ENDPOINT   The address of the influxDB"
     echo "     ORG        The org of the influxDB"
@@ -42,7 +43,6 @@ print_help_and_leave()
     echo "     HASH       The access hash for the influxDB"
     echo "  --inverter    Installs the inverter Service. --remote is needed. List all values you want to read: TIME, AC_POWER, DC_VOLTAGE, OPERATING_STATE, TEMPERATURE, AC_VOLTAGE and ENERGY_PRODUCTION"
     echo "     LOOP       The seconds per loop"
-    echo "     ADDRESS<n> The modbus address of the inverter as two hex digets. There can be one to five modbus addresses"
     echo "     DEVICE     The uart device. e.g. '/dev/ttyUSB0'"
     echo "  --wind        Installs the wind Service. --remote is needed"
     echo "     GPIO       The number of the gpio to read wind impulse"
@@ -80,28 +80,6 @@ check_param_and_set()
     fi
     declare -n REF="PARAMETER_${2}"
     REF="${3}"
-}
-
-set_param_double_hex()
-{
-    if [[ ${#} -eq 1 ]]; then
-        if [[ ${1} == 1 ]]; then
-            echo "Expected ADDRESS1 for --inverter, but got nothing"
-            exit 1
-        fi
-        return 1
-    fi
-    if [[ ${2} =~ ^[0-9a-fA-F]{2}$ ]]; then
-        declare -n REF="PARAMETER_ADDRESS_${1}"
-        REF="${2}"
-        return 0
-    else
-        if [[ ${1} == 1 ]]; then
-            echo "Expected ADDRESS1 for --inverter, but got ${2}"
-            exit 1
-        fi
-        return 1
-    fi
 }
 
 set_param_inverter_variabel()
@@ -164,13 +142,9 @@ parse_arguments()
     PARAMETER_BUCKET=""
     PARAMETER_HASH=""
     TASK_GRAFANA="false"
+    PARAMETER_COUNT=""
     TASK_INVERTER="false"
     PARAMETER_LOOP=""
-    PARAMETER_ADDRESS_1=""
-    PARAMETER_ADDRESS_2=""
-    PARAMETER_ADDRESS_3=""
-    PARAMETER_ADDRESS_4=""
-    PARAMETER_ADDRESS_5=""
     PARAMETER_DEVICE=""
     PARAMETER_TIME="false"
     PARAMETER_AC_POWER="false"
@@ -221,16 +195,13 @@ parse_arguments()
             ;;
           --grafana)
             TASK_GRAFANA="true"
+            check_param_and_set "--remote" "COUNT" "${@}"
+            shift
             ;;
           --inverter)
             TASK_INVERTER="true"
             PARAMETER_LOOP="${1}"
             shift
-             for i in {1..5}; do
-                if set_param_double_hex "${i}" "${@}"; then
-                    shift
-                fi
-            done
             check_param_and_set "--inverter" "DEVICE" "${@}"
             shift
             VAR_REST=( "$@" )
@@ -411,20 +382,6 @@ EOF"
     fi
 }
 
-number_of_elements()
-{
-    local COUNT="0"
-    for i in {1..5}; do
-        local VARNAME="PARAMETER_ADDRESS_${i}"
-        local VALUE="${!VARNAME}"
-        if [[ -n "$VALUE" ]]; then
-            ((COUNT++))
-        fi
-    done
-
-    echo "${COUNT}"
-}
-
 execute_grafana()
 {
     if [[ "${TASK_GRAFANA}" == "true" ]]; then
@@ -503,7 +460,7 @@ execute_grafana()
         JSON=$(echo "${LAST}" | sed 's/^[[:space:]]*InfluxDB_createToken:[[:space:]]*STATUS:[[:space:]]*//')
         DATASOURCE_UID=$(echo "${JSON}" | jq -r '.datasource.uid')
 
-        LINES="$("${ROOT}/../server/grafana_create_dashboard.sh" "${GRAFANA_USER_PASSWORD}" "InverterValues"  "${PARAMETER_BUCKET}" "${DATASOURCE_UID}" "$(number_of_elements)" ${PARAMETER_VALUES[@]})"
+        LINES="$("${ROOT}/../server/grafana_create_dashboard.sh" "${GRAFANA_USER_PASSWORD}" "InverterValues"  "${PARAMETER_BUCKET}" "${DATASOURCE_UID}" "${PARAMETER_COUNT}" ${PARAMETER_VALUES[@]})"
         CODE="${?}"
         if [[ "${CODE}" -eq 0 ]]; then
             status_multy "${LINES}"
@@ -519,11 +476,6 @@ execute_inverter()
         sudo mkdir -p "/etc/solarinvert"
         sudo sh -c "cat > /etc/solarinvert/inverter.env <<EOF
 UART=${PARAMETER_DEVICE}
-ID_1=${PARAMETER_ADDRESS_1}
-ID_2=${PARAMETER_ADDRESS_2}
-ID_3=${PARAMETER_ADDRESS_3}
-ID_4=${PARAMETER_ADDRESS_4}
-ID_5=${PARAMETER_ADDRESS_5}
 PARAMETER_TIME=${PARAMETER_TIME}
 PARAMETER_AC_POWER=${PARAMETER_AC_POWER}
 PARAMETER_DC_VOLTAGE=${PARAMETER_DC_VOLTAGE}
@@ -535,12 +487,9 @@ LOOP_TIME_SECONDS=${PARAMETER_LOOP}
 EOF"
 
         sudo cp "${ROOT}/log_solarinvert_inverter.sh"  "/usr/bin/log_solarinvert_inverter.sh"
-        sudo cp "${ROOT}/log_solarinvert_name.sh"      "/usr/bin/log_solarinvert_name.sh"
-        sudo cp "${ROOT}/SolarInvertName.service"      "/etc/systemd/system/SolarInvertName.service"
         sudo cp "${ROOT}/SolarInvertInverter.service"  "/etc/systemd/system/SolarInvertInverter.service"
 
         sudo systemctl daemon-reload
-        sudo systemctl enable SolarInvertName.service
         sudo systemctl enable SolarInvertInverter.service
     fi
 
@@ -586,10 +535,8 @@ execute_uninstall()
 
         sudo rm -r "/etc/solarinvert"
         sudo rm "/usr/bin/log_solarinvert_inverter.sh"
-        sudo rm "/usr/bin/log_solarinvert_name.sh"
         sudo rm "/usr/bin/log_solarinvert_wind.sh"
         sudo rm "/etc/systemd/system/SolarInvertInverter.service"
-        sudo rm "/etc/systemd/system/SolarInvertName.service"
         sudo rm "/etc/systemd/system/SolarInvertWind.service"
 
         sudo rm "/usr/local/bin/SendRequest"
