@@ -308,11 +308,7 @@ int main(int argc, char *argv[])
                 }
                 error = modbusState;
             }
-            if (modbusState.isIdle() && !error.isEmpty())
-            {
-                debugLog("Modbus uart had error: " + catta::tostring::toString(error) + '\n');
-                return 1;
-            }
+            if (modbusState.isIdle() && !error.isEmpty()) return errorExit("MODBUS_" + catta::tostring::toString(error));
             if (isDebug && sendByteLocal) sendLine.push_back(sendByteLocal.value());
             if (isDebug && sendHandled && sendToken.type().isEnd())
             {
