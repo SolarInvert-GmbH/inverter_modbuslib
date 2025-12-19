@@ -139,6 +139,9 @@ class SiRegister : public Fl_Group
                     return Response::value16(transform(static_cast<std::uint16_t>(0), static_cast<std::uint16_t>(3)));
                 case Type::uint32():
                     return Response::value32(transform(std::numeric_limits<std::uint32_t>::min(), std::numeric_limits<std::uint32_t>::max()));
+                case Type::sint32():
+                    return Response::value32(
+                        static_cast<std::uint32_t>(transform(std::numeric_limits<std::int32_t>::min(), std::numeric_limits<std::int32_t>::max())));
                 case Type::uint64():
                     return Response::value64(transform(std::numeric_limits<std::uint64_t>::min(), std::numeric_limits<std::uint64_t>::max()));
                 case Type::string16():
@@ -171,6 +174,8 @@ class SiRegister : public Fl_Group
                                 return Response::value16(this->_value.value<catta::modbus::sunspec::ConnectedPhase>());
                             case Type::uint32():
                                 return Response::value32(this->_value.value<catta::modbus::sunspec::ValueU32>().value());
+                            case Type::sint32():
+                                return Response::value32(static_cast<std::uint32_t>(this->_value.value<catta::modbus::sunspec::ValueS32>().value()));
                             case Type::uint64():
                                 return Response::value64(this->_value.value<catta::modbus::sunspec::ValueU64>().value());
                             case Type::string16():

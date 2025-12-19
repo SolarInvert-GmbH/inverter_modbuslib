@@ -281,6 +281,7 @@ class NiceResponse
                         case Type::connectedPhase():
                             return Result::value16(address, catta::modbus::sunspec::ValueU16::create(uglyResponse.value16Value()));
                         case Type::uint32():
+                        case Type::sint32():
                             return Result::value32(address, catta::modbus::sunspec::ValueU32::create(uglyResponse.value32Value()));
                         case Type::uint64():
                             return Result::value64(address, catta::modbus::sunspec::ValueU64::create(uglyResponse.value64Value()));

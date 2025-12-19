@@ -56,7 +56,7 @@ class RegisterValue
      */
     static constexpr RegisterValue value32(const catta::modbus::si::RegisterAddress registerAddress, const catta::modbus::sunspec::ValueU32 value)
     {
-        return value.isEmpty() || !registerAddress.type().isUint32()
+        return value.isEmpty() || !(registerAddress.type().isUint32() || registerAddress.type().isSint32())
                    ? empty()
                    : RegisterValue(Raw{pack(value.value(), 1), pack(value.value(), 0)}, registerAddress);
     }

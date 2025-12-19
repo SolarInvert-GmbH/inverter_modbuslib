@@ -16,6 +16,7 @@
 #include <catta/fromstring/modbus/sunspec/String16.hpp>
 #include <catta/fromstring/modbus/sunspec/String32.hpp>
 #include <catta/fromstring/modbus/sunspec/ValueS16.hpp>
+#include <catta/fromstring/modbus/sunspec/ValueS32.hpp>
 #include <catta/fromstring/modbus/sunspec/ValueU16.hpp>
 #include <catta/fromstring/modbus/sunspec/ValueU32.hpp>
 #include <catta/fromstring/modbus/sunspec/ValueU64.hpp>
@@ -23,6 +24,7 @@
 #include <catta/tostring/modbus/sunspec/String16.hpp>
 #include <catta/tostring/modbus/sunspec/String32.hpp>
 #include <catta/tostring/modbus/sunspec/ValueS16.hpp>
+#include <catta/tostring/modbus/sunspec/ValueS32.hpp>
 #include <catta/tostring/modbus/sunspec/ValueU16.hpp>
 #include <catta/tostring/modbus/sunspec/ValueU32.hpp>
 #include <catta/tostring/modbus/sunspec/ValueU64.hpp>

@@ -29,6 +29,7 @@ class catta::random::Create<catta::modbus::si::RegisterValue>
             default:
                 return catta::modbus::si::RegisterValue::value16(registerAddress, random.create<catta::modbus::sunspec::ValueU16>());
             case Type::uint32():
+            case Type::sint32():
                 return catta::modbus::si::RegisterValue::value32(registerAddress, random.create<catta::modbus::sunspec::ValueU32>());
             case Type::uint64():
                 return catta::modbus::si::RegisterValue::value64(registerAddress, random.create<catta::modbus::sunspec::ValueU64>());

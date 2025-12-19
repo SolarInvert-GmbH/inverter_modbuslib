@@ -243,6 +243,7 @@ static void handleRequest(const catta::modbus::si::request::Request &request, ca
                 case catta::modbus::si::RegisterType::scaleFactor():
                     response = Response::value16(static_cast<std::uint16_t>(random.interval(std::int16_t(-10), std::int16_t(+10))));
                     break;
+                case catta::modbus::si::RegisterType::sint32():
                 case catta::modbus::si::RegisterType::uint32():
                     response = Response::value32(random.create<std::uint32_t>());
                     break;

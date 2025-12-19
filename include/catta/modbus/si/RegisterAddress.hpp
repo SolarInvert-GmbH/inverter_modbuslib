@@ -2473,7 +2473,7 @@ class RegisterAddress
             case INVERTER_POWER_FACTOR_SCALE_FACTOR:
                 return Type::scaleFactor();
             case INVERTER_WATT_HOURS:
-                return Type::uint32();
+                return Type::sint32();
             case INVERTER_WATT_HOURS_SCALE_FACTOR:
                 return Type::scaleFactor();
             case INVERTER_DC_VOLTAGE:
@@ -2481,7 +2481,7 @@ class RegisterAddress
             case INVERTER_DC_VOLTAGE_SCALE_FACTOR:
                 return Type::scaleFactor();
             case INVERTER_DC_POWER:
-                return Type::uint16();
+                return Type::sint16();
             case INVERTER_DC_POWER_SCALE_FACTOR:
                 return Type::scaleFactor();
             case INVERTER_TEMPERATURE:

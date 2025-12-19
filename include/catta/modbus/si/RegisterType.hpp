@@ -23,16 +23,17 @@ class RegisterType
     constexpr static std::uint8_t SCALE_FACTOR = 2;
     constexpr static std::uint8_t CONNECTED_PHASE = 3;
     constexpr static std::uint8_t UINT32 = 4;
-    constexpr static std::uint8_t UINT64 = 5;
-    constexpr static std::uint8_t STRING16 = 6;
-    constexpr static std::uint8_t STRING32 = 7;
-    constexpr static std::uint8_t EMPTY = 8;
+    constexpr static std::uint8_t SINT32 = 5;
+    constexpr static std::uint8_t UINT64 = 6;
+    constexpr static std::uint8_t STRING16 = 7;
+    constexpr static std::uint8_t STRING32 = 8;
+    constexpr static std::uint8_t EMPTY = 9;
 
   public:
     /**
      * @param[in] value The enum value of the register type.
-     * @warning This constructor should not be used. Use uint16(), sint16(), scaleFactor(), connectedPhase(), uint32(), uint64(), string16(),
-     * string32() or empty(). Explicit constructor. Converts uint8 to register type.
+     * @warning This constructor should not be used. Use uint16(), sint16(), scaleFactor(), connectedPhase(), uint32(), sint32(), uint64(),
+     * string16(), string32() or empty(). Explicit constructor. Converts uint8 to register type.
      */
     [[nodiscard]] constexpr explicit RegisterType(const std::uint8_t value) noexcept : _value(value) {}
     /**
@@ -59,6 +60,10 @@ class RegisterType
      * @return Returns the uint32 type.
      */
     [[nodiscard]] constexpr static RegisterType uint32() noexcept { return RegisterType{UINT32}; }
+    /**
+     * @return Returns the sint32 type.
+     */
+    [[nodiscard]] constexpr static RegisterType sint32() noexcept { return RegisterType{SINT32}; }
     /**
      * @return Returns the uint64 type.
      */
@@ -105,6 +110,10 @@ class RegisterType
      */
     [[nodiscard]] constexpr bool isUint32() const noexcept { return _value == UINT32; }
     /**
+     * @return Returns @b true if sint32 type is represented, otherwise @b false.
+     */
+    [[nodiscard]] constexpr bool isSint32() const noexcept { return _value == SINT32; }
+    /**
      * @return Returns @b true if uint64 type is represented, otherwise @b false.
      */
     [[nodiscard]] constexpr bool isUint64() const noexcept { return _value == UINT64; }
@@ -123,8 +132,8 @@ class RegisterType
     /**
      * Register type in text form.
      */
-    constexpr static std::array<std::string_view, EMPTY> enumNames = {"UINT16", "SINT16", "SCALE_FACTOR", "CONNECTED_PHASE",
-                                                                      "UINT32", "UINT64", "STRING16",     "STRING32"};
+    constexpr static std::array<std::string_view, EMPTY> enumNames = {"UINT16", "SINT16", "SCALE_FACTOR", "CONNECTED_PHASE", "UINT32",
+                                                                      "SINT32", "UINT64", "STRING16",     "STRING32"};
 
     /**
      * @return Returns the needed bytes for the type.
@@ -139,6 +148,8 @@ class RegisterType
             case CONNECTED_PHASE:
                 return 2;
             case UINT32:
+                return 4;
+            case SINT32:
                 return 4;
             case UINT64:
                 return 8;
@@ -168,6 +179,8 @@ class RegisterType
                 return std::string_view("CoPh");
             case UINT32:
                 return std::string_view("uI32");
+            case SINT32:
+                return std::string_view("sI32");
             case UINT64:
                 return std::string_view("uI64");
             case STRING16:

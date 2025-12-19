@@ -159,6 +159,9 @@ class DummyInverter : public Fl_Double_Window
                     case Type::uint32():
                         a[i] = new SiRegister(X, Y, W, H, address, catta::modbus::sunspec::ValueU32::create(0));
                         break;
+                    case Type::sint32():
+                        a[i] = new SiRegister(X, Y, W, H, address, catta::modbus::sunspec::ValueS32::create(0));
+                        break;
                     default:
                         switch (address)
                         {

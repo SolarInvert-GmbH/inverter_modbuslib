@@ -159,6 +159,7 @@ class Parser<catta::modbus::si::RegisterValue>
                 return Output::value16(_registerAddressParser.data(),
                                        catta::modbus::sunspec::ValueU16::create(static_cast<std::uint16_t>(_token.integerValue())));
             case Type::uint32():
+            case Type::sint32():
                 if (!_token.type().isIntegerNumber() || _token.integerValue() < MINU32 || _token.integerValue() > MAXU32) return Output::empty();
                 return Output::value32(_registerAddressParser.data(),
                                        catta::modbus::sunspec::ValueU32::create(static_cast<std::uint32_t>(_token.integerValue())));

@@ -548,6 +548,19 @@ class MiniSicc : public Fl_Double_Window
                         t = r.value16Value();
                         isMax = r.value16Value() == 0xffff;
                         break;
+                    case catta::modbus::si::RegisterType::sint32():
+                    {
+                        if (!r.type().isValue32()) return T::setValue(_miniSicc._values, std::string(), nullptr);
+                        isMax = r.value32Value() == 0xffffffff;
+                        if (static_cast<std::int32_t>(r.value32Value()) < 0)
+                        {
+                            minus = true;
+                            t = static_cast<std::uint32_t>(-static_cast<std::int32_t>(r.value32Value()));
+                        }
+                        else
+                            t = r.value32Value();
+                        break;
+                    }
                     case catta::modbus::si::RegisterType::uint32():
                         if (!r.type().isValue32()) return T::setValue(_miniSicc._values, std::string(), nullptr);
                         t = r.value32Value();

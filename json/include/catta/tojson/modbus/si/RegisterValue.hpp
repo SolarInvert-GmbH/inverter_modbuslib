@@ -119,6 +119,7 @@ class Serializer<catta::modbus::si::RegisterValue>
                     default:
                         return handle(_valueU16Serializer, input.value16Value(), catta::json::Token::closeCurlyBracket());
                     case Type::uint32():
+                    case Type::sint32():
                         return handle(_valueU32Serializer, input.value32Value(), catta::json::Token::closeCurlyBracket());
                     case Type::uint64():
                         return handle(_valueU64Serializer, input.value64Value(), catta::json::Token::closeCurlyBracket());
