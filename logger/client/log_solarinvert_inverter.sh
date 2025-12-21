@@ -82,9 +82,12 @@ readRegisterToLines()
 
     if [ $? -eq 0 ]; then
         VALUE_INTEGER=$(echo "${RESULT}" | cut -d: -f5 | cut -d\} -f1)
-        if [[ ( "${REGISTER_TYPE}" != "uI32" || "${VALUE_INTEGER}" -ne 4294967295 ) && "${VALUE_INTEGER}" -ne 65535 ]]; then
+        if [[ ( ( "${REGISTER_TYPE}" != "uI32" && "${REGISTER_TYPE}" !  = "sI32" ) || "${VALUE_INTEGER}" -ne 4294967295 ) && "${VALUE_INTEGER}" -ne 65535 ]]; then
             if [[ "${REGISTER_TYPE}" == "sI16" && "${VALUE_INTEGER}" -gt 32767 ]]; then
                 VALUE_INTEGER=$(( (65536 - VALUE_INTEGER)*(-1) ))
+            fi
+            if [[ "${REGISTER_TYPE}" == "sI32" && "${VALUE_INTEGER}" -gt 2147483647 ]]; then
+                VALUE_INTEGER=$(( (4294967296 - VALUE_INTEGER)*(-1) ))
             fi
             if [[ "${2}" == "temperature" ]]; then
                 VALUE_FLOAT=$(echo "124.0 - ${VALUE_INTEGER}/2.0" | bc -l | sed -E 's/\.?0+$//' | sed -E 's/^$/0/'1)
@@ -157,7 +160,7 @@ while true; do
                 readRegisterToLines InverterPhaseVoltageA                  1 acvoltage   "${ID}" "${NAME}" "uI16"
             fi
             if [[ "${PARAMETER_ENERGY_PRODUCTION}" == "true" ]]; then
-                readRegisterToLines InverterWattHours                     10 energy      "${ID}" "${NAME}" "uI32"
+                readRegisterToLines InverterWattHours                     10 energy      "${ID}" "${NAME}" "sI32"
             fi
         fi
         if [[ ${CALL_WAS_SUCCESFULL} == "true" ]];then
