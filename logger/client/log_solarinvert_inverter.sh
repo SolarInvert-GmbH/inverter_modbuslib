@@ -82,7 +82,7 @@ readRegisterToLines()
 
     if [ $? -eq 0 ]; then
         VALUE_INTEGER=$(echo "${RESULT}" | cut -d: -f5 | cut -d\} -f1)
-        if [[ ( ( "${REGISTER_TYPE}" != "uI32" && "${REGISTER_TYPE}" !  = "sI32" ) || "${VALUE_INTEGER}" -ne 4294967295 ) && "${VALUE_INTEGER}" -ne 65535 ]]; then
+        if [[ ( ( "${REGISTER_TYPE}" != "uI32" && "${REGISTER_TYPE}" != "sI32" ) || "${VALUE_INTEGER}" -ne 4294967295 ) && "${VALUE_INTEGER}" -ne 65535 ]]; then
             if [[ "${REGISTER_TYPE}" == "sI16" && "${VALUE_INTEGER}" -gt 32767 ]]; then
                 VALUE_INTEGER=$(( (65536 - VALUE_INTEGER)*(-1) ))
             fi
