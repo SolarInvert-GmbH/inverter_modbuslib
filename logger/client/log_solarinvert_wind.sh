@@ -10,8 +10,6 @@ INFLUX_ORG="${5}"
 INFLUX_BUCKET="${6}"
 INFLUX_HASH="${7}"
 
-NAME="${8}"
-
 LINES=""
 
 while true; do
@@ -19,7 +17,7 @@ while true; do
     SPEED=$(echo "(${IMPULSES} / ${MEASUREMENT_DURATION_SECONDS}) * ${FACTOR}" | bc)
     echo "${IMPULSES} ${SPEED} a"
     echo curl -X POST "${INFLUX_ENDPOINT}/api/v2/write?bucket=${INFLUX_BUCKET}&org=${INFLUX_ORG}"   --header "Authorization: Token ${INFLUX_HASH}"  \
-              --data-raw "wind,_inverter=${NAME} value=${SPEED} $(date +%s%N)"
+              --data-raw "wind value=${SPEED} $(date +%s%N)"
          curl -X POST "${INFLUX_ENDPOINT}/api/v2/write?bucket=${INFLUX_BUCKET}&org=${INFLUX_ORG}"   --header "Authorization: Token ${INFLUX_HASH}"  \
-              --data-raw "wind,_inverter=${NAME} value=${SPEED} $(date +%s%N)" &
+              --data-raw "wind value=${SPEED} $(date +%s%N)" &
 done
