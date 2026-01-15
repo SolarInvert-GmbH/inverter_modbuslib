@@ -22,6 +22,9 @@
 #include <catta/tostring/modbus/si/request/Request.hpp>
 #include <catta/tostring/modbus/si/response/Response.hpp>
 
+// fromstring
+#include <catta/fromstring/Hexadecimal.hpp>
+
 // system
 #include <signal.h>
 
@@ -79,13 +82,15 @@ static std::string printTimestamp(const std::chrono::microseconds t)
 
 static void printHelp(const std::string_view program)
 {
-    std::cout << program << " --uart /dev/ttyUSB0 [--debug [--verbose]] [--switch] \n";
+    std::cout << program << " --uart /dev/ttyUSB0 [--debug [--verbose]] [ [--switch] | [--id ID] ] \n";
     std::cout << " --uart     : uart device.\n";
     std::cout << "[--debug]   : print debug messages.\n";
     std::cout << "[--verbose] : vebose debug messages. Needs '--verbose'.\n";
     std::cout
         << "[--switch]  : path to a file. The file is read on every response. The first five character of the file have to be '0' or '1'. If the "
-           "request is for id 0…4 and the the n-th byte is '0' there will be no response. All other ids will be ignored when switch file is set.\n";
+           "request is for id 0…4 and the the n-th byte is '0' there will be no response. All other ids will be ignored when switch file is set. "
+           "Can't be used with '--id'.\n";
+    std::cout << "[--id]      : Only answer for one id. ID two hexadecimal digets. Can't be used with '--switch'.\n";
 }
 
 static void logAndExit(const std::string &message)
@@ -94,12 +99,13 @@ static void logAndExit(const std::string &message)
     exit(EXIT_FAILURE);
 }
 
-static std::tuple<std::string, LogLevel, std::string> checkFlags(int argc, char *argv[])
+static std::tuple<std::string, LogLevel, std::string, std::optional<std::uint8_t>> checkFlags(int argc, char *argv[])
 {
     std::string uart;
     bool debug = false;
     bool verbose = false;
     std::string switchFile;
+    std::optional<std::uint8_t> id = std::nullopt;
 
     static const auto checkArg = [](const std::string &arg, const std::string &name)
     {
@@ -111,6 +117,15 @@ static std::tuple<std::string, LogLevel, std::string> checkFlags(int argc, char 
         if (i + 1 >= argc) logAndExit("Add " + name + " after '--" + name + "'.");
         i++;
         arg = argv[i];
+    };
+
+    static const auto setArgByte = [argc, argv](std::optional<std::uint8_t> &arg, const std::string &name, int &i)
+    {
+        if (i + 1 >= argc) logAndExit("Add " + name + " after '--" + name + "'.");
+        i++;
+        const std::uint8_t v = std::uint8_t(catta::fromstring::fromString<catta::Hexadecimal<std::uint8_t>>(argv[i]));
+        if (v == 0 && std::string(argv[i]) != "00") logAndExit("Add valid (two hex digets) " + name + " after '--" + name + "'.");
+        arg = v;
     };
 
     static const auto setBool = [](bool &arg, const std::string &name)
@@ -130,6 +145,8 @@ static std::tuple<std::string, LogLevel, std::string> checkFlags(int argc, char 
             setBool(verbose, "verbose");
         else if (flag == "--switch")
             setArg(switchFile, "switch", i);
+        else if (flag == "--id")
+            setArgByte(id, "id", i);
         else if (flag == "help" || flag == "-h" || flag == "--help")
         {
             printHelp(argv[0]);
@@ -144,7 +161,8 @@ static std::tuple<std::string, LogLevel, std::string> checkFlags(int argc, char 
         logLevel = verbose ? VERBOSE : DEBUG;
     else if (verbose)
         logAndExit("Used '--verbose' without '--debug'");
-    return std::tuple<std::string, LogLevel, std::string>{uart, logLevel, switchFile};
+    if (!switchFile.empty() && id) logAndExit("Used '--switch' and '--id'. You can only use one at once.");
+    return std::tuple<std::string, LogLevel, std::string, std::optional<std::uint8_t>>{uart, logLevel, switchFile, id};
 }
 
 static bool end = false;
@@ -180,8 +198,9 @@ static std::uint16_t state()
     return v;
 }
 
-static bool ignoreRequest(const std::string &switchFile, const std::uint8_t id)
+static bool ignoreRequest(const std::string &switchFile, const std::uint8_t id, const std::optional<std::uint8_t> onlyId)
 {
+    if (onlyId) return id != onlyId.value();
     if (id >= 5) return !switchFile.empty();
     std::ifstream f(switchFile.c_str());
     for (std::uint8_t i = 0; i < 5; i++)
@@ -194,9 +213,10 @@ static bool ignoreRequest(const std::string &switchFile, const std::uint8_t id)
 }
 
 static void handleRequest(const catta::modbus::si::request::Request &request, catta::modbus::si::response::Response &response,
-                          catta::random::Random &random, const std::uint8_t id, const std::string &switchFile)
+                          catta::random::Random &random, const std::uint8_t id, const std::string &switchFile,
+                          const std::optional<std::uint8_t> onlyId)
 {
-    if (ignoreRequest(switchFile, id)) return;
+    if (ignoreRequest(switchFile, id, onlyId)) return;
     using Type = catta::modbus::si::request::Type;
     using Response = catta::modbus::si::response::Response;
     switch (request.type())
@@ -324,7 +344,7 @@ static void handleRequest(const catta::modbus::si::request::Request &request, ca
 int main(int argc, char *argv[])
 {
     using namespace std::chrono_literals;
-    const auto [uartDevice, logLevel, switchFile] = checkFlags(argc, argv);
+    const auto [uartDevice, logLevel, switchFile, onlyId] = checkFlags(argc, argv);
 
     const bool isDebug = logLevel == DEBUG || logLevel == VERBOSE;
     const bool isVerbose = logLevel == VERBOSE;
@@ -455,7 +475,7 @@ int main(int argc, char *argv[])
             if (parser.state().isDone())
             {
                 const auto request = parser.data();
-                handleRequest(request, response, random, modbus.modbusId(), switchFile);
+                handleRequest(request, response, random, modbus.modbusId(), switchFile, onlyId);
                 if (isDebug)
                 {
                     debugLog("Received Bytes: " + printLine(receiveLine) + '\n');
