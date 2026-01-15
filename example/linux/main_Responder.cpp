@@ -219,7 +219,8 @@ static void handleRequest(const catta::modbus::si::request::Request &request, ca
                     response = Response::value16(id == 0x00 ? 0 : state());
                     return;
                 case Address::inverterTemperature():
-                    response = Response::value16(sinus<std::uint16_t>(200.0, 800.0, id, 200.0));
+                    response = Response::value16(
+                        sinus<std::uint16_t>(88.0, 208.0, id, 200.0));  // temperature=124-register/2 => [(124-20°C)*2, (124-80°C)*2]
                     return;
                 case Address::inverterPhaseVoltageA():
                     response = Response::value16(sinus<std::uint16_t>(200.0, 250.0, id, 800.0));
