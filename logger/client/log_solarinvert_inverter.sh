@@ -16,7 +16,8 @@ INFLUX_ORG="${10}"
 INFLUX_BUCKET="${11}"
 INFLUX_HASH="${12}"
 
-LINES=""
+LINES_PROD=""
+LINES_TEST=""
 
 MAX_ERROR="10000"
 ERROR_COUNTER="0"
@@ -94,8 +95,14 @@ readRegisterToLines()
             else
                 VALUE_FLOAT=$(echo "${VALUE_INTEGER}/${2}" | bc -l | sed -E 's/\.?0+$//' | sed -E 's/^$/0/'1)
             fi
-            LINES="${LINES}
+            if [[ "${4}" != "09" ]]; then
+                LINES_PROD="${LINES_PROD}
 ${3},_inverter=${5} value=${VALUE_FLOAT}   $(date +%s%N)"
+
+            else
+                LINES_TEST="${LINES_TEST}
+${3},_inverter=${5} value=${VALUE_FLOAT}   $(date +%s%N)"
+            fi
         fi
         ERROR_COUNTER="0"
         CALL_WAS_SUCCESFULL="true"
@@ -128,11 +135,22 @@ readName()
     fi
 }
 
+sendData()
+{
+    LINE="${1}"
+    TAIL="${2}"
+    if [ -n "${1}" ]; then
+             curl -X POST "${INFLUX_ENDPOINT}/api/v2/write?bucket=${INFLUX_BUCKET}${TAIL}&org=${INFLUX_ORG}" --header "Authorization: Token ${INFLUX_HASH}" --data-raw "${1}" 2>/dev/null &
+	    echo curl -X POST "${INFLUX_ENDPOINT}/api/v2/write?bucket=${INFLUX_BUCKET}${TAIL}&org=${INFLUX_ORG}" --header "Authorization: Token ${INFLUX_HASH}" --data-raw "${1}" >&2
+    fi
+}
+
 echo "start..." >&2
 
 while true; do
     START_TIME_NANO_SECONDS=$(date +%s%N)
-    LINES=""
+    LINES_PROD=""
+    LINES_TEST=""
 
     for ELEMENT in "${INVERTER_LIST[@]}"; do
         declare -n INVERTER="${ELEMENT}"
@@ -171,10 +189,8 @@ while true; do
             echo "Have not heared from inverter ${ID} for ${VALID_TIME} seconds. Drop inverter ${ID}." >&2
         fi
     done
-    if [ -n "${LINES}" ]; then
-        curl -X POST "${INFLUX_ENDPOINT}/api/v2/write?bucket=${INFLUX_BUCKET}&org=${INFLUX_ORG}"   --header "Authorization: Token ${INFLUX_HASH}"   --data-raw "${LINES}" &
-	echo curl -X POST "${INFLUX_ENDPOINT}/api/v2/write?bucket=${INFLUX_BUCKET}&org=${INFLUX_ORG}" --header "Authorization: Token ${INFLUX_HASH}" --data-raw "${LINES}" >&2
-    fi
+    sendData "${LINES_PROD}" ""
+    sendData "${LINES_TEST}" "test"
 
 
     END_TIME_NANO_SECONDS=$(date +%s%N)

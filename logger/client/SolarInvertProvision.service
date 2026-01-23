@@ -1,0 +1,13 @@
+[Unit]
+Description=WLAN provision
+After=network.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/solarinvert/provision.env
+ExecStart=/usr/bin/wlan_solarinvert_provision.sh "${AP_SSID}" "${AP_PASS}" "${WLAN_INTERFACE}" "${LAN_INTERFACE}" "${HYSTERESE}" "${AP_DURATION}" "${WLAN_RETRY}" "${UI_PATH}"
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target

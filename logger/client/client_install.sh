@@ -29,27 +29,38 @@ error_multy()
 print_help_and_leave()
 {
     echo "ussage:"
-    echo "${0} [--influxDB PASSWORD | --remote <ENDPOINT> <ORG> <BUCKET> <HASH>] [--grafana <COUNT>] [--inverter <LOOP> <DEVICE> [TIME] [AC_POWER] [DC_VOLTAGE] [OPERATING_STATE] [TEMPERATURE] [AC_VOLTAGE] [ENERGY_PRODUCTION]] [--wind GPIO DURATION FACTOR] [--modbuslib]"
+    echo "${0} [--influxDB PASSWORD [--remote <REMOTE_ENDPOINT> <REMOTE_ID_RAW> <REMOTE_ID_10S> <REMOTE_ID_1M> <REMOTE_ID_TEST> <REMOTE_TOKEN> <REMOTE_ORG_ID>]] [--grafana <COUNT>] [--inverter <LOOP> <DEVICE> [TIME] [AC_POWER] [DC_VOLTAGE] [OPERATING_STATE] [TEMPERATURE] [AC_VOLTAGE] [ENERGY_PRODUCTION]] [--wind GPIO DURATION FACTOR] [--modbuslib] [--provision <AP_SSID> <AP_PASS> <WLAN_INTERFACE> <LAN_INTERFACE> <HYSTERESE> <AP_DURATION> <WLAN_RETRY>]"
     echo "${0} --help"
     echo "${0} --unistall"
-    echo "  --influxDB    Installs InfluxDB. Is in conflict do '--remote'"
-    echo "     PASSWORD   The password for the influxDB"
-    echo "  --grafana     Installs grafana"
-    echo "     COUNT      The number of inverter in grafana"
-    echo "  --remote      Sets the endpopint and hash for an already installed InfluxDB. Is in conflict do '--influxDB'"
-    echo "     ENDPOINT   The address of the influxDB"
-    echo "     ORG        The org of the influxDB"
-    echo "     BUCKET     The bucket of the influxDB"
-    echo "     HASH       The access hash for the influxDB"
-    echo "  --inverter    Installs the inverter Service. --remote is needed. List all values you want to read: TIME, AC_POWER, DC_VOLTAGE, OPERATING_STATE, TEMPERATURE, AC_VOLTAGE and ENERGY_PRODUCTION"
-    echo "     LOOP       The seconds per loop"
-    echo "     DEVICE     The uart device. e.g. '/dev/ttyUSB0'"
-    echo "  --wind        Installs the wind Service. --remote is needed"
-    echo "     GPIO       The number of the gpio to read wind impulse"
-    echo "     DURATION   The measurement duration for the wind measurement"
-    echo "     FACTOR     The factor from impulses to speed"
-    echo "  --help        Print this help"
-    echo "  --unistall    Remove all files that can be created with this script. Do not remove influxdb of grafana"
+    echo "  --influxDB          Installs InfluxDB. Is in conflict do '--remote'"
+    echo "     PASSWORD         The password for the influxDB"
+    echo "  --remote            Create. Needs '--influxDB'"
+    echo "     REMOTE_ENDPOINT  The address url of the remote influxDB"
+    echo "     REMOTE_ID_RAW    The id of the remote raw bucket."
+    echo "     REMOTE_ID_10S    The id of the remote 10s bucket."
+    echo "     REMOTE_ID_1M     The id of the remote 1min bucket."
+    echo "     REMOTE_ID_TEST   The id of the remote test bucket."
+    echo "     REMOTE_TOKEN     The access (write) token for the remote buckets"
+    echo "     REMOTE_ORG_ID    The id of the remote organisation"
+    echo "  --grafana           Installs grafana"
+    echo "     COUNT            The number of inverter in grafana"
+    echo "  --inverter          Installs the inverter Service. --remote is needed. List all values you want to read: TIME, AC_POWER, DC_VOLTAGE, OPERATING_STATE, TEMPERATURE, AC_VOLTAGE and ENERGY_PRODUCTION"
+    echo "     LOOP             The seconds per loop"
+    echo "     DEVICE           The uart device. e.g. '/dev/ttyUSB0'"
+    echo "  --wind              Installs the wind Service. --remote is needed"
+    echo "     GPIO             The number of the gpio to read wind impulse"
+    echo "     DURATION         The measurement duration for the wind measurement"
+    echo "     FACTOR           The factor from impulses to speed"
+    echo "  --provision         Installs wlan provision service"
+    echo "     AP_SSID          The wlan name of the access point"
+    echo "     AP_PASS          The wlan password of the access point"
+    echo "     WLAN_INTERFACE   The linux wlan interface e.g. 'wlan0'"
+    echo "     LAN_INTERFACE    The linux lan interface e.g. 'eth0'"
+    echo "     HYSTERESE        The time to wait after ap time"
+    echo "     AP_DURATION      The time the access point is active"
+    echo "     WLAN_RETRY       The time system trys to connect to existing wlan"
+    echo "  --help              Print this help"
+    echo "  --unistall          Remove all files that can be created with this script. Do not remove influxdb of grafana"
     exit_and_clean_up "${1}"
 }
 
@@ -137,10 +148,13 @@ parse_arguments()
     TASK_INFLUX_DB="false"
     PARAMETER_PASSWORD=""
     TASK_REMOTE="false"
-    PARAMETER_ENDPOINT=""
-    PARAMETER_ORG=""
-    PARAMETER_BUCKET=""
-    PARAMETER_HASH=""
+    PARAMETER_REMOTE_ENDPOINT=""
+    PARAMETER_REMOTE_ID_RAW=""
+    PARAMETER_REMOTE_ID_10S=""
+    PARAMETER_REMOTE_ID_1M=""
+    PARAMETER_REMOTE_ID_TEST=""
+    PARAMETER_REMOTE_TOKEN=""
+    PARAMETER_REMOTE_ORG_ID=""
     TASK_GRAFANA="false"
     PARAMETER_COUNT=""
     TASK_INVERTER="false"
@@ -159,6 +173,14 @@ parse_arguments()
     PARAMETER_DURATION=""
     PARAMETER_FACTOR=""
     TASK_MODBUSLIB="false"
+    TASK_PROVISION="false"
+    PARAMETER_AP_SSID=""
+    PARAMETER_AP_PASS=""
+    PARAMETER_WLAN_INTERFACE=""
+    PARAMETER_LAN_INTERFACE=""
+    PARAMETER_HYSTERESE=""
+    PARAMETER_AP_DURATION=""
+    PARAMETER_WLAN_RETRY=""
     TASK_UNINSTALL="false"
 
     if [[ ${#} -eq "1" && ${1} == "--uninstall" ]]; then
@@ -173,24 +195,25 @@ parse_arguments()
             print_help_and_leave 0
             ;;
           --influxDB)
-            set_and_check_for_conflict "INFLUX_TYPE" "INSTALL" "--influxDB" "REMOTE" "--remote"
             check_param_and_set "--influxDB" "PASSWORD" "${@}"
             shift
             TASK_INFLUX_DB="true"
-            PARAMETER_ENDPOINT="localhost:8086"
-            PARAMETER_ORG="solarinvert"
-            PARAMETER_BUCKET="messurement"
             ;;
           --remote)
-            set_and_check_for_conflict "INFLUX_TYPE" "REMOTE" "--remote" "INSTALL" "--influxDB"
             TASK_REMOTE="true"
-            check_param_and_set "--remote" "ENDPOINT" "${@}"
+            check_param_and_set "--remote" "REMOTE_ENDPOINT" "${@}"
             shift
-            check_param_and_set "--remote" "ORG" "${@}"
+            check_param_and_set "--remote" "REMOTE_ID_RAW" "${@}"
             shift
-            check_param_and_set "--remote" "BUCKET" "${@}"
+            check_param_and_set "--remote" "REMOTE_ID_10S" "${@}"
             shift
-            check_param_and_set "--remote" "HASH" "${@}"
+            check_param_and_set "--remote" "REMOTE_ID_1M" "${@}"
+            shift
+            check_param_and_set "--remote" "REMOTE_ID_TEST" "${@}"
+            shift
+            check_param_and_set "--remote" "REMOTE_TOKEN" "${@}"
+            shift
+            check_param_and_set "--remote" "REMOTE_ORG_ID" "${@}"
             shift
             ;;
           --grafana)
@@ -222,6 +245,23 @@ parse_arguments()
           --modbuslib)
             TASK_MODBUSLIB="true"
             ;;
+          --provision)
+            TASK_PROVISION="true"
+            check_param_and_set "--provision" "AP_SSID" "${@}"
+            shift
+            check_param_and_set "--provision" "AP_PASS" "${@}"
+            shift
+            check_param_and_set "--provision" "WLAN_INTERFACE" "${@}"
+            shift
+            check_param_and_set "--provision" "LAN_INTERFACE" "${@}"
+            shift
+            check_param_and_set "--provision" "HYSTERESE" "${@}"
+            shift
+            check_param_and_set "--provision" "AP_DURATION" "${@}"
+            shift
+            check_param_and_set "--provision" "WLAN_RETRY" "${@}"
+            shift
+            ;;
           --uninstall)
             echo "Only use --uninstall as single option"
             exit 1
@@ -232,8 +272,12 @@ parse_arguments()
           ;;
       esac
     done
-    if [[ "${TASK_INVERTER}" == "true" && "${TASK_REMOTE}" == "false" && "${TASK_INFLUX_DB}" == "false" ]]; then
-        echo "--inverter needs the --remote or --influxDB flag."
+    if [[ "${TASK_REMOTE}" == "true" && "${TASK_INFLUX_DB}" == "false" ]]; then
+        echo "--remote needs the --influxDB flag."
+        exit 1
+    fi
+    if [[ "${TASK_INVERTER}" == "true" && "${TASK_INFLUX_DB}" == "false" ]]; then
+        echo "--inverter needs the --influxDB flag."
         exit 1
     fi
     if [[ "${TASK_WIND}" == "true" && "${TASK_REMOTE}" == "false" && "${TASK_INFLUX_DB}" == "false" ]]; then
@@ -242,12 +286,16 @@ parse_arguments()
     fi
 }
 
+TASK_SET_MEAN="\"time\", \"acpower\", \"dcvoltage\", \"temperature\", \"acvoltage\", \"energy\", \"wind\""
+TASK_SET_FIRST="\"state\""
+
 task()
 {
     SOURCE="${1}"
     TARGET="${2}"
     RETENTION="${3}"
     NAME="${4}"
+    SET="${5}"
     echo "option task = {name: \"${NAME}\", every: ${RETENTION}}
 
 from(bucket: \"${SOURCE}\")
@@ -257,12 +305,18 @@ from(bucket: \"${SOURCE}\")
   |> to(bucket: \"${TARGET}\")"
 }
 
+BUCKET="messurement"
+ENDPOINT="localhost:8086"
+ORG="solarinvert"
+REMOTE_NAME="SolarinvertServer"
+
+
 execute_influxdb()
 {
     if [[ "${TASK_INFLUX_DB}" == "true" && ! -f /usr/share/keyrings/influxdata-archive-keyring.gpg ]]; then
         HEAD="InfluxDB: "
 
-        LINES="$(wget -qO- https://repos.influxdata.com/influxdata-archive_compat.key | sudo gpg --dearmor --yes -o /usr/share/keyrings/influxdata-archive-keyring.gpg 2>&1)"
+        LINES="$(wget -qO- https://repos.influxdata.com/influxdata-archive.key | sudo gpg --dearmor --yes -o /usr/share/keyrings/influxdata-archive-keyring.gpg 2>&1)"
         CODE="${?}"
         if [[ "${CODE}" -eq 0 ]]; then
             status_multy "${LINES}"
@@ -270,15 +324,7 @@ execute_influxdb()
             error_multy "${LINES}" 2
         fi
 
-        LINES="$(wget -qO- https://repos.influxdata.com/influxdata-archive_compat.key | sudo gpg --dearmor --yes -o /usr/share/keyrings/influxdata-archive-keyring.gpg 2>&1)"
-        CODE="${?}"
-        if [[ "${CODE}" -eq 0 ]]; then
-            status_multy "${LINES}"
-        else
-            error_multy "${LINES}" 2
-        fi
-
-        LINES="$(echo "deb [signed-by=/usr/share/keyrings/influxdata-archive-keyring.gpg] https://repos.influxdata.com/debian stable main" | sudo tee /etc/apt/sources.list.d/influxdata.list 2>&1)"
+        LINES="$(echo "deb [signed-by=/usr/share/keyrings/influxdata-archive-keyring.gpg] https://repos.influxdata.com/debian bookworm stable" | sudo tee /etc/apt/sources.list.d/influxdata.list 2>&1)"
         CODE="${?}"
         if [[ "${CODE}" -eq 0 ]]; then
             status_multy "${LINES}"
@@ -294,7 +340,7 @@ execute_influxdb()
             error_multy "${LINES}" 2
         fi
 
-        LINES="$(sudo apt install -y influxdb2 2>&1)"
+        LINES="$(sudo DEBIAN_FRONTEND=noninteractive UCF_FORCE_CONFFNEW=1 UCF_FORCE_CONFFMISS=1 apt-get install -y influxdb2 2>&1)"
         CODE="${?}"
         if [[ "${CODE}" -eq 0 ]]; then
             status_multy "${LINES}"
@@ -310,37 +356,80 @@ execute_influxdb()
             error_multy "${LINES}" 2
         fi
 
-        "${ROOT}"/../server/influx_init.sh "${PARAMETER_PASSWORD}" "${PARAMETER_BUCKET}" "30d" "    InfluxDB_init: "
+
+
+        "${ROOT}"/../server/influx_init.sh "${PARAMETER_PASSWORD}" "${BUCKET}" "30d" "    InfluxDB_init: "
         CODE="${?}"
         if [[ "${CODE}" -ne 0 ]]; then
             exit ${CODE}
         fi
 
-        "${ROOT}"/../server/influx_create_bucket.sh "${PARAMETER_BUCKET}10s" "365d" "    InfluxDB_createBucket: "
+        CONTENT="$(influx bucket list --org solarinvert | grep "${BUCKET}")"
+        LAST=${CONTENT##*$'\n'}
+        TABLE=${LAST##*:}
+        LOCAL_ID_RAW="$(awk '{print $1}' <<< "$TABLE")"
+
+        CONTENT="$("${ROOT}"/../server/influx_create_bucket.sh "${BUCKET}10s" "365d" "    InfluxDB_createBucket: ")"
+        CODE="${?}"
+        if [[ "${CODE}" -ne 0 ]]; then
+            echo "${CONTENT}"
+            exit ${CODE}
+        fi
+
+        echo "${CONTENT}"
+        LAST=${CONTENT##*$'\n'}
+        TABLE=${LAST##*:}
+        LOCAL_ID_10S="$(awk '{print $1}' <<< "$TABLE")"
+
+        CONTENT="$("${ROOT}"/../server/influx_create_bucket.sh "${BUCKET}1m" "3650d" "    InfluxDB_createBucket: ")"
+        CODE="${?}"
+        if [[ "${CODE}" -ne 0 ]]; then
+            echo "${CONTENT}"
+            exit ${CODE}
+        fi
+
+        echo "${CONTENT}"
+        LAST=${CONTENT##*$'\n'}
+        TABLE=${LAST##*:}
+        LOCAL_ID_1M="$(awk '{print $1}' <<< "$TABLE")"
+
+        CONTENT="$("${ROOT}"/../server/influx_create_bucket.sh "${BUCKET}test" "12h" "    InfluxDB_createBucket: ")"
+        CODE="${?}"
+        if [[ "${CODE}" -ne 0 ]]; then
+            echo "${CONTENT}"
+            exit ${CODE}
+        fi
+
+        echo "${CONTENT}"
+        LAST=${CONTENT##*$'\n'}
+        TABLE=${LAST##*:}
+        LOCAL_ID_TEST="$(awk '{print $1}' <<< "$TABLE")"
+
+        "${ROOT}"/../server/influx_create_task.sh "${ORG}" "$(task "${BUCKET}"    "${BUCKET}10s" "10s" "DownsampleMean10s" "${TASK_SET_MEAN}")" "    InfluxDB_createTask: "
         CODE="${?}"
         if [[ "${CODE}" -ne 0 ]]; then
             exit ${CODE}
         fi
 
-        "${ROOT}"/../server/influx_create_bucket.sh "${PARAMETER_BUCKET}1m" "3650d" "    InfluxDB_createBucket: "
+        "${ROOT}"/../server/influx_create_task.sh "${ORG}" "$(task "${BUCKET}10s" "${BUCKET}1m"  "1m" "DownsampleMean1m" "${TASK_SET_MEAN}")" "    InfluxDB_createTask: "
         CODE="${?}"
         if [[ "${CODE}" -ne 0 ]]; then
             exit ${CODE}
         fi
 
-        "${ROOT}"/../server/influx_create_task.sh "${PARAMETER_ORG}" "$(task "${PARAMETER_BUCKET}"    "${PARAMETER_BUCKET}10s" "10s" "Downsample10s")" "    InfluxDB_createTask: "
+        "${ROOT}"/../server/influx_create_task.sh "${ORG}" "$(task "${BUCKET}"    "${BUCKET}10s" "10s" "DownsampleFirst10s" "${TASK_SET_FIRST}")" "    InfluxDB_createTask: "
         CODE="${?}"
         if [[ "${CODE}" -ne 0 ]]; then
             exit ${CODE}
         fi
 
-        "${ROOT}"/../server/influx_create_task.sh "${PARAMETER_ORG}" "$(task "${PARAMETER_BUCKET}10s" "${PARAMETER_BUCKET}1m"  "1m" "Downsample1m")" "    InfluxDB_createTask: "
+        "${ROOT}"/../server/influx_create_task.sh "${ORG}" "$(task "${BUCKET}10s" "${BUCKET}1m"  "1m" "DownsampleFirst1m" "${TASK_SET_FIRST}")" "    InfluxDB_createTask: "
         CODE="${?}"
         if [[ "${CODE}" -ne 0 ]]; then
             exit ${CODE}
         fi
 
-        CONTENT=$("${ROOT}"/../server/influx_create_token.sh "WRITE_TOKEN" "write"  "${PARAMETER_BUCKET}" "    InfluxDB_createToken: ")
+        CONTENT=$("${ROOT}"/../server/influx_create_token.sh "WRITE_TOKEN" "write"  "${BUCKET},${BUCKET}test" "    InfluxDB_createToken: ")
         CODE="${?}"
         if [[ "${CODE}" -ne 0 ]]; then
             echo "${CONTENT}"
@@ -350,11 +439,9 @@ execute_influxdb()
         echo "${CONTENT}"
         LAST=${CONTENT##*$'\n'}
         TOKEN=${LAST##*:}
-        PARAMETER_HASH="$(echo "${TOKEN}" | sed 's/^[[:space:]]*//')"
+        local HASH="$(echo "${TOKEN}" | sed 's/^[[:space:]]*//')"
 
-        TASK_REMOTE="true"
-
-        CONTENT=$("${ROOT}"/../server/influx_create_token.sh "READ_TOKEN" "read"  "${PARAMETER_BUCKET},${PARAMETER_BUCKET}10s,${PARAMETER_BUCKET}1m" "    InfluxDB_createToken: ")
+        CONTENT=$("${ROOT}"/../server/influx_create_token.sh "READ_TOKEN" "read"  "${BUCKET},${BUCKET}10s,${BUCKET}1m" "    InfluxDB_createToken: ")
         CODE="${?}"
         if [[ "${CODE}" -ne 0 ]]; then
             echo "${CONTENT}"
@@ -366,19 +453,72 @@ execute_influxdb()
         TOKEN=${LAST##*:}
         READ_TOKEN="$(echo "${TOKEN}" | sed 's/^[[:space:]]*//')"
 
+        CONTENT=$("${ROOT}"/../server/influx_create_token.sh "READ_TOKEN" "read"  "${BUCKET},${BUCKET}10s,${BUCKET}1m" "    InfluxDB_createToken: ")
+        CODE="${?}"
+        if [[ "${CODE}" -ne 0 ]]; then
+            echo "${CONTENT}"
+            exit ${CODE}
+        fi
+
+        echo "${CONTENT}"
+        LAST=${CONTENT##*$'\n'}
+        TOKEN=${LAST##*:}
+        READ_TOKEN="$(echo "${TOKEN}" | sed 's/^[[:space:]]*//')"
+
+        sudo mkdir -p "/etc/solarinvert"
+        sudo sh -c "cat > /etc/solarinvert/influxdb.env <<EOF
+INFLUX_ENDPOINT=${ENDPOINT}
+INFLUX_BUCKET=${BUCKET}
+INFLUX_HASH=${HASH}
+INFLUX_ORG=${ORG}
+EOF"
     fi
 }
 
 execute_remote()
 {
     if [[ "${TASK_REMOTE}" == "true" ]]; then
-        sudo mkdir -p "/etc/solarinvert"
-        sudo sh -c "cat > /etc/solarinvert/influxdb.env <<EOF
-INFLUX_ENDPOINT=${PARAMETER_ENDPOINT}
-INFLUX_BUCKET=${PARAMETER_BUCKET}
-INFLUX_HASH=${PARAMETER_HASH}
-INFLUX_ORG=${PARAMETER_ORG}
-EOF"
+        echo "1: ${PARAMETER_REMOTE_ENDPOINT}"
+        echo "2: ${PARAMETER_REMOTE_ID_RAW}"
+        echo "3: ${PARAMETER_REMOTE_ID_10S}"
+        echo "4: ${PARAMETER_REMOTE_ID_1M}"
+        echo "5: ${PARAMETER_REMOTE_ID_TEST}"
+        echo "6: ${PARAMETER_REMOTE_TOKEN}"
+        echo "7: ${PARAMETER_REMOTE_ORG_ID}"
+        CONTENT="$("${ROOT}"/../server/influx_create_remote.sh "${REMOTE_NAME}" "${PARAMETER_REMOTE_ENDPOINT}"  "${PARAMETER_REMOTE_TOKEN}" "${PARAMETER_REMOTE_ORG_ID}" "    InfluxDB_createRemote: ")"
+        CODE="${?}"
+        if [[ "${CODE}" -ne 0 ]]; then
+            echo "${CONTENT}"
+            exit ${CODE}
+        fi
+
+        echo "${CONTENT}"
+        LAST=${CONTENT##*$'\n'}
+        REMOTE_ID="$(awk -F: '{print $3}' <<< "${LAST}" | awk '{print $1}')"
+
+        "${ROOT}"/../server/influx_create_replication.sh "toServerRaw" "${REMOTE_ID}"  "${LOCAL_ID_RAW}" "${PARAMETER_REMOTE_ID_RAW}" "${ORG}" "    InfluxDB_createReplication: "
+        CODE="${?}"
+        if [[ "${CODE}" -ne 0 ]]; then
+            exit ${CODE}
+        fi
+
+        "${ROOT}"/../server/influx_create_replication.sh "toServer10s" "${REMOTE_ID}"  "${LOCAL_ID_10S}" "${PARAMETER_REMOTE_ID_10S}" "${ORG}" "    InfluxDB_createReplication: "
+        CODE="${?}"
+        if [[ "${CODE}" -ne 0 ]]; then
+            exit ${CODE}
+        fi
+
+        "${ROOT}"/../server/influx_create_replication.sh "toServer1m" "${REMOTE_ID}"  "${LOCAL_ID_1M}" "${PARAMETER_REMOTE_ID_1M}" "${ORG}" "    InfluxDB_createReplication: "
+        CODE="${?}"
+        if [[ "${CODE}" -ne 0 ]]; then
+            exit ${CODE}
+        fi
+
+        "${ROOT}"/../server/influx_create_replication.sh "toServertest" "${REMOTE_ID}"  "${LOCAL_ID_TEST}" "${PARAMETER_REMOTE_ID_TEST}" "${ORG}" "    InfluxDB_createReplication: "
+        CODE="${?}"
+        if [[ "${CODE}" -ne 0 ]]; then
+            exit ${CODE}
+        fi
     fi
 }
 
@@ -491,6 +631,7 @@ EOF"
 
         sudo systemctl daemon-reload
         sudo systemctl enable SolarInvertInverter.service
+        sudo systemctl start  SolarInvertInverter.service
     fi
 
 }
@@ -509,6 +650,7 @@ EOF"
 
         sudo systemctl daemon-reload
         sudo systemctl enable SolarInvertWind.service
+        sudo systemctl start  SolarInvertWind.service
     fi
 }
 
@@ -524,6 +666,40 @@ execute_modbuslib()
         else
             error_multy "${LINES}" 2
         fi
+    fi
+}
+
+execute_provision()
+{
+    if [[ "${TASK_PROVISION}" == "true" ]]; then
+        local WIFI_CONNECT_VERSION="v4.11.84"
+        local WIFI_CONNECT_WEB="https://github.com/balena-os/wifi-connect/releases/download/${WIFI_CONNECT_VERSION}/"
+
+        local WIFI_CONNECT_UI="/opt/wifi-connect"
+
+        sudo mkdir -p "/etc/solarinvert"
+        sudo sh -c "cat > /etc/solarinvert/provision.env <<EOF
+AP_SSID=${PARAMETER_AP_SSID}
+AP_PASS=${PARAMETER_AP_PASS}
+WLAN_INTERFACE=${PARAMETER_WLAN_INTERFACE}
+LAN_INTERFACE=${PARAMETER_LAN_INTERFACE}
+HYSTERESE=${PARAMETER_HYSTERESE}
+AP_DURATION=${PARAMETER_AP_DURATION}
+WLAN_RETRY=${PARAMETER_WLAN_RETRY}
+UI_PATH=${WIFI_CONNECT_UI}
+EOF"
+        sudo cp "${ROOT}/wlan_solarinvert_provision.sh" "/usr/bin/wlan_solarinvert_provision.sh"
+        sudo cp "${ROOT}/SolarInvertProvision.service"       "/etc/systemd/system/SolarInvertProvision.service"
+
+        sudo mkdir -p "${WIFI_CONNECT_UI}"
+        curl -L "${WIFI_CONNECT_WEB}/wifi-connect-ui.tar.gz" | sudo tar xz -C "${WIFI_CONNECT_UI}"
+        curl -L "${WIFI_CONNECT_WEB}/wifi-connect-aarch64-unknown-linux-gnu.tar.gz" | sudo tar xz -C "/usr/bin"
+
+        sudo raspi-config nonint do_wifi_country DE
+
+        sudo systemctl daemon-reload
+        sudo systemctl enable SolarInvertProvision.service
+        sudo systemctl start  SolarInvertProvision.service
     fi
 }
 
@@ -552,6 +728,7 @@ execute_remote
 execute_grafana
 execute_inverter
 execute_wind
+execute_provision
 execute_uninstall
 
 exit 0
