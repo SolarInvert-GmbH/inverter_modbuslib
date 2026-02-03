@@ -79,7 +79,7 @@ check_arg()
 create()
 {
     status "InfluxDB create replication"
-    LINES="$(influx replication create --name "${NAME}" --remote-id "${REMOTE_ID}" --local-bucket-id ${LOCAL_ID} --remote-bucket-id ${SERVER_ID} --org "${ORG}" 2>&1)"
+    LINES="$(influx replication create --name "${NAME}" --remote-id "${REMOTE_ID}" --local-bucket-id ${LOCAL_ID} --remote-bucket-id ${SERVER_ID} --org "${ORG}" --drop-non-retryable-data 2>&1)"
     CODE="${?}"
 
     if [[ "${CODE}" -eq 0 ]]; then
