@@ -26,10 +26,23 @@ error_multy()
     exit ${2}
 }
 
+log()
+{
+    echo "${1}" >&2
+}
+
+check()
+{
+    if [[ "${1}" != 0 ]]; then
+        echo "${2}" >&2
+        exit
+    fi
+}
+
 print_help_and_leave()
 {
     echo "ussage:"
-    echo "${0} [--influxDB PASSWORD [--remote <REMOTE_ENDPOINT> <REMOTE_ID_RAW> <REMOTE_ID_10S> <REMOTE_ID_1M> <REMOTE_ID_TEST> <REMOTE_TOKEN> <REMOTE_ORG_ID>]] [--grafana <COUNT>] [--inverter <LOOP> <DEVICE> [TIME] [AC_POWER] [DC_VOLTAGE] [OPERATING_STATE] [TEMPERATURE] [AC_VOLTAGE] [ENERGY_PRODUCTION]] [--wind GPIO DURATION FACTOR] [--modbuslib] [--provision <AP_SSID> <AP_PASS> <WLAN_INTERFACE> <LAN_INTERFACE> <HYSTERESE> <AP_DURATION> <WLAN_RETRY>]"
+    echo "${0} [--influxDB PASSWORD [--remote <REMOTE_ENDPOINT> <REMOTE_ID_RAW> <REMOTE_ID_10S> <REMOTE_ID_1M> <REMOTE_ID_TEST> <REMOTE_TOKEN> <REMOTE_ORG_ID>]] [--grafana <COUNT>] [--inverter <LOOP> <DEVICE>] [--wind GPIO DURATION FACTOR] [--modbuslib] [--provision <AP_SSID> <AP_PASS> <WLAN_INTERFACE> <LAN_INTERFACE> <HYSTERESE> <AP_DURATION> <WLAN_RETRY>]"
     echo "${0} --help"
     echo "${0} --unistall"
     echo "  --influxDB          Installs InfluxDB. Is in conflict do '--remote'"
@@ -93,56 +106,6 @@ check_param_and_set()
     REF="${3}"
 }
 
-set_param_inverter_variabel()
-{
-    if [[ ${#} -eq 0 ]]; then
-        return 1
-    fi
-    if [[ ${1} == --* ]]; then
-        return 1
-    fi
-    case ${1} in
-      TIME)
-        PARAMETER_TIME="true"
-        PARAMETER_VALUES=( "${PARAMETER_VALUES[@]}" "TIME" )
-        return 0
-        ;;
-      AC_POWER)
-        PARAMETER_AC_POWER="true"
-        PARAMETER_VALUES=( "${PARAMETER_VALUES[@]}" "AC_POWER" )
-        return 0
-        ;;
-      DC_VOLTAGE)
-        PARAMETER_DC_VOLTAGE="true"
-        PARAMETER_VALUES=( "${PARAMETER_VALUES[@]}" "DC_VOLTAGE" )
-        return 0
-        ;;
-      OPERATING_STATE)
-        PARAMETER_OPERATING_STATE="true"
-        PARAMETER_VALUES=( "${PARAMETER_VALUES[@]}" "OPERATING_STATE" )
-        return 0
-        ;;
-      TEMPERATURE)
-        PARAMETER_TEMPERATURE="true"
-        PARAMETER_VALUES=( "${PARAMETER_VALUES[@]}" "TEMPERATURE" )
-        return 0
-        ;;
-      AC_VOLTAGE)
-        PARAMETER_AC_VOLTAGE="true"
-        PARAMETER_VALUES=( "${PARAMETER_VALUES[@]}" "AC_VOLTAGE" )
-        return 0
-        ;;
-      ENERGY_PRODUCTION)
-        PARAMETER_ENERGY_PRODUCTION="true"
-        PARAMETER_VALUES=( "${PARAMETER_VALUES[@]}" "ENERGY_PRODUCTION" )
-        return 0
-        ;;
-      *)
-        return 1
-      ;;
-    esac
-}
-
 parse_arguments()
 {
     TASK_INFLUX_DB="false"
@@ -160,14 +123,6 @@ parse_arguments()
     TASK_INVERTER="false"
     PARAMETER_LOOP=""
     PARAMETER_DEVICE=""
-    PARAMETER_TIME="false"
-    PARAMETER_AC_POWER="false"
-    PARAMETER_DC_VOLTAGE="false"
-    PARAMETER_OPERATING_STATE="false"
-    PARAMETER_TEMPERATURE="false"
-    PARAMETER_AC_VOLTAGE="false"
-    PARAMETER_ENERGY_PRODUCTION="false"
-    PARAMETER_VALUES=()
     TASK_WIND="false"
     PARAMETER_GPIO=""
     PARAMETER_DURATION=""
@@ -227,10 +182,6 @@ parse_arguments()
             shift
             check_param_and_set "--inverter" "DEVICE" "${@}"
             shift
-            VAR_REST=( "$@" )
-            while set_param_inverter_variabel "${@}"; do
-                shift
-            done
             ;;
           --wind)
             TASK_WIND="true"
@@ -240,7 +191,6 @@ parse_arguments()
             shift
             check_param_and_set "--wind" "FACTOR" "${@}"
             shift
-            PARAMETER_VALUES=( "WIND" "${PARAMETER_VALUES[@]}" )
             ;;
           --modbuslib)
             TASK_MODBUSLIB="true"
@@ -306,7 +256,8 @@ from(bucket: \"${SOURCE}\")
 }
 
 BUCKET="messurement"
-ENDPOINT="localhost:8086"
+INFLUX_ENDPOINT="localhost:8086"
+GRAFANA_ENDPOINT="http://localhost:3000"
 ORG="solarinvert"
 REMOTE_NAME="SolarinvertServer"
 
@@ -467,7 +418,7 @@ execute_influxdb()
 
         sudo mkdir -p "/etc/solarinvert"
         sudo sh -c "cat > /etc/solarinvert/influxdb.env <<EOF
-INFLUX_ENDPOINT=${ENDPOINT}
+INFLUX_ENDPOINT=${INFLUX_ENDPOINT}
 INFLUX_BUCKET=${BUCKET}
 INFLUX_HASH=${HASH}
 INFLUX_ORG=${ORG}
@@ -478,13 +429,6 @@ EOF"
 execute_remote()
 {
     if [[ "${TASK_REMOTE}" == "true" ]]; then
-        echo "1: ${PARAMETER_REMOTE_ENDPOINT}"
-        echo "2: ${PARAMETER_REMOTE_ID_RAW}"
-        echo "3: ${PARAMETER_REMOTE_ID_10S}"
-        echo "4: ${PARAMETER_REMOTE_ID_1M}"
-        echo "5: ${PARAMETER_REMOTE_ID_TEST}"
-        echo "6: ${PARAMETER_REMOTE_TOKEN}"
-        echo "7: ${PARAMETER_REMOTE_ORG_ID}"
         CONTENT="$("${ROOT}"/../server/influx_create_remote.sh "${REMOTE_NAME}" "${PARAMETER_REMOTE_ENDPOINT}"  "${PARAMETER_REMOTE_TOKEN}" "${PARAMETER_REMOTE_ORG_ID}" "    InfluxDB_createRemote: ")"
         CODE="${?}"
         if [[ "${CODE}" -ne 0 ]]; then
@@ -520,6 +464,33 @@ execute_remote()
             exit ${CODE}
         fi
     fi
+}
+
+GRAFANA_VALUES_WIND_ONLY=( "WIND_SINGLE" )
+GRAFANA_VALUES_WIND=(      "WIND_MULTI" "AC_POWER" "DC_VOLTAGE" "ENERGY_PRODUCTION" "AC_VOLTAGE" "TEMPERATURE" "TIME" "OPERATING_STATE" )
+GRAFANA_VALUES_SOLAR=(                  "AC_POWER" "DC_VOLTAGE" "ENERGY_PRODUCTION" "AC_VOLTAGE" "TEMPERATURE" "TIME" "OPERATING_STATE" )
+
+create_dashboard()
+{
+    local CUSTOMER="${1}"
+    local POSTFIX="${2}"
+    local GRAFANA_DATASOURCE="${3}"
+    local NUMBER_OF_INVERTER="${4}"
+    local -n VALUES="$5"
+    local GRAFANA_USER_PASSWORD="${6}"
+    local GRAFANA_HOST="${7}"
+    log ""
+    log "create_dashboard"
+    dashboard_cmd=("${ROOT}/../server/DashboardContent.sh" "${CUSTOMER}_${POSTFIX}" "${CUSTOMER}" "${GRAFANA_DATASOURCE}" "${NUMBER_OF_INVERTER}" "${VALUES[@]}")
+    log "$(echo "${dashboard_cmd[@]}")"
+    local DASHBOARD="$("${dashboard_cmd[@]}")"
+    local curl_cmd=(curl -X POST -u "$GRAFANA_USER_PASSWORD" -H "Content-Type: application/json" -d "${DASHBOARD}"  "${GRAFANA_HOST}/api/dashboards/db")
+    log "$(echo "${curl_cmd[@]}")"
+    local TEXT="$("${curl_cmd[@]}")"
+    local RESULT="${?}"
+    log "${TEXT}"
+    check "${RESULT}" "create dashboard"
+    jq -r '.id' <<< "${TEXT}"
 }
 
 execute_grafana()
@@ -586,7 +557,7 @@ execute_grafana()
 
         sleep 20
 
-        GRAFANA_USER_PASSWORD="admin:admin"
+        local GRAFANA_USER_PASSWORD="admin:admin"
 
         LINES="$("${ROOT}/../server/grafana_create_datasource.sh" "influxdb" "${GRAFANA_USER_PASSWORD}" "http://localhost:8086" "solarinvert" "${READ_TOKEN}" "    InfluxDB_createToken: ")"
         CODE="${?}"
@@ -600,7 +571,27 @@ execute_grafana()
         JSON=$(echo "${LAST}" | sed 's/^[[:space:]]*InfluxDB_createToken:[[:space:]]*STATUS:[[:space:]]*//')
         DATASOURCE_UID=$(echo "${JSON}" | jq -r '.datasource.uid')
 
-        LINES="$("${ROOT}/../server/grafana_create_dashboard.sh" "${GRAFANA_USER_PASSWORD}" "InverterValues"  "${PARAMETER_BUCKET}" "${DATASOURCE_UID}" "${PARAMETER_COUNT}" ${PARAMETER_VALUES[@]})"
+        if [[ "${TASK_WIND}" == "true" ]]; then
+
+            LINES="$(create_dashboard "${BUCKET}" wind_only  "${DATASOURCE_UID}" "${PARAMETER_COUNT}" GRAFANA_VALUES_WIND_ONLY  "${GRAFANA_USER_PASSWORD}" "${GRAFANA_ENDPOINT}")"
+            CODE="${?}"
+            if [[ "${CODE}" -eq 0 ]]; then
+                status_multy "${LINES}"
+            else
+                error_multy "${LINES}" 2
+            fi
+
+            LINES="$(create_dashboard "${BUCKET}" wind       "${DATASOURCE_UID}" "${PARAMETER_COUNT}" GRAFANA_VALUES_WIND       "${GRAFANA_USER_PASSWORD}" "${GRAFANA_ENDPOINT}")"
+            CODE="${?}"
+            if [[ "${CODE}" -eq 0 ]]; then
+                status_multy "${LINES}"
+            else
+                error_multy "${LINES}" 2
+            fi
+
+        fi
+
+        LINES="$(create_dashboard "${BUCKET}" solar      "${DATASOURCE_UID}" "${PARAMETER_COUNT}" GRAFANA_VALUES_SOLAR      "${GRAFANA_USER_PASSWORD}" "${GRAFANA_ENDPOINT}")"
         CODE="${?}"
         if [[ "${CODE}" -eq 0 ]]; then
             status_multy "${LINES}"
@@ -616,14 +607,14 @@ execute_inverter()
         sudo mkdir -p "/etc/solarinvert"
         sudo sh -c "cat > /etc/solarinvert/inverter.env <<EOF
 UART=${PARAMETER_DEVICE}
-PARAMETER_TIME=${PARAMETER_TIME}
-PARAMETER_AC_POWER=${PARAMETER_AC_POWER}
-PARAMETER_DC_VOLTAGE=${PARAMETER_DC_VOLTAGE}
-PARAMETER_OPERATING_STATE=${PARAMETER_OPERATING_STATE}
-PARAMETER_TEMPERATURE=${PARAMETER_TEMPERATURE}
-PARAMETER_AC_VOLTAGE=${PARAMETER_AC_VOLTAGE}
-PARAMETER_ENERGY_PRODUCTION=${PARAMETER_ENERGY_PRODUCTION}
-LOOP_TIME_SECONDS=${PARAMETER_LOOP}
+PARAMETER_TIME=true
+PARAMETER_AC_POWER=true
+PARAMETER_DC_VOLTAGE=true
+PARAMETER_OPERATING_STATE=true
+PARAMETER_TEMPERATURE=true
+PARAMETER_AC_VOLTAGE=true
+PARAMETER_ENERGY_PRODUCTION=true
+LOOP_TIME_SECONDS=true
 EOF"
 
         sudo cp "${ROOT}/log_solarinvert_inverter.sh"  "/usr/bin/log_solarinvert_inverter.sh"
