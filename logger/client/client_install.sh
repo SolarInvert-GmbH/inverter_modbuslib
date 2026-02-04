@@ -391,6 +391,7 @@ execute_influxdb()
         LAST=${CONTENT##*$'\n'}
         TOKEN=${LAST##*:}
         local HASH="$(echo "${TOKEN}" | sed 's/^[[:space:]]*//')"
+        WRITE_TOKEN="${HASH}"
 
         CONTENT=$("${ROOT}"/../server/influx_create_token.sh "READ_TOKEN" "read"  "${BUCKET},${BUCKET}10s,${BUCKET}1m" "    InfluxDB_createToken: ")
         CODE="${?}"
@@ -721,5 +722,12 @@ execute_inverter
 execute_wind
 execute_provision
 execute_uninstall
+
+if [ -v WRITE_TOKEN ]; then
+    echo "WRITE_TOKEN: ${WRITE_TOKEN}"
+fi
+if [ -v READ_TOKEN ]; then
+    echo "READ_TOKEN: ${READ_TOKEN}"
+fi
 
 exit 0
