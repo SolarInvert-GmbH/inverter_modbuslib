@@ -9,11 +9,10 @@ gauge()
     local NAME="${5}"
     local MIN="${6}"
     local MAX="${7}"
-    local RED="${8}"
-    local UNIT="${9}"
-    local INFLUXDB_BUCKET="${10}"
-    local INFLUXDB_NAME="${11}"
-    local INFLUXDB_DATASOURCE="${12}"
+    local UNIT="${8}"
+    local INFLUXDB_BUCKET="${9}"
+    local INFLUXDB_NAME="${10}"
+    local INFLUXDB_DATASOURCE="${11}"
     local CONTENT="{\"datasource\":{\"type\":\"influxdb\",\"uid\":\"${INFLUXDB_DATASOURCE}\"},\"fieldConfig\":{\"defaults\":{\"color\":{\"mode\":\"thresholds\"},\"mappings\":[],"
     if [ -n "${MAX}" ]; then
         CONTENT="${CONTENT}\"max\":${MAX},"
@@ -21,13 +20,7 @@ gauge()
     if [ -n "${MIN}" ]; then
         CONTENT="${CONTENT}\"min\":${MIN},"
     fi
-    CONTENT="${CONTENT}\"thresholds\":{\"mode\":\"absolute\",\"steps\":[{\"color\":\"green\",\"value\":"
-    if [ -n "${RED}" ]; then
-        CONTENT="${CONTENT}${MIN}},{\"color\":\"red\",\"value\":${RED}"
-    else
-        CONTENT="${CONTENT}null"
-    fi
-    CONTENT="${CONTENT}}]}"
+    CONTENT="${CONTENT}\"thresholds\":{\"mode\":\"absolute\",\"steps\":[{\"color\":\"green\",\"value\":null}]}"
     if [ -n "${UNIT}" ]; then
         CONTENT="${CONTENT},\"unit\":\"${UNIT}\""
     fi
@@ -63,29 +56,22 @@ diagram()
     local NAME="${5}"
     local MIN="${6}"
     local MAX="${7}"
-    local RED="${8}"
-    local UNIT="${9}"
-    local INFLUXDB_BUCKET_RAW="${10}"
-    local INFLUXDB_BUCKET_10s="${11}"
-    local INFLUXDB_BUCKET_1m="${12}"
-    local INFLUXDB_NAME="${13}"
-    local INFLUXDB_DATASOURCE="${14}"
-    local LINE="${15}"
-    local FUNCTION="${16}"
-    local CONTENT="{\"datasource\":{\"type\":\"influxdb\",\"uid\":\"${INFLUXDB_DATASOURCE}\"},\"fieldConfig\":{\"defaults\":{\"color\":{\"mode\":\"palette-classic\"},\"custom\":{\"axisBorderShow\":false,\"axisCenteredZero\":false,\"axisColorMode\":\"text\",\"axisLabel\":\"\",\"axisPlacement\":\"auto\",\"barAlignment\":0,\"barWidthFactor\":0.6,\"drawStyle\":\"line\",\"fillOpacity\":0,\"gradientMode\":\"none\",\"hideFrom\":{\"legend\":false,\"tooltip\":false,\"viz\":false},\"insertNulls\":3600000,\"lineInterpolation\":\"${LINE}\",\"lineWidth\":1,\"pointSize\":5,\"scaleDistribution\":{\"type\":\"linear\"},\"showPoints\":\"never\",\"spanNulls\":false,\"stacking\":{\"group\":\"A\",\"mode\":\"none\"},\"thresholdsStyle\":{\"mode\":\"off\"}},\"mappings\":[],"
+    local UNIT="${8}"
+    local INFLUXDB_BUCKET_RAW="${9}"
+    local INFLUXDB_BUCKET_10s="${10}"
+    local INFLUXDB_BUCKET_1m="${11}"
+    local INFLUXDB_NAME="${12}"
+    local INFLUXDB_DATASOURCE="${13}"
+    local LINE="${14}"
+    local FUNCTION="${15}"
+    local CONTENT="{\"datasource\":{\"type\":\"influxdb\",\"uid\":\"${INFLUXDB_DATASOURCE}\"},\"fieldConfig\":{\"defaults\":{\"color\":{\"mode\":\"palette-classic\"},\"custom\":{\"axisBorderShow\":false,\"axisCenteredZero\":false,\"axisColorMode\":\"text\",\"axisLabel\":\"\",\"axisPlacement\":\"auto\","
     if [ -n "${MAX}" ]; then
-        CONTENT="${CONTENT}\"max\":${MAX},"
+        CONTENT="${CONTENT}\"axisSoftMax\":${MAX},"
     fi
     if [ -n "${MIN}" ]; then
-        CONTENT="${CONTENT}\"min\":${MIN},"
+        CONTENT="${CONTENT}\"axisSoftMin\":${MIN},"
     fi
-    CONTENT="${CONTENT}\"thresholds\":{\"mode\":\"absolute\",\"steps\":[{\"color\":\"green\",\"value\":"
-    if [ -n "${RED}" ]; then
-        CONTENT="${CONTENT}${MIN}},{\"color\":\"red\",\"value\":${RED}"
-    else
-        CONTENT="${CONTENT}null"
-    fi
-    CONTENT="${CONTENT}}]}"
+    local CONTENT="${CONTENT}\"barAlignment\":0,\"barWidthFactor\":0.6,\"drawStyle\":\"line\",\"fillOpacity\":0,\"gradientMode\":\"none\",\"hideFrom\":{\"legend\":false,\"tooltip\":false,\"viz\":false},\"insertNulls\":3600000,\"lineInterpolation\":\"${LINE}\",\"lineWidth\":1,\"pointSize\":5,\"scaleDistribution\":{\"type\":\"linear\"},\"showPoints\":\"never\",\"spanNulls\":false,\"stacking\":{\"group\":\"A\",\"mode\":\"none\"},\"thresholdsStyle\":{\"mode\":\"off\"}},\"mappings\":[],\"thresholds\":{\"mode\":\"absolute\",\"steps\":[{\"color\":\"green\",\"value\":null}]}"
     if [ -n "${UNIT}" ]; then
         CONTENT="${CONTENT},\"unit\":\"${UNIT}\""
     fi
@@ -111,17 +97,31 @@ multi_diagram()
     local MATCHER_TAIL=""
     local CURVE="["
     local REF_ID="A"
-    while (( $# >= 3 )); do
+    while (( $# >= 5 )); do
         local INFLUXDB_NAME="${1}"
         local FUNCTION="${2}"
-        local UNIT="${3}"
-        shift 3
+        local MIN="${3}"
+        local MAX="${4}"
+        local UNIT="${5}"
+        shift 5
         if [[ "$INFLUXDB_NAME" == "wind" ]]; then
             MATCHER_OPACITY=",{\"id\":\"custom.fillOpacity\",\"value\":30}"
         else
             MATCHER_OPACITY=""
         fi
-        MATCHER_TAIL="${MATCHER_TAIL},{\"matcher\":{\"id\":\"byName\",\"options\":\"${INFLUXDB_NAME}\"},\"properties\":[{\"id\":\"min\"},{\"id\":\"max\"},{\"id\":\"unit\",\"value\": \"${UNIT}\"}${MATCHER_OPACITY}]}"
+        MATCHER_TAIL="${MATCHER_TAIL},{\"matcher\":{\"id\":\"byName\",\"options\":\"${INFLUXDB_NAME}\"},\"properties\":[{\"id\":\"custom.axisSoftMax\",\"value\":"
+        if [ -n "${MAX}" ]; then
+            MATCHER_TAIL="${MATCHER_TAIL}${MAX}"
+        else
+            MATCHER_TAIL="${MATCHER_TAIL}\"auto\""
+        fi
+        MATCHER_TAIL="${MATCHER_TAIL}},{\"id\":\"custom.axisSoftMin\",\"value\":"
+        if [ -n "${MIN}" ]; then
+            MATCHER_TAIL="${MATCHER_TAIL}${MIN}"
+        else
+            MATCHER_TAIL="${MATCHER_TAIL}\"auto\""
+        fi
+        MATCHER_TAIL="${MATCHER_TAIL}},{\"id\":\"custom.showPoints\",\"value\":\"never\"},{\"id\":\"unit\",\"value\": \"${UNIT}\"}${MATCHER_OPACITY}]}"
         CURVE="${CURVE}{\"datasource\":{\"type\":\"influxdb\",\"uid\":\"${INFLUXDB_DATASOURCE}\"},\"hide\":false,\"query\":\"import \\\"experimental\\\"\\n\\nstart = v.timeRangeStart\\nstop = v.timeRangeStop\\n\\nbucket_name = if start > experimental.subDuration(from: now(), d: 30d) then\\n    \\\"${INFLUXDB_BUCKET_RAW}\\\"\\nelse if start > experimental.subDuration(from: now(), d: 1y) then\\n    \\\"${INFLUXDB_BUCKET_10s}\\\"\\nelse\\n    \\\"${INFLUXDB_BUCKET_1m}\\\"\\n\\nwindow_ns = int(v: v.windowPeriod)\\nwindow = if window_ns <= int(v: 10s) then 10s else v.windowPeriod\\n\\nfield_label = if window_ns <= int(v: 10s) then\\n    \\\"10s\\\"\\nelse if window_ns <= int(v: 1m) then\\n    \\\"1m\\\"\\nelse if window_ns <= int(v: 10m) then\\n    \\\"10m\\\"\\nelse if window_ns <= int(v: 1h) then\\n    \\\"1h\\\"\\nelse if window_ns <= int(v: 6h) then\\n    \\\"6h\\\"\\nelse\\n    \\\"1d\\\"\\n\\ndata = from(bucket: bucket_name)\\n|> range(start: start, stop: stop)\\n|> filter(fn: (r) => r._measurement == \\\"${INFLUXDB_NAME}\\\")\\n|> aggregateWindow(every:window, fn: ${FUNCTION})\\n|> set(key: \\\"_field\\\", value: field_label)\\n|> set(key: \\\"_field\\\", value: \\\"${INFLUXDB_NAME}\\\")\\n|> yield(name: \\\"auto\\\")\",\"refId\": \"${REF_ID}\"}"
         if (( $# >= 3 )); then
             CURVE="${CURVE},"
@@ -188,56 +188,56 @@ handle_Type()
       TIME)
         local W_1="$(get_small_width "${ELEMENTS}")"
         local W_2="$((24 - W_1))"
-        RESULT="${RESULT}$(statt   "${ID_1}"    0     "${Y}" "${W_1}" "Up Time"          "dtdhms" "${BUCKET}"                              "time" "${INFLUXDB_DATASOURCE}"),"
-        RESULT="${RESULT}$(diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "Up Time" "" "" "" "dtdhms" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "time" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
+        RESULT="${RESULT}$(statt   "${ID_1}"    0     "${Y}" "${W_1}" "Up Time"       "dtdhms" "${BUCKET}"                              "time" "${INFLUXDB_DATASOURCE}"),"
+        RESULT="${RESULT}$(diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "Up Time" "" "" "dtdhms" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "time" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
         ;;
       AC_POWER)
         local W_1="$(get_small_width "${ELEMENTS}")"
         local W_2="$((24 - W_1))"
-        RESULT="${RESULT}$(gauge   "${ID_1}"    0     "${Y}" "${W_1}" "AC Power" "" "" "" "watt" "${BUCKET}"                              "acpower" "${INFLUXDB_DATASOURCE}"),"
-        RESULT="${RESULT}$(diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "AC Power" "" "" "" "watt" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "acpower" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
+        RESULT="${RESULT}$(gauge   "${ID_1}"    0     "${Y}" "${W_1}" "AC Power" "" "" "watt" "${BUCKET}"                              "acpower" "${INFLUXDB_DATASOURCE}"),"
+        RESULT="${RESULT}$(diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "AC Power" "" "" "watt" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "acpower" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
         ;;
       DC_VOLTAGE)
         local W_1="$(get_small_width "${ELEMENTS}")"
         local W_2="$((24 - W_1))"
-        RESULT="${RESULT}$(gauge   "${ID_1}"    0     "${Y}" "${W_1}" "DC Voltage" "" "" "" "volt" "${BUCKET}"                              "dcvoltage" "${INFLUXDB_DATASOURCE}"),"
-        RESULT="${RESULT}$(diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "DC Voltage" "" "" "" "volt" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "dcvoltage" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
+        RESULT="${RESULT}$(gauge   "${ID_1}"    0     "${Y}" "${W_1}" "DC Voltage" "" "" "volt" "${BUCKET}"                              "dcvoltage" "${INFLUXDB_DATASOURCE}"),"
+        RESULT="${RESULT}$(diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "DC Voltage" "" "" "volt" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "dcvoltage" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
         ;;
       OPERATING_STATE)
         local W_1="$(get_small_width "${ELEMENTS}")"
         local W_2="$((24 - W_1))"
-        RESULT="${RESULT}$(statt   "${ID_1}"    0     "${Y}" "${W_1}" "State"         "" "${BUCKET}"                              "state" "${INFLUXDB_DATASOURCE}"),"
-        RESULT="${RESULT}$(diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "State" 0 11 "" "" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "state" "${INFLUXDB_DATASOURCE}" "stepBefore" "first")"
+        RESULT="${RESULT}$(statt   "${ID_1}"    0     "${Y}" "${W_1}" "State"      "" "${BUCKET}"                              "state" "${INFLUXDB_DATASOURCE}"),"
+        RESULT="${RESULT}$(diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "State" 0 11 "" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "state" "${INFLUXDB_DATASOURCE}" "stepBefore" "first")"
         ;;
       TEMPERATURE)
         local W_1="$(get_small_width "${ELEMENTS}")"
         local W_2="$((24 - W_1))"
-        RESULT="${RESULT}$(gauge   "${ID_1}"    0     "${Y}" "${W_1}" "Temperature" "" "" "" "celsius" "${BUCKET}"                              "temperature" "${INFLUXDB_DATASOURCE}"),"
-        RESULT="${RESULT}$(diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "Temperature" "" "" "" "celsius" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "temperature" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
+        RESULT="${RESULT}$(gauge   "${ID_1}"    0     "${Y}" "${W_1}" "Temperature" "" "" "celsius" "${BUCKET}"                              "temperature" "${INFLUXDB_DATASOURCE}"),"
+        RESULT="${RESULT}$(diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "Temperature" "" "" "celsius" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "temperature" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
         ;;
       AC_VOLTAGE)
         local W_1="$(get_small_width "${ELEMENTS}")"
         local W_2="$((24 - W_1))"
-        RESULT="${RESULT}$(gauge   "${ID_1}"    0     "${Y}" "${W_1}" "AC Voltage" "" "" "" "volt" "${BUCKET}"                              "acvoltage" "${INFLUXDB_DATASOURCE}"),"
-        RESULT="${RESULT}$(diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "AC Voltage" "" "" "" "volt" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "acvoltage" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
+        RESULT="${RESULT}$(gauge   "${ID_1}"    0     "${Y}" "${W_1}" "AC Voltage" "" "" "volt" "${BUCKET}"                              "acvoltage" "${INFLUXDB_DATASOURCE}"),"
+        RESULT="${RESULT}$(diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "AC Voltage" "" "" "volt" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "acvoltage" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
         ;;
       ENERGY_PRODUCTION)
         local W_1="$(get_small_width "${ELEMENTS}")"
         local W_2="$((24 - W_1))"
-        RESULT="${RESULT}$(statt   "${ID_1}"    0     "${Y}" "${W_1}" "Energy Production"          "watth" "${BUCKET}"                              "energy" "${INFLUXDB_DATASOURCE}"),"
-        RESULT="${RESULT}$(diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "Energy Production" "" "" "" "watth" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "energy" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
+        RESULT="${RESULT}$(statt   "${ID_1}"    0     "${Y}" "${W_1}" "Energy Production"       "watth" "${BUCKET}"                              "energy" "${INFLUXDB_DATASOURCE}"),"
+        RESULT="${RESULT}$(diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "Energy Production" "" "" "watth" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "energy" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
         ;;
       WIND_SINGLE)
         local W_1="$(get_small_width "1")"
         local W_2="$((24 - W_1))"
-        RESULT="${RESULT}$(gauge   "${ID_1}"    0     "${Y}" "${W_1}" "Wind" "" "" "" "velocityms" "${BUCKET}"                              "wind" "${INFLUXDB_DATASOURCE}"),"
-        RESULT="${RESULT}$(diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "Wind" "" "" "" "velocityms" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "wind" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
+        RESULT="${RESULT}$(gauge   "${ID_1}"    0     "${Y}" "${W_1}" "Wind" "0" "40" "velocityms" "${BUCKET}"                              "wind" "${INFLUXDB_DATASOURCE}"),"
+        RESULT="${RESULT}$(diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "Wind" "0" "20" "velocityms" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "wind" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
         ;;
       WIND_MULTI)
         local W_1="$(get_small_width "1")"
         local W_2="$((24 - W_1))"
-        RESULT="${RESULT}$(gauge   "${ID_1}"    0     "${Y}" "${W_1}" "Wind" "" "" "" "velocityms" "${BUCKET}"                              "wind" "${INFLUXDB_DATASOURCE}"),"
-        RESULT="${RESULT}$(multi_diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "Wind" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "${INFLUXDB_DATASOURCE}" "smooth" "wind" "mean" "velocityms" "acpower" "mean" "watt" "dcvoltage" "mean" "volt" )"
+        RESULT="${RESULT}$(gauge   "${ID_1}"    0     "${Y}" "${W_1}" "Wind" "" "" "velocityms" "${BUCKET}"                              "wind" "${INFLUXDB_DATASOURCE}"),"
+        RESULT="${RESULT}$(multi_diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "Wind" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "${INFLUXDB_DATASOURCE}" "smooth" "wind" "mean" "0" "20" "velocityms" "acpower" "mean" "" "" "watt" "dcvoltage" "mean" "" "" "volt" )"
         ;;
       *)
         echo "handle_Type: '${1}' is not a valid type. [TIME,AC_POWER,DC_VOLTAGE,OPERATING_STATE,TEMPERATURE,AC_VOLTAGE,AC_VOLTAGE,ENERGY_PRODUCTION]" 1  >&2
