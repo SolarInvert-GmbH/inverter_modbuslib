@@ -689,7 +689,19 @@ EOF"
 
         sudo raspi-config nonint do_wifi_country DE
 
+        sudo tee -a /etc/NetworkManager/NetworkManager.conf > /dev/null <<EOF
+
+[device]
+wifi.backend=iwd
+EOF
+
+        sudo apt update
+        sudo apt install -y iwd
+
         sudo systemctl daemon-reload
+        sudo systemctl disable wpa_supplicant
+        sudo systemctl enable iwd
+        sudo systemctl restart NetworkManager
         sudo systemctl enable SolarInvertProvision.service
         sudo systemctl start  SolarInvertProvision.service
     fi
