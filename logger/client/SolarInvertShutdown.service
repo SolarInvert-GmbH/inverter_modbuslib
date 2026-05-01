@@ -1,0 +1,14 @@
+[Unit]
+Description=Shuts down system when not connected to inverter
+After=network.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/solarinvert/inverter.env
+EnvironmentFile=/etc/solarinvert/shutown.env
+ExecStart=/usr/bin/solarinvert_shutdown.sh "${UART}" "${SHUTDOWN_TIME}"
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target

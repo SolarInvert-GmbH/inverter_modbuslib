@@ -42,7 +42,7 @@ check()
 print_help_and_leave()
 {
     echo "ussage:"
-    echo "${0} [--influxDB PASSWORD [--remote <REMOTE_ENDPOINT> <REMOTE_ID_RAW> <REMOTE_ID_10S> <REMOTE_ID_1M> <REMOTE_ID_TEST> <REMOTE_TOKEN> <REMOTE_ORG_ID>]] [--grafana <COUNT>] [--inverter <LOOP> <DEVICE>] [--wind GPIO DURATION FACTOR] [--modbuslib] [--provision <AP_SSID> <AP_PASS> <WLAN_INTERFACE> <LAN_INTERFACE> <HYSTERESE> <AP_DURATION> <WLAN_RETRY>]"
+    echo "${0} [--influxDB PASSWORD [--remote <REMOTE_ENDPOINT> <REMOTE_ID_RAW> <REMOTE_ID_10S> <REMOTE_ID_1M> <REMOTE_ID_TEST> <REMOTE_TOKEN> <REMOTE_ORG_ID>]] [--grafana <COUNT>] [--inverter <LOOP> <DEVICE>] [--wind GPIO DURATION FACTOR] [--modbuslib] [--provision <AP_SSID> <AP_PASS> <WLAN_INTERFACE> <LAN_INTERFACE> <HYSTERESE> <AP_DURATION> <WLAN_RETRY>] [--shutdown <SHUTDOWN_TIME>]"
     echo "${0} --help"
     echo "${0} --unistall"
     echo "  --influxDB          Installs InfluxDB. Is in conflict do '--remote'"
@@ -72,6 +72,8 @@ print_help_and_leave()
     echo "     HYSTERESE        The time to wait after ap time"
     echo "     AP_DURATION      The time the access point is active"
     echo "     WLAN_RETRY       The time system trys to connect to existing wlan"
+    echo "  --shutdown          Installs shutdown service"
+    echo "     SHUTDOWN_TIME    The time without uart device until shutdown"
     echo "  --help              Print this help"
     echo "  --unistall          Remove all files that can be created with this script. Do not remove influxdb of grafana"
     exit_and_clean_up "${1}"
@@ -136,6 +138,8 @@ parse_arguments()
     PARAMETER_HYSTERESE=""
     PARAMETER_AP_DURATION=""
     PARAMETER_WLAN_RETRY=""
+    TASK_SHUTDOWN="false"
+    PARAMETER_SHUTDOWN_TIME=""
     TASK_UNINSTALL="false"
 
     if [[ ${#} -eq "1" && ${1} == "--uninstall" ]]; then
@@ -211,6 +215,11 @@ parse_arguments()
             shift
             check_param_and_set "--provision" "WLAN_RETRY" "${@}"
             shift
+            ;;
+          --shutdown)
+            check_param_and_set "--shutdown" "SHUTDOWN_TIME" "${@}"
+            shift
+            TASK_SHUTDOWN="true"
             ;;
           --uninstall)
             echo "Only use --uninstall as single option"
@@ -707,17 +716,43 @@ EOF
     fi
 }
 
+execute_shutdown()
+{
+    if [[ "${TASK_SHUTDOWN}" == "true" ]]; then
+        sudo mkdir -p "/etc/solarinvert"
+        sudo sh -c "cat > /etc/solarinvert/shutdown.env <<EOF
+SHUTDOWN_TIME=${PARAMETER_SHUTDOWN_TIME}
+EOF"
+        sudo cp "${ROOT}/solarinvert_shudown.sh"       "/usr/bin/solarinvert_shudown.sh"
+        sudo cp "${ROOT}/SolarInvertShutdown.service"  "/etc/systemd/system/SolarInvertShutdown.service"
+
+        sudo systemctl daemon-reload
+        sudo systemctl enable SolarInvertShutdown.service
+        sudo systemctl start  SolarInvertShutdown.service
+    fi
+}
+
 execute_uninstall()
 {
     if [[ "${TASK_UNINSTALL}" == "true" ]]; then
-            sudo systemctl disable SolarInvertInverter.service
+        sudo systemctl disable SolarInvertInverter.service
         sudo systemctl stop SolarInvertInverter.service
+        sudo systemctl disable SolarInvertWind.service
+        sudo systemctl stop SolarInvertWind.service
+        sudo systemctl disable SolarInvertShutdown.service
+        sudo systemctl stop SolarInvertShutdown.service
+        sudo systemctl disable SolarInvertProvision.service
+        sudo systemctl stop SolarInvertProvision.service
 
         sudo rm -r "/etc/solarinvert"
         sudo rm "/usr/bin/log_solarinvert_inverter.sh"
         sudo rm "/usr/bin/log_solarinvert_wind.sh"
+        sudo rm "/usr/bin/solarinvert_shudown.sh"
+        sudo rm "/usr/bin/solarinvert_provision.sh"
         sudo rm "/etc/systemd/system/SolarInvertInverter.service"
         sudo rm "/etc/systemd/system/SolarInvertWind.service"
+        sudo rm "/etc/systemd/system/SolarInvertShutdown.service"
+        sudo rm "/etc/systemd/system/SolarInvertProvision.service"
 
         sudo rm "/usr/local/bin/SendRequest"
 
@@ -733,6 +768,7 @@ execute_grafana
 execute_inverter
 execute_wind
 execute_provision
+execute_shutdown
 execute_uninstall
 
 if [ -v WRITE_TOKEN ]; then
