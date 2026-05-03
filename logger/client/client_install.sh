@@ -565,7 +565,7 @@ execute_grafana()
             error_multy "${LINES}" 2
         fi
 
-        sleep 20
+        sleep 60
 
         local GRAFANA_USER_PASSWORD="admin:admin"
 
@@ -723,7 +723,7 @@ execute_shutdown()
         sudo sh -c "cat > /etc/solarinvert/shutdown.env <<EOF
 SHUTDOWN_TIME=${PARAMETER_SHUTDOWN_TIME}
 EOF"
-        sudo cp "${ROOT}/solarinvert_shutdown.sh"       "/usr/bin/solarinvert_shutdown.sh"
+        sudo cp "${ROOT}/solarinvert_shutdown.sh"      "/usr/bin/solarinvert_shutdown.sh"
         sudo cp "${ROOT}/SolarInvertShutdown.service"  "/etc/systemd/system/SolarInvertShutdown.service"
 
         sudo systemctl daemon-reload
