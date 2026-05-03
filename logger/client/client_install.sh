@@ -723,7 +723,7 @@ execute_shutdown()
         sudo sh -c "cat > /etc/solarinvert/shutdown.env <<EOF
 SHUTDOWN_TIME=${PARAMETER_SHUTDOWN_TIME}
 EOF"
-        sudo cp "${ROOT}/solarinvert_shudown.sh"       "/usr/bin/solarinvert_shudown.sh"
+        sudo cp "${ROOT}/solarinvert_shutdown.sh"       "/usr/bin/solarinvert_shutdown.sh"
         sudo cp "${ROOT}/SolarInvertShutdown.service"  "/etc/systemd/system/SolarInvertShutdown.service"
 
         sudo systemctl daemon-reload

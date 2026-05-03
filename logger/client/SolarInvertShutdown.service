@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 EnvironmentFile=/etc/solarinvert/inverter.env
-EnvironmentFile=/etc/solarinvert/shutown.env
+EnvironmentFile=/etc/solarinvert/shutdown.env
 ExecStart=/usr/bin/solarinvert_shutdown.sh "${UART}" "${SHUTDOWN_TIME}"
 Restart=always
 RestartSec=10s
