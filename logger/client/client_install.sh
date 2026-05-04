@@ -565,7 +565,14 @@ execute_grafana()
             error_multy "${LINES}" 2
         fi
 
-        sleep 60
+        "${ROOT}/../server/grafana_is_online.sh" "    Grafana_is_online: "
+        CODE="${?}"
+        if [[ "${CODE}" -eq 0 ]]; then
+            echo "Continue"
+        else
+            echo "Stop" >&2
+            exit 2
+        fi
 
         local GRAFANA_USER_PASSWORD="admin:admin"
 
