@@ -4,16 +4,18 @@ UART="${1}"
 SHUTDOWN_TIME="${2}"
 
 COUNTER="0"
+HAS_EVER_SEEN_UART="false"
 
 while true; do
     if [ -c "${UART}" ]; then
         COUNTER="0"
+        HAS_EVER_SEEN_UART="true"
     else
         ((COUNTER++))
     fi
-    echo "Time without Inverter device ${UART} [${COUNTER}s/${SHUTDOWN_TIME}s]"
+    echo "Time without Inverter device ${UART} [${COUNTER}s/${SHUTDOWN_TIME}s]. HAS_EVER_SEEN_UART=${HAS_EVER_SEEN_UART}."
 
-    if (( COUNTER > SHUTDOWN_TIME )); then
+    if (( COUNTER > SHUTDOWN_TIME )) && [ "${HAS_EVER_SEEN_UART}" = "true" ]; then
         echo "Stop sending sevices…"
         systemctl stop SolarInvertInverter.service
         systemctl stop SolarInvertWind.service
