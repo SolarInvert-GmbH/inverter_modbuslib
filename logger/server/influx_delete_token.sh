@@ -62,7 +62,7 @@ check_arg()
 delete()
 {
     status "InfluxDB delete token"
-    LINES="$(influx auth delete --id "${TOKEN_ID}" 2>&1)"
+    LINES="$(influx auth delete --id="${TOKEN_ID}" 2>&1)"
     CODE="${?}"
 
     if [[ "${CODE}" -eq 0 ]]; then

@@ -75,7 +75,7 @@ check_arg()
 create()
 {
     status "InfluxDB create remote"
-    LINES="$(influx remote create --name  "${REMOTE}" --remote-url "${URL}" --remote-api-token "${TOKEN}" --remote-org-id "${ORG_ID}" 2>&1)"
+    LINES="$(influx remote create --name="${REMOTE}" --remote-url="${URL}" --remote-api-token="${TOKEN}" --remote-org-id="${ORG_ID}" 2>&1)"
     CODE="${?}"
 
     if [[ "${CODE}" -eq 0 ]]; then

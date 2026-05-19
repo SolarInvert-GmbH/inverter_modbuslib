@@ -62,7 +62,7 @@ check_arg()
 delete()
 {
     status "InfluxDB task delete"
-    LINES="$(influx task delete --id "${TASK}" 2>&1)"
+    LINES="$(influx task delete --id="${TASK}" 2>&1)"
     CODE="${?}"
 
     if [[ "${CODE}" -eq 0 ]]; then

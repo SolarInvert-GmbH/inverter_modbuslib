@@ -66,7 +66,7 @@ check_arg()
 create()
 {
     status "InfluxDB create bucket"
-    LINES="$(influx bucket create --name "${BUCKET}" --retention "${RETENTION}" 2>&1)"
+    LINES="$(influx bucket create --name="${BUCKET}" --retention="${RETENTION}" 2>&1)"
     CODE="${?}"
 
     if [[ "${CODE}" -eq 0 ]]; then

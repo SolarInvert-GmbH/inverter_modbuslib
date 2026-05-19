@@ -127,7 +127,7 @@ token()
 
             CMD+=( --read-bucket "$(name_to_id "${BUCKET}")" )
         done
-        LINES=$("${CMD[@]}")
+        LINES="$("${CMD[@]}")"
         CODE="${?}"
       ;;
       write)
@@ -137,11 +137,11 @@ token()
 
             CMD+=( --write-bucket "$(name_to_id "${BUCKET}")" )
         done
-        LINES=$("${CMD[@]}")
+        LINES="$("${CMD[@]}")"
         CODE="${?}"
       ;;
       all)
-        LINES=$(influx auth create --org "solarinvert" --all-access --description "${DESCRIPTION}")
+        LINES="$(influx auth create --org="solarinvert" --all-access --description "${DESCRIPTION}")"
         CODE="${?}"
       ;;
     esac

@@ -96,7 +96,7 @@ init()
 {
     status "InfluxDB init"
 
-    LINES=$(influx setup --username "admin" --password "${PASSWORD}" --org "solarinvert" --bucket "${BUCKET}" --retention "${RETENTION}" --force)
+    LINES="$(influx setup --username="admin" --password="${PASSWORD}" --org="solarinvert" --bucket="${BUCKET}" --retention="${RETENTION}" --force)"
     CODE="${?}"
 
     if [[ "${CODE}" -eq 0 ]]; then

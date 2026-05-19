@@ -62,7 +62,7 @@ check_arg()
 delete()
 {
     status "InfluxDB delete bucket"
-    LINES="$(influx bucket delete --name "${BUCKET}" 2>&1)"
+    LINES="$(influx bucket delete --name="${BUCKET}" 2>&1)"
     CODE="${?}"
 
     if [[ "${CODE}" -eq 0 ]]; then

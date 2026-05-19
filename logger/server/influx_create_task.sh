@@ -71,7 +71,7 @@ check_arg()
 create()
 {
     status "InfluxDB create task"
-    LINES="$(influx task create --org "${ORG}"  "${FLUX}" 2>&1)"
+    LINES="$(influx task create --org="${ORG}"  "${FLUX}" 2>&1)"
     CODE="${?}"
 
     if [[ "${CODE}" -eq 0 ]]; then
