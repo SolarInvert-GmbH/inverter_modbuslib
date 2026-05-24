@@ -17,6 +17,7 @@ check()
     fi
 }
 
+check automatic_test_Approximation
 check automatic_test_ConstString
 check automatic_test_Decimal
 check automatic_test_FixedPointNumber

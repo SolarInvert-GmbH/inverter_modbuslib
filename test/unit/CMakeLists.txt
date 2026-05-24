@@ -3,6 +3,7 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin/test_binary)
 
 include_directories(${CMAKE_SOURCE_DIR}/test/include)
 
+add_library(approximation_test                              OBJECT   main_unit_test_Approximation.cpp                                                 )
 add_library(conststring_test                                OBJECT   main_unit_test_ConstString.cpp                                                   )
 add_library(decimal_test                                    OBJECT   main_unit_test_Decimal.cpp                                                       )
 add_library(fixedpointnumber_test                           OBJECT   main_unit_test_FixedPointNumber.cpp                                              )
@@ -72,6 +73,7 @@ add_library(state_activecloseerrorstate_test                OBJECT   main_unit_t
 add_library(state_defaulterror_test                         OBJECT   main_unit_test_state_DefaultError.cpp                                            )
 add_library(windows_uarterror_test                          OBJECT   main_unit_test_windows_UartError.cpp                                             )
 
+add_executable(automatic_test_Approximation                               $<TARGET_OBJECTS:approximation_test>                                        )
 add_executable(automatic_test_ConstString                                 $<TARGET_OBJECTS:conststring_test>                                          )
 add_executable(automatic_test_Decimal                                     $<TARGET_OBJECTS:decimal_test>                                              )
 add_executable(automatic_test_FixedPointNumber                            $<TARGET_OBJECTS:fixedpointnumber_test>                                     )

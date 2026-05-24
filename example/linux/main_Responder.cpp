@@ -5,6 +5,9 @@
 // modbus
 #include <catta/modbus/SlaveUart.hpp>
 
+// catta
+#include <catta/Approximation.hpp>
+
 // toformmodbus
 #include <catta/frommodbus/modbus/si/request/Request.hpp>
 #include <catta/tomodbus/modbus/si/response/Response.hpp>
@@ -174,32 +177,6 @@ static void signalHandler(const int signal)
     if (signal == SIGTERM || signal == SIGINT) end = true;
 }
 
-template <class T>
-static T sinus(const double min, const double max, const std::uint8_t id, const double length)
-{
-    const double p = 3.141592654;
-    const double offset = static_cast<double>(id % 4) / 4.0;
-    const double t = ((static_cast<double>(catta::linux::Time::get().count()) / 1'000'000.0) / length + offset) * 2.0 * p;
-    const double s = std::sin(t) * 0.5 + 0.5;
-    const double v = s * (max - min) + min;
-    return static_cast<T>(v);
-}
-
-static std::uint32_t saw(const std::uint32_t max, const std::uint8_t id)
-{
-    const std::int64_t m = static_cast<std::uint32_t>(max);
-    const std::int64_t offset = static_cast<int32_t>(id % 4) * (m / 4);
-    const std::uint32_t t = static_cast<uint32_t>((catta::linux::Time::get().count() / 1'000'000 + offset) % m);
-    return t;
-}
-
-static std::uint16_t state()
-{
-    const std::uint16_t max = catta::modbus::si::State::empty();
-    const std::uint16_t v = static_cast<std::uint16_t>(((catta::linux::Time::get().count() / 1'000'000) / 30) % max);
-    return v;
-}
-
 static bool ignoreRequest(const std::string &switchFile, const std::uint8_t id, const std::uint64_t idmask)
 {
     if (idmask) return id >= 64 || ((static_cast<std::uint64_t>(1) << id) & idmask) == 0;
@@ -213,6 +190,17 @@ static bool ignoreRequest(const std::string &switchFile, const std::uint8_t id, 
     }
     return false;
 }
+
+static std::uint32_t getTimeVariable()
+{
+    static constexpr std::int64_t aboutOneMillion = 1 << 30;
+    const std::int64_t nearlySeconds = catta::linux::Time::get().count() / aboutOneMillion;
+    const std::uint64_t u64 = static_cast<std::uint64_t>(nearlySeconds);
+    const std::uint32_t u32 = static_cast<std::uint32_t>(u64);
+    return u32;
+}
+
+static std::uint32_t getTimeVariable(const std::uint8_t id) { return getTimeVariable() + static_cast<std::uint32_t>(id) * 8; }
 
 static void handleRequest(const catta::modbus::si::request::Request &request, catta::modbus::si::response::Response &response,
                           catta::random::Random &random, const std::uint8_t id, const std::string &switchFile, const std::uint64_t idmask)
@@ -228,26 +216,26 @@ static void handleRequest(const catta::modbus::si::request::Request &request, ca
             switch (request.readRegisterValue().registerAddress())
             {
                 case Address::inverterDcVoltage():
-                    response = Response::value16(sinus<std::uint16_t>(240.0, 480.0, id, 300.0));
+                    response = Response::value16(static_cast<std::uint16_t>(catta::sinusWindow<240, 480, 255>(getTimeVariable(id))));
                     return;
                 case Address::siControlUptime():
-                    response = Response::value32(saw(500, id));
+                    response = Response::value32(catta::saw<512>(getTimeVariable(id)));
                     return;
                 case Address::inverterAcPower():
-                    response = Response::value16(sinus<std::uint16_t>(5000.0, 10000.0, id, 400.0));
+                    response = Response::value16(static_cast<std::uint16_t>(catta::sinusWindow<5000, 10000, 512>(getTimeVariable(id))));
                     return;
                 case Address::inverterVendorOperatingState():
-                    response = Response::value16(id == 0x00 ? 0 : state());
+                    response = Response::value16(static_cast<std::uint16_t>(catta::step<16, 8>(getTimeVariable(id))));
                     return;
                 case Address::inverterTemperature():
-                    response = Response::value16(
-                        sinus<std::uint16_t>(88.0, 208.0, id, 200.0));  // temperature=124-register/2 => [(124-20°C)*2, (124-80°C)*2]
+                    // temperature=124-register/2 => [(124-20°C)*2, (124-80°C)*2]
+                    response = Response::value16(static_cast<std::uint16_t>(catta::sinusWindow<88, 208, 256>(getTimeVariable(id))));
                     return;
                 case Address::inverterPhaseVoltageA():
-                    response = Response::value16(sinus<std::uint16_t>(200.0, 250.0, id, 800.0));
+                    response = Response::value16(static_cast<std::uint16_t>(catta::sinusWindow<200, 205, 1024>(getTimeVariable(id))));
                     return;
                 case Address::inverterWattHours():
-                    response = Response::value32(sinus<std::uint32_t>(0.0, 1000.0, id, 800.0));
+                    response = Response::value32(catta::sinusWindow<0, 1000, 1024>(getTimeVariable(id)));
                     return;
                 default:
                     break;
