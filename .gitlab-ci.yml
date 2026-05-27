@@ -49,17 +49,25 @@ stages:
   stage: build
   script:
     - . /esp-idf/export.sh
-    - ./build.sh --esp32
-    - cp build/esp32/SendRequest.bin SendRequest.bin
-    - cp build/esp32/partition_table/partition-table.bin partition-table.bin
-    - cp build/esp32/bootloader/bootloader.bin bootloader.bin
+    - ./build.sh --esp32sendrequest --esp32responder
+    - mkdir -p SendRequest
+    - cp build/esp32_send_request/send_request.bin                     send_request/send_request.bin
+    - cp build/esp32_send_request/partition_table/partition-table.bin  send_request/partition-table.bin
+    - cp build/esp32_send_request/bootloader/bootloader.bin            send_request/bootloader.bin
+    - mkdir -p Responder
+    - cp build/esp32_responder/responder.bin                          responder/responder.bin
+    - cp build/esp32_responder/partition_table/partition-table.bin    responder/partition-table.bin
+    - cp build/esp32_responder/bootloader/bootloader.bin              responder/bootloader.bin
     - echo ${CI_COMMIT_SHA} >> githash
   artifacts:
     when: always
     paths:
-    - SendRequest.bin
-    - partition-table.bin
-    - bootloader.bin
+    - send_request/send_request.bin
+    - send_request/partition-table.bin
+    - send_request/bootloader.bin
+    - responder/responder.bin
+    - responder/partition-table.bin
+    - responder/bootloader.bin
     - githash
 
 .test: &test_base

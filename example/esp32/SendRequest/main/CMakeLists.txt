@@ -1,7 +1,7 @@
 
 set (SRCS "main_SendRequest.cpp")
 idf_component_register(SRCS         "${SRCS}"
-                       INCLUDE_DIRS "../../../include;../../../json/include;../../../random/include;../../../string/include;../../../modbus/include")
+                       INCLUDE_DIRS "../../../../include;../../../../json/include;../../../../random/include;../../../../string/include;../../../../modbus/include")
 
 set(VAR "${VAR} -std=c++2a")
 set(VAR "${VAR} -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -fwrapv")

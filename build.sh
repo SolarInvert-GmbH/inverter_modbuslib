@@ -14,7 +14,7 @@ exit_and_clean_up()
 print_help_and_leave()
 {
     echo "ussage:"
-    echo "${0} [--debug|--release] [--gcc|--clang] [--all] [--docu] [--manual] [--test] [--coverage] [--format] [--windows] [--rp2040] [--esp32] [--guionly] [--requestonly] [--install]"
+    echo "${0} [--debug|--release] [--gcc|--clang] [--all] [--docu] [--manual] [--test] [--coverage] [--format] [--windows] [--rp2040] [--esp32sendrequest] [--esp32responder] [--guionly] [--requestonly] [--install]"
     echo "    '--release' and '--gcc' are defalut."
     exit_and_clean_up "${1}"
 }
@@ -51,7 +51,8 @@ parse_arguments()
     TASK_FORMAT="false"
     TASK_WINDOWS="false"
     TASK_RP2040="false"
-    TASK_ESP32="false"
+    TASK_ESP32_SEND_REQUEST="false"
+    TASK_ESP32_RESPONDER="false"
     TASK_INSTALL="false"
     ARG_GUI_ONLY="-DCMAKE_IGNORE=ingnor"
     ARG_REQUEST_ONLY="-DCMAKE_IGNORE=ingnor"
@@ -112,8 +113,11 @@ parse_arguments()
           --rp2040)
             TASK_RP2040="true"
             ;;
-          --esp32)
-            TASK_ESP32="true"
+          --esp32sendrequest)
+            TASK_ESP32_SEND_REQUEST="true"
+            ;;
+          --esp32responder)
+            TASK_ESP32_RESPONDER="true"
             ;;
           --guionly)
             TASK_COMPILE="true"
@@ -257,20 +261,29 @@ compile_project_cross_rp2040()
     fi
 }
 
+compile_project_cross_esp32_base()
+{
+    cd "${ROOT}"
+    mkdir -p "build" && cd "build"
+    mkdir -p "esp32_${1}" && cd "esp32_${1}"
+    cmake -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+          -DCMAKE_GIT_VERSION="$(get_git_version)" \
+          "../../example/esp32/${2}" && \
+    make -j $(nproc)
+    if [ ${?} -ne 0 ]; then
+        echo "build failed."
+        exit_and_clean_up 1
+    fi
+
+}
+
 compile_project_cross_esp32()
 {
-    if [[ "${TASK_ESP32}" == "true" ]]; then
-        cd "${ROOT}"
-        mkdir -p "build" && cd "build"
-        mkdir -p "esp32" && cd "esp32"
-        cmake -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-              -DCMAKE_GIT_VERSION="$(get_git_version)" \
-              ../../example/esp32 && \
-        make -j $(nproc)
-        if [ ${?} -ne 0 ]; then
-            echo "build failed."
-            exit_and_clean_up 1
-        fi
+    if [[ "${TASK_ESP32_SEND_REQUEST}" == "true" ]]; then
+        compile_project_cross_esp32_base send_request SendRequest
+    fi
+    if [[ "${TASK_ESP32_RESPONDER}" == "true" ]]; then
+        compile_project_cross_esp32_base responder Responder
     fi
 }
 
