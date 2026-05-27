@@ -631,7 +631,7 @@ PARAMETER_OPERATING_STATE=true
 PARAMETER_TEMPERATURE=true
 PARAMETER_AC_VOLTAGE=true
 PARAMETER_ENERGY_PRODUCTION=true
-LOOP_TIME_SECONDS=true
+LOOP_TIME_SECONDS=${PARAMETER_LOOP}
 EOF"
 
         sudo cp "${ROOT}/log_solarinvert_inverter.sh"  "/usr/bin/log_solarinvert_inverter.sh"
