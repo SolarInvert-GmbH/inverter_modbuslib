@@ -50,11 +50,11 @@ stages:
   script:
     - . /esp-idf/export.sh
     - ./build.sh --esp32sendrequest --esp32responder
-    - mkdir -p SendRequest
+    - mkdir -p send_request
     - cp build/esp32_send_request/send_request.bin                     send_request/send_request.bin
     - cp build/esp32_send_request/partition_table/partition-table.bin  send_request/partition-table.bin
     - cp build/esp32_send_request/bootloader/bootloader.bin            send_request/bootloader.bin
-    - mkdir -p Responder
+    - mkdir -p responder
     - cp build/esp32_responder/responder.bin                          responder/responder.bin
     - cp build/esp32_responder/partition_table/partition-table.bin    responder/partition-table.bin
     - cp build/esp32_responder/bootloader/bootloader.bin              responder/bootloader.bin
