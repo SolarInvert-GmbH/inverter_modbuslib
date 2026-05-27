@@ -232,7 +232,7 @@ static void handleRequest(const catta::modbus::si::request::Request &request, ca
                     response = Response::value16(static_cast<std::uint16_t>(catta::sinusWindow<88, 208, 256>(getTimeVariable(id))));
                     return;
                 case Address::inverterPhaseVoltageA():
-                    response = Response::value16(static_cast<std::uint16_t>(catta::sinusWindow<200, 205, 1024>(getTimeVariable(id))));
+                    response = Response::value16(static_cast<std::uint16_t>(catta::sinusWindow<200, 250, 1024>(getTimeVariable(id))));
                     return;
                 case Address::inverterWattHours():
                     response = Response::value32(catta::sinusWindow<0, 1000, 1024>(getTimeVariable(id)));
