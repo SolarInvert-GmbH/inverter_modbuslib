@@ -14,7 +14,7 @@ exit_and_clean_up()
 print_help_and_leave()
 {
     echo "ussage:"
-    echo "${0} [--debug|--release] [--gcc|--clang] [--all] [--docu] [--manual] [--test] [--coverage] [--format] [--windows] [--rp2040] [--esp32sendrequest] [--esp32responder] [--guionly] [--requestonly] [--install]"
+    echo "${0} [--debug|--release] [--gcc|--clang] [--all] [--docu] [--manual] [--manualindividual LOGGER PASSWORD] [--test] [--coverage] [--format] [--windows] [--rp2040] [--esp32sendrequest] [--esp32responder] [--guionly] [--requestonly] [--install]"
     echo "    '--release' and '--gcc' are defalut."
     exit_and_clean_up "${1}"
 }
@@ -41,6 +41,20 @@ set_default_if_empty()
     fi
 }
 
+check_param_and_set()
+{
+    if [[ ${#} -eq 2 ]]; then
+        echo "Expected ${2} for ${1}, but got nothing"
+        exit 1
+    fi
+    if [[ ${3} == --* ]]; then
+        echo "Expected ${2} for ${1}, but got ${3}"
+        exit 1
+    fi
+    declare -n REF="PARAMETER_${2}"
+    REF="${3}"
+}
+
 parse_arguments()
 {
     TASK_COMPILE="false"
@@ -48,6 +62,9 @@ parse_arguments()
     TASK_TEST="false"
     TASK_DOCU="false"
     TASK_MANUAL="false"
+    TASK_MANUAL_INDIVIDUAL="false"
+    PARAMETER_LOGGER=""
+    PARAMETER_PASSWORD=""
     TASK_FORMAT="false"
     TASK_WINDOWS="false"
     TASK_RP2040="false"
@@ -88,6 +105,13 @@ parse_arguments()
             ;;
           --manual)
             TASK_MANUAL="true"
+            ;;
+          --manualindividual)
+            TASK_MANUAL_INDIVIDUAL="true"
+            check_param_and_set "--manualindividual" "LOGGER" "${@}"
+            shift
+            check_param_and_set "--manualindividual" "PASSWORD" "${@}"
+            shift
             ;;
           --format)
             TASK_FORMAT="true"
@@ -326,6 +350,31 @@ create_manual()
     fi
 }
 
+create_manual_individual()
+{
+    if [[ "${TASK_MANUAL_INDIVIDUAL}" == "true" ]]; then
+        cd "${ROOT}"
+        mkdir -p "build/manual_individual"
+        cd build/manual_individual
+
+        cp -ru "${ROOT}/manual/IndividualLogger/"* .
+
+        local GIT_VERSION=$(git describe --long | sed 's/-g[0-9a-f]*$//')
+        local GIT_DATE=$(git show -s --format=%cd --date=format:%d.%m.%Y)
+
+        local LATEX_ARG=""
+        LATEX_ARG+="\def\GitVersion{${GIT_VERSION}}"
+        LATEX_ARG+="\def\PublishDate{${GIT_DATE}}"
+        LATEX_ARG+="\def\Logger{${PARAMETER_LOGGER}}"
+        LATEX_ARG+="\def\Password{${PARAMETER_PASSWORD}}"
+        LATEX_ARG+="\input{individual_logger.tex}"
+
+        pdflatex "${LATEX_ARG}" && pdflatex "${LATEX_ARG}"
+
+        check_result "IndividualLogger"
+    fi
+}
+
 execute_tests()
 {
     if [[ "${TASK_TEST}" == "true" ]]; then
@@ -363,5 +412,6 @@ execute_tests
 create_coverage
 create_docu
 create_manual
+create_manual_individual
 
 exit_and_clean_up 0
