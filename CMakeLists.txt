@@ -10,7 +10,7 @@ endif()
 
 message(STATUS "Building modbus lib [${CMAKE_GIT_VERSION}]")
 
-add_compile_options(-std=c++20)
+add_compile_options(-std=c++23)
 
 add_compile_options(
     -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -fwrapv
