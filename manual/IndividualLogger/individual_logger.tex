@@ -1,0 +1,246 @@
+\documentclass[11pt,a4paper,oneside]{scrartcl}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{scrlayer-scrpage}
+\usepackage{tcolorbox}
+
+\pagestyle{scrheadings}
+\automark{section}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\ohead{\vtop{\includegraphics[height=1.2cm]{Logo.pdf}}}
+\chead{}
+\ihead{ \vtop{\headmark }}
+
+\KOMAoptions{headsepline=true}
+\KOMAoptions{footsepline=true}
+
+\ifoot{Solarinvert GmbH}
+\cfoot{}
+\ofoot{Seite | \pagemark}
+
+\newtcolorbox{AttentionBox}{
+  colback=red!5,
+  colframe=red!70!black,
+  title=Achtung,
+  fonttitle=\bfseries
+}
+
+\newcommand{\WlanNetwork}[3]{
+\begin{tcolorbox}[title=#1, colback=gray!5, colframe=black!60]
+\begin{tabular}{@{}p{1cm}p{3cm}p{8cm}@{}}
+ & SSID: & \texttt{#2} \\
+ & Passwort: & \texttt{#3} \\
+\end{tabular}
+\end{tcolorbox}
+}
+
+\newcommand{\AccessData}[4]{
+\begin{tcolorbox}[title=Zugangsdaten #1, colback=gray!5, colframe=black!60]
+\begin{tabular}{@{}p{1cm}p{3cm}p{8cm}@{}}
+ & Url: & \url{#2} \\
+ & Benutzername: & \texttt{#3} \\
+ & Passwort: & \texttt{#4} \\
+\end{tabular}
+\end{tcolorbox}
+}
+
+\newcommand{\Icon}[1]{\raisebox{-.2\height}{\includegraphics[height=1em]{#1}}}
+
+\newcommand{\key}[1]{\tcbox[on line, boxsep=1pt, left=2pt,right=2pt,top=1pt,bottom=1pt, colback=black!5, colframe=black!60, arc=2pt]{\textsf{#1}}}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+
+    \includegraphics[width=5cm]{Logo.pdf}\par
+    \vspace{1.5cm}
+
+    {\Huge\textbf{Bedienungsanleitung}}\par
+    \vspace{0.5cm}
+    {\Large\textbf{RPi Monitoringsystem}}\par
+    \vspace{2.5cm}
+    \includegraphics[width=0.6\textwidth]{Title.pdf}
+    \vfill
+    {\large Version: \GitVersion{} Stand: \PublishDate{}}\par
+\end{titlepage}
+
+\tableofcontents
+
+\vspace{1.5cm}
+
+Das RPi Monitoringsystem sammelt Daten des Solarinvert Wechselrichters. Die Daten können im Browser für verschiedene Zeiträume in unterschiedlichen Darstellungsformen angezeigt werden.
+
+\section{Inbetriebnahme}
+
+Das RPi Monitoringsystem existiert in zwei Varianten mit verschiedenen Gehäusen, einmal in einem schwarzen Aluminium Gehäuse (siehe Abbildung~\ref{fig:AluminumHousing}) sowie ein weiteres Modell in einem grauen Gehäuse, das auf einer Hutschiene montiert werden kann (siehe Abbildung~\ref{fig:DinRailHousing}). Die Basis beider Varianten bildet ein Raspberry Pi 4 mit 1 GB RAM.
+
+\subsection{Anschließen}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=126.500mm]{Cable.pdf}
+    \caption{Kabel}
+    \label{fig:Cable}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=126.500mm]{DinRailHousing.pdf}
+    \caption{Hutschienengehäuse}
+    \label{fig:DinRailHousing}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=126.500mm]{AluminumHousing.pdf}
+    \caption{Aluminium Gehäuse}
+    \label{fig:AluminumHousing}
+\end{figure}
+
+Das RPi Monitoringsystem wird mit dem USB-RS485-RJ45 Servicekabel (siehe Abbildung~\ref{fig:Cable} rechts) an den Solarinvert Wechselrichter angeschlossen. Der USB-A Stecker wird dabei in eine USB-Buchse des RPi Monitoringsystems (siehe Abbildung~\ref{fig:DinRailHousing} bzw. Abbildung~\ref{fig:AluminumHousing} links) und der RJ45-Stecker in den Wechselrichter gesteckt.
+
+\begin{AttentionBox}
+Verbinden Sie nicht das RPi Monitoringsystem und den Wechselrichter mit einem LAN-Kabel über den LAN-Port des RPi Monitoringsystems. Nutzen Sie nur das dafür vorgesehene USB-RS485-RJ45 Servicekabel.
+\end{AttentionBox}
+
+Versorgen Sie das RPi Monitoringsystem mit Hilfe des Netzteils (siehe Abbildung~\ref{fig:Cable} links) über den USB-C-Power-Anschluss (siehe Abbildung~\ref{fig:DinRailHousing} bzw. Abbildung~\ref{fig:AluminumHousing} rechts).
+
+\subsection{Herunterfahren}
+
+\begin{AttentionBox}
+Um Schäden am Betriebssystem des RPi Monitoringsystems zu vermeiden fahren Sie das System ordnungsgemäß herunter bevor Sie den Strom entfernen.
+\end{AttentionBox}
+
+Ziehen Sie dazu den USB-Stecker des USB-RS485-RJ45 Servicekabel aus dem RPi Monitoringsystem heraus. Nach 100~Sekunden fährt das System herunter. Wenn Sie den USB-Stecker vor Ablauf der 100~Sekunden wieder einstecken, wird der Herunterfahrvorgang nicht durchgeführt.
+
+Man erkennt das Herunterfahren des Systems an dem durchgängigen kurzen Leuchtens der grünen LED. Nach dem Herunterfahren ist grüne LED aus und nur die rote LED leuchtet noch. Sie können das RPi Monitoringsystem nun vom Strom trennen.
+
+Um es wieder zu aktivieren schließen Sie den USB-C-Power-Stecker und den USB-A Stecker des USB-RS485-RJ45 Servicekabel wieder an. Warten Sie mindestens 5~Sekunden zwischen Strom abziehen und wieder anstecken.
+
+\section{RPi Monitoringsystem mit dem Heimnetztwerk verbinden}
+
+Das RPi Monitoringsystem muss mit Ihrem Heimnetzwerk verbunden werden. Dazu können Sie alternativ das RPi Monitoringsystem mit einem LAN-Kabel zu Ihrem Router verbinden oder das RPi Monitoringsystem per WLAN mit dem Router verbinden. Es reicht eine von beiden Verbindungsarten.
+
+\subsection{RPi Monitoringsystem über LAN Verbinden}
+
+Verbinden Sie den LAN-Port des RPi Monitoringsystems (siehe Abbildung~\ref{fig:DinRailHousing} bzw. Abbildung~\ref{fig:AluminumHousing} links) mit Ihrem Heimnetzwerk per LAN-Kabel.
+
+\subsection{RPi Monitoringsystem über WLAN Verbinden}
+
+Sie können den Access Point des RPi Monitoringsystems verwenden um dem RPi Monitoringsystems die WLAN-Zugangsdaten Ihres Heimnetztwerks bekannt zu machen. Damit der Access Point sichtbar ist darf das RPi Monitoringsystem nicht per LAN angeschlossen und nicht mit einem WLAN verbunden sein. Sie können ein netzwerkfähiges Gerät nutzen um die Daten einzugeben. Das WLAN des Systems wird zyklisch aktiviert: Es ist jeweils 5~Minuten sichtbar und anschließend 5~Minuten ausgeblendet.
+
+\WlanNetwork{Access Point Zugangsdaten}{\Logger{}}{\Logger{}!}
+
+Öffnen Sie auf Ihrem netzwerkfähigen Gerät die Liste der verfügbaren WLAN-Netzwerke und beobachten Sie die Liste bis zu 5~Minuten, bis das Netzwerk mit der SSID \texttt{\Logger{}} erscheint. Verbinden Sie sich mit dem WLAN-Netzwerk (SSID: \texttt{\Logger{}}) und geben Sie das Passwort \texttt{\Logger{}!} ein.
+
+\subsubsection{Connect-Webseite öffnen}
+
+Nachdem Sie mit dem RPi Monitoringsystem WLAN verbunden sind, öffnet sich bei vielen Geräten automatisch die \textbf{Connect-Webseite} (siehe Abbildung~\ref{fig:ConnectA}).
+
+Falls sich die Webseite nicht automatisch öffnet:
+
+\begin{enumerate}
+    \item Öffnen Sie einen Browser (z. B. Chrome, Safari oder Edge).
+    \item Geben Sie folgende Adresse ein: \url{http://192.168.42.1}
+\end{enumerate}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{ConnectA.pdf}
+    \caption{Connect Webseite}
+    \label{fig:ConnectA}
+\end{figure}
+
+\subsubsection{WLAN-Daten Ihres Netzwerks eingeben}
+
+Tragen Sie die Zugangsdaten Ihres Heim-WLANs ein:
+
+\begin{enumerate}
+    \item SSID (Name Ihres WLAN-Netzwerks)
+    \item Passwort (WLAN-Passwort Ihres WLAN-Netzwerks)
+\end{enumerate}
+
+Diese Informationen finden Sie meist auf der Rückseite Ihres Routers.
+
+Klicken Sie anschließend auf \textbf{Connect}.
+
+Sie erhalten diese Meldung (siehe Abbildung~\ref{fig:ConnectB}).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{ConnectB.pdf}
+    \caption{Connect Erfolgsmeldung}
+    \label{fig:ConnectB}
+\end{figure}
+
+Das RPi Monitoringsystem verbindet sich nun mit Ihrem Heim-WLAN. Ihr Gerät kann danach wieder in Ihr normales WLAN wechseln. Falls dies nicht automatisch passiert, verbinden Sie Ihr Gerät einfach wieder mit Ihrem Heim-WLAN.
+
+\subsubsection{Tipps bei Problemen mit WLAN}
+
+\begin{itemize}
+    \item Das WLAN des RPi Monitoringsystems erscheint nicht: Warten Sie bis zu 5~Minuten und aktualisieren Sie die WLAN-Liste.
+    \item Das WLAN des RPi Monitoringsystems erscheint weiterhin nicht: Prüfen Sie, ob der RPi Monitoringsystem bereits per LAN-Kabel oder mit einem WLAN verbunden ist.
+    \item Connect-Webseite öffnet sich nicht: Geben Sie die Adresse \url{http://192.168.42.1} manuell in Ihrem Browser ein.
+\end{itemize}
+
+\section{Daten anschauen}
+
+Die Daten können lokal auf dem RPi Monitoringsystem und auf dem Server angeschaut werden. Dazu können Sie jedes browserfähige Endgerät verwenden.
+
+\subsection{Lokal}
+
+Um die Daten lokal anzuschauen müssen das RPi Monitoringsystem und Ihr Endgerät zum Betrachten der Daten im selben Heimnetzwerk sein.
+
+Öffnen Sie den Browser und rufen Sie die Webseite \url{http://\Logger:3000} auf (Wichtig http ohne s und :3000 am Ende).
+
+\AccessData{lokal}{http://\Logger:3000}{admin}{admin}
+
+\subsection{Server}
+
+Der Solarinvert Server kann von überall erreicht werden. Öffnen Sie dazu den Browser und rufen Sie die Webseite \url{https://iot.solarinvert.de} auf.
+
+\AccessData{Server}{https://iot.solarinvert.de}{\Logger}{\Password}
+
+\subsection{Grafana Bedienung}
+
+Klicken Sie in der linken Leiste auf \textbf{Dashboards}. Ist die linke Leiste nicht da klicken Sie links oben auf das \Icon{GrafanaLogo.pdf}-Symbol um sie einzublenden.
+
+Unter \textbf{Dashboard} haben Sie in der Mitte mindestens drei Dashboards zur Auswahl
+
+
+\begin{itemize}
+    \item \makebox[2cm][l]{\texttt{Solar:}} Wenn Sie den Wechselrichter mit Solarpaneelen verwenden.
+    \item \makebox[2cm][l]{\texttt{Wind:}} Wenn Sie den Wechselrichter mit einem Windgenerator verwenden.
+    \item \makebox[2cm][l]{\texttt{Wind\_only:}} Wenn Sie nur Winddaten anschauen möchten.
+\end{itemize}
+
+Klicken Sie auf das geeignete Dashboard.
+
+\subsubsection{Daten regelmäßig aktualisieren}
+
+Sie können die Daten der Dashboards regelmäßig aktualisieren in dem Sie links oben neben \textbf{Refresh} auf den Pfeil nach unten klicken. Es öffnet sich ein Menü bei dem Sie das gewünschte Zeitintervall auswählen können.
+
+\subsubsection{Zeit Intervall auswählen}
+
+Die Daten des Dashboards werden immer für einen bestimmten Zeitbereich angezeigt. Rechts oben (links neben \textbf{Refresh}) wird der aktuelle Zeitbereich angezeigt. Wenn Sie darauf klicken, öffnet sich ein Menü. Sie können dort den gewünschten Zeitbereich auswählen. Wenn Sie auf das \Icon{GrafanaLeft.pdf}-Symbol oder das \Icon{GrafanaRight.pdf}-Symbol klicken können Sie weiter in die Zukunft oder Vergangenheit gehen.
+
+Wenn Sie mit gedrückter linker Maustaste in einem Zeitbereich in einem Diagramm einen Bereich markieren, wird dieser Bereich der neue Bereich zum Betrachten.
+
+\subsubsection{Dashboard als Vollbild anzeigen}
+
+Klicken Sie rechts oben auf das Runde Icon und wählen Sie dort \textbf{Enable kiosk mode} aus um das Grafana Menü zu verbergen. Drücken Sie \key{F11} um den Browser in Vollbildmodus zu bringen.
+
+Drücken Sie \key{ESC} um das Grafana Menü wieder anzuzeigen. Drücken Sie \key{F11} um den Browser wieder in Fenstermodus zu versetzen.
+
+\listoffigures
+
+\end{document}
