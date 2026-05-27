@@ -220,6 +220,25 @@ set_dashboard_rights()
 
 }
 
+
+log_csv_line()
+{
+    local HEADER="Name;Grafana Server Password;Grafana User Id;Group;Pi Password;Server Write Token;Server Read Token;Bucket Raw;Bucket 10s; Bucket 1m; Bucket 10s; Bucket test;"
+    local LINE="${CUSTOMER};${PASSWORD};${USER};${GROUP};${PASSWORD};${WRITE_TOKEN};${READ_TOKEN};${DATASOURCE};${BUCKET_ID[0]};${BUCKET_ID[1]};${BUCKET_ID[2]};${BUCKET_ID[3]}"
+    local BUILD="${ROOT}/../../build"
+    mkdir -p "${BUILD}"
+    echo "${LINE}" >> "${BUILD}/Logger.csv"
+}
+
+log_command()
+{
+    local BUILD="${ROOT}/../../build"
+    local LINE="./client_install.sh --influxDB ${PASSWORD} --remote https://iot.solarinvert.de:8086 ${BUCKET_ID[@]} ${WRITE_TOKEN} ${INFLUXDB_ORG} --grafana ${INVERTER_COUNT} --inverter 1 /dev/ttyUSB0 --wind 10 5 0.4 --modbuslib --provision ${CUSTOMER} ${CUSTOMER}! wlan0 eth0 60 300 300 --shutdown 90"
+    mkdir -p "${BUILD}"
+    echo "${LINE}" >> "${BUILD}/Command.txt"
+    echo "${LINE}"
+}
+
 create_buckets()
 {
     for ((i=0; i<SIZE; i++)); do
@@ -252,8 +271,10 @@ set_dashboard_rights "${DASHBOARD_2}" "${GRAFANA_GROUP}" "${USER}" "${GRAFANA_US
 set_dashboard_rights "${DASHBOARD_3}" "${GRAFANA_GROUP}" "${USER}" "${GRAFANA_USER_PASSWORD}" "${GRAFANA_HOST}"
 set_dashboard_rights "${DASHBOARD_4}" "${GRAFANA_GROUP}" ""        "${GRAFANA_USER_PASSWORD}" "${GRAFANA_HOST}"
 
+log_csv_line
+
 echo ""
-echo "./client_install.sh --influxDB ${PASSWORD} --remote https://iot.solarinvert.de:8086 ${BUCKET_ID[@]} ${WRITE_TOKEN} ${INFLUXDB_ORG} --grafana ${INVERTER_COUNT} --inverter 1 /dev/ttyUSB0 --wind 10 5 0.4 --modbuslib --provision ${CUSTOMER} ${CUSTOMER}! wlan0 eth0 60 300 300"
+log_command
 echo ""
 echo "Name:               ${CUSTOMER}"
 echo "Password:           ${PASSWORD}"
