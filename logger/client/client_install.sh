@@ -42,7 +42,7 @@ check()
 print_help_and_leave()
 {
     echo "ussage:"
-    echo "${0} [--influxDB PASSWORD [--remote <REMOTE_ENDPOINT> <REMOTE_ID_RAW> <REMOTE_ID_10S> <REMOTE_ID_1M> <REMOTE_ID_TEST> <REMOTE_TOKEN> <REMOTE_ORG_ID>]] [--grafana <COUNT>] [--inverter <LOOP> <DEVICE>] [--wind GPIO DURATION FACTOR] [--modbuslib] [--provision <AP_SSID> <AP_PASS> <WLAN_INTERFACE> <LAN_INTERFACE> <HYSTERESE> <AP_DURATION> <WLAN_RETRY>] [--shutdown <SHUTDOWN_TIME>]"
+    echo "${0} [--influxDB PASSWORD [--remote <REMOTE_ENDPOINT> <REMOTE_ID_RAW> <REMOTE_ID_10S> <REMOTE_ID_1M> <REMOTE_ID_TEST> <REMOTE_TOKEN> <REMOTE_ORG_ID>]] [--grafana <COUNT>] [--inverter <LOOP> <DEVICE>] [--windpulse GPIO DURATION FACTOR] [--modbuslib] [--provision <AP_SSID> <AP_PASS> <WLAN_INTERFACE> <LAN_INTERFACE> <HYSTERESE> <AP_DURATION> <WLAN_RETRY>] [--shutdown <SHUTDOWN_TIME>]"
     echo "${0} --help"
     echo "${0} --unistall"
     echo "  --influxDB          Installs InfluxDB. Is in conflict do '--remote'"
@@ -60,7 +60,7 @@ print_help_and_leave()
     echo "  --inverter          Installs the inverter Service. --remote is needed. List all values you want to read: TIME, AC_POWER, DC_VOLTAGE, OPERATING_STATE, TEMPERATURE, AC_VOLTAGE and ENERGY_PRODUCTION"
     echo "     LOOP             The seconds per loop"
     echo "     DEVICE           The uart device. e.g. '/dev/ttyUSB0'"
-    echo "  --wind              Installs the wind Service. --remote is needed"
+    echo "  --windpulse         Installs the wind pulse Service. --remote or --influxDB is needed"
     echo "     GPIO             The number of the gpio to read wind impulse"
     echo "     DURATION         The measurement duration for the wind measurement"
     echo "     FACTOR           The factor from impulses to speed"
@@ -125,7 +125,7 @@ parse_arguments()
     TASK_INVERTER="false"
     PARAMETER_LOOP=""
     PARAMETER_DEVICE=""
-    TASK_WIND="false"
+    TASK_WIND_PULSE="false"
     PARAMETER_GPIO=""
     PARAMETER_DURATION=""
     PARAMETER_FACTOR=""
@@ -187,13 +187,13 @@ parse_arguments()
             check_param_and_set "--inverter" "DEVICE" "${@}"
             shift
             ;;
-          --wind)
+          --windpulse)
             TASK_WIND="true"
-            check_param_and_set "--wind" "GPIO" "${@}"
+            check_param_and_set "--windpulse" "GPIO" "${@}"
             shift
-            check_param_and_set "--wind" "DURATION" "${@}"
+            check_param_and_set "--windpulse" "DURATION" "${@}"
             shift
-            check_param_and_set "--wind" "FACTOR" "${@}"
+            check_param_and_set "--windpulse" "FACTOR" "${@}"
             shift
             ;;
           --modbuslib)
@@ -239,8 +239,8 @@ parse_arguments()
         echo "--inverter needs the --influxDB flag."
         exit 1
     fi
-    if [[ "${TASK_WIND}" == "true" && "${TASK_REMOTE}" == "false" && "${TASK_INFLUX_DB}" == "false" ]]; then
-        echo "--wind needs the --remote or --influxDB flag."
+    if [[ "${TASK_WIND_PULSE}" == "true" && "${TASK_REMOTE}" == "false" && "${TASK_INFLUX_DB}" == "false" ]]; then
+        echo "--windpulse needs the --remote or --influxDB flag."
         exit 1
     fi
 }
@@ -588,7 +588,7 @@ execute_grafana()
         JSON=$(echo "${LAST}" | sed 's/^[[:space:]]*InfluxDB_createToken:[[:space:]]*STATUS:[[:space:]]*//')
         DATASOURCE_UID=$(echo "${JSON}" | jq -r '.datasource.uid')
 
-        if [[ "${TASK_WIND}" == "true" ]]; then
+        if [[ "${TASK_WIND_PULSE}" == "true" ]]; then
 
             LINES="$(create_dashboard "${BUCKET}" wind_only  "${DATASOURCE_UID}" "${PARAMETER_COUNT}" GRAFANA_VALUES_WIND_ONLY  "${GRAFANA_USER_PASSWORD}" "${GRAFANA_ENDPOINT}")"
             CODE="${?}"
@@ -644,21 +644,21 @@ EOF"
 
 }
 
-execute_wind()
+execute_wind_pulse()
 {
-    if [[ "${TASK_WIND}" == "true" ]]; then
+    if [[ "${TASK_WIND_PULSE}" == "true" ]]; then
         sudo mkdir -p "/etc/solarinvert"
-        sudo sh -c "cat > /etc/solarinvert/wind.env <<EOF
+        sudo sh -c "cat > /etc/solarinvert/wind_pulse.env <<EOF
 GIOP=${PARAMETER_GPIO}
 MEASUREMENT_DURATION_SECONDS=${PARAMETER_DURATION}
 FACTOR=${PARAMETER_FACTOR}
 EOF"
-        sudo cp "${ROOT}/log_solarinvert_wind.sh"      "/usr/bin/log_solarinvert_wind.sh"
-        sudo cp "${ROOT}/SolarInvertWind.service"      "/etc/systemd/system/SolarInvertWind.service"
+        sudo cp "${ROOT}/log_solarinvert_wind_pulse.sh" "/usr/bin/log_solarinvert_wind_pulse.sh"
+        sudo cp "${ROOT}/SolarInvertWindPulse.service"  "/etc/systemd/system/SolarInvertWindPulse.service"
 
         sudo systemctl daemon-reload
-        sudo systemctl enable SolarInvertWind.service
-        sudo systemctl start  SolarInvertWind.service
+        sudo systemctl enable SolarInvertWindPulse.service
+        sudo systemctl start  SolarInvertWindPulse.service
     fi
 }
 
@@ -744,8 +744,8 @@ execute_uninstall()
     if [[ "${TASK_UNINSTALL}" == "true" ]]; then
         sudo systemctl disable SolarInvertInverter.service
         sudo systemctl stop SolarInvertInverter.service
-        sudo systemctl disable SolarInvertWind.service
-        sudo systemctl stop SolarInvertWind.service
+        sudo systemctl disable SolarInvertWindPulse.service
+        sudo systemctl stop SolarInvertWindPulse.service
         sudo systemctl disable SolarInvertShutdown.service
         sudo systemctl stop SolarInvertShutdown.service
         sudo systemctl disable SolarInvertProvision.service
@@ -753,11 +753,11 @@ execute_uninstall()
 
         sudo rm -r "/etc/solarinvert"
         sudo rm "/usr/bin/log_solarinvert_inverter.sh"
-        sudo rm "/usr/bin/log_solarinvert_wind.sh"
+        sudo rm "/usr/bin/log_solarinvert_wind_pulse.sh"
         sudo rm "/usr/bin/solarinvert_shudown.sh"
         sudo rm "/usr/bin/solarinvert_provision.sh"
         sudo rm "/etc/systemd/system/SolarInvertInverter.service"
-        sudo rm "/etc/systemd/system/SolarInvertWind.service"
+        sudo rm "/etc/systemd/system/SolarInvertWindPulse.service"
         sudo rm "/etc/systemd/system/SolarInvertShutdown.service"
         sudo rm "/etc/systemd/system/SolarInvertProvision.service"
 
@@ -773,7 +773,7 @@ execute_influxdb
 execute_remote
 execute_grafana
 execute_inverter
-execute_wind
+execute_wind_pulse
 execute_provision
 execute_shutdown
 execute_uninstall

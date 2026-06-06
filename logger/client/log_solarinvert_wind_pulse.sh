@@ -1,6 +1,5 @@
 #!/bin/bash
 
-COMMAND="/user/bin/SendRequest"duration
 GIOP="${1}"
 MEASUREMENT_DURATION_SECONDS="${2}"
 FACTOR="${3}"
