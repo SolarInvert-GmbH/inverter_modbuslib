@@ -42,7 +42,7 @@ check()
 print_help_and_leave()
 {
     echo "ussage:"
-    echo "${0} [--influxDB PASSWORD [--remote <REMOTE_ENDPOINT> <REMOTE_ID_RAW> <REMOTE_ID_10S> <REMOTE_ID_1M> <REMOTE_ID_TEST> <REMOTE_TOKEN> <REMOTE_ORG_ID>]] [--grafana <COUNT>] [--inverter <LOOP> <DEVICE>] [--windpulse GPIO DURATION FACTOR] [--modbuslib] [--provision <AP_SSID> <AP_PASS> <WLAN_INTERFACE> <LAN_INTERFACE> <HYSTERESE> <AP_DURATION> <WLAN_RETRY>] [--shutdown <SHUTDOWN_TIME>]"
+    echo "${0} [--influxDB PASSWORD [--remote <REMOTE_ENDPOINT> <REMOTE_ID_RAW> <REMOTE_ID_10S> <REMOTE_ID_1M> <REMOTE_ID_TEST> <REMOTE_TOKEN> <REMOTE_ORG_ID>]] [--grafana <COUNT>] [--inverter <LOOP> <INVERTER_DEVICE>] [--windpulse <GPIO> <DURATION> <FACTOR> | --windmodbus <WIND_DEVICE> <DURATION>] [--modbuslib] [--provision <AP_SSID> <AP_PASS> <WLAN_INTERFACE> <LAN_INTERFACE> <HYSTERESE> <AP_DURATION> <WLAN_RETRY>] [--shutdown <SHUTDOWN_TIME>]"
     echo "${0} --help"
     echo "${0} --unistall"
     echo "  --influxDB          Installs InfluxDB. Is in conflict do '--remote'"
@@ -59,11 +59,14 @@ print_help_and_leave()
     echo "     COUNT            The number of inverter in grafana"
     echo "  --inverter          Installs the inverter Service. --remote is needed. List all values you want to read: TIME, AC_POWER, DC_VOLTAGE, OPERATING_STATE, TEMPERATURE, AC_VOLTAGE and ENERGY_PRODUCTION"
     echo "     LOOP             The seconds per loop"
-    echo "     DEVICE           The uart device. e.g. '/dev/ttyUSB0'"
-    echo "  --windpulse         Installs the wind pulse Service. --remote or --influxDB is needed"
+    echo "     INVERTER_DEVICE  The uart device. e.g. '/dev/ttyUSB0'"
+    echo "  --windpulse         Installs the wind pulse Service. --remote or --influxDB is needed. Can not be combined with --windmodbus."
     echo "     GPIO             The number of the gpio to read wind impulse"
     echo "     DURATION         The measurement duration for the wind measurement"
     echo "     FACTOR           The factor from impulses to speed"
+    echo "  --windmodbus        Installs the wind modbus Service. --remote or --influxDB is needed. Can not be combined with --windpulse."
+    echo "     WIND_DEVICE      The uart device. e.g. '/dev/ttyACM0'"
+    echo "     DURATION         The measurement duration for the wind measurement"
     echo "  --provision         Installs wlan provision service"
     echo "     AP_SSID          The wlan name of the access point"
     echo "     AP_PASS          The wlan password of the access point"
@@ -124,11 +127,13 @@ parse_arguments()
     PARAMETER_COUNT=""
     TASK_INVERTER="false"
     PARAMETER_LOOP=""
-    PARAMETER_DEVICE=""
+    PARAMETER_INVERTER_DEVICE=""
     TASK_WIND_PULSE="false"
     PARAMETER_GPIO=""
     PARAMETER_DURATION=""
     PARAMETER_FACTOR=""
+    TASK_WIND_MODBUS="false"
+    PARAMETER_WIND_DEVICE=""
     TASK_MODBUSLIB="false"
     TASK_PROVISION="false"
     PARAMETER_AP_SSID=""
@@ -184,16 +189,23 @@ parse_arguments()
             TASK_INVERTER="true"
             PARAMETER_LOOP="${1}"
             shift
-            check_param_and_set "--inverter" "DEVICE" "${@}"
+            check_param_and_set "--inverter" "INVERTER_DEVICE" "${@}"
             shift
             ;;
           --windpulse)
-            TASK_WIND="true"
+            TASK_WIND_PULSE="true"
             check_param_and_set "--windpulse" "GPIO" "${@}"
             shift
             check_param_and_set "--windpulse" "DURATION" "${@}"
             shift
             check_param_and_set "--windpulse" "FACTOR" "${@}"
+            shift
+            ;;
+          --windmodbus)
+            TASK_WIND_MODBUS="true"
+            check_param_and_set "--windmodbus" "WIND_DEVICE" "${@}"
+            shift
+            check_param_and_set "--windmodbus" "DURATION" "${@}"
             shift
             ;;
           --modbuslib)
@@ -241,6 +253,14 @@ parse_arguments()
     fi
     if [[ "${TASK_WIND_PULSE}" == "true" && "${TASK_REMOTE}" == "false" && "${TASK_INFLUX_DB}" == "false" ]]; then
         echo "--windpulse needs the --remote or --influxDB flag."
+        exit 1
+    fi
+    if [[ "${TASK_WIND_MODBUS}" == "true" && "${TASK_REMOTE}" == "false" && "${TASK_INFLUX_DB}" == "false" ]]; then
+        echo "--windmodbus needs the --remote or --influxDB flag."
+        exit 1
+    fi
+    if [[ "${TASK_WIND_PULSE}" == "true" && "${TASK_WIND_MODBUS}" == "true" ]]; then
+        echo "--windpulse and --windmodbus are mutually excluded."
         exit 1
     fi
 }
@@ -588,7 +608,7 @@ execute_grafana()
         JSON=$(echo "${LAST}" | sed 's/^[[:space:]]*InfluxDB_createToken:[[:space:]]*STATUS:[[:space:]]*//')
         DATASOURCE_UID=$(echo "${JSON}" | jq -r '.datasource.uid')
 
-        if [[ "${TASK_WIND_PULSE}" == "true" ]]; then
+        if [[ "${TASK_WIND_PULSE}" == "true" || "${TASK_WIND_MODBUS}" == "true" ]]; then
 
             LINES="$(create_dashboard "${BUCKET}" wind_only  "${DATASOURCE_UID}" "${PARAMETER_COUNT}" GRAFANA_VALUES_WIND_ONLY  "${GRAFANA_USER_PASSWORD}" "${GRAFANA_ENDPOINT}")"
             CODE="${?}"
@@ -623,7 +643,7 @@ execute_inverter()
     if [[ "${TASK_INVERTER}" == "true" ]]; then
         sudo mkdir -p "/etc/solarinvert"
         sudo sh -c "cat > /etc/solarinvert/inverter.env <<EOF
-UART=${PARAMETER_DEVICE}
+UART=${PARAMETER_INVERTER_DEVICE}
 PARAMETER_TIME=true
 PARAMETER_AC_POWER=true
 PARAMETER_DC_VOLTAGE=true
@@ -659,6 +679,26 @@ EOF"
         sudo systemctl daemon-reload
         sudo systemctl enable SolarInvertWindPulse.service
         sudo systemctl start  SolarInvertWindPulse.service
+    fi
+}
+
+execute_wind_modbus()
+{
+    if [[ "${TASK_WIND_MODBUS}" == "true" ]]; then
+        sudo mkdir -p "/etc/solarinvert"
+        sudo sh -c "cat > /etc/solarinvert/wind_modbus.env <<EOF
+UART=${PARAMETER_WIND_DEVICE}
+MEASUREMENT_DURATION_SECONDS=${PARAMETER_DURATION}
+EOF"
+        sudo cp "${ROOT}/log_solarinvert_wind_modbus.sh" "/usr/bin/log_solarinvert_wind_modbus.sh"
+        sudo cp "${ROOT}/SolarInvertWindModbus.service"  "/etc/systemd/system/SolarInvertWindModbus.service"
+
+        sudo apt update
+        sudo apt install -y mbpoll
+
+        sudo systemctl daemon-reload
+        sudo systemctl enable SolarInvertWindModbus.service
+        sudo systemctl start  SolarInvertWindModbus.service
     fi
 }
 
@@ -774,6 +814,7 @@ execute_remote
 execute_grafana
 execute_inverter
 execute_wind_pulse
+execute_wind_modbus
 execute_provision
 execute_shutdown
 execute_uninstall
