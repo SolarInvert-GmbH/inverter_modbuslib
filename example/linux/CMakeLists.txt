@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4.3)
+cmake_minimum_required(VERSION 3.5)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin/example/linux/)
 
 if (( NOT "${CMAKE_GUI_ONLY}" STREQUAL "true") AND ( NOT "${CMAKE_REQUEST_ONLY}" STREQUAL "true"))

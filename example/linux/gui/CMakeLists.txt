@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4.3)
+cmake_minimum_required(VERSION 3.5)
 
 include_directories(${CMAKE_SOURCE_DIR}/example/include)
 
@@ -8,8 +8,15 @@ add_library(main_miniSICC                                                       
 add_executable(Dummy_Inverter                                                                    $<TARGET_OBJECTS:main_dummyinverter>                                                      )
 add_executable(miniSICC                                                                          $<TARGET_OBJECTS:main_miniSICC>                                                           )
 
-target_link_libraries   (Dummy_Inverter fltk dl SM ICE X11 Xext Xinerama Xfixes Xcursor Xrender pango-1.0 pangocairo-1.0 gobject-2.0 glib-2.0 harfbuzz cairo pangoxft-1.0 pangoft2-1.0 fontconfig freetype Xft wayland-egl wayland-client EGL gtk-3 gdk-3 z atk-1.0 cairo-gobject gdk_pixbuf-2.0 gio-2.0 wayland-cursor xkbcommon dbus-1)
-target_link_libraries   (miniSICC fltk dl SM ICE X11 Xext Xinerama Xfixes Xcursor Xrender pango-1.0 pangocairo-1.0 gobject-2.0 glib-2.0 harfbuzz cairo pangoxft-1.0 pangoft2-1.0 fontconfig freetype Xft wayland-egl wayland-client EGL gtk-3 gdk-3 z atk-1.0 cairo-gobject gdk_pixbuf-2.0 gio-2.0 wayland-cursor xkbcommon dbus-1)
+find_package(PkgConfig REQUIRED)
+
+pkg_check_modules(CAIRO REQUIRED cairo)
+
+target_include_directories(main_dummyinverter PRIVATE ${CAIRO_INCLUDE_DIRS})
+target_include_directories(main_miniSICC      PRIVATE ${CAIRO_INCLUDE_DIRS})
+
+target_link_libraries   (Dummy_Inverter fltk cairo )
+target_link_libraries   (miniSICC fltk cairo)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 13.0)

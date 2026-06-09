@@ -98,12 +98,12 @@ int main()
     catta::modbus::MasterUartState state;
     catta::modbus::MasterUartState error;
 
-    std::optional<std::uint8_t> receivedByte = {};
-    std::optional<std::uint8_t> sendByte = {};
+    std::optional<std::uint8_t> receivedByte = std::nullopt;
+    std::optional<std::uint8_t> sendByte = std::nullopt;
     catta::modbus::Token sendToken = {};
     catta::modbus::Token receiveToken = {};
 
-    std::optional<char> receivedCharacter = {};
+    std::optional<char> receivedCharacter = std::nullopt;
     catta::fromstring::Parser<catta::modbus::si::request::Request> jsonParser = {};
     catta::modbus::si::request::Request request = {};
 
@@ -225,7 +225,7 @@ int main()
                     printFrom(catta::Hexadecimal(sendByte.value()));
                     printEndline();
                 }
-                sendByte = {};
+                sendByte = std::nullopt;
             }
         if (!receivedByte)
         {
