@@ -8,6 +8,7 @@
 \usepackage{scrlayer-scrpage}
 \usepackage{tcolorbox}
 \usepackage{sourcesanspro}
+\usepackage{array}
 
 \renewcommand{\familydefault}{\sfdefault}
 
@@ -125,9 +126,28 @@ Um Schäden am Betriebssystem des RPi Monitoringsystems zu vermeiden fahren Sie 
 
 Ziehen Sie dazu den USB-Stecker des USB-RS485-RJ45 Servicekabel aus dem RPi Monitoringsystem heraus. Nach 100~Sekunden fährt das System herunter. Wenn Sie den USB-Stecker vor Ablauf der 100~Sekunden wieder einstecken, wird der Herunterfahrvorgang nicht durchgeführt.
 
-Man erkennt das Herunterfahren des Systems an dem durchgängigen kurzen Leuchtens der grünen LED. Nach dem Herunterfahren ist grüne LED aus und nur die rote LED leuchtet noch. Sie können das RPi Monitoringsystem nun vom Strom trennen.
+Man erkennt das Runterfahren des Systems an dem durchgängigen kurzen Leuchtens der grünen LED. Ist das System Heruntergefahren, ist grüne LED aus und nur die rote LED leuchtet noch. Sie können das RPi Monitoringsystem nun vom Strom trennen.
 
-Um es wieder zu aktivieren schließen Sie den USB-C-Power-Stecker und den USB-A Stecker des USB-RS485-RJ45 Servicekabel wieder an. Warten Sie mindestens 5~Sekunden zwischen Strom abziehen und wieder anstecken.
+\begin{tabular}{|>{\centering\arraybackslash}p{3cm}|
+                >{\centering\arraybackslash}p{3cm}|
+                >{\centering\arraybackslash}p{3cm}|
+                >{\centering\arraybackslash}p{3cm}|}
+\hline
+& \textbf{Grüne LED} & \textbf{Rote LED} & \textbf{LAN LED} \newline \footnotesize{(mit LAN verbunden)} \\
+\hline
+\textbf{Normalbetrieb}  & blinkt langsam &  durchgehend an & blinkt schnell \\
+\hline
+\textbf{Runterfahren} & blinkt schnell & durchgehend an & aus \\
+\hline
+\textbf{Heruntergefahren} & aus  & durchgehend an & aus \\
+\hline
+\textbf{Kein Strom} & aus & aus & aus \\
+\hline
+\end{tabular}
+
+Um es wieder zu aktivieren, schließen Sie den USB-C-Power-Stecker und den USB-A Stecker des USB-RS485-RJ45 Servicekabel wieder an. Warten Sie mindestens 5~Sekunden zwischen Strom abziehen und wieder anstecken.
+
+Wird das RPi als reines Windmonitoring ohne Wechselrichter verwendet, dann startet es auch ohne das spezielle USB-RS485 Servicekabel.
 
 \section{RPi Monitoringsystem mit dem Heimnetztwerk verbinden}
 
@@ -139,7 +159,7 @@ Verbinden Sie den LAN-Port des RPi Monitoringsystems (siehe Abbildung~\ref{fig:D
 
 \subsection{RPi Monitoringsystem über WLAN Verbinden}
 
-Sie können den Access Point des RPi Monitoringsystems verwenden um dem RPi Monitoringsystems die WLAN-Zugangsdaten Ihres Heimnetztwerks bekannt zu machen. Damit der Access Point sichtbar ist darf das RPi Monitoringsystem nicht per LAN angeschlossen und nicht mit einem WLAN verbunden sein. Sie können ein netzwerkfähiges Gerät nutzen um die Daten einzugeben. Das WLAN des Systems wird zyklisch aktiviert: Es ist jeweils 5~Minuten sichtbar und anschließend 5~Minuten ausgeblendet.
+Sie können den Access Point des RPi Monitoringsystems verwenden um dem RPi Monitoringsystems die WLAN-Zugangsdaten Ihres Heimnetztwerks bekannt zu machen. Damit der Access Point sichtbar ist darf das RPi Monitoringsystem nicht per LAN angeschlossen und nicht mit einem WLAN verbunden sein. Sie können ein netzwerkfähiges Gerät (z.B. Handy) nutzen um die Daten einzugeben. Das WLAN des Systems wird zyklisch aktiviert: Es ist jeweils 5~Minuten sichtbar und anschließend 5~Minuten ausgeblendet.
 
 \WlanNetwork{Access Point Zugangsdaten}{\Logger{}}{\Logger{}!}
 
