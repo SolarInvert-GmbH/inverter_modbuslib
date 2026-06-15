@@ -103,8 +103,10 @@ stages:
   script:
     - ./build.sh --manual
     - cp -r build/manual manuals
-    - ./build.sh --manualindividual "Logger042" "C4K2f3EjMMJ25zchldrSXKS04hoMWNbQ"
-    - cp build/manual_individual/individual_logger.pdf manuals/individual_logger.pdf
+    - ./build.sh --manualindividual "Logger042" "C4K2f3EjMMJ25zchldrSXKS04hoMWNbQ" en
+    - cp build/manual_individual/individual_logger.pdf manuals/individual_logger_en.pdf
+    - ./build.sh --manualindividual "Logger042" "C4K2f3EjMMJ25zchldrSXKS04hoMWNbQ" de
+    - cp build/manual_individual/individual_logger.pdf manuals/individual_logger_de.pdf
   artifacts:
     when: always
     paths:

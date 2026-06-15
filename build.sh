@@ -14,7 +14,7 @@ exit_and_clean_up()
 print_help_and_leave()
 {
     echo "ussage:"
-    echo "${0} [--debug|--release] [--gcc|--clang] [--all] [--docu] [--manual] [--manualindividual LOGGER PASSWORD] [--test] [--coverage] [--format] [--windows] [--rp2040] [--esp32sendrequest] [--esp32responder] [--guionly] [--requestonly] [--install]"
+    echo "${0} [--debug|--release] [--gcc|--clang] [--all] [--docu] [--manual] [--manualindividual LOGGER PASSWORD de|en] [--test] [--coverage] [--format] [--windows] [--rp2040] [--esp32sendrequest] [--esp32responder] [--guionly] [--requestonly] [--install]"
     echo "    '--release' and '--gcc' are defalut."
     exit_and_clean_up "${1}"
 }
@@ -65,6 +65,7 @@ parse_arguments()
     TASK_MANUAL_INDIVIDUAL="false"
     PARAMETER_LOGGER=""
     PARAMETER_PASSWORD=""
+    PARAMETER_LANGUAGE=""
     TASK_FORMAT="false"
     TASK_WINDOWS="false"
     TASK_RP2040="false"
@@ -111,6 +112,19 @@ parse_arguments()
             check_param_and_set "--manualindividual" "LOGGER" "${@}"
             shift
             check_param_and_set "--manualindividual" "PASSWORD" "${@}"
+            shift
+            case "${1}" in
+              de)
+                PARAMETER_LANGUAGE="de"
+                ;;
+              en)
+                PARAMETER_LANGUAGE="en"
+                ;;
+              *)
+                echo "Expect 'de' or 'en' as language, but got '${1}'"
+                print_help_and_leave 1
+                ;;
+            esac
             shift
             ;;
           --format)
@@ -159,7 +173,7 @@ parse_arguments()
           *)
             echo "Unknown argument '${key}'"
             print_help_and_leave 1
-          ;;
+            ;;
       esac
     done
 
@@ -360,13 +374,18 @@ create_manual_individual()
         cp -ru "${ROOT}/manual/IndividualLogger/"* .
 
         local GIT_VERSION=$(git describe --long | sed 's/-g[0-9a-f]*$//')
-        local GIT_DATE=$(git show -s --format=%cd --date=format:%d.%m.%Y)
+        local GIT_DAY=$(git show -s --format=%cd --date=format:%d)
+        local GIT_MONTH=$(git show -s --format=%cd --date=format:%m)
+        local GIT_YEAR=$(git show -s --format=%cd --date=format:%Y)
 
         local LATEX_ARG=""
         LATEX_ARG+="\def\GitVersion{${GIT_VERSION}}"
-        LATEX_ARG+="\def\PublishDate{${GIT_DATE}}"
+        LATEX_ARG+="\def\GitDay{${GIT_DAY}}"
+        LATEX_ARG+="\def\GitMonth{${GIT_MONTH}}"
+        LATEX_ARG+="\def\GitYear{${GIT_YEAR}}"
         LATEX_ARG+="\def\Logger{${PARAMETER_LOGGER}}"
         LATEX_ARG+="\def\Password{${PARAMETER_PASSWORD}}"
+        LATEX_ARG+="\def\Language{${PARAMETER_LANGUAGE}}"
         LATEX_ARG+="\input{individual_logger.tex}"
 
         pdflatex "${LATEX_ARG}" && pdflatex "${LATEX_ARG}"
