@@ -233,7 +233,7 @@ log_csv_line()
 log_command()
 {
     local BUILD="${ROOT}/../../build"
-    local LINE="./client_install.sh --influxDB ${PASSWORD} --remote https://iot.solarinvert.de:8086 ${BUCKET_ID[@]} ${WRITE_TOKEN} ${INFLUXDB_ORG} --grafana ${INVERTER_COUNT} --inverter 1 /dev/ttyUSB0 --windpulse 10 5 0.4 --modbuslib --provision ${CUSTOMER} ${CUSTOMER}! wlan0 eth0 60 300 300 --shutdown 90"
+    local LINE="./client_install.sh --influxDB ${PASSWORD} --remote https://iot.solarinvert.de:8086 ${BUCKET_ID[@]} ${WRITE_TOKEN} ${INFLUXDB_ORG} --grafana ${INVERTER_COUNT} --inverter 1 /dev/ttyUSB0 --windpulse 10 5 0.4 --modbuslib --provision ${CUSTOMER} ${CUSTOMER}! wlan0 eth0 60 300 300 --shutdown 90 --swapfile 4G"
     mkdir -p "${BUILD}"
     echo "${LINE}" >> "${BUILD}/Command.txt"
     echo "${LINE}"

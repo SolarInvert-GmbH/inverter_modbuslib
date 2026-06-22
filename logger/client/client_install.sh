@@ -42,7 +42,7 @@ check()
 print_help_and_leave()
 {
     echo "ussage:"
-    echo "${0} [--influxDB PASSWORD [--remote <REMOTE_ENDPOINT> <REMOTE_ID_RAW> <REMOTE_ID_10S> <REMOTE_ID_1M> <REMOTE_ID_TEST> <REMOTE_TOKEN> <REMOTE_ORG_ID>]] [--grafana <COUNT>] [--inverter <LOOP> <INVERTER_DEVICE>] [--windpulse <GPIO> <DURATION> <FACTOR> | --windmodbus <WIND_DEVICE> <DURATION>] [--modbuslib] [--provision <AP_SSID> <AP_PASS> <WLAN_INTERFACE> <LAN_INTERFACE> <HYSTERESE> <AP_DURATION> <WLAN_RETRY>] [--shutdown <SHUTDOWN_TIME>]"
+    echo "${0} [--influxDB PASSWORD [--remote <REMOTE_ENDPOINT> <REMOTE_ID_RAW> <REMOTE_ID_10S> <REMOTE_ID_1M> <REMOTE_ID_TEST> <REMOTE_TOKEN> <REMOTE_ORG_ID>]] [--grafana <COUNT>] [--inverter <LOOP> <INVERTER_DEVICE>] [--windpulse <GPIO> <DURATION> <FACTOR> | --windmodbus <WIND_DEVICE> <DURATION>] [--modbuslib] [--provision <AP_SSID> <AP_PASS> <WLAN_INTERFACE> <LAN_INTERFACE> <HYSTERESE> <AP_DURATION> <WLAN_RETRY>] [--shutdown <SHUTDOWN_TIME>] [--swapfile SIZE]"
     echo "${0} --help"
     echo "${0} --unistall"
     echo "  --influxDB          Installs InfluxDB. Is in conflict do '--remote'"
@@ -77,6 +77,8 @@ print_help_and_leave()
     echo "     WLAN_RETRY       The time system trys to connect to existing wlan"
     echo "  --shutdown          Installs shutdown service"
     echo "     SHUTDOWN_TIME    The time without uart device until shutdown"
+    echo "  --swapfile          Sets up swap file to extend ram."
+    echo "     SIZE             The size of the virtual ram. e.g. '4G'"
     echo "  --help              Print this help"
     echo "  --unistall          Remove all files that can be created with this script. Do not remove influxdb of grafana"
     exit_and_clean_up "${1}"
@@ -145,6 +147,8 @@ parse_arguments()
     PARAMETER_WLAN_RETRY=""
     TASK_SHUTDOWN="false"
     PARAMETER_SHUTDOWN_TIME=""
+    TASK_SWAPFILE="false"
+    PARAMETER_SWAPFILE_SIZE=""
     TASK_UNINSTALL="false"
 
     if [[ ${#} -eq "1" && ${1} == "--uninstall" ]]; then
@@ -232,6 +236,11 @@ parse_arguments()
             check_param_and_set "--shutdown" "SHUTDOWN_TIME" "${@}"
             shift
             TASK_SHUTDOWN="true"
+            ;;
+          --swapfile)
+            check_param_and_set "--swapfile" "SWAPFILE_SIZE" "${@}"
+            shift
+            TASK_SWAPFILE="true"
             ;;
           --uninstall)
             echo "Only use --uninstall as single option"
@@ -779,6 +788,17 @@ EOF"
     fi
 }
 
+execute_swapfile()
+{
+    if [[ "${TASK_SWAPFILE}" == "true" ]]; then
+        sudo fallocate -l "${PARAMETER_SWAPFILE_SIZE}" /swapfile
+        sudo chmod 600 /swapfile
+        sudo mkswap /swapfile
+        sudo swapon /swapfile
+        echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+    fi
+}
+
 execute_uninstall()
 {
     if [[ "${TASK_UNINSTALL}" == "true" ]]; then
@@ -817,6 +837,7 @@ execute_wind_pulse
 execute_wind_modbus
 execute_provision
 execute_shutdown
+execute_swapfile
 execute_uninstall
 
 if [ -v WRITE_TOKEN ]; then
