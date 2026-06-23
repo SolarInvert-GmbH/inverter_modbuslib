@@ -164,7 +164,7 @@
 
 \lang
 {Das \RPI{} wird mit dem USB-RS485-RJ45 Servicekabel (siehe Abbildung~\ref{fig:Cable} rechts) an den Solarinvert Wechselrichter angeschlossen. Der USB-A Stecker wird dabei in eine USB-Buchse des \RPI{}s (siehe Abbildung~\ref{fig:DinRailHousing} bzw. Abbildung~\ref{fig:AluminumHousing} links) und der RJ45-Stecker in den Wechselrichter gesteckt.}
-{The \RPI{} is connected to the solar inverter using the USB-RS485-RJ45 service cable (see Figure~\ref{fig:Cable} on the right). The USB-A plug is inserted into a USB port on the \RPI{} (see Figure~\ref{fig:DinRailHousing} or Figure~\ref{fig:AluminumHousing} on the left), and the RJ45 plug is inserted into the inverter.}
+{The \RPI{} is connected to the Solarinvert inverter using the USB-RS485-RJ45 service cable (see Figure~\ref{fig:Cable} on the right). The USB-A plug is inserted into a USB port on the \RPI{} (see Figure~\ref{fig:DinRailHousing} or Figure~\ref{fig:AluminumHousing} on the left), and the RJ45 plug is inserted into the inverter.}
 
 \begin{AttentionBox}
 \lang
@@ -189,7 +189,7 @@
 {To do this, unplug the USB connector of the USB-RS485-RJ45 service cable from the \RPI{}. The system will shut down after approximately 100~seconds. If you plug the USB connector back in before the 100~seconds have passed, the shutdown process will not be completed.}
 
 \lang
-{Man erkennt das Herunterfahren des Systems an dem durchgängigen kurzen Leuchtens der grünen LED. Ist das System Heruntergefahren, ist grüne LED aus und nur die rote LED leuchtet noch. Sie können das \RPI{} nun vom Strom trennen.}{You can tell that the system is shutting down by the steady, brief flashing of the green LED. Once the system has shut down, the green LED is off and only the red LED remains lit. You can now disconnect the \RPI{} from the power source.}
+{Das Herunterfahren des Systems wird durch das durchgängige kurze Leuchten der grünen LED angezeigt. Ist das System vollständig heruntergefahren, ist die grüne LED erloschen und nur die rote LED leuchtet noch. Das \RPI{} kann anschließend vom Strom getrennt werden.}{You can tell that the system is shutting down by the steady, brief flashing of the green LED. Once the system has shut down, the green LED is off and only the red LED remains lit. You can now disconnect the \RPI{} from the power source.}
 
 \begin{tabular}{|>{\centering\arraybackslash}p{3.2cm}|
                 >{\centering\arraybackslash}p{3cm}|
@@ -231,7 +231,7 @@
 \subsection{\lang{\RPI{} über WLAN Verbinden}{Connect \RPI{} via Wi-Fi}}
 
 \lang
-{Sie können den Access Point des \RPI{}s verwenden um dem \RPI{}s die WLAN-Zugangsdaten Ihres Heimnetztwerks bekannt zu machen. Damit der Access Point sichtbar ist darf das \RPI{} nicht per LAN angeschlossen und nicht mit einem WLAN verbunden sein. Sie können ein netzwerkfähiges Gerät (z.B. Handy) nutzen um die Daten einzugeben. Das WLAN des Systems wird zyklisch aktiviert: Es ist jeweils 5~Minuten sichtbar und anschließend 5~Minuten ausgeblendet.}
+{Über den Access Point des \RPI{} können Sie dem \RPI{} die WLAN-Zugangsdaten Ihres Heimnetzwerks übermitteln. Damit der Access Point sichtbar ist darf das \RPI{} nicht per LAN angeschlossen und nicht mit einem WLAN verbunden sein. Sie können ein netzwerkfähiges Gerät (z.B. Handy) nutzen um die Daten einzugeben. Das WLAN des Systems wird zyklisch aktiviert: Es ist jeweils 5~Minuten sichtbar und anschließend 5~Minuten ausgeblendet.}
 {You can use the \RPI{}'s access point to configure the \RPI{} to access your home network's Wi-Fi. To make the access point visible, the \RPI{} must not be connected via LAN and must not be connected to another Wi-Fi network. You can use a network-enabled device (e.g., a mobile phone) to enter the settings. The system’s Wi-Fi is activated cyclically: it is visible for 5~minutes and then hidden for 5~minutes.}
 
 \WlanNetwork{\lang{Access Point Zugangsdaten}{Access Point Login Credentials}}{\Logger{}}{\Logger{}!}
@@ -334,7 +334,7 @@
 
 
 \begin{itemize}
-    \item \makebox[2cm][l]{\texttt{Solar:}} \lang{Wenn Sie den Wechselrichter mit Solarpaneelen verwenden.}{If you are using the inverter with solar panels.}
+    \item \makebox[2cm][l]{\texttt{Solar:}} \lang{Wenn Sie den Wechselrichter mit Solarmodule verwenden.}{If you are using the inverter with solar panels.}
     \item \makebox[2cm][l]{\texttt{Wind:}} \lang{Wenn Sie den Wechselrichter mit einem Windgenerator verwenden.}{If you are using the inverter with a wind turbine.}
     \item \makebox[2cm][l]{\texttt{Wind\_only:}} \lang{Wenn Sie nur Winddaten anschauen möchten.}{If you only want to view wind data.}
 \end{itemize}
@@ -357,8 +357,8 @@
 \subsubsection{\lang{Zeit Intervall auswählen}{Select time interval}}
 
 \lang
-{Die Daten des Dashboards werden immer für einen bestimmten Zeitbereich angezeigt. Rechts oben (links neben \textbf{Refresh}) wird der aktuelle Zeitbereich angezeigt (siehe Abbildung~\ref{fig:GrafanaMenu} links). Wenn Sie darauf klicken, öffnet sich ein Menü. Sie können dort den gewünschten Zeitbereich auswählen. Wenn Sie auf das \Icon{GrafanaLeft.pdf}-Symbol oder das \Icon{GrafanaRight.pdf}-Symbol klicken können Sie weiter in die Zukunft oder Vergangenheit gehen.}
-{The dashboard data is always displayed for a specific time range. The current time range is shown in the top-right corner (to the left of \textbf{Refresh}) (see Figure~\ref{fig:GrafanaMenu} on the left). Clicking on it opens a menu where you can select the desired time range. If you click the \Icon{GrafanaLeft.pdf} icon or the \Icon{GrafanaRight.pdf} icon, you can move further into the future or the past.}
+{Die Daten des Dashboards werden immer für einen bestimmten Zeitbereich angezeigt. Rechts oben (links neben \textbf{Refresh}) wird der aktuelle Zeitbereich angezeigt (siehe Abbildung~\ref{fig:GrafanaMenu} links). Wenn Sie darauf klicken, öffnet sich ein Menü. Sie können dort den gewünschten Zeitbereich auswählen. Wenn Sie auf das \Icon{GrafanaLeft.pdf}-Symbol oder das \Icon{GrafanaRight.pdf}-Symbol klicken, können Sie im dargestellten Zeitraum vor- oder zurücknavigieren.}
+{The dashboard data is always displayed for a specific time range. The current time range is shown in the top-right corner (to the left of \textbf{Refresh}) (see Figure~\ref{fig:GrafanaMenu} on the left). Clicking on it opens a menu where you can select the desired time range. If you click the \Icon{GrafanaLeft.pdf} icon or the \Icon{GrafanaRight.pdf} icon, you can navigate backward and forward within the displayed time range.}
 
 \lang
 {Wenn Sie mit gedrückter linker Maustaste in einem Zeitbereich in einem Diagramm einen Bereich markieren, wird dieser Bereich der neue Bereich zum Betrachten.}
