@@ -20,8 +20,6 @@ add_compile_options(
     -Wsign-promo -Wconversion -Wnull-dereference -Wdouble-promotion
     -Werror=ignored-qualifiers)
 
-add_compile_options(-Wno-error=disabled-optimization) #TODO remove switch with to much cases
-
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     add_compile_options(-Wlogical-op -Wstrict-null-sentinel -Wno-psabi -Wduplicated-cond -Wduplicated-branches -Wrestrict)
     add_compile_options(-Wstrict-overflow=5)
