@@ -1,8 +1,11 @@
 #pragma once
 
 // std
-#include <fstream>
+#include <cstdio>
 #include <string>
+
+// fltk
+#include <FL/fl_utf8.h>
 
 namespace catta
 {
@@ -28,23 +31,26 @@ class CsvLogging
     bool start(const std::string& file, const std::string& header)
     {
         _file = file;
-        return writeline(std::ios_base::out, header);
+        return writeline("w", header);
     }
 
     /**
      * @param content The line content.
      */
-    void line(const std::string& content) { writeline(std::ios_base::app, content); }
+    void line(const std::string& content) { writeline("a", content); }
 
   private:
     std::string _file;
-    bool writeline(const std::ios_base::openmode mode, const std::string& content)
+    bool writeline(const char* mode, const std::string& content)
     {
-        std::ofstream outfile;
-        outfile.open(_file.c_str(), mode);
-        if (!outfile.is_open()) return false;
-        outfile << content.c_str() << '\n';
-        return static_cast<bool>(outfile);
+        FILE* fp = fl_fopen(_file.c_str(), mode);
+        if (!fp) return false;
+
+        bool ok = std::fputs(content.c_str(), fp) >= 0 && std::fputc('\n', fp) >= 0;
+
+        if (std::fclose(fp) != 0) ok = false;
+
+        return ok;
     }
 };
 }  // namespace gui
