@@ -37,7 +37,7 @@ class Parser<catta::modbus::si::RegisterAddress>
             for (uint8_t i = 0; i < Output{}; i++)
                 if (_possible[i])
                 {
-                    if (_index < _names[i].size() && input == Input::character(static_cast<char32_t>(_names[i][_index])))
+                    if (_index < _names[i].size() && input == Input::character(static_cast<char32_t>(_names.data()[i][_index])))
                         failed = false;
                     else if (_index == _names[i].size() && input == catta::json::Token::closeString())
                     {

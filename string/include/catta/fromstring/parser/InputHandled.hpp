@@ -25,7 +25,7 @@ class Parser<catta::parser::InputHandled>
         {
             if (possible)
             {
-                if (_index <= s.size() && input == s[_index])
+                if (_index <= s.size() && input == s.data()[_index])
                 {
                     if (_index == s.size())
                     {

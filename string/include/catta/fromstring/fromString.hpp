@@ -75,7 +75,7 @@ class Parser<T>
         {
             if (possible)
             {
-                if (_index < s.size() && input == s[_index])
+                if (_index < s.size() && input == s.data()[_index])
                     failed = false;
                 else if (_index == s.size() && !isValidEnumCharacter(input))
                 {
