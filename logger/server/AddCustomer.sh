@@ -19,6 +19,8 @@ shift
 GRAFANA_USER_PASSWORD="${1}"
 shift
 
+set -e
+
 TAIL=(     ""    "10s"  "1m"    "test")
 RETENTION=("30d" "356d" "3560d" "12h")
 SIZE=4
@@ -248,6 +250,15 @@ create_buckets()
     done
 }
 
+create_manual()
+{
+    local LOGGER="${1}"
+    local PASSWORD="${2}"
+    local BUILD="${ROOT}/../../build"
+    "${BUILD}.sh" --manualindividual "${LOGGER}" "${PASSWORD}" de && cp "${BUILD}/manual_individual/individual_logger.pdf" "${BUILD}/${LOGGER}_de.pdf"
+    "${BUILD}.sh" --manualindividual "${LOGGER}" "${PASSWORD}" en && cp "${BUILD}/manual_individual/individual_logger.pdf" "${BUILD}/${LOGGER}_en.pdf"
+}
+
 create_buckets
 
 WRITE_TOKEN="$(write_token)"
@@ -272,6 +283,8 @@ set_dashboard_rights "${DASHBOARD_3}" "${GRAFANA_GROUP}" "${USER}" "${GRAFANA_US
 set_dashboard_rights "${DASHBOARD_4}" "${GRAFANA_GROUP}" ""        "${GRAFANA_USER_PASSWORD}" "${GRAFANA_HOST}"
 
 log_csv_line
+
+create_manual "${CUSTOMER}" "${PASSWORD}"
 
 echo ""
 log_command
