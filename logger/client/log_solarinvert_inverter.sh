@@ -10,18 +10,19 @@ PARAMETER_OPERATING_STATE="${5}"
 PARAMETER_TEMPERATURE="${6}"
 PARAMETER_AC_VOLTAGE="${7}"
 PARAMETER_ENERGY_PRODUCTION="${8}"
+PARAMETER_FREQUENCY="${9}"
 
-INFLUX_ENDPOINT="${9}"
-INFLUX_ORG="${10}"
-INFLUX_BUCKET="${11}"
-INFLUX_HASH="${12}"
+INFLUX_ENDPOINT="${10}"
+INFLUX_ORG="${11}"
+INFLUX_BUCKET="${12}"
+INFLUX_HASH="${13}"
 
 LINES_PROD=""
 LINES_TEST=""
 
 MAX_ERROR="10000"
 ERROR_COUNTER="0"
-LOOP_TIME_SECONDS="${13}"
+LOOP_TIME_SECONDS="${14}"
 NANO_FACTOR="1000000000"
 LOOP_TIME_NANO_SECONDS=$((NANO_FACTOR * LOOP_TIME_SECONDS))
 MAX_ID="110"
@@ -179,6 +180,9 @@ while true; do
             fi
             if [[ "${PARAMETER_ENERGY_PRODUCTION}" == "true" ]]; then
                 readRegisterToLines InverterWattHours                     10 energy      "${ID}" "${NAME}" "sI32"
+            fi
+            if [[ "${PARAMETER_FREQUENCY}" == "true" ]]; then
+                readRegisterToLines InverterHertz                        100 frequency   "${ID}" "${NAME}" "uI16"
             fi
         fi
         if [[ ${CALL_WAS_SUCCESFULL} == "true" ]];then

@@ -86,11 +86,14 @@ handle_Type()
       ENERGY_PRODUCTION)
         RESULT="${RESULT}$(diagram "${NUMBER}" "${Y}" "Energy Production" "" "" "" "watth" "${BUCKET}test" "energy" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
         ;;
+      FREQUENCY)
+        RESULT="${RESULT}$(diagram "${NUMBER}" "${Y}" "Grid Frequency" "" "" "" "rothz" "${BUCKET}test" "frequency" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
+        ;;
       WIND)
         RESULT="${RESULT}$(diagram "${NUMBER}" "${Y}" "Wind" "" "" "" "velocityms" "${BUCKET}test" "wind" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
         ;;
       *)
-        echo "handle_Type: '${1}' is not a valid type. [TIME,AC_POWER,DC_VOLTAGE,OPERATING_STATE,TEMPERATURE,AC_VOLTAGE,AC_VOLTAGE,ENERGY_PRODUCTION]" 1  >&2
+        echo "handle_Type: '${1}' is not a valid type. [TIME,AC_POWER,DC_VOLTAGE,OPERATING_STATE,TEMPERATURE,AC_VOLTAGE,AC_VOLTAGE,ENERGY_PRODUCTION,FREQUENCY]" 1  >&2
         exit 1
       ;;
     esac

@@ -227,6 +227,12 @@ handle_Type()
         RESULT="${RESULT}$(statt   "${ID_1}"    0     "${Y}" "${W_1}" "Energy Production"       "watth" "${BUCKET}"                              "energy" "${INFLUXDB_DATASOURCE}"),"
         RESULT="${RESULT}$(diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "Energy Production" "" "" "watth" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "energy" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
         ;;
+      FREQUENCY)
+        local W_1="$(get_small_width "${ELEMENTS}")"
+        local W_2="$((24 - W_1))"
+        RESULT="${RESULT}$(statt   "${ID_1}"    0     "${Y}" "${W_1}" "Grid Frequency"       "rothz" "${BUCKET}"                              "frequency" "${INFLUXDB_DATASOURCE}"),"
+        RESULT="${RESULT}$(diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "Grid Frequency" "" "" "rothz" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "frequency" "${INFLUXDB_DATASOURCE}" "smooth" "mean")"
+        ;;
       WIND_SINGLE)
         local W_1="$(get_small_width "1")"
         local W_2="$((24 - W_1))"
@@ -240,7 +246,7 @@ handle_Type()
         RESULT="${RESULT}$(multi_diagram "${ID_2}" "${W_1}" "${Y}" "${W_2}" "Wind" "${BUCKET}" "${BUCKET}10s" "${BUCKET}1m" "${INFLUXDB_DATASOURCE}" "smooth" "wind" "mean" "0" "20" "velocityms" "acpower" "mean" "" "" "watt" "dcvoltage" "mean" "" "" "volt" )"
         ;;
       *)
-        echo "handle_Type: '${1}' is not a valid type. [TIME,AC_POWER,DC_VOLTAGE,OPERATING_STATE,TEMPERATURE,AC_VOLTAGE,AC_VOLTAGE,ENERGY_PRODUCTION]" 1  >&2
+        echo "handle_Type: '${1}' is not a valid type. [TIME,AC_POWER,DC_VOLTAGE,OPERATING_STATE,TEMPERATURE,AC_VOLTAGE,AC_VOLTAGE,ENERGY_PRODUCTION,FREQUENCY]" 1  >&2
         exit 1
       ;;
     esac

@@ -57,7 +57,7 @@ print_help_and_leave()
     echo "     REMOTE_ORG_ID    The id of the remote organisation"
     echo "  --grafana           Installs grafana"
     echo "     COUNT            The number of inverter in grafana"
-    echo "  --inverter          Installs the inverter Service. --remote is needed. List all values you want to read: TIME, AC_POWER, DC_VOLTAGE, OPERATING_STATE, TEMPERATURE, AC_VOLTAGE and ENERGY_PRODUCTION"
+    echo "  --inverter          Installs the inverter Service. --remote is needed."
     echo "     LOOP             The seconds per loop"
     echo "     INVERTER_DEVICE  The uart device. e.g. '/dev/ttyUSB0'"
     echo "  --windpulse         Installs the wind pulse Service. --remote or --influxDB is needed. Can not be combined with --windmodbus."
@@ -274,7 +274,7 @@ parse_arguments()
     fi
 }
 
-TASK_SET_MEAN="\"time\", \"acpower\", \"dcvoltage\", \"temperature\", \"acvoltage\", \"energy\", \"wind\""
+TASK_SET_MEAN="\"time\", \"acpower\", \"dcvoltage\", \"temperature\", \"acvoltage\", \"energy\", \"frequency\", \"wind\""
 TASK_SET_FIRST="\"state\""
 
 task()
@@ -288,7 +288,7 @@ task()
 
 from(bucket: \"${SOURCE}\")
   |> range(start: -task.every)
-  |> filter(fn: (r) => contains(value: r._measurement, set: [\"time\", \"acpower\", \"dcvoltage\", \"state\", \"temperature\", \"acvoltage\", \"energy\", \"wind\"]))
+  |> filter(fn: (r) => contains(value: r._measurement, set: [\"time\", \"acpower\", \"dcvoltage\", \"state\", \"temperature\", \"acvoltage\", \"energy\", \"frequency\", \"wind\"]))
   |> aggregateWindow(every: ${RETENTION}, fn: mean, createEmpty: false)
   |> to(bucket: \"${TARGET}\")"
 }
@@ -506,8 +506,8 @@ execute_remote()
 }
 
 GRAFANA_VALUES_WIND_ONLY=( "WIND_SINGLE" )
-GRAFANA_VALUES_WIND=(      "WIND_MULTI" "AC_POWER" "DC_VOLTAGE" "ENERGY_PRODUCTION" "AC_VOLTAGE" "TEMPERATURE" "TIME" "OPERATING_STATE" )
-GRAFANA_VALUES_SOLAR=(                  "AC_POWER" "DC_VOLTAGE" "ENERGY_PRODUCTION" "AC_VOLTAGE" "TEMPERATURE" "TIME" "OPERATING_STATE" )
+GRAFANA_VALUES_WIND=(      "WIND_MULTI" "AC_POWER" "DC_VOLTAGE" "ENERGY_PRODUCTION" "AC_VOLTAGE" "TEMPERATURE" "FREQUENCY" "TIME" "OPERATING_STATE" )
+GRAFANA_VALUES_SOLAR=(                  "AC_POWER" "DC_VOLTAGE" "ENERGY_PRODUCTION" "AC_VOLTAGE" "TEMPERATURE" "FREQUENCY" "TIME" "OPERATING_STATE" )
 
 create_dashboard()
 {
@@ -660,6 +660,7 @@ PARAMETER_OPERATING_STATE=true
 PARAMETER_TEMPERATURE=true
 PARAMETER_AC_VOLTAGE=true
 PARAMETER_ENERGY_PRODUCTION=true
+PARAMETER_FREQUENCY=true
 LOOP_TIME_SECONDS=${PARAMETER_LOOP}
 EOF"
 
